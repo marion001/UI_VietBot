@@ -115,14 +115,17 @@ $output .=  stream_get_contents($stream_out);
 }
 //Chạy Manual Run
 if (isset($_POST['start_manual_run'])) {
+// Lệnh cần chạy
 $connection = ssh2_connect($serverIP, $SSH_Port);
 if (!$connection) {die($E_rror_HOST);}
 if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
-$stream = ssh2_exec($connection, 'python3 /home/pi/vietbot_offline/src/start.py');
-stream_set_blocking($stream, true);
+$stream = ssh2_exec($connection, 'cd /home/pi/vietbot_offline/src && python3 start.py');
+stream_set_blocking($stream, false); //false chặn kết quả của luồng stream
 $stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
-$output = "$GET_current_USER@$HostName:~$ python3 /home/pi/vietbot_offline/src/start.py\n\n";
-$output .=  stream_get_contents($stream_out);
+$output = "$GET_current_USER@$HostName:~$ cd /home/pi/vietbot_offline/src && python3 start.py\n\n";
+$output .=  "$GET_current_USER@$HostName:~$ Lệnh đã được thực thi, vui lòng đợi thiết bị khởi động\n\n";
+
+
 }
 //Dừng Manual Run
 if (isset($_POST['stop_manual_run'])) {
