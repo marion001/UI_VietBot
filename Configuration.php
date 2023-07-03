@@ -22,8 +22,8 @@ $SSH_TaiKhoan = "pi"; //Tài Khoản Đăng Nhập pi SSH Của Bạn
 $SSH_MatKhau = "21041997"; //Nật Khẩu Đăng Nhập pi SSH Của Bạn
 $SSH_Port = "22"; //Mặc Định: "22"
 
-$E_rror = "Đăng Nhập SSH Thất Bại, Kiểm Tra Lại Tài Khoản Hoặc Mật Khẩu";
-$E_rror_HOST = "Không thể kết nối tới máy chủ SSH";
+$E_rror = "<center><h1>Đăng Nhập SSH Thất Bại, Kiểm Tra Lại Tài Khoản Hoặc Mật Khẩu</h1></center>";
+$E_rror_HOST = "<center><h1>Không thể kết nối tới máy chủ SSH, Kiểm Tra lại ip</h1></center>";
 
 //Giới hạn ngày kỷ niệm: 10 giá trị
 $Limit_NgayKyNiem = "15"; 
