@@ -66,7 +66,14 @@ foreach ($keywordsSTT as $keywordSTT => $replacementSTT) {
   $GET_Token_STT = $GET_Token_STTzz;
 }
 	
-	
+    // Kiểm tra xem tệp google.json có tồn tại hay không
+	 $jsonFile = "$DuognDanThuMucJson/google.json";
+    if (file_exists($jsonFile)) {
+		$jsonData = file_get_contents($jsonFile);
+    } else {$jsonData = '';
+	//echo "<h3><center color='red'>Lỗi! File: <b>/home/pi/vietbot_offline/src/google.json</b> Không Tồn Tại</center></h3><hr/>";
+    }
+	///
 	//Lấy Giá Trị TTS
 	$GET_TTS_Type = $data_config['smart_answer']['tts']['type'];
 	$GET_TTS_Type_Replace = $data_config['smart_answer']['tts']['type'];
@@ -92,6 +99,16 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	//$GET_HostName_Web_Interface = $data_config['smart_config']['web_interface']['hostname'];
 	//my_user
 	$MY_USER_NAME = $data_config['smart_config']['user_info']['name'];
+	//console_ouput
+	//$Get_Console_Ouput = $data_config['smart_config']['console_ouput'];
+	
+	
+		if ($data_config['smart_config']['console_ouput'] === null) {
+  $Get_Console_Ouput = "Null";
+} else {
+  $Get_Console_Ouput = $data_config['smart_config']['console_ouput'];
+}
+	
 	//location
 //	$Location_Longitude = $data_config['smart_config']['user_info']['lon'];
 //	$Location_Latitude = $data_config['smart_config']['user_info']['lat'];
@@ -164,12 +181,27 @@ stream_get_contents($stream_out2);
 header("Location: $PHP_SELF");
 }
 if(isset($_POST['config_setting'])) {
+		//Lưu google.json
+        $editedData = $_POST['edited_data_textarea'];
+        // Kiểm tra nếu không có dữ liệu JSON
+        if (empty($editedData)) {
+            $editedData = '{}'; // Gán giá trị mặc định là JSON rỗng
+        }
+        // Kiểm tra lỗi cú pháp JSON
+        if (json_decode($editedData) === null && json_last_error() !== JSON_ERROR_NONE) {
+        echo "<br/><br/><br/><br/><br/><br/><br/><center><h1>Lỗi Ghi Dữ Liệu, Cấu Trúc json Google Cloud bạn nhập không hợp lệ<br/></h1><a href='$PHP_SELF'><h3>Nhấn Vào Đây Để Quay Lại</h3></a></center> ";
+        exit();
+		} else {
+            // Lưu dữ liệu JSON vào tệp
+            file_put_contents("$jsonFile", $editedData);
+            echo "<script>Swal.fire('Thành công', 'Lưu thành công!', 'success');</script>";
+        }
+	//end lưu google.json
 	//Backup Config
 $backupDir = __DIR__ . '/Backup_Config/';
 if (!is_dir($backupDir)) {
     mkdir($backupDir, 0777, true);
 }
-
 $backups = glob($backupDir . '*.json');
 $numBackups = count($backups);
 if ($numBackups >= $Limit_Config_Backup) {
@@ -177,7 +209,6 @@ if ($numBackups >= $Limit_Config_Backup) {
     usort($backups, function ($a, $b) {
         return filemtime($a) - filemtime($b);
     });
-
     // Xóa các tệp sao lưu cũ nhất trừ tệp config_default.json và số lượng tệp cần giữ lại
     $keepBackups = ['config_default.json'];
     $numToDelete = $numBackups - $Limit_Config_Backup;
@@ -188,12 +219,12 @@ if ($numBackups >= $Limit_Config_Backup) {
         }
     }
 }
-
 $backupFile = $backupDir . 'backup_config_' . date('d-m-Y_H:i:s') . '.json';
 copy($FileConfigJson, $backupFile);
 chmod($backupFile, 0777);
 	// echo "Đã sao chép thành công tệp tin config.json sang $backupFile";
 	//END Backup Config
+
 	//hotwork
     // Lấy dữ liệu từ form
     $selectedFileName = $_POST['file_name'];
@@ -292,6 +323,10 @@ chmod($backupFile, 0777);
 	$data_config['smart_answer']['tts']['type'] = $TTS_Company;
 	$data_config['smart_answer']['tts']['token'] = $TTS_Token_Key;
 	$data_config['smart_answer']['tts']['voice_name'] = $TTS_Voice_CheckINPUT;
+	//console_ouput
+	if (strcasecmp(@$_POST['console_ouput'], "Null") === 0) {$console_ouputrepl = null;
+    } else {$console_ouputrepl = @$_POST['console_ouput'];}
+	$data_config['smart_config']['console_ouput'] = $console_ouputrepl;
 	//speaker, card id
 	$data_config['smart_config']['speaker']['amixer_id'] = intval($GET_CARD_Speaker_Amixer_ID);
 	//web_interface
@@ -455,6 +490,7 @@ a {
 	  transform: translate(-50%, -50%);
 }
 </style>
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
 </head>
 <body>
 <form method="post" id="my-form" onsubmit="return validateInputs();" action="<?php echo $PHP_SELF ?>"> 
@@ -531,6 +567,7 @@ foreach ($directories as $directory) {
 - <b>Ví Dụ:</b> <a href="http://<?php echo $HostName; ?>:<?php echo $GET_Port_Web_Interface; ?>" target="bank">http://<?php echo $HostName; ?>:<?php echo $GET_Port_Web_Interface; ?></a>
 <br/></div></div><hr/>
 <!-- Kết Thúc  Interface -->  
+
 	<!-- mục  Hotword Engine --> 
 <h5>Hotword Engine KEY: <i class="bi bi-info-circle-fill" onclick="togglePopup()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
 <div class="row g-3 d-flex justify-content-center"><div class="col-auto"> 
@@ -564,7 +601,8 @@ foreach ($directories as $directory) {
 <h5> Speech to Text Engine: <i class="bi bi-info-circle-fill" onclick="togglePopupSTT()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5><center>
 <div id="popupContainerSTT" class="popup-container" onclick="hidePopupSTT()">
 <div id="popupContent" onclick="preventEventPropagationSTT(event)">
-<center><b>Cấu Hình STT</b></center><br/></div></div>
+<center><b>Cấu Hình STT</b></center><br/>
+- Chuyển giọng nói thành văn bản</div></div>
 <center><b>Bạn Đang Dùng STT: <font color="red"><?php echo $GET_STT_Replacee; ?></font></b></center>
 <label><input type="radio" name="stt_type" title="Chuyển Giọng Nói Thành Văn Bản Server Google Cloud" value="stt_gg_cloud" <?php if ($GET_STT === 'stt_gg_cloud') echo 'checked'; ?> required  onchange="toggleTokenInput(this)">
 Google Cloud</label><label>
@@ -584,6 +622,16 @@ Viettel</label><br/>
 </tbody></table></div>
 </div>
 </div>
+
+<div id="otherDivgcloud" style="display: none;">
+<div class="row g-3 d-flex justify-content-center"><div class="col-auto">
+   <textarea id="jsonTextareaGoogleCloud" class="form-control" name="edited_data_textarea" rows="10" cols="50"><?php echo $jsonData; ?></textarea><br/>
+   <p onclick="clearTextareajsg()" class="btn btn-danger">Xóa Nội Dung</p>
+   
+</div>
+</div>
+</div>
+
 <div id="otherDiv" style="display: none;">
 <div class="row g-3 d-flex justify-content-center"><div class="col-auto">
 <table class="table table-bordered"><thead><tr>
@@ -601,7 +649,9 @@ Viettel</label><br/>
 <h5>Text to Speech Engine: <i class="bi bi-info-circle-fill" onclick="togglePopupTTS()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>		  
 <center><div id="popupContainerTTS" class="popup-container" onclick="hidePopupTTS()">
 <div id="popupContent" onclick="preventEventPropagationTTS(event)">
-<center><b>Cấu Hình TTS</b></center><br/></div></div>
+<center><b>Cấu Hình TTS</b></center><br/>
+- Chuyển văn bản thành giọng nói
+</div></div>
 <center><b>Bạn Đang Dùng TTS: </b><b><font color="red"><?php echo $GET_TTS_Type_Replacee; ?></font></b></center>
 <label><input type="radio" onclick="disableRadio()" name="tts_company" value="tts_gg_cloud" <?php if ($GET_TTS_Type === 'tts_gg_cloud') echo 'checked'; ?> onchange="showTokenInputTTS(this)" required>
 Google Cloud</label><label>
@@ -632,6 +682,30 @@ Zalo</label>
 
 <input type="radio" id="myRadio7" name="tts_voice" value="null" <?php if ($GET_TTS_Voice_Name === null) echo 'checked'; ?> required>Mặc Định</label></center><hr/>
 <!-- -->
+<h5>Console Ouput:</h5> 
+<div class="row g-3 d-flex justify-content-center"><div class="col-auto"> 
+<table class="table">
+ <thead>
+     <tr>
+      <th scope="col" colspan="3"><center>Đầu Ra Bảng Điều Khiển</center></th>
+    </tr>
+    <tr>
+      <th scope="col"><center>Không</center></th>
+      <th scope="col"><center>Đầy Đủ</center></th>
+      <th scope="col"><center>Xem Tức Thời</center></th>
+    </tr>
+  </thead>
+   <tbody>
+    <tr>
+      <td><center><input type="radio" name="console_ouput" value="Null" <?php if ($Get_Console_Ouput === 'Null') echo 'checked'; ?> required></center></td>
+      <td><center><input type="radio" name="console_ouput" value="full" <?php if ($Get_Console_Ouput === 'full') echo 'checked'; ?> required></center></td>
+      <td><center><input type="radio" name="console_ouput" value="watching" <?php if ($Get_Console_Ouput === 'watching') echo 'checked'; ?> required></center></td>
+    </tr>
+</tbody>
+</table>
+</div>
+</div>
+<hr/>
 
 
 <?php
@@ -679,6 +753,12 @@ Zalo</label>
 </td></tr> -->
   
   </tbody></table></div></div><hr/>
+  
+  
+  
+  
+  
+  
 <!-- mục  Chọn Kiểu LED --> 
 <h5>Chọn Kiểu LED: <i class="bi bi-info-circle-fill" onclick="togglePopupLED()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
 <div class="form-check form-switch d-flex justify-content-center">   <div class="col-auto">
@@ -1130,6 +1210,8 @@ if (count($fileLists) > 0) {
       tokenInputContainerTTS.style.display = "none";
     }
   }
+  
+  
 	///////
 	        function updateSliderValue(value) {
             document.getElementById('slider-value').innerHTML = value + '%';
@@ -1444,22 +1526,32 @@ function validateInputs() {
   var tokenInputContainer = document.getElementById("tokenInputContainer");
   var tokenInput = document.getElementById("tokenInput");
   var otherDiv = document.getElementById("otherDiv");
+  var otherDivgcloud = document.getElementById("otherDivgcloud");
 
-  if (radio.value === "stt_fpt" || radio.value === "stt_viettel" || radio.value === "stt_gg_cloud") {
+  if (radio.value === "stt_fpt" || radio.value === "stt_viettel") {
     tokenInputContainer.style.display = "block";
     otherDiv.style.display = "none";
+	otherDivgcloud.style.display = "none";
     tokenInput.value = "<?php echo $GET_Token_STT; ?>";
   } else if (radio.value === "stt_gg_ass") {
     tokenInputContainer.style.display = "none";
     otherDiv.style.display = "block";
+	otherDivgcloud.style.display = "none";
+    tokenInput.value = "Null";
+  }else if (radio.value === "stt_gg_cloud") {
+    tokenInputContainer.style.display = "none";
+    otherDiv.style.display = "none";
+    otherDivgcloud.style.display = "block";
     tokenInput.value = "Null";
   }else if (radio.value === "stt_gg_free") {
     tokenInputContainer.style.display = "none";
     otherDiv.style.display = "none";
+	otherDivgcloud.style.display = "none";
     tokenInput.value = "Null";
   } else {
     tokenInputContainer.style.display = "none";
     otherDiv.style.display = "none";
+	otherDivgcloud.style.display = "none";
     tokenInput.value = "Null";
   }
  
@@ -1739,20 +1831,19 @@ $(document).ready(function() {
     });
     function toggleElementsWEL(element) {
       var textInput = document.getElementById("text-input");
-      var textInputt = document.getElementById("text-inputt");
+    //  var textInputt = document.getElementById("text-inputt");
       var pathDropdown = document.getElementById("path-dropdown");
 
       if (element.value === "text") {
         textInput.style.display = "block";
-        textInputt.style.display = "block";
+     //   textInputt.style.display = "block";
         pathDropdown.style.display = "none";
       } else if (element.value === "path") {
         textInput.style.display = "none";
-        textInputt.style.display = "none";
+      //  textInputt.style.display = "none";
         pathDropdown.style.display = "block";
       }
     }
-	
 	
   </script>
     <script>
@@ -1808,13 +1899,20 @@ function renderCity(data) {
     }
   };
 }
-
+//Xóa Nội Dung Trong Thẻ Textarea
+        function clearTextareajsg() {
+            document.getElementById('jsonTextareaGoogleCloud').value = '';
+        }
+/*
+//Đọc IP Ra Thông Báo
         function updateTextip() {
             var checkbox = document.getElementById("myCheckboxip");
             var docIp = "<?php echo $serverIP; ?>";
             var text = "" + (checkbox.checked ? docIp : "");
             document.getElementById("myTextip").textContent = text;
         }
+		*/
 	</script>
+	  
 </body>
 </html>
