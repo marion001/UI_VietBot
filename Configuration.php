@@ -19,7 +19,7 @@ $DuognDanUI_HTML = "/var/www/html/"; 				   //Để Mặc Định
 
 //SSH Tải Khoản, Mật Khẩu Đăng Nhập SSH (Bắt Buộc Phải Nhập Để Dùng Các Lệnh Hệ Thống)
 $SSH_TaiKhoan = "pi"; //Tài Khoản Đăng Nhập pi SSH Của Bạn
-$SSH_MatKhau = "vietbot"; //Nật Khẩu Đăng Nhập pi SSH Của Bạn
+$SSH_MatKhau = "21041997"; //Nật Khẩu Đăng Nhập pi SSH Của Bạn
 $SSH_Port = "22"; //Mặc Định: "22"
 
 $E_rror = "<center><h1>Đăng Nhập SSH Thất Bại, Kiểm Tra Lại Tài Khoản Hoặc Mật Khẩu</h1></center>";

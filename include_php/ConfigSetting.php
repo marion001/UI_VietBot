@@ -66,11 +66,17 @@ foreach ($keywordsSTT as $keywordSTT => $replacementSTT) {
   $GET_Token_STT = $GET_Token_STTzz;
 }
 	
-    // Kiểm tra xem tệp google.json có tồn tại hay không
-	 $jsonFile = "$DuognDanThuMucJson/google.json";
+    // Kiểm tra xem tệp google_stt.json có tồn tại hay không
+	 $jsonFile = "$DuognDanThuMucJson/google_stt.json";
     if (file_exists($jsonFile)) {
-		$jsonData = file_get_contents($jsonFile);
-    } else {$jsonData = '';
+		$jsonDataGcloudTTS = file_get_contents($jsonFile);
+    } else {$jsonDataGcloudTTS = '';
+	//echo "<h3><center color='red'>Lỗi! File: <b>/home/pi/vietbot_offline/src/google.json</b> Không Tồn Tại</center></h3><hr/>";
+    }
+	 $jsonFileGcloud = "$DuognDanThuMucJson/google_tts.json";
+    if (file_exists($jsonFileGcloud)) {
+		$jsonDataGcloudSTT = file_get_contents($jsonFileGcloud);
+    } else {$jsonDataGcloudSTT = '';
 	//echo "<h3><center color='red'>Lỗi! File: <b>/home/pi/vietbot_offline/src/google.json</b> Không Tồn Tại</center></h3><hr/>";
     }
 	///
@@ -115,7 +121,7 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	//Address
 	$Address_City = $data_config['smart_config']['user_info']['address']['province'];
 	$Address_district = $data_config['smart_config']['user_info']['address']['district'];
-	$Address_ward = $data_config['smart_config']['user_info']['address']['ward'];
+	$Address_ward = $data_config['smart_config']['user_info']['address']['wards'];
 	// smart_answer welcome
 	$Welcome_Mode = $data_config['smart_answer']['sound']['welcome']['mode'];
 	$Welcome_Path = $data_config['smart_answer']['sound']['welcome']['path'];
@@ -181,7 +187,7 @@ stream_get_contents($stream_out2);
 header("Location: $PHP_SELF");
 }
 if(isset($_POST['config_setting'])) {
-		//Lưu google.json
+		//Lưu google.json STT
         $editedData = $_POST['edited_data_textarea'];
         // Kiểm tra nếu không có dữ liệu JSON
         if (empty($editedData)) {
@@ -189,7 +195,7 @@ if(isset($_POST['config_setting'])) {
         }
         // Kiểm tra lỗi cú pháp JSON
         if (json_decode($editedData) === null && json_last_error() !== JSON_ERROR_NONE) {
-        echo "<br/><br/><br/><br/><br/><br/><br/><center><h1>Lỗi Ghi Dữ Liệu, Cấu Trúc json Google Cloud bạn nhập không hợp lệ<br/></h1><a href='$PHP_SELF'><h3>Nhấn Vào Đây Để Quay Lại</h3></a></center> ";
+        echo "<br/><br/><br/><br/><br/><br/><br/><center><h1>Lỗi Ghi Dữ Liệu, Cấu Trúc json STT Google Cloud bạn nhập không hợp lệ<br/></h1><a href='$PHP_SELF'><h3>Nhấn Vào Đây Để Quay Lại</h3></a></center> ";
         exit();
 		} else {
             // Lưu dữ liệu JSON vào tệp
@@ -197,6 +203,25 @@ if(isset($_POST['config_setting'])) {
             echo "<script>Swal.fire('Thành công', 'Lưu thành công!', 'success');</script>";
         }
 	//end lưu google.json
+	
+		//Lưu google.json TTS
+        $editedData = $_POST['edited_data_textarea_tts_gcloud'];
+        // Kiểm tra nếu không có dữ liệu JSON
+        if (empty($editedData)) {
+            $editedData = '{}'; // Gán giá trị mặc định là JSON rỗng
+        }
+        // Kiểm tra lỗi cú pháp JSON
+        if (json_decode($editedData) === null && json_last_error() !== JSON_ERROR_NONE) {
+        echo "<br/><br/><br/><br/><br/><br/><br/><center><h1>Lỗi Ghi Dữ Liệu, Cấu Trúc json TTS Google Cloud bạn nhập không hợp lệ<br/></h1><a href='$PHP_SELF'><h3>Nhấn Vào Đây Để Quay Lại</h3></a></center> ";
+        exit();
+		} else {
+            // Lưu dữ liệu JSON vào tệp
+            file_put_contents("$jsonFileGcloud", $editedData);
+            echo "<script>Swal.fire('Thành công', 'Lưu thành công!', 'success');</script>";
+        }
+	//end lưu google.json
+	
+	
 	//Backup Config
 $backupDir = __DIR__ . '/Backup_Config/';
 if (!is_dir($backupDir)) {
@@ -337,7 +362,7 @@ chmod($backupFile, 0777);
 	//Address
 	$data_config['smart_config']['user_info']['address']['province'] = @$_POST['city'];
 	$data_config['smart_config']['user_info']['address']['district'] = @$_POST['district'];
-	$data_config['smart_config']['user_info']['address']['ward'] = @$_POST['ward'];
+	$data_config['smart_config']['user_info']['address']['wards'] = @$_POST['ward'];
 	//Welcome Mode
 	$data_config['smart_answer']['sound']['welcome']['mode'] = @$_POST['mode_options'];
 	$data_config['smart_answer']['sound']['welcome']['path'] = @$_POST['mode_path'];
@@ -625,7 +650,7 @@ Viettel</label><br/>
 
 <div id="otherDivgcloud" style="display: none;">
 <div class="row g-3 d-flex justify-content-center"><div class="col-auto">
-   <textarea id="jsonTextareaGoogleCloud" class="form-control" name="edited_data_textarea" rows="10" cols="50"><?php echo $jsonData; ?></textarea><br/>
+   <textarea id="jsonTextareaGoogleCloud" class="form-control" name="edited_data_textarea" rows="10" cols="50"><?php echo $jsonDataGcloudTTS; ?></textarea><br/>
    <p onclick="clearTextareajsg()" class="btn btn-danger">Xóa Nội Dung</p>
    
 </div>
@@ -668,6 +693,18 @@ Zalo</label>
 <tbody><tr><th scope="row">Token:</th>
 <td><input type="text" class="form-control" title="Nhập, Thay Đổi Token" id="tokenKeyTTS" value="<?php echo $GET_TTS_Token_Key; ?>" placeholder="Nhập Token TTS" name="token_key_tts"></td></tr>
 </tbody></table></div></div></div>
+
+
+<div id="tokenInputContainerTTSGGCLOUD" style="display: none;">
+<div class="row g-3 d-flex justify-content-center"><div class="col-auto">
+   <textarea id="jsonTextareaGoogleCloudTTS" class="form-control" name="edited_data_textarea_tts_gcloud" rows="10" cols="50"><?php echo $jsonDataGcloudSTT; ?></textarea><br/>
+   <p onclick="clearTextareajsgCLOUD()" class="btn btn-danger">Xóa Nội Dung</p>
+   
+</div>
+</div>
+</div>
+
+
 <br><b>Giọng Đọc:</b><br/><label>
 <input type="radio" id="myRadio1" title="Nữ miền Bắc" name="tts_voice" value="female_northern_voice" <?php if ($GET_TTS_Voice_Name === 'female_northern_voice') echo 'checked'; ?> required>Nữ miền Bắc</label><label>
 <input type="radio" id="myRadio2" title="Nam Miền Bắc" name="tts_voice" value="male_northern_voice" <?php if ($GET_TTS_Voice_Name === 'male_northern_voice') echo 'checked'; ?> required>Nam Miền Bắc</label><label>
@@ -916,7 +953,7 @@ None (Không Dùng)</label></center>
       <th scope="row" title="Pre Answer Timeout">Thời Gian Chờ (giây):</th>
       <td><input class="form-control" name="pre_answer_timeout" title="Từ 1 -> 15 (giây)" value="<?php echo $Pre_Answer_Timeout; ?>" placeholder="8" type="number" min="3" max="15" step="1"></td>
 </tr><tr>
-	  <th scope="row" title="Number Characters To Switch Mode">Số Từ Để Phát Thông Báo:</th>
+	  <th scope="row" title="Number Characters To Switch Mode">Tự Động Chuyển Sang Playback Nếu Số Ký Tự Trong Câu Trả Lời Vượt Quá:</th>
 	  <td><input class="form-control" type="number" min="200" max="1000" step="10" title="Từ 200 đến 1000" placeholder="300" name="number_characters_to_switch_mode" value="<?php echo $numberCharactersToSwitchMode ?>"></td>
     </tr>
 <?php
@@ -1201,16 +1238,27 @@ if (count($fileLists) > 0) {
 	  document.getElementById("myRadio7").checked = false;
     }
 	/////////
-	//value tts viet tell, zalo
-	  function showTokenInputTTS(radio) {
-    var tokenInputContainerTTS = document.getElementById("tokenInputContainerTTS");
-    if (radio.value === "tts_zalo" || radio.value === "tts_viettel" || radio.value === "tts_gg_cloud" || radio.value === "tts_fpt") {
-      tokenInputContainerTTS.style.display = "block";
-    } else {
-      tokenInputContainerTTS.style.display = "none";
-    }
-  }
+	//value tts viettell, zalo
+function showTokenInputTTS(radio) {
+  var tokenInputContainerTTS = document.getElementById("tokenInputContainerTTS");
+  var tokenInputContainerTTSGGCLOUD = document.getElementById("tokenInputContainerTTSGGCLOUD");
+ // var otherDivgcloudTTS = document.getElementById("otherDivgcloudTTS");
   
+  if (radio.value === "tts_zalo" || radio.value === "tts_viettel" || radio.value === "tts_fpt") {
+    tokenInputContainerTTS.style.display = "block";
+    tokenInputContainerTTSGGCLOUD.style.display = "none";
+  //  otherDivgcloudTTS.style.display = "none";
+  } else if (radio.value === "tts_gg_cloud") {
+    tokenInputContainerTTS.style.display = "none";
+    tokenInputContainerTTSGGCLOUD.style.display = "block";
+  //  otherDivgcloudTTS.style.display = "block";
+  } else {
+    tokenInputContainerTTS.style.display = "none";
+    tokenInputContainerTTSGGCLOUD.style.display = "none";
+  //  otherDivgcloudTTS.style.display = "none";
+  }
+}
+
   
 	///////
 	        function updateSliderValue(value) {
@@ -1902,6 +1950,9 @@ function renderCity(data) {
 //Xóa Nội Dung Trong Thẻ Textarea
         function clearTextareajsg() {
             document.getElementById('jsonTextareaGoogleCloud').value = '';
+        }
+		        function clearTextareajsgCLOUD() {
+            document.getElementById('jsonTextareaGoogleCloudTTS').value = '';
         }
 /*
 //Đọc IP Ra Thông Báo

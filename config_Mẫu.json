@@ -46,9 +46,11 @@
         "user_info": {
             "name": "Vũ Tuyển",
             "address": {
-                "ward": "Xã Vĩnh Khúc",
-                "district": "Huyện Văn Giang",
-                "province": "Tỉnh Hưng Yên"
+                "street": "Đường 206",
+                "wards": "Phường Phúc Xá",
+                "district": "Quận Ba Đình",
+                "province": "Thành phố Hà Nội",
+                "country": "Việt Nam"
             }
         },
         "console_ouput": null
@@ -145,11 +147,11 @@
         ]
     },
     "smart_request": {
-        "continuous_asking": true,
+        "continuous_asking": false,
         "stt": {
             "type": "stt_gg_ass",
             "token": null,
-            "token_file": "google.json",
+            "token_file": "google_stt.json",
             "stt_gg_ass_mode": "default",
             "credentials_file": "credentials.json",
             "device_config_file": "device_config.json",
@@ -169,14 +171,14 @@
             "welcome": {
                 "mode": "text",
                 "path": "sound/welcome/nokia-startup.wav",
-                "text": "Chào bạn Mình là loa Thông Minh"
+                "text": "Xin chào mời đọc khẩu lệnh, để ra lệnh"
             }
         },
         "tts": {
-            "type": "tts_zalo",
+            "type": "tts_gg_free",
             "token": "Sz7Uw0HaVxCHoHfo0JceRlrpoeDYYXxi",
-            "token_file": "google.json",
-            "voice_name": "female_northern_voice",
+            "token_file": "google_tts.json",
+            "voice_name": null,
             "voice_profile": null,
             "speed": null,
             "pitch": null
@@ -184,16 +186,16 @@
         "external_bot_priority_1": "gg_ass",
         "external_bot_priority_2": "chatGPT",
         "external_bot_priority_3": "SIMSIM",
-        "pre_answer_timeout": 7,
+        "pre_answer_timeout": 8,
         "pre_answer": [
             {
                 "value": "Cần thêm thời gian, vui lòng đợi"
             },
             {
-                "value": "Vui Lòng Chờ Thêm"
+                "value": "Vui lòng chờ thêm"
             },
             {
-                "value": "Đang Tìm Dữ Liệu"
+                "value": "Cần thêm thời gian để xử lý"
             }
         ],
         "number_characters_to_switch_mode": 300

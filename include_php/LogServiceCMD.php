@@ -329,7 +329,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['commandd'])) {
   <div class="dropdown-menu scrollable-menu">
  <center><button  type="submit" name="kiem_tra_dung_luong" class="btn btn-success">Kiểm Tra Dung Lượng</button>
  <div class="dropdown-divider"></div>  <button type="submit" name="kiem_tra_bo_nho" class="btn btn-success">Kiểm Tra Bộ Nhớ</button>
-  <div class="dropdown-divider"></div><button  type="submit" name="check_ifconfig" class="btn btn-success">Kiểm Tra ifconfig</button>
+  <div class="dropdown-divider"></div><button  type="submit" name="check_ifconfig" class="btn btn-success">Kiểm Tra Mạng</button>
  <div class="dropdown-divider"></div><button  type="submit" name="check_thong_tin_cpu" class="btn btn-success">Thông Tin CPU</button>
  <div class="dropdown-divider"></div><button  type="submit" name="thong_tin_he_dieu_hanh" class="btn btn-success">Thông Tin OS HĐH</button>
  <!-- <div class="dropdown-divider"></div>  <button type="submit" name="khoi_dong_os" class="btn btn-success">Khởi Động OS</button> -->

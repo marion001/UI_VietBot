@@ -3,198 +3,334 @@
 //Facebook: https://www.facebook.com/TWFyaW9uMDAx
 include "../Configuration.php";
 ?>
+
 <!DOCTYPE html>
 <html>
 <!-- Code By: Vũ Tuyển
 Facebook: https://www.facebook.com/TWFyaW9uMDAx  -->
-<head lang="en">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $MYUSERNAME; ?>, Vietbot Offline Chat</title>
-    <link rel="shortcut icon" href="../assets/img/VietBot128.png">
-    <script src="../assets/js/jquery-3.6.1.min.js"></script>
-    <link href="../assets/css/bootstrap_3.3.6.css" rel="stylesheet">
-    <link href="../assets/css/font-awesome.min.css" rel="stylesheet">
-    <style type="text/css">
-        .fixed-panel {
-					
-            min-height: 390px;
-            max-height: 390px;
-            background-color: #19313c;
-            color: white;
-            overflow: auto;
-        }
+<head>
+  <title><?php echo $MYUSERNAME; ?> ChatBot</title>
+      <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+   /*   align-items: center; */
+    /*  height: 100vh;*/  
+    background-color: #d2d8bb;
+    }
 
-        .media-list {
-            overflow: auto;
-            clear: both;
-            display: table;
-            overflow-wrap: break-word;
-            word-wrap: break-word;
-            word-break: normal;
-            line-break: strict;
-        }
-        .panel {
-			height: 100%;
-            margin-bottom: 20px;
-            background-color: #fff;
-            border: 6px solid transparent;
-            border-radius: 25px;
-            -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-            box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-        }
+    .chat-container {
+      max-width: 70%;
+      width: 550px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 70vh;
+    }
 
-        .panel-info {
-            border-color: #0c2735;
-        }
-        .panel-info>.panel-heading {
-            color: white;
-            background-color: #0c2735;
-            border-color: #0c2735;
-        }
+    #chatbox {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 10px;
+      overflow-x: hidden;
+	   z-index: 0;
+    }
 
-        .panel-footer {
-            padding: 10px 15px;
-            background-color: #0c2735;
-            border-top: 1px solid #0c2735;
-            border-bottom-right-radius: 3px;
-            border-bottom-left-radius: 3px
-        }
-body {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 14px;
-    line-height: 1.42857143;
-    color: #333;
-    background-color: #dbe0c9;
+    .chat-form {
+      display: flex;
+      padding: 10px;
+      background-color: #f0f0f0;
+    }
+
+    .chat-input {
+      flex-grow: 1;
+      margin-right: 10px;
+    }
+
+    .chat-submit {
+      flex-shrink: 0;
+    }
+
+    .message {
+      display: flex;
+      justify-content: flex-start;
+      position: relative;
+    }
+
+    .user-message {
+      justify-content: flex-end;
+    }
+
+    .message-content {
+      padding: 5px;
+      margin: 5px;
+      border-radius: 5px;
+    }
+
+    .user-message .message-content {
+      background-color: #89b8e7;
+    }
+
+    .bot-message .message-content {
+      background-color: #cfbaba;
+    }
+
+    .typing-indicator {
+      display: flex;
+      align-items: center;
+      margin: 5px;
+      font-style: italic;
+      color: gray;
+    }
+
+    .typing-indicator span {
+      display: inline-block;
+      margin-right: 5px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background-color: gray;
+      animation: jump 1s infinite;
+    }
+
+    @keyframes jump {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+      100% { transform: translateY(0); }
+    }
+
+    .delete-button {
+      position: absolute;
+      top: 50%;
+      right: -20px;
+      transform: translateY(-50%);
+      background-color: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .delete-all-button {
+      background-color: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    .message:hover .delete-button,
+    .delete-all-button:hover {
+      opacity: 1;
+    }
+    
+    .timeout-message {
+      background-color: #ffc107;
+      font-style: italic;
+    }
+.chat-wrapper {
+  background-color: #f0f0f0;
+  padding: 10px;
 }
 
-    </style>
+.message-content {
+  padding: 5px;
+  margin: 5px;
+  border-radius: 5px;
+  background-color: #cfbaba;
+  text-align: center;
+}
+@media (max-width: 768px) {
+  .chat-container {
+    max-width: 100%;
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+  }
+
+  #chatbox {
+    height: calc(100vh - 110px);
+  }
+
+  .chat-form {
+    flex-direction: column;
+    padding: 5px;
+    background-color: #f0f0f0;
+  }
+
+  .chat-input {
+    margin-right: 0;
+    margin-bottom: 5px;
+  }
+
+  .chat-submit {
+    margin-top: 5px;
+  }
+
+  .delete-all-button {
+    margin-top: 5px;
+    margin-left: 0;
+  }
+}
+
+  </style>
+  <script src="../assets/js/axios_0.21.1.min.js"></script>
 </head>
-
 <body>
-  
+<br/>
+  <div class="chat-container">
+    <div class="chat-wrapper">
+    <div id="message-content" class="message-content">Chào bạn mình là loa thông minh Vietbot!</div>
+  </div>
+    <div id="chatbox" class="container-fluid">
+	
+	</div>
 
+    <form id="chat-form" class="chat-form">
+      <div class="input-group mb-3">
+        <div class="input-group-text">
+          Chỉ đọc ra loa:&nbsp;<input title="Chỉ đọc nội dung văn bản bạn đã nhập ra loa và sẽ không hiển thị trong dao diện chatbox" type="checkbox" class="form-check-input" id="message-type-checkbox">
+        </div>
+        <input type="text" class="form-control" id="user-input" class="chat-input" placeholder="Nhập tin nhắn..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+          <button type="submit" class="btn btn-success">Gửi</button>
+        </div>
+      </div>
+    </form>
+    <button id="delete-all-button" class="btn btn-danger">Xóa tất cả tin nhắn</button>
+  </div>
 
-           
-                <div id="chatPanel" class="panel panel-info">
-                    <div class="panel-heading">
-                        <strong><span class="glyphicon glyphicon-globe"></span> Nhập câu hỏi, bot sẽ tự trả lời hoặc mượn trả lời từ Google Assistant hoặc ChatGPT </strong>
-                    </div>
-                    <div class="panel-body fixed-panel">
-                        <ul class="media-list">
-                        </ul>
-                    </div>
-                    <div class="panel-footer">
-                        <form method="post" id="chatbot-form">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Enter Message" name="messageText"
-                                    id="messageText" autofocus />
-                                <span class="input-group-btn">
-                                    <button class="btn btn-info" type="button" id="chatbot-form-btn">Gửi</button>
-                                    <button class="btn btn-info" type="button"
-                                        id="chatbot-form-btn-clear">Xóa</button>
-                                    <button class="btn btn-info" type="button"
-                                        id="chatbot-form-btn-voice">Đọc ra Loa</button>
-                                </span>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-           
-    
-    <script src="../assets/js/jquery_1_12_4_min.js"></script>
-    <script src="../assets/js/bootstrap_3_3_6_js_bootstrap.min.js"></script>
-    <script>
-        var exports = {};
-    </script>
-    <script src="../assets/js/speech_to_text_0_7_4_lib_index.js"></script>
-    <script>
-        $(function () {
-            var synth = window.speechSynthesis;
+  <script>
+    const chatbox = document.getElementById('chatbox');
+    const chatForm = document.getElementById('chat-form');
+    const userInput = document.getElementById('user-input');
+    const deleteAllButton = document.getElementById('delete-all-button');
+    const messageTypeCheckbox = document.getElementById('message-type-checkbox');
 
-            var msg = new SpeechSynthesisUtterance();
-            var voices = synth.getVoices();
-            msg.voice = voices[0];
-            msg.rate = 1;
-            msg.pitch = 1;
-            msg.lang = 'vi-VN'
+    let isBotReplying = false;
 
-            $('#chatbot-form-btn').click(function (e) {
-                e.preventDefault();
-                $('#chatbot-form').submit();
-            });
-            $('#chatbot-form-btn-clear').click(function (e) {
-                e.preventDefault();
-                $('#chatPanel').find('.media-list').html('');
-            });
-            $('#chatbot-form-btn-voice').click(function (e) {
-                e.preventDefault();
+    chatForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
 
-                var onAnythingSaid = function (text) {
-                    console.log('Interim text: ', text);
-                };
-                var onFinalised = function (text) {
-                    console.log('Finalised text: ', text);
-                    $('#messageText').val(text);
-                };
-                var onFinishedListening = function () {
-                    $('#chatbot-form-btn').click();
-                };
+      const userMessage = userInput.value;
+      userInput.value = '';
 
-                try {
-                    var listener = new SpeechToText(onAnythingSaid, onFinalised, onFinishedListening);
-                    listener.startListening();
+      if (userMessage.trim() === '') {
+        return;
+      }
 
-                    setTimeout(function () {
-                        listener.stopListening();
-                        if ($('#messageText').val()) {
-                            $('#chatbot-form-btn').click();
-                        }
-                    }, 5000);
-                } catch (error) {
-                    console.log(error);
-                }
-            });
+      const messageType = messageTypeCheckbox.checked ? 1 : 2;
 
-            $('#chatbot-form').submit(function (e) {
-                e.preventDefault();
-                var message = $('#messageText').val();
-                $(".media-list").append(
-                    '<li class="media"><div class="media-body"><div class="media"><div style = "text-align:right; color : #2EFE2E" class="media-body">' +
-                    message + '<hr/></div></div></div></li>');
-                $.ajax({
-                    url: "<?php echo "http://"."$HostName".":"."$PORT_CHATBOT"; ?>",
-                    type: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    data: JSON.stringify({
-                        "type": 2,
-                        "data":  message
-                    }),
-/*                     dataType: "json",                  */
-                    success: function (response) {
-/*                         $('#messageText').val(''); */
-                        console.log("API request succeeded:", response);
-                        var answer = response.answer;
-                        console.log("Data:", answer);                       
-                        const chatPanel = document.getElementById("chatPanel");
-                        $(".media-list").append(
-                            '<li class="media"><div class="media-body"><div class="media"><div style = "color : white" class="media-body">' +
-                            answer + '<hr/></div></div></div></li>');
-                        $(".fixed-panel").stop().animate({
-                            scrollTop: $(".fixed-panel")[0].scrollHeight
-                        }, 1000);
-                        msg.text = answer;
-<!--                         speechSynthesis.speak(msg); -->
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                });
-            });
-        });
-    </script>
+      displayMessage(userMessage, true);
+
+      const url = 'http://<?php echo $serverIP; ?>:5000/';
+
+      const headers = {
+        Accept: '*/*',
+        'Accept-Language': 'vi',
+        Connection: 'keep-alive',
+        'Content-Type': 'application/json',
+        DNT: '1',
+        Origin: 'http://<?php echo $serverIP; ?>:5000',
+        Referer: 'http://<?php echo $serverIP; ?>:5000/',
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
+      };
+
+      const data = {
+        type: messageType,
+        data: userMessage,
+      };
+
+ try {
+    isBotReplying = true;
+    displayTypingIndicator();
+
+    const response = await axios.post(url, data, { headers });
+
+    isBotReplying = false;
+    removeTypingIndicator();
+
+    displayMessage(response.data.answer, false);
+  } catch (error) {
+    console.error(error);
+
+    // Hiển thị tin nhắn lỗi khi không kết nối được tới server trong vòng 10 giây
+    setTimeout(() => {
+      if (isBotReplying) {
+        isBotReplying = false;
+        removeTypingIndicator();
+        displayMessage('Lỗi! không kết nối được tới loa thông minh Vietbot, hãy đảm bảo loa đang hoạt động', false);
+      }
+    }, 12000);
+  }
+});
+    const displayMessage = (message, isUserMessage, isTimeoutMessage = false) => {
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('message');
+
+      if (isUserMessage) {
+        messageElement.classList.add('user-message');
+      } else {
+        messageElement.classList.add('bot-message');
+      }
+
+      const messageContent = document.createElement('div');
+      messageContent.classList.add('message-content');
+      messageContent.textContent = message;
+
+      const deleteButton = document.createElement('button');
+      deleteButton.classList.add('delete-button');
+      deleteButton.innerHTML = '&times;';
+      deleteButton.addEventListener('click', () => {
+        messageElement.remove();
+      });
+
+      messageElement.appendChild(messageContent);
+      messageElement.appendChild(deleteButton);
+      chatbox.appendChild(messageElement);
+
+      chatbox.scrollTop = chatbox.scrollHeight;
+
+      if (isTimeoutMessage) {
+        messageElement.classList.add('timeout-message');
+      }
+    };
+
+    const displayTypingIndicator = () => {
+      const typingIndicator = document.createElement('div');
+      typingIndicator.classList.add('typing-indicator');
+
+      for (let i = 0; i < 3; i++) {
+        const dot = document.createElement('span');
+        typingIndicator.appendChild(dot);
+      }
+
+      chatbox.appendChild(typingIndicator);
+
+      chatbox.scrollTop = chatbox.scrollHeight;
+    };
+
+    const removeTypingIndicator = () => {
+      const typingIndicator = document.querySelector('.typing-indicator');
+      if (typingIndicator) {
+        typingIndicator.remove();
+      }
+
+      chatbox.scrollTop = chatbox.scrollHeight;
+    };
+
+    deleteAllButton.addEventListener('click', () => {
+      chatbox.innerHTML = '';
+    });
+  </script>
+
 </body>
-
 </html>
