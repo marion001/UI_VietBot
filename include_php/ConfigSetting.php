@@ -200,7 +200,7 @@ if(isset($_POST['config_setting'])) {
 		} else {
             // Lưu dữ liệu JSON vào tệp
             file_put_contents("$jsonFile", $editedData);
-            echo "<script>Swal.fire('Thành công', 'Lưu thành công!', 'success');</script>";
+          //  echo "<script>Swal.fire('Thành công', 'Lưu thành công!', 'success');</script>";
         }
 	//end lưu google.json
 	
@@ -211,13 +211,14 @@ if(isset($_POST['config_setting'])) {
             $editedData = '{}'; // Gán giá trị mặc định là JSON rỗng
         }
         // Kiểm tra lỗi cú pháp JSON
-        if (json_decode($editedData) === null && json_last_error() !== JSON_ERROR_NONE) {
+       // if (json_decode($editedData) === null && json_last_error() !== JSON_ERROR_NONE) {
+        if (json_decode($editedData) === null) {
         echo "<br/><br/><br/><br/><br/><br/><br/><center><h1>Lỗi Ghi Dữ Liệu, Cấu Trúc json TTS Google Cloud bạn nhập không hợp lệ<br/></h1><a href='$PHP_SELF'><h3>Nhấn Vào Đây Để Quay Lại</h3></a></center> ";
         exit();
 		} else {
             // Lưu dữ liệu JSON vào tệp
             file_put_contents("$jsonFileGcloud", $editedData);
-            echo "<script>Swal.fire('Thành công', 'Lưu thành công!', 'success');</script>";
+          //  echo "<script>Swal.fire('Thành công', 'Lưu thành công!', 'success');</script>";
         }
 	//end lưu google.json
 	
