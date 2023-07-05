@@ -3,11 +3,10 @@
 //Facebook: https://www.facebook.com/TWFyaW9uMDAx
 include "../Configuration.php";
 ?>
-
-<!DOCTYPE html>
-<html>
 <!-- Code By: Vũ Tuyển
 Facebook: https://www.facebook.com/TWFyaW9uMDAx  -->
+<!DOCTYPE html>
+<html>
 <head>
   <title><?php echo $MYUSERNAME; ?> ChatBot</title>
       <meta charset="UTF-8">
@@ -194,15 +193,18 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx  -->
 	</div>
 
     <form id="chat-form" class="chat-form">
-      <div class="input-group mb-3">
-        <div class="input-group-text">
-          Chỉ đọc ra loa:&nbsp;<input title="Chỉ đọc nội dung văn bản bạn đã nhập ra loa và sẽ không hiển thị trong dao diện chatbox" type="checkbox" class="form-check-input" id="message-type-checkbox">
-        </div>
-        <input type="text" class="form-control" id="user-input" class="chat-input" placeholder="Nhập tin nhắn..." aria-label="Recipient's username" aria-describedby="basic-addon2">
-        <div class="input-group-append">
-          <button type="submit" class="btn btn-success">Gửi</button>
-        </div>
-      </div>
+
+
+<div class="input-group mb-3">
+ <input type="text" class="form-control" id="user-input" class="chat-input" placeholder="Nhập tin nhắn..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+  <div class="input-group-append">
+   <button type="submit" class="btn btn-success">Gửi</button>
+  </div>
+</div>
+<input title="Chỉ đọc nội dung văn bản bạn đã nhập ra loa và sẽ không hiển thị trong dao diện chatbox"  style="display: none;" type="checkbox" class="form-check-input" id="message-type-checkbox">
+
+       
+	  
     </form>
     <button id="delete-all-button" class="btn btn-danger">Xóa tất cả tin nhắn</button>
   </div>
