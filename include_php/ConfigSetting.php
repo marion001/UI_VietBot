@@ -1244,7 +1244,6 @@ function showTokenInputTTS(radio) {
   var tokenInputContainerTTS = document.getElementById("tokenInputContainerTTS");
   var tokenInputContainerTTSGGCLOUD = document.getElementById("tokenInputContainerTTSGGCLOUD");
  // var otherDivgcloudTTS = document.getElementById("otherDivgcloudTTS");
-  
   if (radio.value === "tts_zalo" || radio.value === "tts_viettel" || radio.value === "tts_fpt") {
     tokenInputContainerTTS.style.display = "block";
     tokenInputContainerTTSGGCLOUD.style.display = "none";
@@ -1253,14 +1252,19 @@ function showTokenInputTTS(radio) {
     tokenInputContainerTTS.style.display = "none";
     tokenInputContainerTTSGGCLOUD.style.display = "block";
   //  otherDivgcloudTTS.style.display = "block";
-  } else {
+  }
+else if (radio.value === "tts_gg_free") {
     tokenInputContainerTTS.style.display = "none";
     tokenInputContainerTTSGGCLOUD.style.display = "none";
-  //  otherDivgcloudTTS.style.display = "none";
+  // tự đông đánh dấu checked khi tích vào tts_gg_free
+    var targetRadio = document.getElementById("myRadio7"); 
+    targetRadio.checked = true;
+  }
+  else {
+    tokenInputContainerTTS.style.display = "none";
+    tokenInputContainerTTSGGCLOUD.style.display = "none";
   }
 }
-
-  
 	///////
 	        function updateSliderValue(value) {
             document.getElementById('slider-value').innerHTML = value + '%';
