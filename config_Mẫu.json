@@ -46,11 +46,9 @@
         "user_info": {
             "name": "Vũ Tuyển",
             "address": {
-                "street": "Đường 206",
-                "wards": "Phường Phúc Xá",
-                "district": "Quận Ba Đình",
-                "province": "Thành phố Hà Nội",
-                "country": "Việt Nam"
+                "wards": "Xã Vĩnh Khúc",
+                "district": "Huyện Văn Giang",
+                "province": "Tỉnh Hưng Yên"
             }
         },
         "console_ouput": null
@@ -58,7 +56,7 @@
     "smart_wakeup": {
         "hotword_engine": {
             "type": "porcupine",
-            "key": "iB0k3SrHnf0j1hvaW6lOXqU4Jy7sA3bArwy+w=="
+            "key": "iB0k3SrHnf0j1hvf89nkuQSsc4T7fEMuaW6lOXqU4Jy7sA3bArwy+w=="
         },
         "wakeup_reply": [
             {
@@ -151,7 +149,6 @@
         "stt": {
             "type": "stt_gg_ass",
             "token": null,
-            "token_file": "google_stt.json",
             "stt_gg_ass_mode": "default",
             "credentials_file": "credentials.json",
             "device_config_file": "device_config.json",
@@ -169,15 +166,14 @@
                 "start": "sound/custom/"
             },
             "welcome": {
-                "mode": "text",
+                "mode": "path",
                 "path": "sound/welcome/nokia-startup.wav",
                 "text": "Xin chào mời đọc khẩu lệnh, để ra lệnh"
             }
         },
         "tts": {
-            "type": "tts_gg_free",
-            "token": "Sz7Uw0HaVrpoeDYYXxi",
-            "token_file": "google_tts.json",
+            "type": "tts_zalo",
+            "token": "Sz7Uw0HaVxCHoHfo0JceRlrpoeDYYXxi",
             "voice_name": null,
             "voice_profile": null,
             "speed": null,
