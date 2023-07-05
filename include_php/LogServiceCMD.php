@@ -310,15 +310,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['commandd'])) {
  <div class="dropdown-divider"></div>  <button type="submit" name="enable_auto_run" class="btn btn-danger">Kích Hoạt Auto Run</button>
  <div class="dropdown-divider"></div>  <button type="submit" name="disable_auto_run" class="btn btn-danger">Vô Hiệu Auto Run</button>
  </center></div></div>
-		
+	
 <div class="btn-group">
   <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     Manual run
   </button>
   <div class="dropdown-menu scrollable-menu">
  <center><button  type="submit" name="check_manual_run" class="btn btn-primary">Kiểm Tra Manual Run</button>
-<div class="dropdown-divider"></div>  <button type="submit" name="start_manual_run" class="btn btn-primary">Chạy Manual Run</button>
- <div class="dropdown-divider"></div>  <button type="submit" name="stop_manual_run" class="btn btn-primary">Dừng Manual Run</button>
+
+<div class="dropdown-divider"></div>  <button type="submit" name="start_manual_run" class="btn btn-primary" disabled>Chạy Manual Run</button>
+ <div class="dropdown-divider"></div>  <button type="submit" name="stop_manual_run" class="btn btn-primary" disabled>Dừng Manual Run</button>
  </center></div></div>
 
 	
