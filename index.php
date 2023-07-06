@@ -78,14 +78,15 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
 	  <b><div id="clock"></div></b>
       <div class="social-box">
       <div class="follow-label">
-          <span><b>© <?php echo $MYUSERNAME; ?></b> 
+          <span><b><?php echo $MYUSERNAME; ?></b> 
 		  <a title="Nhóm VietBot" href="<?php echo $FacebookGroup; ?>" target="_bank">
             <i class="bi bi-facebook"></i>
           </a>
 		  <a title="Github VietBot Offline" href="<?php echo $GitHub_VietBot_OFF; ?>" target="_bank">
             <i class="bi bi-github"></i>
           </a>
-		  		  <a title="Web UI VietBot Offline" href="https://github.com/marion001/UI_VietBot" target="_bank">
+		 
+		  		  <a title="Web UI VietBot Offline" href="<?php echo $UI_VietBot; ?>" target="_bank">
             <i class="bi bi-pentagon-half"></i>
           </a>
 		  </span>
