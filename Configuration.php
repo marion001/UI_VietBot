@@ -4,10 +4,10 @@
 //Bỏ qua hiển thị lỗi trên màn hình nếu có
 @error_reporting(0);
 @date_default_timezone_set('Asia/Ho_Chi_Minh');
-
-//Nhóm Facebook và GITHUB VietBot
+//Nhóm Facebook và GITHUB, UI VietBot
 $FacebookGroup = "https://www.facebook.com/groups/1082404859211900";
 $GitHub_VietBot_OFF = "https://github.com/phanmemkhoinghiep/vietbot_offline";
+$UI_VietBot = "https://github.com/marion001/UI_VietBot";
 
 //Mật Khẩu Đăng Nhập Phần Quản Lý File
 $Pass_Login = "admin";
@@ -16,10 +16,11 @@ $Pass_Login = "admin";
 //Dấu "/" phải có ở đầu và ở cuối
 $DuognDanThuMucJson = "/home/pi/vietbot_offline/src/"; //Để Mặc Định
 $DuognDanUI_HTML = "/var/www/html/"; 				   //Để Mặc Định
+$directorySound = '/home/pi/vietbot_offline/src/sound/default/'; // Đường dẫn tới thư mục chứa các tệp tin .mp3
 
 //SSH Tải Khoản, Mật Khẩu Đăng Nhập SSH (Bắt Buộc Phải Nhập Để Dùng Các Lệnh Hệ Thống)
 $SSH_TaiKhoan = "pi"; //Tài Khoản Đăng Nhập pi SSH Của Bạn
-$SSH_MatKhau = "vietbot"; //Nật Khẩu Đăng Nhập pi SSH Của Bạn
+$SSH_MatKhau = "21041997"; //Nật Khẩu Đăng Nhập pi SSH Của Bạn
 $SSH_Port = "22"; //Mặc Định: "22"
 
 $E_rror = "<center><h1>Đăng Nhập SSH Thất Bại, Kiểm Tra Lại Tài Khoản Hoặc Mật Khẩu</h1></center>";
