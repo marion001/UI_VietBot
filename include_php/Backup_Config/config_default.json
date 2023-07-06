@@ -46,11 +46,9 @@
         "user_info": {
             "name": "Vũ Tuyển",
             "address": {
-                "street": "Đường 206",
-                "wards": "Phường Phúc Xá",
-                "district": "Quận Ba Đình",
-                "province": "Thành phố Hà Nội",
-                "country": "Việt Nam"
+                "wards": "Xã Vĩnh Khúc",
+                "district": "Huyện Văn Giang",
+                "province": "Tỉnh Hưng Yên"
             }
         },
         "console_ouput": null
@@ -58,7 +56,7 @@
     "smart_wakeup": {
         "hotword_engine": {
             "type": "porcupine",
-            "key": "iB0k3SrHnf0j1hvaW6lOXqU4Jy7sA3bArwy+w=="
+            "key": "iB0k3SrHnf0j1hvf89nkuQSsc4T7fEMuaW6lOXqU4Jy7sA3bArwy+w=="
         },
         "wakeup_reply": [
             {
@@ -87,18 +85,18 @@
             {
                 "type": "porcupine",
                 "value": null,
-                "lang": "vi",
-                "file_name": "chào-chị_raspberry-pi.ppn",
-                "sensitive": 0.1,
+                "file_name": "hey siri_raspberry-pi.ppn",
+                "lang": "eng",
+                "sensitive": 0.4,
                 "say_reply": false,
                 "command": null,
-                "active": true
+                "active": false
             },
             {
                 "type": "porcupine",
                 "value": null,
                 "lang": "vi",
-                "file_name": "con-mụ-kia_raspberry-pi.ppn",
+                "file_name": "chào-chị_raspberry-pi.ppn",
                 "sensitive": 0.1,
                 "say_reply": false,
                 "command": null,
@@ -118,7 +116,7 @@
                 "type": "porcupine",
                 "value": null,
                 "lang": "vi",
-                "file_name": "hà-nội-ơi_raspberry-pi.ppn",
+                "file_name": "người-đẹp-ơi_raspberry-pi.ppn",
                 "sensitive": 0.1,
                 "say_reply": false,
                 "command": null,
@@ -128,7 +126,7 @@
                 "type": "porcupine",
                 "value": null,
                 "lang": "vi",
-                "file_name": "người-đẹp-ơi_raspberry-pi.ppn",
+                "file_name": "hà-nội-ơi_raspberry-pi.ppn",
                 "sensitive": 0.1,
                 "say_reply": false,
                 "command": null,
@@ -143,6 +141,16 @@
                 "say_reply": false,
                 "command": null,
                 "active": true
+            },
+            {
+                "type": "porcupine",
+                "value": null,
+                "lang": "vi",
+                "file_name": "con-mụ-kia_raspberry-pi.ppn",
+                "sensitive": 0.1,
+                "say_reply": false,
+                "command": null,
+                "active": true
             }
         ]
     },
@@ -151,7 +159,6 @@
         "stt": {
             "type": "stt_gg_ass",
             "token": null,
-            "token_file": "google_stt.json",
             "stt_gg_ass_mode": "default",
             "credentials_file": "credentials.json",
             "device_config_file": "device_config.json",
@@ -170,14 +177,13 @@
             },
             "welcome": {
                 "mode": "text",
-                "path": "sound/welcome/nokia-startup.wav",
+                "path": "sound/welcome/welcome.mp3",
                 "text": "Xin chào mời đọc khẩu lệnh, để ra lệnh"
             }
         },
         "tts": {
-            "type": "tts_gg_free",
-            "token": "Sz7Uw0HaVrpoeDYYXxi",
-            "token_file": "google_tts.json",
+            "type": "tts_zalo",
+            "token": "KgGfQHrA4FBg2x9FjSOQUFceTl2VbAmu",
             "voice_name": null,
             "voice_profile": null,
             "speed": null,
@@ -185,7 +191,6 @@
         },
         "external_bot_priority_1": "gg_ass",
         "external_bot_priority_2": "chatGPT",
-        "external_bot_priority_3": "SIMSIM",
         "pre_answer_timeout": 8,
         "pre_answer": [
             {
