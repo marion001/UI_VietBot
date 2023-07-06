@@ -10,10 +10,10 @@ include "../Configuration.php";
 	$data_config = json_decode($json_config_data, true);
 	$ttsCompany = '';
 	$ttsVoice = '';
-//Khôi Phục File Config
-// Đường dẫn đến thư mục "Backup_Config"
-$backupDirz = "Backup_Config/";
-$fileLists = glob($backupDirz . "*.json");
+	//Khôi Phục File Config
+	// Đường dẫn đến thư mục "Backup_Config"
+	$backupDirz = "Backup_Config/";
+	$fileLists = glob($backupDirz . "*.json");
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         if (isset($_GET['selectedFile']) && !empty($_GET['selectedFile'])) {
             $selectedFile = $_GET['selectedFile'];
@@ -28,14 +28,11 @@ $fileLists = glob($backupDirz . "*.json");
 	//hotwork
 	$hotwords = $data_config['smart_wakeup']['hotword'];
 	$hotwords_get_langgg = $data_config['smart_wakeup']['hotword'][0]['lang'];
-	
 	if ($hotwords_get_langgg === 'eng') {
     $hotwords_get_lang = 'Tiếng Anh';
-} elseif ($hotwords_get_langgg === 'vi') {
+	} elseif ($hotwords_get_langgg === 'vi') {
     $hotwords_get_lang = 'Tiếng Việt';
-}
-
-	
+	}
 	//Lấy giá trị value trong file json
 	$value_volume = $data_volume->volume;
 	//lấy giá các trị wakeup_reply
@@ -59,12 +56,11 @@ foreach ($keywordsSTT as $keywordSTT => $replacementSTT) {
 	// In ra chuỗi đã được thay thế
 	$GET_TimeOut_STT = $data_config['smart_request']['stt']['time_out'];
 	$GET_Token_STTzz = $data_config['smart_request']['stt']['token'];
-	
 	if ($GET_Token_STTzz === null) {
-  $GET_Token_STT = "Null";
-} else {
-  $GET_Token_STT = $GET_Token_STTzz;
-}
+	$GET_Token_STT = "Null";
+	} else {
+	$GET_Token_STT = $GET_Token_STTzz;
+	}
 	
     // Kiểm tra xem tệp google_stt.json có tồn tại hay không
 	 $jsonFile = "$DuognDanThuMucJson/google_stt.json";
@@ -90,7 +86,7 @@ foreach ($keywordsSTT as $keywordSTT => $replacementSTT) {
     "tts_fpt" => "FPT",
     "tts_viettel" => "Viettel",
     "tts_zalo" => "Zalo"
-);
+	);
 // Thực hiện thay thế từng từ khóa
 foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
     if (strpos($GET_TTS_Type_Replace, $keywordTTS) !== false) {
@@ -109,20 +105,16 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	//$Get_Console_Ouput = $data_config['smart_config']['console_ouput'];
 	
 	
-		if ($data_config['smart_config']['console_ouput'] === null) {
+	if ($data_config['smart_config']['console_ouput'] === null) {
   $Get_Console_Ouput = "Null";
-} else {
+	} else {
   $Get_Console_Ouput = $data_config['smart_config']['console_ouput'];
-}
-	
-	//location
-//	$Location_Longitude = $data_config['smart_config']['user_info']['lon'];
-//	$Location_Latitude = $data_config['smart_config']['user_info']['lat'];
+	}
 	//Address
 	$Address_City = $data_config['smart_config']['user_info']['address']['province'];
 	$Address_district = $data_config['smart_config']['user_info']['address']['district'];
 	$Address_ward = $data_config['smart_config']['user_info']['address']['wards'];
-	// smart_answer welcome
+	//smart_answer welcome
 	$Welcome_Mode = $data_config['smart_answer']['sound']['welcome']['mode'];
 	$Welcome_Path = $data_config['smart_answer']['sound']['welcome']['path'];
 	$Welcome_Text = $data_config['smart_answer']['sound']['welcome']['text'];
@@ -144,11 +136,10 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	$continuous_asking = $data_config['smart_request']['continuous_asking'];
 	$Pre_Answer_Timeout = $data_config['smart_answer']['pre_answer_timeout'];
 	$numberCharactersToSwitchMode = $data_config["smart_answer"]["number_characters_to_switch_mode"];
-//Thay ĐỔi Ngôn Ngữ hotword
-if (isset($_POST['language_hotword_submit'])) {
+	//Thay ĐỔi Ngôn Ngữ hotword
+	if (isset($_POST['language_hotword_submit'])) {
     $selectedLanguage = $_POST['language_hotword'];
-//	echo $selectedLanguage;
- $jsonContent = file_get_contents($FileConfigJson);
+	$jsonContent = file_get_contents($FileConfigJson);
     $jsonData = json_decode($jsonContent, true);
     // Xóa tất cả hotword hiện tại
     $jsonData['smart_wakeup']['hotword'] = [];
@@ -172,21 +163,21 @@ if (isset($_POST['language_hotword_submit'])) {
     }
     // Lưu lại các thay đổi vào tệp json.php
     file_put_contents($FileConfigJson, json_encode($jsonData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-if ($selectedLanguage === "vi") {
+	if ($selectedLanguage === "vi") {
 	$hotword_lib_language = "porcupine_params_vn.pv";
-} elseif ($selectedLanguage === "eng") {
-  $hotword_lib_language = "porcupine_params.pv";
-}
-$connection = ssh2_connect($serverIP, $SSH_Port);
-if (!$connection) {die('Không thể kết nối tới máy chủ.');}
-if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die('Đăng nhập không thành công.');}
-$stream2 = ssh2_exec($connection, "sudo cp /home/pi/$hotword_lib_language /home/pi/.local/lib/python3.9/site-packages/pvporcupine/lib/common/porcupine_params.pv");
-stream_set_blocking($stream2, true);
-$stream_out2 = ssh2_fetch_stream($stream2, SSH2_STREAM_STDIO);
-stream_get_contents($stream_out2);
-header("Location: $PHP_SELF");
-}
-if(isset($_POST['config_setting'])) {
+	} elseif ($selectedLanguage === "eng") {
+	$hotword_lib_language = "porcupine_params.pv";
+	}
+	$connection = ssh2_connect($serverIP, $SSH_Port);
+	if (!$connection) {die('Không thể kết nối tới máy chủ.');}
+	if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die('Đăng nhập không thành công.');}
+	$stream2 = ssh2_exec($connection, "sudo cp /home/pi/$hotword_lib_language /home/pi/.local/lib/python3.9/site-packages/pvporcupine/lib/common/porcupine_params.pv");
+	stream_set_blocking($stream2, true);
+	$stream_out2 = ssh2_fetch_stream($stream2, SSH2_STREAM_STDIO);
+	stream_get_contents($stream_out2);
+	header("Location: $PHP_SELF");
+	}
+	if(isset($_POST['config_setting'])) {
 		//Lưu google.json STT
         $editedData = $_POST['edited_data_textarea'];
         // Kiểm tra nếu không có dữ liệu JSON
@@ -202,8 +193,7 @@ if(isset($_POST['config_setting'])) {
             file_put_contents("$jsonFile", $editedData);
           //  echo "<script>Swal.fire('Thành công', 'Lưu thành công!', 'success');</script>";
         }
-	//end lưu google.json
-	
+		//end lưu google.json
 		//Lưu google.json TTS
         $editedData = $_POST['edited_data_textarea_tts_gcloud'];
         // Kiểm tra nếu không có dữ liệu JSON
@@ -220,14 +210,12 @@ if(isset($_POST['config_setting'])) {
             file_put_contents("$jsonFileGcloud", $editedData);
           //  echo "<script>Swal.fire('Thành công', 'Lưu thành công!', 'success');</script>";
         }
-	//end lưu google.json
-	
-	
+		//end lưu google.json
 	//Backup Config
-$backupDir = __DIR__ . '/Backup_Config/';
-if (!is_dir($backupDir)) {
+	$backupDir = __DIR__ . '/Backup_Config/';
+	if (!is_dir($backupDir)) {
     mkdir($backupDir, 0777, true);
-}
+	}
 $backups = glob($backupDir . '*.json');
 $numBackups = count($backups);
 if ($numBackups >= $Limit_Config_Backup) {
@@ -349,6 +337,9 @@ chmod($backupFile, 0777);
 	$data_config['smart_answer']['tts']['type'] = $TTS_Company;
 	$data_config['smart_answer']['tts']['token'] = $TTS_Token_Key;
 	$data_config['smart_answer']['tts']['voice_name'] = $TTS_Voice_CheckINPUT;
+	//Sound Start Finish
+	$data_config['smart_answer']['sound']['default']['start'] = @$_POST['startsound'];
+	$data_config['smart_answer']['sound']['default']['finish'] = @$_POST['finishsound'];
 	//console_ouput
 	if (strcasecmp(@$_POST['console_ouput'], "Null") === 0) {$console_ouputrepl = null;
     } else {$console_ouputrepl = @$_POST['console_ouput'];}
@@ -755,9 +746,11 @@ Zalo</label>
 	   $Welcome_Text_ip = "Lỗi Lấy Dữ Liệu";
     }
 ?>
-<h5 title="Thông Báo Chào Mừng Khi Thiết Bị Khởi Động Xong">Thông Báo Khởi Động:</h5>
+<h5 title="Thông Báo Chào Mừng Khi Thiết Bị Khởi Động Xong">Thông Báo/Âm Thanh:</h5>
 <div class="row g-3 d-flex justify-content-center"><div class="col-auto">
-  <table class="table"><thead><tr>
+  <table style="border-color:black;" class="table table-bordered align-middle">
+  <thead><tr><th colspan="2"><center>Thông Báo Khi Khởi Động<c/enter></th></tr></thead>
+  <thead><tr>
       <th scope="col"><center>Đọc Văn Bản</center></th>
       <th scope="col"><center>Dùng File Âm Thanh</center></th></tr></thead><tbody><tr>
       <td><center><input type="radio" name="mode_options" value="text" <?php if ($Welcome_Mode === 'text') echo 'checked'; ?> onchange="toggleElementsWEL(this)"></center></td>
@@ -789,14 +782,40 @@ Zalo</label>
  <!-- <tr id="text-inputt">
   <td><b>Đọc địa chỉ ip:</b> <input type="checkbox"  name="welcome_ip" value=", | địa chỉ ai pi của mình là: <?php //echo $serverIP; ?>" <?php /* if ($Welcome_Text === $Welcome_Text_ip.', | địa chỉ ai pi của mình là: '.$serverIP) echo 'checked'; */ ?>>
 </td></tr> -->
-  
-  </tbody></table></div></div><hr/>
-  
-  
-  
-  
-  
-  
+  </tbody>
+  <?php 
+// Lấy danh sách các tệp tin .mp3 trong thư mục
+$mp3Files = glob($directorySound . '*.mp3');
+// Lọc tệp tin "tut_tut.mp3" ra khỏi danh sách
+$mp3Files = array_filter($mp3Files, function($mp3File) {
+    return basename($mp3File) !== 'tut_tut.mp3';
+});
+  ?>
+  <thead><tr>
+<th scope="col" colspan="2"><center>Âm Thanh Phản Hồi</center></th>
+</tr></thead><thead><tr>
+<th scope="col"><center>Khi Được Đánh Thức</center></th>
+<th scope="col"><center>Khi Kết Thúc</center></th>
+</tr></thead><tbody><tr><td><center>
+	  <?php
+	  echo '<select class="custom-select" name="startsound">';
+	foreach ($mp3Files as $mp3File) {
+    $fileName = basename($mp3File);
+	$result_MP3 = str_replace($DuognDanThuMucJson, '', $mp3File);
+    echo '<option value="'.$result_MP3.'" '.(($data_config['smart_answer']['sound']['default']['start'] === $result_MP3) ? 'selected' : '').'>'.$fileName.'</option>';
+}
+	echo '</select>';
+?>
+</center></td><td><center>
+<?php  
+	echo '<select class="custom-select" name="finishsound">';
+	foreach ($mp3Files as $mp3File) {
+    $fileName = basename($mp3File);
+	$result_NAME = str_replace($DuognDanThuMucJson, '', $mp3File);
+    echo '<option value="'.$result_NAME.'" '.(($data_config['smart_answer']['sound']['default']['finish'] === $result_NAME) ? 'selected' : '').'>'.$fileName.'</option>';
+	}
+	echo '</select>';
+?></center></td></tr><tbody></table></div></div><hr/>
 <!-- mục  Chọn Kiểu LED --> 
 <h5>Chọn Kiểu LED: <i class="bi bi-info-circle-fill" onclick="togglePopupLED()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
 <div class="form-check form-switch d-flex justify-content-center">   <div class="col-auto">
@@ -974,6 +993,10 @@ None (Không Dùng)</label></center>
     ?>
 </tbody></table></div></div></div>
 	<hr/>
+	
+
+	
+	
 	
 	<!-- mục  Wake Up Reply --> 
 	<!-- <div id="additionalDiv" class="hidden">  -->
