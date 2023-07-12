@@ -436,9 +436,14 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     <!--  Color Pallet  -->
     <div id="color-switcher" class="color-switcher">
       <div class="text-center color-pallet hide"><br/>
-	  <a class="text-center" href="#vietbot_update">
-	  <h6 class="text-danger">Kiểm Tra Cập Nhật Firmware </h6></a><hr/>
-	 <a class="text-center" href="#UI_update"> <h6 class="text-danger">Kiểm Tra Cập Nhật UI </h6></a><hr/>
+	  
+	  <a class="btn btn-success" href="#vietbot_update" role="button">Kiểm Tra Cập Nhật Firmware </a>
+
+	  <a class="btn btn-warning" href="#UI_update" role="button">Kiểm Tra Cập Nhật UI </a>
+
+<hr/>
+	 
+	 
         <h6 class="text-center theme-skin-title">Đổi Màu Dao Diện</h6>
         <div class="colors text-center">
           <span class="WhiteBg" id="colorss"></span>
