@@ -339,7 +339,9 @@ chmod($backupFile, 0777);
 	$data_config['smart_answer']['tts']['voice_name'] = $TTS_Voice_CheckINPUT;
 	//Sound Start Finish
 	$data_config['smart_answer']['sound']['default']['start'] = @$_POST['startsound'];
+	//$data_config['smart_answer']['sound']['default']['start'] = ltrim($_POST['startsound'], "/");
 	$data_config['smart_answer']['sound']['default']['finish'] = @$_POST['finishsound'];
+	//$data_config['smart_answer']['sound']['default']['finish'] = ltrim($_POST['finishsound'], "/");
 	//console_ouput
 	if (strcasecmp(@$_POST['console_ouput'], "Null") === 0) {$console_ouputrepl = null;
     } else {$console_ouputrepl = @$_POST['console_ouput'];}
@@ -802,7 +804,7 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
 	  echo '<select class="custom-select" name="startsound">';
 	foreach ($mp3Files as $mp3File) {
     $fileName = basename($mp3File);
-	$result_MP3 = str_replace($DuognDanThuMucJson, '', $mp3File);
+	$result_MP3 = str_replace($DuognDanThuMucJson.'/', '', $mp3File);
     echo '<option value="'.$result_MP3.'" '.(($data_config['smart_answer']['sound']['default']['start'] === $result_MP3) ? 'selected' : '').'>'.$fileName.'</option>';
 }
 	echo '</select>';
@@ -811,9 +813,9 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
 <?php  
 	echo '<select class="custom-select" name="finishsound">';
 	foreach ($mp3Files as $mp3File) {
-    $fileName = basename($mp3File);
-	$result_NAME = str_replace($DuognDanThuMucJson, '', $mp3File);
-    echo '<option value="'.$result_NAME.'" '.(($data_config['smart_answer']['sound']['default']['finish'] === $result_NAME) ? 'selected' : '').'>'.$fileName.'</option>';
+    $fileNamee = basename($mp3File);
+	$result_NAME = str_replace($DuognDanThuMucJson.'/', '', $mp3File);
+    echo '<option value="'.$result_NAME.'" '.(($data_config['smart_answer']['sound']['default']['finish'] === $result_NAME) ? 'selected' : '').'>'.$fileNamee.'</option>';
 	}
 	echo '</select>';
 ?></center></td></tr><tbody></table></div></div><hr/>
