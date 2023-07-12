@@ -242,6 +242,7 @@ if (!is_dir($DuognDanThuMucJson)) {
            <th scope="row" colspan="4"><div class="form-check form-switch d-flex justify-content-center"> <div class="input-group">
 		  <input type="submit" name="checkforupdates" class="btn btn-success" value="Kiểm tra">
 		   <input type="submit" name="backup_update" class="btn btn-warning" value="Bắt Đầu Cập Nhật">
+		   <a class="btn btn-danger" href="<?php echo $PHP_SELF; ?>" role="button">Làm Mới</a>
 	
 		   </div></div></th>
         
@@ -414,6 +415,7 @@ if (isset($_POST['backup_update'])) {
             $sourceDirectory = $DuognDanUI_HTML.'/backup_update/extract/vietbot_offline-beta/src';
             copyFiles($sourceDirectory, $DuognDanThuMucJson, $excludedFiles, $copiedItems);
             $message .= 'Đã tải xuống phiên bản Vietbot mới và cập nhật thành công!\n';
+            $message .= 'BẠN CẦN KHỞI ĐỘNG LẠI LOA THÔNG MINH ĐỂ ÁP DỤNG LẠI CÀI ĐẶT!\n';
 			?>
 			<div class="form-check form-switch d-flex justify-content-center"> 
 <div class="container">
