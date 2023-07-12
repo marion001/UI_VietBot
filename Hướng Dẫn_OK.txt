@@ -49,3 +49,16 @@ B5: Cấu Hình Chỉnh Một Vài Tùy Chọn Khác Theo Ý Bạn Trong File Co
 	- Các File Backup Config sẽ nằm trong: var/www/html/include_php/Backup_Config
 
 
+///////////////////////////////
+Chuyển UI từ "var/www/html" sang "home/pi/vietbot_offline/html/"
+
+ - đi tới: /etc/apache2/apache2.conf 
+	- tìm tới dòng: <Directory /var/www/html> thay thành: <Directory /home/pi/vietbot_offline>
+	
+ - đi tới: /etc/apache2/sites-available/000-default.conf
+	- tìm tới dòng: "DocumentRoot /var/www/html/" thay thành: "DocumentRoot /home/pi/vietbot_offline/html/"\
+ 
+ - chạy lệnh restart apache2: $: 
+ ## Start command ##: sudo systemctl start apache2.service
+## Stop command ##: sudo systemctl stop apache2.service
+## Restart command ##: sudo systemctl restart apache2.service
