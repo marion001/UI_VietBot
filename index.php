@@ -435,7 +435,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     <!--  Navbar Button Mobile End -->
     <!--  Color Pallet  -->
     <div id="color-switcher" class="color-switcher">
-      <div class="text-center color-pallet hide"><br/>
+      <div class="text-center color-pallet hide">
 	  
 	  <a class="btn btn-success" href="#vietbot_update" role="button">Kiểm Tra Cập Nhật Firmware </a>
 
