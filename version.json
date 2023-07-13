@@ -1,11 +1,5 @@
 {
-  "vietbot_version": {
-    "latest": "beta 12-07-2023"
-  },
   "ui_version": {
     "latest": "beta 11-07-2023"
   },
-  "image_version": {
-    "latest": "11-07-2023"
-  }
 }
