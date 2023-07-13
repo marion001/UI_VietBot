@@ -150,7 +150,18 @@ function copyFiles($sourceDirectory, $destinationDirectory, $excludedFiles, &$co
         }
     }
 }
-
+	//restart vietbot
+if (isset($_POST['restart_vietbot'])) {
+$connection = ssh2_connect($serverIP, $SSH_Port);
+if (!$connection) {die('Không thể kết nối tới máy chủ SSH');}
+if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die('Đăng nhập SSH thất bại');}
+$stream = ssh2_exec($connection, 'systemctl --user restart vietbot');
+stream_set_blocking($stream, true);
+$stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
+stream_get_contents($stream_out);
+header("Location: $PHP_SELF");
+exit;
+}
 //Chmod 777
 if (isset($_POST['set_full_quyen'])) {
 $connection = ssh2_connect($serverIP, $SSH_Port);
@@ -243,6 +254,7 @@ if (!is_dir($DuognDanThuMucJson)) {
 		  <input type="submit" name="checkforupdates" class="btn btn-success" value="Kiểm tra">
 		   <input type="submit" name="backup_update" class="btn btn-warning" value="Bắt Đầu Cập Nhật">
 		   <a class="btn btn-danger" href="<?php echo $PHP_SELF; ?>" role="button">Làm Mới</a>
+		    <button type="submit" name="restart_vietbot" class="btn btn-dark">Restart VietBot</button>
 	
 		   </div></div></th>
         
