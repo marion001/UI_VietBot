@@ -30,6 +30,9 @@ $E_rror_HOST = "<center><h1>Không thể kết nối tới máy chủ SSH, Kiể
 //Giới hạn file backup Firmware src Vietbot tar.gz (Khi Cập Nhật Firmware)
 $maxBackupFiles = 10;
 
+//Giới hạn file backup UI  Vietbot tar.gz (Khi Cập Nhật Firmware)
+$maxBackupFilesUI = "5";
+
 //Giới hạn ngày kỷ niệm: 10 giá trị
 $Limit_NgayKyNiem = "15"; 
 
