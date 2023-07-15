@@ -262,7 +262,7 @@ $tarCommand = 'tar -czvf ' . $backupFile . ' ' . $excludeArgs . ' -C ' . dirname
 exec($tarCommand, $output, $returnCode);
 if ($returnCode === 0) {
     chmod($backupFile, 0777);
-    $message .= 'Tạo bản sao lưu giao diện thành công, hãy nhấn vào Làm Mới \n';
+    $message .= 'Tạo bản sao lưu giao diện thành công, hãy tải lại trang để áp dụng\n';
     $backupFiles = glob($backupDir . '/*.tar.gz');
     $numBackupFiles = count($backupFiles);
 
@@ -274,7 +274,8 @@ if ($returnCode === 0) {
         $filesToDelete = array_slice($backupFiles, 0, $numBackupFiles - $maxBackupFilesUI);
         foreach ($filesToDelete as $file) {
             unlink($file);
-            $message .= 'Backup giao diện đã đạt giới hạn, đã xóa tệp tin sao lưu cũ: ' . $file . '\n';
+			$basenameeee = basename($file);
+            $message .= 'Backup đạt giới hạn, đã xóa tệp tin sao lưu cũ: ' . $basenameeee . '\n';
         }
     }
 } else {
@@ -325,9 +326,9 @@ if ($zip) {
     $message .= 'Sửa đổi các tệp tin cũ thành công!\n';
     // Gọi hàm xóa đệ quy
     deleteRecursive($sourceDirectory);
-    $message .= 'Đã xóa nội dung trong bộ nhớ tạm thành công!\n';
+    $message .= 'Đã xóa nội dung trong bộ nhớ tạm thành công!\n\n';
 } else {
-    $message .= 'Không thể mở tập tin zip!\n';
+    $message .= 'Không thể mở tập tin zip!\n\n';
 }
 
 //Chmod 777 khi chạy xong backup
