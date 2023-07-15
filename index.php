@@ -439,7 +439,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
       <div class="text-center color-pallet hide">
 	  <a class="btn btn-danger" href="#vietbot_update" role="button">Cập Nhật Chương Trình</a>
 	  <a class="btn btn-success" href="#UI_update" role="button">Cập Nhật Giao Diện</a>
-<hr/>
+
 	 
       <!--  <h6 class="text-center theme-skin-title">Đổi Màu Giao Diện</h6> -->
         <div class="colors text-center">
