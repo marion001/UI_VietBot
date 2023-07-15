@@ -1,4 +1,6 @@
 <?php
+//Code By: Vũ Tuyển
+//Facebook: https://www.facebook.com/TWFyaW9uMDAx
 include "../Configuration.php";
 ?>
 <!DOCTYPE html>
@@ -185,8 +187,9 @@ function checkPermissions($path, &$hasPermissionIssue) {
         $permissions = fileperms($filePath);
         if ($permissions !== false && ($permissions & 0777) !== 0777) {
             if (!$hasPermissionIssue) {
-                echo "<br/><center><h3 class='text-danger'>Một Số File,Thư Mục Trong <b>$path</b> Không Có Quyền Can Thiệp.<h3><br/>";
-			echo "<form method='post' id='my-form' action='".$PHP_SELF."'> <button type='submit' name='set_full_quyen' class='btn btn-success'>Cấp Quyền Cho File, Thư Mục</button></form></center><hr/>";
+               // echo "<br/><center><h3 class='text-danger'>Một Số File,Thư Mục Trong <b>$path</b> Không Có Quyền Can Thiệp.<h3><br/>";
+			   echo "<center>Phát hiện thấy một số nội dung bị thay đổi quyền hạn.<br/>";
+			echo "<form method='post' id='my-form' action='".$PHP_SELF."'> <button type='submit' name='set_full_quyen' class='btn btn-success'>Cấp Quyền</button></form></center>";
                 $hasPermissionIssue = true;
 				exit();
 			}	
