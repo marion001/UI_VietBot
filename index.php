@@ -532,7 +532,7 @@ $remoteValue = $remoteData['ui_version']['latest'];
 $localValue = $localDataa['ui_version']['current'];
 // So sánh giá trị
 if ($remoteValue !== $localValue) {
-   echo '<div class="blinking-container"><p class="ptexxt"><font color="red"><b>Có phiên bản giao diện mới: '.$remoteValue.' </font><a href="#vietbot_update"> Kiểm Tra</b></a></p></div>';
+   echo '<div class="blinking-container"><p class="ptexxt"><font color="red"><b>Có phiên bản giao diện mới: '.$remoteValue.' </font><a href="#UI_update"> Kiểm Tra</b></a></p></div>';
     //$messagee .= 'Phiên bản hiện tại của bạn: '.$localValue.' Vui lòng cập nhật.';
 } else {
     //$messagee .= 'Bạn đang sử dụng phiên bản mới nhất: '.$localValue;
