@@ -437,15 +437,11 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     <!--  Color Pallet  -->
     <div id="color-switcher" class="color-switcher">
       <div class="text-center color-pallet hide">
-	  
-	     
-	  <a class="btn btn-success" href="#vietbot_update" role="button">Cập Nhật Trương Trình</a>
-
-	  <a class="btn btn-warning" href="#UI_update" role="button">Cập Nhật Giao Diện</a>
-<!--
+	  <a class="btn btn-danger" href="#vietbot_update" role="button">Cập Nhật Chương Trình</a>
+	  <a class="btn btn-success" href="#UI_update" role="button">Cập Nhật Giao Diện</a>
 <hr/>
 	 
-        <h6 class="text-center theme-skin-title">Đổi Màu Giao Diện</h6>
+      <!--  <h6 class="text-center theme-skin-title">Đổi Màu Giao Diện</h6> -->
         <div class="colors text-center">
           <span class="WhiteBg" id="colorss"></span>
           <span class="01Bg" id="colorss"></span>
@@ -455,7 +451,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
           <span class="GG02Bg" id="colorss"></span>
 
         </div>
-		-->
+		
       </div>
       <div class="pallet-button hide" title="Đổi Màu Giao Diện">
           <a href="javascript:void(0)" class="cp-toggle"><i class="bi bi-gear"></i></a>
@@ -606,7 +602,34 @@ function time() {
       return i;
    }
 }
+
+
+
+
+
+
+// Lấy phần tử <div>, phần tử liên kết và phần tử nút bấm
+const divElement = document.querySelector('.text-center.color-pallet');
+const linkElement = document.querySelector('.btn-success');
+const buttonElement = document.querySelector('.btn-danger');
+
+buttonElement.addEventListener('click', function() {
+  // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
+  divElement.classList.remove('show');
+  divElement.classList.add('hide');
+});
+// Gắn sự kiện click vào liên kết
+linkElement.addEventListener('click', function() {
+  // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
+  divElement.classList.remove('show');
+  divElement.classList.add('hide');
+});
+
+
+
+
 </script>
+
 
 
 </body>
