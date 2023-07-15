@@ -255,7 +255,7 @@ if (!is_dir($DuognDanThuMucJson)) {
 				<tr>
            <th scope="row" colspan="4"><div class="form-check form-switch d-flex justify-content-center"> <div class="input-group">
 		  <input type="submit" name="checkforupdates" class="btn btn-success" value="Kiểm tra">
-		   <input type="submit" name="backup_update" class="btn btn-warning" value="Bắt Đầu Cập Nhật">
+		   <input type="submit" name="backup_update" class="btn btn-warning" value="Cập Nhật">
 		   <a class="btn btn-danger" href="<?php echo $PHP_SELF; ?>" role="button">Làm Mới</a>
 		    <button type="submit" name="restart_vietbot" class="btn btn-dark">Restart VietBot</button>
 	
