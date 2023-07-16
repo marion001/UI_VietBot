@@ -7,7 +7,7 @@ include "../Configuration.php";
 <head>
       <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title><?php echo $MYUSERNAME; ?>, Update Vietbot src</title>
+<title><?php echo $MYUSERNAME; ?>, Câp Nhật Dao Diện Vietbot</title>
     <link rel="shortcut icon" href="../assets/img/VietBot128.png">
   <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
 
@@ -197,8 +197,8 @@ function deleteDirectory($directory) {
 //Chmod 777
 if (isset($_POST['set_full_quyen'])) {
 $connection = ssh2_connect($serverIP, $SSH_Port);
-if (!$connection) {die('Không thể kết nối tới máy chủ.');}
-if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die('Đăng nhập không thành công.');}
+if (!$connection) {die($E_rror);}
+if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror_HOST);}
 $stream1 = ssh2_exec($connection, 'sudo chmod -R 0777 '.$DuognDanUI_HTML);
 $stream2 = ssh2_exec($connection, 'sudo chmod -R 0777 '.$DuognDanThuMucJson);
 stream_set_blocking($stream1, true); stream_set_blocking($stream2, true);
@@ -333,8 +333,8 @@ if ($zip) {
 
 //Chmod 777 khi chạy xong backup
 $connection = ssh2_connect($serverIP, $SSH_Port);
-if (!$connection) {die('Không thể kết nối tới máy chủ.');}
-if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die('Đăng nhập không thành công.');}
+if (!$connection) {die($E_rror);}
+if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror_HOST);}
 $stream1 = ssh2_exec($connection, 'sudo chmod -R 0777 '.$DuognDanUI_HTML);
 $stream2 = ssh2_exec($connection, 'sudo chmod -R 0777 '.$DuognDanThuMucJson);
 stream_set_blocking($stream1, true); stream_set_blocking($stream2, true);
