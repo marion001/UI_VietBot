@@ -246,10 +246,17 @@ if (!is_dir($DuognDanThuMucJson)) {
             <td><input type="checkbox" class="form-check-input" name="exclude[]" value="mp3" checked></td>
         </tr>
 		<tr>
-           <th scope="row">state.json</th>
-           <td><input type="checkbox" class="form-check-input" name="exclude[]" value="state.json"></td>
+           <th scope="row">credentials.json</th>
+           <td><input type="checkbox" class="form-check-input" name="exclude[]" value="credentials.json"></td>
             <th scope="row">__pycache__</th>
              <td><input type="checkbox" class="form-check-input" name="exclude[]" value="__pycache__"></td>
+
+        </tr>
+				<tr>
+           <th scope="row">device_config.json</th>
+           <td><input type="checkbox" class="form-check-input" name="exclude[]" value="device_config.json"></td>
+            <th scope="row">-</th>
+             <td>-</td>
 
         </tr>
 				<tr>
