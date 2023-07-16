@@ -171,7 +171,8 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	$connection = ssh2_connect($serverIP, $SSH_Port);
 	if (!$connection) {die('Không thể kết nối tới máy chủ.');}
 	if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die('Đăng nhập không thành công.');}
-	$stream2 = ssh2_exec($connection, "sudo cp /home/pi/$hotword_lib_language /home/pi/.local/lib/python3.9/site-packages/pvporcupine/lib/common/porcupine_params.pv");
+	//$stream2 = ssh2_exec($connection, "sudo cp /home/pi/$hotword_lib_language /home/pi/.local/lib/python3.9/site-packages/pvporcupine/lib/common/porcupine_params.pv");
+	$stream2 = ssh2_exec($connection, "sudo cp /home/pi/vietbot_offline/resources/picovoice/lib/$hotword_lib_language /home/pi/.local/lib/python3.9/site-packages/pvporcupine/lib/common/porcupine_params.pv");
 	stream_set_blocking($stream2, true);
 	$stream_out2 = ssh2_fetch_stream($stream2, SSH2_STREAM_STDIO);
 	stream_get_contents($stream_out2);
