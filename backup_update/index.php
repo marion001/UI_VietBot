@@ -223,7 +223,7 @@ if (!is_dir($DuognDanThuMucJson)) {
             <th scope="row">config.json</th>
 			<td><input type="checkbox" class="form-check-input" name="exclude[]" value="config.json" checked></td>
             <th scope="row">tts_saved</th>
-            <td> <input type="checkbox" class="form-check-input" name="exclude[]" value="tts_saved"></td>
+            <td> <input type="checkbox" class="form-check-input" name="exclude[]" value="tts_saved" checked></td>
 
         </tr>
         <tr>
