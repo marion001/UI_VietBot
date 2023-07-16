@@ -155,8 +155,8 @@ function copyFiles($sourceDirectory, $destinationDirectory, $excludedFiles, &$co
 	//restart vietbot
 if (isset($_POST['restart_vietbot'])) {
 $connection = ssh2_connect($serverIP, $SSH_Port);
-if (!$connection) {die('Không thể kết nối tới máy chủ SSH');}
-if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die('Đăng nhập SSH thất bại');}
+if (!$connection) {die($E_rror_HOST);}
+if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
 $stream = ssh2_exec($connection, 'systemctl --user restart vietbot');
 stream_set_blocking($stream, true);
 $stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
@@ -167,8 +167,8 @@ exit;
 //Chmod 777
 if (isset($_POST['set_full_quyen'])) {
 $connection = ssh2_connect($serverIP, $SSH_Port);
-if (!$connection) {die('Không thể kết nối tới máy chủ.');}
-if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die('Đăng nhập không thành công.');}
+if (!$connection) {die($E_rror_HOST);}
+if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
 $stream1 = ssh2_exec($connection, 'sudo chmod -R 0777 '.$DuognDanUI_HTML);
 $stream2 = ssh2_exec($connection, 'sudo chmod -R 0777 '.$DuognDanThuMucJson);
 stream_set_blocking($stream1, true); stream_set_blocking($stream2, true);
@@ -480,8 +480,8 @@ if (isset($_POST['backup_update'])) {
 
 //Chmod 777 khi chạy xong backup
 $connection = ssh2_connect($serverIP, $SSH_Port);
-if (!$connection) {die('Không thể kết nối tới máy chủ.');}
-if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die('Đăng nhập không thành công.');}
+if (!$connection) {die($E_rror_HOST);}
+if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
 $stream1 = ssh2_exec($connection, 'sudo chmod -R 0777 '.$DuognDanUI_HTML);
 $stream2 = ssh2_exec($connection, 'sudo chmod -R 0777 '.$DuognDanThuMucJson);
 stream_set_blocking($stream1, true); stream_set_blocking($stream2, true);
