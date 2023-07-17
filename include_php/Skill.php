@@ -118,7 +118,8 @@ $skillArray = json_decode($skillData, true);
 </script>
 <?php
 // Kiểm tra nếu form đã được gửi
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+//if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	if (isset($_POST['skill_saver'])) {
     $anniversary_data = $skillArray['anniversary_data'];
     $new_anniversary_data = [];
     $count = min(count($_POST['namei']), count($_POST['day']), count($_POST['month']));
@@ -280,6 +281,7 @@ function checkPermissions($path, &$hasPermissionIssue) {
                // echo "<br/><center><h3 class='text-danger'>Một Số File,Thư Mục Trong <b>$path</b> Không Có Quyền Can Thiệp.<h3><br/>";
 			   echo "<br/><br/><br/><center>Phát hiện thấy một số nội dung bị thay đổi quyền hạn.<br/>";
 			echo " <button type='submit' name='set_full_quyen' class='btn btn-success'>Cấp Quyền Cho File, Thư Mục</button></center>";
+			
                 $hasPermissionIssue = true;
 				exit();
 			}	
@@ -658,7 +660,7 @@ stream_get_contents($stream_out);
 ?>
 
 <div class="row justify-content-center"><div class="col-auto">
-<input type="submit" class="btn btn-primary" value="Lưu Cài Đặt"></div><div class="col-auto"> <a href="<?php echo $PHP_SELF ?>"><button type="button" class="btn btn-danger">Hủy Bỏ/Làm Mới</button></a></div>
+<input type="submit" name="skill_saver" class="btn btn-primary" value="Lưu Cài Đặt"></div><div class="col-auto"> <a href="<?php echo $PHP_SELF ?>"><button type="button" class="btn btn-danger">Hủy Bỏ/Làm Mới</button></a></div>
 
 
 <div class="col-auto">
