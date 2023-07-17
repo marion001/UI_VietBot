@@ -391,7 +391,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
 	   
 	        <section id="vietbot_update" class="section blog bg-gray-400 text-white">
 			        <div class="container">
-          <h3 class="subtitle">Cập Nhật Trương Trình</h3>
+          <h3 class="subtitle">Cập Nhật Chương Trình</h3>
  <iframe src="./backup_update/index.php" width="100%" height="570px"></iframe>
       </section>
   	        <section id="UI_update" class="section blog bg-gray-400 text-white">
