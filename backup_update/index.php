@@ -289,9 +289,7 @@ if (!is_dir($DuognDanThuMucJson)) {
 </div>
     </div>
 
-<br/>
-<div class="my-div">
-    <span class="corner-text"><h5>Sao Lưu/Khôi Phục:</h5></span><br/><br/>
+
 	<?php
 	    // Lấy danh sách các tệp tin sao lưu
     $files = glob($backupDir . '/*.tar.gz');
@@ -316,7 +314,7 @@ if (!is_dir($DuognDanThuMucJson)) {
 	?>
 	</div></div>
 	</div>
-</div>
+
 	</form>
 	<?php
 // Xử lý tải xuống tệp tin được chọn
