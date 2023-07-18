@@ -15,11 +15,14 @@ $UI_Version = "https://raw.githubusercontent.com/marion001/UI_VietBot/main/versi
 //Mật Khẩu Đăng Nhập Phần Quản Lý File
 $Pass_Login = "admin";
 
-//Đường dẫn tới thư mục chứa các file json: /home/pi/vietbot_offline/src/
-$DuognDanThuMucJson = "/home/pi/vietbot_offline/src"; //Để Mặc Định
-$DuognDanUI_HTML = "/home/pi/vietbot_offline/html"; 				   //Để Mặc Định
-$directorySound = '/home/pi/vietbot_offline/src/sound/default/'; // Đường dẫn tới thư mục chứa các tệp tin .mp3
-$Lib_Hotword = '/home/pi/vietbot_offline/resources/picovoice/lib'; // Đường dẫn tới thư mục chứa các thư viện hotword
+//ĐƯờng Dẫn VietBot Chính
+$Path_Vietbot_src = "/home/pi/vietbot_offline";
+
+//Đường dẫn nhánh để hết mặc định
+$DuognDanThuMucJson = $Path_Vietbot_src.'/src';
+$DuognDanUI_HTML = $Path_Vietbot_src.'/html';
+$directorySound = $Path_Vietbot_src.'/src/sound/default/';
+$Lib_Hotword = $Path_Vietbot_src.'/resources/picovoice/lib';
 
 //SSH Tải Khoản, Mật Khẩu Đăng Nhập SSH (Bắt Buộc Phải Nhập Để Dùng Các Lệnh Hệ Thống)
 $SSH_TaiKhoan = "pi"; //Tài Khoản Đăng Nhập pi SSH Của Bạn
@@ -31,7 +34,7 @@ $E_rror = "<center><h1>Đăng Nhập SSH Thất Bại, Kiểm Tra Lại Tài Kho
 $E_rror_HOST = "<center><h1>Không thể kết nối tới máy chủ SSH, Kiểm Tra lại ip</h1></center>";
 
 //Giới hạn file backup Firmware src Vietbot tar.gz (Khi Cập Nhật Firmware)
-$maxBackupFiles = 10;
+$maxBackupFiles = "10";
 
 //Giới hạn file backup UI  Vietbot tar.gz (Khi Cập Nhật Firmware)
 $maxBackupFilesUI = "5";
@@ -49,7 +52,6 @@ $Limit_Telegram = "3";
 $Limit_Wakeup_Reply = "7";
 
 //giới hạn số lượng file config cần backup (Khi Nội Dụng config.json bị thay đổi)
-//các file backup config.json nằm trong đường dẫn: /var/www/html/include_php/Backup_Config
 $Limit_Config_Backup = "10";
 
 //Limit Radio Đài Báo
