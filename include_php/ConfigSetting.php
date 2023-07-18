@@ -134,7 +134,7 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	// Tiếp tục hỏi khi trả lời xong
 	$continuous_asking = $data_config['smart_request']['continuous_asking'];
 	//Đọc trạng thái sau khi khởi động
-	$startup_state_speaking = $data_config['smart_config']['startup_state_speaking'];
+	$startup_state_speaking = $data_config['smart_answer']['startup_state_speaking'];
 	
 	
 	
@@ -269,7 +269,7 @@ chmod($backupFile, 0777);
 	 	//end hỏi liên tục
 		
 	//Đọc trạng thái sau khi khởi động
-	 $data_config['smart_config']['startup_state_speaking'] = ($_POST['startup_state_speaking'] === 'true');
+	 $data_config['smart_answer']['startup_state_speaking'] = ($_POST['startup_state_speaking'] === 'true');
 
 	
 		//Chờ xử Lý Dữ Liệu
