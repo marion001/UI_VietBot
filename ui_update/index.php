@@ -71,6 +71,19 @@ body {
     left: 50%;
 	  transform: translate(-50%, -50%);
 }
+    .my-div {
+        border: 1.5px solid black;
+        border-radius: 10px;
+        position: relative;
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+    
+    .corner-text {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+    }
 
 	</style>
 </head>
@@ -372,6 +385,9 @@ if (isset($_POST['download']) && isset($_POST['tarFile'])) {
     }
 }
 ?>
+	<div class="my-div">
+    <span class="corner-text"><h5>Cập Nhật:</h5></span><br/><br/>
+
   <form method="POST" id="my-form" action="">
    
   <div class="row justify-content-center"><div class="col-auto"><div class="input-group">
@@ -383,7 +399,10 @@ if (isset($_POST['download']) && isset($_POST['tarFile'])) {
 		   </div>
 		   </div><br/>
 		   <div class="row justify-content-center"><div class="col-auto"><div class="input-group">
-  
+		   </div>
+		<br/>	   <div class="my-div">
+    <span class="corner-text"><h5>Sao Lưu/Khôi Phục:</h5></span><br/><br/>
+
 <?php
 $directory = $DuognDanUI_HTML.'/ui_update/backup';
 
@@ -411,7 +430,7 @@ echo $selectDropdown;
 </div>
 </div>
 </div>
-  
+  </div>
   </form>
   
   	    <script>
