@@ -72,6 +72,19 @@ body {
     left: 50%;
 	  transform: translate(-50%, -50%);
 }
+    .my-div {
+        border: 1.5px solid black;
+        border-radius: 10px;
+        position: relative;
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+    
+    .corner-text {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+    }
 
 	</style>
 </head>
@@ -208,6 +221,8 @@ if (!is_dir($DuognDanThuMucJson)) {
     exit;
 }
 ?>
+<div class="my-div">
+    <span class="corner-text"><h5>Cập Nhật:</h5></span><br/><br/>
 
 
     <form method="POST" id="my-form" action="">
@@ -272,7 +287,7 @@ if (!is_dir($DuognDanThuMucJson)) {
     </table>
 </div>
 </div>
-   
+    </div>
 
 
 	<?php
