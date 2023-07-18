@@ -61,7 +61,6 @@ foreach ($keywordsSTT as $keywordSTT => $replacementSTT) {
 	} else {
 	$GET_Token_STT = $GET_Token_STTzz;
 	}
-	
     // Kiểm tra xem tệp google_stt.json có tồn tại hay không
 	 $jsonFile = "$DuognDanThuMucJson/google_stt.json";
     if (file_exists($jsonFile)) {
@@ -134,6 +133,11 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	$HOTWORD_ENGINE_TYPE = $data_config['smart_wakeup']['hotword_engine']['type'];
 	// Tiếp tục hỏi khi trả lời xong
 	$continuous_asking = $data_config['smart_request']['continuous_asking'];
+	//Đọc trạng thái sau khi khởi động
+	$startup_state_speaking = $data_config['smart_config']['startup_state_speaking'];
+	
+	
+	
 	$Pre_Answer_Timeout = $data_config['smart_answer']['pre_answer_timeout'];
 	$numberCharactersToSwitchMode = $data_config["smart_answer"]["number_characters_to_switch_mode"];
 	//Thay ĐỔi Ngôn Ngữ hotword
@@ -262,7 +266,11 @@ chmod($backupFile, 0777);
 	// Lưu lại dữ liệu vào file config.json
 	//Hỏi liên tục\
 	 $data_config['smart_request']['continuous_asking'] = ($_POST['continuous_asking'] === 'true');
-	//end hỏi liên tục
+	 	//end hỏi liên tục
+		
+	//Đọc trạng thái sau khi khởi động
+	 $data_config['smart_config']['startup_state_speaking'] = ($_POST['startup_state_speaking'] === 'true');
+
 	
 		//Chờ xử Lý Dữ Liệu
     $preAnswerList = $_POST["pre_answer"];
@@ -428,89 +436,140 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
     <link rel="stylesheet" href="../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../assets/css/bootstrap-icons.css">
  <link rel="stylesheet" href="../assets/css/4.5.2_css_bootstrap.min.css">
-    <style>
-	body {
-  background-color:#dbe0c9;
-}
-.slider {
-  width:200px;
-}
-.slider-value {
-  display:inline-block;
-  width:40px;
-  text-align:center;
-}
-.hidden-input {
-  display:none;
-}
-::-webkit-scrollbar {
-  width:5px;
-}
-::-webkit-scrollbar-track {
-  -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3);
-  -webkit-border-radius:10px;
-  border-radius:10px;
-}
-::-webkit-scrollbar-thumb {
-  -webkit-border-radius:10px;
-  border-radius:10px;
-  background:rgb(251,255,7);
-  -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.5);
-}
-.popup-container {
-  display:none;
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background-color:rgba(0,0,0,0.5);
-  z-index:9999;
-}
-.popup-container.show {
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-#popupContent {
-  background-color:white;
-  padding:20px;
-  border:1px solid gray;
-  border-radius:5px;
-}
-a {
-  text-decoration:none;
-}
-
-#loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    display: none;
-}
-
-#loading-icon {
-    width: 50px;
-    height: 50px;
-    position: absolute;
-    top: 42%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-#loading-message {
-	   position: absolute;
-    color: White;
-	  top: 60%;
-    left: 50%;
-	  transform: translate(-50%, -50%);
-}
+<style>
+    body {
+        background-color: #dbe0c9;
+    }
+    
+    .slider {
+        width: 200px;
+    }
+    
+    .slider-value {
+        display: inline-block;
+        width: 40px;
+        text-align: center;
+    }
+    
+    .hidden-input {
+        display: none;
+    }
+    
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        background: rgb(251, 255, 7);
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+    }
+    
+    .popup-container {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+    }
+    
+    .popup-container.show {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    #popupContent {
+        background-color: white;
+        padding: 20px;
+        border: 1px solid gray;
+        border-radius: 5px;
+    }
+    
+    a {
+        text-decoration: none;
+    }
+    
+    #loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        display: none;
+    }
+    
+    #loading-icon {
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        top: 42%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    #loading-message {
+        position: absolute;
+        color: White;
+        top: 60%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    .chatbox-container {
+        position: fixed;
+        top: 40%;
+        right: 0;
+        bottom: auto;
+        padding: 10px;
+        background-color: #f1f1f1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: right 0.5s;
+        border-top-left-radius: 999px;
+        border-bottom-left-radius: 999px;
+    }
+    
+    .chatbox-content {
+        position: fixed;
+        top: 40%;
+        right: -100%;
+        bottom: auto;
+        width: auto;
+        height: auto;
+        background-color: #f1f1f1;
+        padding: 0px;
+        transition: right 0.5s;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-top-right-radius: 10px;
+        z-index: 9999;
+    }
+    
+    .chatbox-container.open {
+        right: 280px;
+    }
+    
+    .chatbox-content.open {
+        right: 0;
+    }
 </style>
    <script src="../assets/js/11.0.18_dist_sweetalert2.all.min.js"></script>
   
@@ -631,8 +690,8 @@ foreach ($directories as $directory) {
 <div class="row g-3 d-flex justify-content-center"><div class="col-auto">
 			<div class="custom-control custom-switch mt-3" title="Bật để hỏi tiếp sau khi bot trả lời hoặc thực hiện xong 1 hành động nào đó và ngược lại">
                 <input type="hidden" name="continuous_asking" value="false">
-                <input type="checkbox" name="continuous_asking" class="custom-control-input" id="continuous-asking-toggle" value="true" <?php echo ($continuous_asking) ? 'checked' : ''; ?>>
-                <label class="custom-control-label" for="continuous-asking-toggle"></label>
+                <input type="checkbox" name="continuous_asking" class="custom-control-input" id="continuous-asking" value="true" <?php echo ($continuous_asking) ? 'checked' : ''; ?>>
+                <label class="custom-control-label" for="continuous-asking"></label>
             </div></div></div>
 <hr/>
 <!-- END Trò Chuyện Liên Tục -->
@@ -771,6 +830,17 @@ Zalo</label>
 <h5 title="Thông Báo Chào Mừng Khi Thiết Bị Khởi Động Xong">Thông Báo/Âm Thanh:</h5>
 <div class="row g-3 d-flex justify-content-center"><div class="col-auto">
   <table style="border-color:black;" class="table table-bordered align-middle">
+  <thead><tr><th colspan="2"><center>Đọc Trạng Thái Ngay Sau Khi Khởi Động:</center></th></tr></thead>
+<tbody><tr><td colspan="2">
+<div class="row g-3 d-flex justify-content-center"><div class="col-auto">
+			<div class="custom-control custom-switch mt-3" title="Đọc Trạng Thái Khi Mà Loa Được Khởi Động">
+                <input type="hidden" name="startup_state_speaking" value="false">
+                <input type="checkbox" name="startup_state_speaking" class="custom-control-input" id="continuous-asking-toggle" value="true" <?php echo ($startup_state_speaking) ? 'checked' : ''; ?>>
+                <label class="custom-control-label" for="continuous-asking-toggle"></label>
+            </div></div></div>
+			</td>
+			</tr>
+</tbody>
   <thead><tr><th colspan="2"><center>Thông Báo Khi Khởi Động<c/enter></th></tr></thead>
   <thead><tr>
       <th scope="col"><center>Đọc Văn Bản</center></th>
@@ -799,7 +869,6 @@ Zalo</label>
     echo "Không tìm thấy file mp3 và wav trong thư mục 'welcome'.";
   }
   ?>
-
   </center></td></tr>
  <!-- <tr id="text-inputt">
   <td><b>Đọc địa chỉ ip:</b> <input type="checkbox"  name="welcome_ip" value=", | địa chỉ ai pi của mình là: <?php //echo $serverIP; ?>" <?php /* if ($Welcome_Text === $Welcome_Text_ip.', | địa chỉ ai pi của mình là: '.$serverIP) echo 'checked'; */ ?>>
@@ -939,19 +1008,6 @@ None (Không Dùng)</label></center>
 
 
 
-<div class="col-auto">
-<table style="border-color:black;" class="table table-sm table-bordered table-responsive align-middle">
-<thead><tr>
-<th colspan="2"><center class="text-success">Thay Đổi Ngôn Ngữ Hotword <i class="bi bi-info-circle-fill" onclick="togglePopuphwlang()" title="Nhấn Để Tìm Hiểu Thêm"></i></center></th>
-</tr></thead><tbody><tr> 
-<td  scope="col" colspan="2"><center><font color="red">Bạn Đang Dùng: <b><?php echo $hotwords_get_lang; ?></b></font></center></td>
-<tr><tr><td><center><b>Tiếng Việt</b></center></td><td><center><b>Tiếng Anh</b></center></td>
-</tr><tr><td> <center><input type="radio" name="language_hotword" id="language_hotwordddd" value="vi"></center></td>
-<td><center><input type="radio" name="language_hotword" id="language_hotwordddd1" value="eng"></center></td>
-</tr><tr><th><center><button type="submit" name="language_hotword_submit" class="btn btn-success">Lưu Cài Đặt</button></th> 
-<th><p onclick="uncheckRadiolanguage_hotwordddd()" class="btn btn-danger">Bỏ Chọn</p></th></center></th></tr></tbody></table></div>
-
-
 
 <div class="col-auto">
 <table style="border-color:black;" class="table table-responsive table-bordered align-middle">
@@ -1073,7 +1129,32 @@ else {
 <!--Kết Thúc mục  Wake Up Reply --> 		
 <center>
 <input type="submit" class="btn btn-success" name="config_setting" value="Lưu Cấu Hình">  <a href="<?php echo $PHP_SELF ?>"><button type="submit" class="btn btn-danger">Hủy Bỏ/Làm Mới</button></a>
- <button type="submit" name="restart_vietbot" class="btn btn-warning">Khởi Động Lại VietBot</button></center></form><hr/>    
+ <button type="submit" name="restart_vietbot" class="btn btn-warning">Khởi Động Lại VietBot</button></center>
+
+
+
+
+     <div class="chatbox-container" onclick="toggleChatbox()"><center><b>Ngôn <br/>Ngữ</b></center></div>
+    <div id="chatbox-content" class="chatbox-content"><br/>
+<div class="col-auto">
+<table class="table table-sm table-bordered table-responsive align-middle">
+<thead><tr>
+<th colspan="2"><center class="text-success">Thay Đổi Ngôn Ngữ Hotword <i class="bi bi-info-circle-fill" onclick="togglePopuphwlang()" title="Nhấn Để Tìm Hiểu Thêm"></i></center></th>
+</tr></thead><tbody><tr> 
+<td  scope="col" colspan="2"><center><font color="red">Bạn Đang Dùng: <b><?php echo $hotwords_get_lang; ?></b></font></center></td>
+<tr><tr><td><center><b>Tiếng Việt</b></center></td><td><center><b>Tiếng Anh</b></center></td>
+</tr><tr><td> <center><input type="radio" name="language_hotword" id="language_hotwordddd" value="vi"></center></td>
+<td><center><input type="radio" name="language_hotword" id="language_hotwordddd1" value="eng"></center></td>
+</tr><tr><th><center><button type="submit" name="language_hotword_submit" class="btn btn-success">Lưu Cài Đặt</button></th> 
+<th><p onclick="uncheckRadiolanguage_hotwordddd()" class="btn btn-danger">Bỏ Chọn</p></th></center></th></tr></tbody></table></div>
+
+
+
+
+    </div>
+ 
+ 
+ </form><hr/>    
 <center><h5>Khôi Phục File config.json: <i class="bi bi-info-circle-fill" onclick="togglePopupConfigRecovery()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5></center>
 <div class="form-check form-switch d-flex justify-content-center"> 
 <div id="toggleIcon" onclick="toggleDivConfigRecovery()">
@@ -1106,6 +1187,12 @@ if (count($fileLists) > 0) {
     echo "Không tìm thấy file backup config trong thư mục.";
 }
 ?></div></div>
+
+
+
+
+
+
 	<script src="../assets/js/bootstrap.js"></script>
 	<script src="../assets/js/jquery.min.js"></script>
 	<script src="../assets/js/axios_0.21.1.min.js"></script>
@@ -2029,6 +2116,22 @@ $(document).ready(function() {
     });
 });
 </script>
-	  
+	      <script>
+        var chatboxContainer = document.querySelector('.chatbox-container');
+        var chatboxContent = document.querySelector('.chatbox-content');
+
+        document.addEventListener('click', function(event) {
+            var target = event.target;
+            if (!chatboxContainer.contains(target) && !chatboxContent.contains(target)) {
+                chatboxContainer.classList.remove('open');
+                chatboxContent.classList.remove('open');
+            }
+        });
+
+        function toggleChatbox() {
+            chatboxContainer.classList.toggle('open');
+            chatboxContent.classList.toggle('open');
+        }
+    </script>
 </body>
 </html>
