@@ -76,8 +76,8 @@ body {
         border: 1.5px solid black;
         border-radius: 10px;
         position: relative;
-        margin-left: 40px;
-        margin-right: 40px;
+        margin-left: 1px;
+        margin-right: 1px;
     }
     
     .corner-text {
@@ -90,10 +90,7 @@ body {
 </head>
 <body>
 	<br/>
-	<center> 
-	<div id="messagee"></div><br/>
-	<div id="message"></div>
-	</center>
+
 	  <script src="../assets/js/jquery.min.js"></script>
   <script src="../assets/js/popper.min.js"></script>
   <script src="../assets/js/bootstrap.min.js"></script>
@@ -223,7 +220,8 @@ if (!is_dir($DuognDanThuMucJson)) {
 ?>
 <div class="my-div">
     <span class="corner-text"><h5>Cập Nhật:</h5></span><br/><br/>
-
+<center>
+<div id="messagee"></div></center><br/>
 
     <form method="POST" id="my-form" action="">
 	<div class="row g-3 d-flex justify-content-center"><div class="col-auto">
@@ -291,7 +289,10 @@ if (!is_dir($DuognDanThuMucJson)) {
 <div class="my-div">
     <span class="corner-text"><h5>Sao Lưu/Khôi Phục:</h5></span><br/><br/>
 
-
+	<center> 
+	<div id="message"></div>
+	
+	</center><br/>
 	<?php
 	    // Lấy danh sách các tệp tin sao lưu
     $files = glob($backupDir . '/*.tar.gz');
@@ -315,7 +316,7 @@ if (!is_dir($DuognDanThuMucJson)) {
     }
 	?>
 	</div></div>
-	</div>
+	</div><br/>
 </div>
 	</form>
 	<?php
@@ -403,7 +404,7 @@ if (isset($_POST['backup_update'])) {
             // Đặt quyền chmod 777 cho thư mục sao lưu
           //  chmod($backupDir, 0777);
             chmod($backupFile, 0777);
-            $message .= 'Tạo bản sao lưu thành công\n';
+         //   $messagee .= 'Tạo bản sao lưu thành công\n';
             // Gọi hàm xóa các tệp tin và thư mục không cần thiết
             // Xóa các file cũ nếu số lượng tệp tin sao lưu vượt quá giới hạn
             $backupFiles = glob($backupDir . '/*.tar.gz');
@@ -417,12 +418,12 @@ if (isset($_POST['backup_update'])) {
                 $filesToDelete = array_slice($backupFiles, 0, $numBackupFiles - $maxBackupFiles);
                 foreach ($filesToDelete as $file) {
                     unlink($file);
-                     $message .= 'Backup đã đạt giới hạn, đã xóa tệp tin cũ: ' . $file . '\n';
+                   //  $messaege .= 'Backup đã đạt giới hạn, đã xóa tệp tin cũ: ' . $file . '\n';
 				;
                 }
             }
         } else {
-            $message .= 'Có lỗi xảy ra khi tạo bản sao lưu.\n';
+            $messagee .= 'Có lỗi xảy ra khi tạo bản sao lưu.\n';
         }
 ///////////////////////
   //  $directory = '/home/pi/vietbot_offline/src';
@@ -453,8 +454,8 @@ if (isset($_POST['backup_update'])) {
             
             $sourceDirectory = $DuognDanUI_HTML.'/backup_update/extract/vietbot_offline-beta/src';
             copyFiles($sourceDirectory, $DuognDanThuMucJson, $excludedFiles, $copiedItems);
-            $message .= 'Đã tải xuống phiên bản Vietbot mới và cập nhật thành công!\n';
-            $message .= 'BẠN CẦN KHỞI ĐỘNG LẠI LOA THÔNG MINH ĐỂ ÁP DỤNG LẠI CÀI ĐẶT!\n';
+            $messagee .= 'Đã tải xuống phiên bản Vietbot mới và cập nhật thành công!\n';
+            $messagee .= 'BẠN CẦN KHỞI ĐỘNG LẠI LOA THÔNG MINH ĐỂ ÁP DỤNG LẠI CÀI ĐẶT!\n';
 			?>
 			<div class="form-check form-switch d-flex justify-content-center"> 
 <div class="container">
@@ -487,12 +488,12 @@ if (isset($_POST['backup_update'])) {
 			<?php
 			
         } else {
-            $message .=  'Không thể giải nén tệp tin zip.\n';
+            $messagee .=  'Có lỗi xảy ra, không thể giải nén tệp tin cập nhật.\n';
         }
         
         unlink($zipFilePath);
     } else {
-        $message .=  'Không thể tải xuống tệp tin zip.\n';
+        $messagee .=  'Có lỗi xảy ra, không thể tải xuống tệp tin cập nhật.\n';
     }
 
 //Chmod 777 khi chạy xong backup
@@ -534,7 +535,9 @@ if (file_exists($archivePath)) {
     $message .= 'Tệp tin giải nén không tồn tại: '.$selectedFile.'\n';
 }
 //End giải nén backup
+
 //Chmod 777 thưu mục src restore
+/*
 if (is_dir($sourceDirectory)) {
     if (chmod($sourceDirectory, 0777)) {
      //   $message .= 'Thay đổi quyền truy cập thành công: '.$sourceDirectory.'\n';
@@ -544,10 +547,12 @@ if (is_dir($sourceDirectory)) {
 } else {
     $message .= 'Thư mục không tồn tại: '.$sourceDirectory.'\n';
 }
+*/
+
 $excludedFiles = array('excluded_file_VUTUYEN.txt'); //Bỏ Qua File không coppy giai đoạn thử nghiệm
 $copiedItems = array();
 copyFiles($sourceDirectory, $DuognDanThuMucJson, $excludedFiles, $copiedItems);
- $message .= 'Khôi phục thành công\n';
+ $message .= 'Khôi phục bản sao lưu thành công\n';
 ?>
 <div class="form-check form-switch d-flex justify-content-center"> 
 <div class="container">
