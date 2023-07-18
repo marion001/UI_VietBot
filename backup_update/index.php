@@ -287,7 +287,9 @@ if (!is_dir($DuognDanThuMucJson)) {
     </table>
 </div>
 </div>
-    </div>
+    </div><br/>
+<div class="my-div">
+    <span class="corner-text"><h5>Sao Lưu/Khôi Phục:</h5></span><br/><br/>
 
 
 	<?php
@@ -314,7 +316,7 @@ if (!is_dir($DuognDanThuMucJson)) {
 	?>
 	</div></div>
 	</div>
-
+</div>
 	</form>
 	<?php
 // Xử lý tải xuống tệp tin được chọn
