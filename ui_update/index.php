@@ -385,11 +385,11 @@ if (isset($_POST['download']) && isset($_POST['tarFile'])) {
     }
 }
 ?>
-	<div class="my-div">
-    <span class="corner-text"><h5>Cập Nhật:</h5></span><br/><br/>
 
   <form method="POST" id="my-form" action="">
-   
+   	<div class="my-div">
+    <span class="corner-text"><h5>Cập Nhật:</h5></span><br/><br/>
+
   <div class="row justify-content-center"><div class="col-auto"><div class="input-group">
   
     		  <input type="submit" name="checkforupdates_ui" class="btn btn-success" value="Kiểm tra">
@@ -397,11 +397,13 @@ if (isset($_POST['download']) && isset($_POST['tarFile'])) {
 		   <a class="btn btn-danger" href="<?php echo $PHP_SELF; ?>" role="button">Làm Mới</a>
 		   </div>
 		   </div>
-		   </div><br/>
-		   <div class="row justify-content-center"><div class="col-auto"><div class="input-group">
-		   </div>
-		<br/>	   <div class="my-div">
-    <span class="corner-text"><h5>Sao Lưu/Khôi Phục:</h5></span><br/><br/>
+		   </div>  <br/></div>
+	<br/>   <div class="my-div">
+    <span class="corner-text"><h5>Sao Lưu/Khôi Phục:</h5></span><br/><br/>	   <div class="row justify-content-center"><div class="col-auto"><div class="input-group">
+		 
+
+
+		
 
 <?php
 $directory = $DuognDanUI_HTML.'/ui_update/backup';
@@ -429,7 +431,7 @@ echo $selectDropdown;
   		  <input type="submit" name="restors_ui" class="btn btn-warning" value="Khôi Phục">
 </div>
 </div>
-</div>
+</div><br/>
   </div>
   </form>
   
