@@ -368,7 +368,7 @@ if (isset($_POST['restors_ui'])) {
         copyRecursiveExclude($extractDirectory . '/html', $DuognDanUI_HTML, array('.zip', '.tar.gz'));
         // Xóa thư mục /home/pi/vietbot_offline/html/ui_update/extract/html
         deleteDirectory($deleteDirectory);
-         $message .= 'Đã khôi phục dao diện thành công! \n';
+         $message .= 'Đã khôi phục dao diện thành công! \n\n';
     }
 }
 if (isset($_POST['download']) && isset($_POST['tarFile'])) {
