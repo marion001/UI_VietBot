@@ -387,7 +387,7 @@ if (isset($_POST['download']) && isset($_POST['tarFile'])) {
 
   <form method="POST" id="my-form" action="">
    	<div class="my-div">
-    <span class="corner-text"><h5>Cập Nhật:</h5></span><br/>
+    <span class="corner-text"><h5>Cập Nhật:</h5></span><br/><br/>
 
 	<center> 
 	<div id="messagee"></div><br/></center>
