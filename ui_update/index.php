@@ -75,8 +75,8 @@ body {
         border: 1.5px solid black;
         border-radius: 10px;
         position: relative;
-        margin-left: 40px;
-        margin-right: 40px;
+        margin-left: 5px;
+        margin-right: 5px;
     }
     
     .corner-text {
@@ -274,7 +274,7 @@ $tarCommand = 'tar -czvf ' . $backupFile . ' ' . $excludeArgs . ' -C ' . dirname
 exec($tarCommand, $output, $returnCode);
 if ($returnCode === 0) {
     chmod($backupFile, 0777);
-    $message .= 'Tạo bản sao lưu giao diện thành công, hãy tải lại trang để áp dụng\n';
+  //  $messagee .= 'Tạo bản sao lưu giao diện thành công, hãy tải lại trang để áp dụng\n';
     $backupFiles = glob($backupDir . '/*.tar.gz');
     $numBackupFiles = count($backupFiles);
 
@@ -287,11 +287,11 @@ if ($returnCode === 0) {
         foreach ($filesToDelete as $file) {
             unlink($file);
 			$basenameeee = basename($file);
-            $message .= 'Backup đạt giới hạn, đã xóa tệp tin sao lưu cũ: ' . $basenameeee . '\n';
+            $messagee .= 'Backup đạt giới hạn, đã xóa tệp tin sao lưu cũ: ' . $basenameeee . '\n';
         }
     }
 } else {
-    $message .= 'Có lỗi xảy ra khi tạo bản sao lưu.\n';
+    $messagee .= 'Có lỗi xảy ra khi tạo bản sao lưu.\n';
 }
 
 //END sao Lưu
@@ -332,15 +332,15 @@ if ($zip) {
     }
     // Đóng tập tin zip
     zip_close($zip);
-    $message .= 'Đã tải xuống và giải nén giao diện mới thành công!\n';
+  //  $messagee .= 'Đã tải xuống và giải nén giao diện mới thành công!\n';
     // Gọi hàm sao chép đệ quy
     copyRecursive($sourceDirectory, $DuognDanUI_HTML);
-    $message .= 'Sửa đổi các tệp tin cũ thành công!\n';
+    $messagee .= 'Cập nhật dao diện mới thành công:!\n';
     // Gọi hàm xóa đệ quy
     deleteRecursive($sourceDirectory);
-    $message .= 'Đã xóa nội dung trong bộ nhớ tạm thành công!\n\n';
+   // $messagee .= 'Đã xóa nội dung trong bộ nhớ tạm thành công!\n\n';
 } else {
-    $message .= 'Không thể mở tập tin zip!\n\n';
+    $messagee .= 'Có lỗi xảy ra, không thể mở tập tin dao diện đã tải về!\n';
 }
 
 //Chmod 777 khi chạy xong backup
@@ -368,7 +368,7 @@ if (isset($_POST['restors_ui'])) {
         copyRecursiveExclude($extractDirectory . '/html', $DuognDanUI_HTML, array('.zip', '.tar.gz'));
         // Xóa thư mục /home/pi/vietbot_offline/html/ui_update/extract/html
         deleteDirectory($deleteDirectory);
-         $message .= 'Đã giải nén, sao chép và xóa thư mục thành công! \n';
+         $message .= 'Đã khôi phục dao diện backup thành công! \n';
     }
 }
 if (isset($_POST['download']) && isset($_POST['tarFile'])) {
@@ -401,7 +401,7 @@ if (isset($_POST['download']) && isset($_POST['tarFile'])) {
 		   </div>
 		   </div>  <br/></div>
 	<br/>   <div class="my-div">
-    <span class="corner-text"><h5>Sao Lưu/Khôi Phục:</h5></span><br/>
+    <span class="corner-text"><h5>Sao Lưu/Khôi Phục:</h5></span><br/><br/>
 
 <center><div id="message"></div></center>
 
