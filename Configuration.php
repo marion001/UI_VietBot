@@ -27,7 +27,7 @@ $Lib_Hotword = $Path_Vietbot_src.'/resources/picovoice/lib';
 
 //SSH Tải Khoản, Mật Khẩu Đăng Nhập SSH (Bắt Buộc Phải Nhập Để Dùng Các Lệnh Hệ Thống)
 $SSH_TaiKhoan = "pi"; //Tài Khoản Đăng Nhập pi SSH Của Bạn
-$SSH_MatKhau = "21041997"; //Mật Khẩu Đăng Nhập pi SSH Của Bạn
+$SSH_MatKhau = "vietbot"; //Mật Khẩu Đăng Nhập pi SSH Của Bạn
 $SSH_Port = "22"; //Mặc Định: "22"
 
 //Thông Báo Lỗi Khi Kết Nối SSH
