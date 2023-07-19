@@ -4,6 +4,10 @@
 //Bỏ qua hiển thị lỗi trên màn hình nếu có
 @error_reporting(0);
 @date_default_timezone_set('Asia/Ho_Chi_Minh');
+$HostName = gethostname();
+$PHP_SELF = $_SERVER['PHP_SELF'];
+$GET_current_USER = get_current_user();
+$serverIP = $_SERVER['SERVER_ADDR'];
 
 //Nhóm Facebook và GITHUB, UI VietBot, Version
 $FacebookGroup = "https://www.facebook.com/groups/1082404859211900";
@@ -78,9 +82,4 @@ $wards_Huyen = $dataVTGET->smart_config->user_info->address->district;
 $wards_Tinh = $dataVTGET->smart_config->user_info->address->province;
 
 $apiKeyWeather = $Data_Json_Skill->weather->openweathermap_key;
-
-$HostName = gethostname();
-$PHP_SELF = $_SERVER['PHP_SELF'];
-$GET_current_USER = get_current_user();
-$serverIP = $_SERVER['SERVER_ADDR'];
 ?>
