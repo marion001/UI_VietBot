@@ -287,7 +287,7 @@ if ($returnCode === 0) {
         foreach ($filesToDelete as $file) {
             unlink($file);
 			$basenameeee = basename($file);
-            $messagee .= 'Backup đạt giới hạn, đã xóa tệp tin sao lưu cũ: ' . $basenameeee . '\n';
+           // $messagee .= 'Backup đạt giới hạn, đã xóa tệp tin sao lưu cũ: ' . $basenameeee . '\n';
         }
     }
 } else {
@@ -335,23 +335,25 @@ if ($zip) {
   //  $messagee .= 'Đã tải xuống và giải nén giao diện mới thành công!\n';
     // Gọi hàm sao chép đệ quy
     copyRecursive($sourceDirectory, $DuognDanUI_HTML);
-    $messagee .= 'Cập nhật dao diện mới thành công:!\n';
+    $messagee .= 'Cập nhật dao diện mới thành công!\n';
+    $messagee .= 'Hệ Thống Sẽ Tự Động Tải Lại Trong 5 Giây....!\n';
     // Gọi hàm xóa đệ quy
     deleteRecursive($sourceDirectory);
    // $messagee .= 'Đã xóa nội dung trong bộ nhớ tạm thành công!\n\n';
+   sleep(5);
+// Chuyển hướng và tải lại trang web
+	header("Location: " . $_SERVER['PHP_SELF']);
 } else {
     $messagee .= 'Có lỗi xảy ra, không thể mở tập tin dao diện đã tải về!\n';
 }
-
 //Chmod 777 khi chạy xong backup
 $connection = ssh2_connect($serverIP, $SSH_Port);
 if (!$connection) {die($E_rror_HOST);}
 if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
 $stream1 = ssh2_exec($connection, 'sudo chmod -R 0777 '.$DuognDanUI_HTML);
-$stream2 = ssh2_exec($connection, 'sudo chmod -R 0777 '.$DuognDanThuMucJson);
-stream_set_blocking($stream1, true); stream_set_blocking($stream2, true);
-$stream_out1 = ssh2_fetch_stream($stream1, SSH2_STREAM_STDIO); $stream_out2 = ssh2_fetch_stream($stream2, SSH2_STREAM_STDIO);
-stream_get_contents($stream_out1); stream_get_contents($stream_out2);
+stream_set_blocking($stream1, true); 
+$stream_out1 = ssh2_fetch_stream($stream1, SSH2_STREAM_STDIO); 
+stream_get_contents($stream_out1);
 }
 if (isset($_POST['restors_ui'])) {
     $selectedFile = $_POST['tarFile'];
@@ -369,6 +371,10 @@ if (isset($_POST['restors_ui'])) {
         // Xóa thư mục /home/pi/vietbot_offline/html/ui_update/extract/html
         deleteDirectory($deleteDirectory);
          $message .= 'Đã khôi phục dao diện backup thành công! \n';
+		 sleep(5);
+
+// Chuyển hướng và tải lại trang web
+header("Location: " . $_SERVER['PHP_SELF']);
     }
 }
 if (isset($_POST['download']) && isset($_POST['tarFile'])) {

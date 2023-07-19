@@ -415,11 +415,10 @@ if (isset($_POST['set_full_quyen'])) {
 $connection = ssh2_connect($serverIP, $SSH_Port);
 if (!$connection) {die($E_rror_HOST);}
 if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
-$stream1 = ssh2_exec($connection, "sudo chmod -R 0777 $DuognDanUI_HTML");
-$stream2 = ssh2_exec($connection, "sudo chmod -R 0777 $DuognDanThuMucJson");
-stream_set_blocking($stream1, true); stream_set_blocking($stream2, true);
-$stream_out1 = ssh2_fetch_stream($stream1, SSH2_STREAM_STDIO); $stream_out2 = ssh2_fetch_stream($stream2, SSH2_STREAM_STDIO);
-stream_get_contents($stream_out1); stream_get_contents($stream_out2);
+$stream1 = ssh2_exec($connection, "sudo chmod -R 0777 $Path_Vietbot_src");
+stream_set_blocking($stream1, true); 
+$stream_out1 = ssh2_fetch_stream($stream1, SSH2_STREAM_STDIO); 
+stream_get_contents($stream_out1); 
 header("Location: $PHP_SELF"); exit;
 }
 
@@ -685,7 +684,7 @@ foreach ($directories as $directory) {
 <div id="popupContainerTCLT" class="popup-container" onclick="hidePopupTCLT()">
 <div id="popupContent" onclick="preventEventPropagationTCLT(event)">
 <p><center><b>Continuous Asking/Hỏi Liên Tục:</b></center><br/>
--  Bật để hỏi tiếp sau khi bot trả lời hoặc thực hiện xong 1 hành động nào đó và ngược lại
+-  Bật để hỏi đáp liên tục mà ko cần gọi lại hotword
 <br/></div></div>
 
 <div class="row g-3 d-flex justify-content-center"><div class="col-auto">
@@ -701,7 +700,9 @@ foreach ($directories as $directory) {
 <div id="popupContainerSTT" class="popup-container" onclick="hidePopupSTT()">
 <div id="popupContent" onclick="preventEventPropagationSTT(event)">
 <center><b>Cấu Hình STT</b></center><br/>
-- Chuyển giọng nói thành văn bản</div></div>
+- Chuyển Giọng Nói Thành Văn Bản
+- <b>Thời Gian Chờ:</b> nếu bọi bot dậy, hết thời gian chờ mà không ra lệnh cho bot, thì bot sẽ quay trở lại trạng thái sleep và chờ gọi hotword.
+</div></div>
 <center><b>Bạn Đang Dùng STT: <font color="red"><?php echo $GET_STT_Replacee; ?></font></b></center>
 <label><input type="radio" name="stt_type" title="Chuyển Giọng Nói Thành Văn Bản Server Google Cloud" value="stt_gg_cloud" <?php if ($GET_STT === 'stt_gg_cloud') echo 'checked'; ?> required  onchange="toggleTokenInput(this)">
 Google Cloud</label><label>
@@ -746,8 +747,8 @@ HPDA</label>
 <td><center><input type="radio" name="stt_gg_ass_mode" title="Google Assistatn Mode default" value="default" <?php if ($GET_STT_GG_ASS_MODE === 'default') echo 'checked'; ?>></center></td>
 <td><center><input type="radio" name="stt_gg_ass_mode" title="Google Assistatn Mode manual" value="manual" <?php if ($GET_STT_GG_ASS_MODE === 'manual') echo 'checked'; ?>></center></td>
 </tr></tbody></table></div></div></div>
-<br/><label for="volume">Thời Gian Chờ:</label>
-<input type="range" name="stt_time_out" title="Thời Gian Chờ" min="3000" max="8000" step="100" value="<?php echo $GET_TimeOut_STT; ?>" class="slider" oninput="updateSliderValueSTT(this.value)">
+<br/><label title="Nếu bọi bot dậy, hết thời gian chờ mà không ra lệnh cho bot, thì bot sẽ quay trở lại trạng thái sleep"> Thời Gian Chờ:</label>
+<input type="range" name="stt_time_out" title="Nếu bọi bot dậy, hết thời gian chờ mà không ra lệnh cho bot, thì bot sẽ quay trở lại trạng thái sleep" min="3000" max="8000" step="100" value="<?php echo $GET_TimeOut_STT; ?>" class="slider" oninput="updateSliderValueSTT(this.value)">
 <span id="slider-stt" class="slider-stt"><?php echo $GET_TimeOut_STT,"ms"; ?> </span><br/>(1000 = 1 Giây)</center><hr/>
 <!--Kết thúc STT Speak To Text --> 
 <!--Text to Speech Engine --> 
@@ -804,12 +805,12 @@ Zalo</label>
 <table class="table">
  <thead>
      <tr>
-      <th scope="col" colspan="3"><center>Đầu Ra Bảng Điều Khiển</center></th>
+      <th scope="col" colspan="3"><center title="Cách hiển thị log trong terminal">Đầu Ra Bảng Điều Khiển</center></th>
     </tr>
     <tr>
-      <th scope="col"><center>Không</center></th>
-      <th scope="col"><center>Đầy Đủ</center></th>
-      <th scope="col"><center>Xem Tức Thời</center></th>
+      <th scope="col"><center title="Không hiển thị log trong terminal">Không</center></th>
+      <th scope="col"><center title="Hiển thị đầy đủ log trong terminal">Đầy Đủ</center></th>
+      <th scope="col"><center title="Xuất log đè lên nhau trong terminal">Xem Tức Thời</center></th>
     </tr>
   </thead>
    <tbody>
@@ -836,15 +837,15 @@ Zalo</label>
 ?>
 <h5 title="Thông Báo Chào Mừng Khi Thiết Bị Khởi Động Xong">Thông Báo/Âm Thanh:</h5>
 <div class="row g-3 d-flex justify-content-center"><div class="col-auto">
-  <table style="border-color:black;" class="table table-bordered align-middle">
+  <table class="table table-bordered align-middle">
   <thead><tr><th colspan="2"><center>Đọc Trạng Thái Ngay Sau Khi Khởi Động:</center></th></tr></thead>
 <tbody><tr><td colspan="2">
-<div class="row g-3 d-flex justify-content-center"><div class="col-auto">
+<center>
 			<div class="custom-control custom-switch mt-3" title="Đọc Trạng Thái Khi Mà Loa Được Khởi Động">
                 <input type="hidden" name="startup_state_speaking" value="false">
                 <input type="checkbox" name="startup_state_speaking" class="custom-control-input" id="continuous-asking-toggle" value="true" <?php echo ($startup_state_speaking) ? 'checked' : ''; ?>>
                 <label class="custom-control-label" for="continuous-asking-toggle"></label>
-            </div></div></div>
+            </div></center>
 			</td>
 			</tr>
 </tbody>
@@ -892,8 +893,8 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
   <thead><tr>
 <th scope="col" colspan="2"><center>Âm Thanh Phản Hồi</center></th>
 </tr></thead><thead><tr>
-<th scope="col"><center>Khi Được Đánh Thức</center></th>
-<th scope="col"><center>Khi Kết Thúc</center></th>
+<th scope="col"><center title="Khi bạn gọi bot thì sẽ có âm thanh phát ra để nghe lệnh">Khi Được Đánh Thức</center></th>
+<th scope="col"><center title="Khi kết thúc nghe lệnh bot sẽ phát âm thanh">Khi Kết Thúc</center></th>
 </tr></thead><tbody><tr><td><center>
 	  <?php
 	  echo '<select class="custom-select" name="startsound">';
@@ -980,17 +981,17 @@ None (Không Dùng)</label></center>
 <div class="row justify-content-center">
 <div class="col-auto">
 <table class="table table-responsive table-striped table-bordered align-middle">
-<tr><th scope="col">Nút Nhấn</th>
-<th scope="col">GPIO</th>
-<th scope="col" title="Tích Để Kéo Nút Nhấn Lên Mức Cao (3.3V), Bỏ Tích Kéo Xuống Mức Thấp GND">Kéo Mức Cao</th>
-<th scope="col" title="Tích Vào Để Kích Hoạt Chức Năng Của Nút Nhấn, Bỏ Tích Nút Nhấn Sẽ Bị Vô Hiệu">Kích Hoạt</th></tr>
+<tr><th scope="col"><center>Nút Nhấn</center></th>
+<th scope="col"><center>GPIO</center></th>
+<th scope="col" title="Tích Để Kéo Nút Nhấn Lên Mức Cao (3.3V), Bỏ Tích Kéo Xuống Mức Thấp GND"><center>Kéo Mức Cao</center></th>
+<th scope="col" title="Tích Vào Để Kích Hoạt Chức Năng Của Nút Nhấn, Bỏ Tích Nút Nhấn Sẽ Bị Vô Hiệu"><center>Kích Hoạt</center></th></tr>
 <?php
     foreach ($data_config['smart_config']['button'] as $buttonName => $buttonData) {
 		echo '<tr>';
         echo '<th scope="row">' . $buttonName . ':</th>';
-        echo '<td><!-- GPIO --><input type="number" class="form-control" style="width: 70px;" min="3" max="26" title="Cấu Hình Chân Chức Năng Của GPIO" style="width: 40px;" name="button[' . $buttonName . '][gpio]" value="' . $buttonData['gpio'] . '" placeholder="' . $buttonData['gpio'] . '"></td>';
-        echo '<td><!-- Pulled High --><input type="checkbox" title="Tích Để Kéo Nút Nhấn Lên Mức Cao (3.3V), Bỏ Tích Kéo Xuống Mức Thấp GND" name="button[' . $buttonName . '][pulled_high]"' . ($buttonData['pulled_high'] ? ' checked' : '') . '></td>';
-        echo '<td><!-- Active --><input type="checkbox" title="Tích Vào Để Kích Hoạt Chức Năng Của Nút Nhấn, Bỏ Tích Nút Nhấn Sẽ Bị Vô Hiệu" name="button[' . $buttonName . '][active]"' . ($buttonData['active'] ? ' checked' : '') . '></td></tr>';
+        echo '<td><center><!-- GPIO --><input type="number" class="form-control" style="width: 70px;" min="3" max="26" title="Cấu Hình Chân Chức Năng Của GPIO" style="width: 40px;" name="button[' . $buttonName . '][gpio]" value="' . $buttonData['gpio'] . '" placeholder="' . $buttonData['gpio'] . '"></center></td>';
+        echo '<td><center><!-- Pulled High --><input type="checkbox" title="Tích Để Kéo Nút Nhấn Lên Mức Cao (3.3V), Bỏ Tích Kéo Xuống Mức Thấp GND" name="button[' . $buttonName . '][pulled_high]"' . ($buttonData['pulled_high'] ? ' checked' : '') . '></center></td>';
+        echo '<td><center><!-- Active --><input type="checkbox" title="Tích Vào Để Kích Hoạt Chức Năng Của Nút Nhấn, Bỏ Tích Nút Nhấn Sẽ Bị Vô Hiệu" name="button[' . $buttonName . '][active]"' . ($buttonData['active'] ? ' checked' : '') . '></center></td></tr>';
 	}
 ?>
 </table></div></div></div><hr/>
@@ -1019,9 +1020,9 @@ None (Không Dùng)</label></center>
 <div class="col-auto">
 <table style="border-color:black;" class="table table-responsive table-bordered align-middle">
 <thead><tr> <th scope="col" colspan="4"><center class="text-success">Cài Đặt Hotword</center></th> </tr>
-<tr><th scope="col"><label for="" class="form-label">Tên Hotword</label></th>
-<th scope="col"><label for="" title="Độ Nhạy Sensitive" class="form-label">Độ Nhạy</label></th>
-<th scope="col"><label for="" title="Tích Để Bật/Tắt Hotword" class="form-label">Kích Hoạt</label></th>
+<tr><th scope="col"><label for="" class="form-label"><center>Tên Hotword</center></label></th>
+<th scope="col"><label for="" title="Độ Nhạy Sensitive" class="form-label"><center>Độ Nhạy</center></label></th>
+<th scope="col"><label for="" title="Tích Để Bật/Tắt Hotword" class="form-label"><center>Kích Hoạt</center></label></th>
 <th scope="col"><label for="" title="Bật/Tắt Phản Hồi Của Bot Khi Được Đánh Thức" class="form-label"><center>Phản Hồi Lại</center></label></th>
 <tbody><tr><td><div>
 <select id="file_name" name="file_name" class="custom-select" onchange="showSensitiveInput(this.value)">
@@ -1030,13 +1031,21 @@ None (Không Dùng)</label></center>
 <option value="<?php echo $hotword['file_name']; ?>"><?php echo substr($hotword['file_name'], 0, strpos($hotword['file_name'], "_")); ?></option>
 <?php endforeach; ?>
 </select></div></td><td><div>
-<input type="number" id="sensitive" name="sensitive" title="Chỉ Được Nhập Số Từ 0.1 Đến 1" placeholder="0.1 -> 1" class="form-control" step="0.1" min="0" max="1">
+<input type="number" id="sensitive" name="sensitive" style="width: 90px;" title="Chỉ Được Nhập Số Từ 0.1 Đến 1" placeholder="0.1->1" class="form-control" step="0.1" min="0.1" max="1">
 </div></td><td><div>
 <center><input type="checkbox" id="active" name="active" title="Tích vào để kích hoạt" class="form-check-input"></center>
 </div></td><td><div>
-<center><input type="checkbox" id="say_reply" name="say_reply" title="Tích vào để kích hoạt" class="form-check-input"></center></div></td><tr>
-<th scope="row"><center class="input-group-text">Kèm câu lệnh:</center></th><td colspan="3"><div>
-<center><input type="text" id="command" name="command" placeholder="Nhập Lệnh Vào Đây" title="Nhập Lệnh Của Bạn" class="form-control"></center></div></td></tr>
+<center><input type="checkbox" id="say_reply" name="say_reply" title="Tích vào để kích hoạt" class="form-check-input"></center></div></td>
+
+<tr>
+<td colspan="4">
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">Kèm câu lệnh:</span>
+  </div>
+  <input type="text" id="command" name="command" placeholder="Nhập Lệnh Vào Đây" title="Nhập Lệnh Của Bạn" class="form-control">
+</div>
+</td></tr>
 </tr></tbody> </tr></thead></table> 
 </div>
 
@@ -1048,7 +1057,7 @@ None (Không Dùng)</label></center>
 <p><center><b>Thay Đổi Ngôn Ngữ Gọi Hotword</b></center><br/>
 - <b>1: </b> 2 file thư viện <a href="https://github.com/Picovoice/porcupine/blob/master/lib/common/porcupine_params.pv" target="_bank">tiếng anh</a> 
 	<b>"porcupine_params.pv"</b> và <a href="https://github.com/Picovoice/porcupine/blob/master/lib/common/porcupine_params_vn.pv" target="_bank">tiếng việt</a> 
-	<b>"porcupine_params_vn.pv"</b><br/>phải nằm cùng trong đường dẫn sau: "/home/pi"<br/>
+	<b>"porcupine_params_vn.pv"</b><br/>phải nằm cùng trong đường dẫn sau: "<b><?php echo $Lib_Hotword; ?></b>"<br/>
 - <b>2: </b>các file thư viện hotword, file hotword, thư viện picovoice phải cùng phiên bản.<br/>
 - <i>Khi thay đổi ngôn ngữ bạn sẽ cần phải cấu hình lại các Hotword ở mục <b>Cài Đặt Hotword</b></i>
 </div></div>
@@ -1118,7 +1127,7 @@ None (Không Dùng)</label></center>
 if (count($GET_wakeupReply) > $Limit_Wakeup_Reply) {
     echo "<center><h5> Wake Up Reply Không Được Hiển Thị Do <b>config.json<b/> Không Phù Hợp, Vượt Quá $Limit_Wakeup_Reply Giá Trị</h5></center>";
 	    foreach ($GET_wakeupReply as $index => $reply) {
-        echo '<div style="display: none;"><input type="hidden" name="wakeup_reply[]" id="input' . ($index + 1) . '" value="' . $reply['value'] . '" placeholder="' . $reply['value'] . '" class="form-control" aria-label="Username" aria-describedby="basic-addon1" required>
+        echo '<div style="display: none;"><input type="hidden" name="wakeup_reply[]" id="input' . ($index + 1) . '" value="' . $reply['value'] . '" placeholder="' . $reply['value'] . '" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
 			</div>';
     }
 } 
@@ -1126,7 +1135,7 @@ else {
     foreach ($GET_wakeupReply as $index => $reply) {
         echo '<div class="input-group mb-3 d-flex justify-content-center"><div class="input-group-prepend">
 			<span class="input-group-text" id="basic-addon1">Câu Trả Lời ' . ($index + 1) . ':</span></div>  <div class="col-md-6">
-            <div class="form-outline"> <input type="text" name="wakeup_reply[]" id="input' . ($index + 1) . '" value="' . $reply['value'] . '" placeholder="' . $reply['value'] . '" class="form-control" aria-label="Username" aria-describedby="basic-addon1" required></div>         </div>
+            <div class="form-outline"> <input type="text" name="wakeup_reply[]" id="input' . ($index + 1) . '" value="' . $reply['value'] . '" placeholder="' . $reply['value'] . '" class="form-control" aria-label="Username" aria-describedby="basic-addon1"></div>         </div>
 			</div>';
     }
     }
