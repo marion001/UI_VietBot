@@ -122,10 +122,10 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     <div class="left-side  nav-close">
       <div class="menu-content-align">
         <div class="left-side-image">
-          <a href="./"><img src="assets/img/VietBot128.png" alt="/"></a>
+          <a href="./"><img src="assets/img/VietBot128.png" alt="/" title="Nhấn Để Về Trang Chủ"></a>
         </div>
       <h1 class="mt-1" style="font-size: 14px;"><?php echo $MYUSERNAME; ?></h1>
-			<a class="download-cv btn btn-warning d-none d-lg-inline-block" href="#LogServiceCMD" style="opacity: 1; font-size: 16px; padding: 10px 30px;">Log/Service/CMD</a>
+			<a class="download-cv btn btn-warning d-none d-lg-inline-block" href="#LogServiceCMD" style="opacity: 1; font-size: 16px; padding: 10px 30px;" title="Nhấn để kiểm tra log, các tác vụ, và nhập lệnh cần thiết">Log/Service/CMD</a>
       </div>
       <div class="menu-align">
         <ul class="list-group menu text-center " id="menu">
@@ -219,8 +219,15 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
       <!--  About Start  -->
       <section id="about" class="section about bg-gray-400 text-black">
         <div class="container">
+		
+<!--
+				  <div class="count-icon">🖥️</div>
+                <span><a href="http://<?php echo gethostname(); ?>" target="_bank"><?php echo gethostname(); ?></a></span>
+                <p class="mb-0">Host Name</p>
+			-->
           <!--  Count up  -->
           <div id="count-up" class="count-up text-center box-border">
+
             <div class="row">
               <!-- Item-01 -->
 			                <div class="col-6 col-lg-3 my-4 count-item">
@@ -254,6 +261,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
             <div class="col-lg-6">
               <h3 class="subtitle">Thông Tin Máy Chủ</h3>
               <div id="skills">
+			   
                 <!-- Item 01 -->
                 <div class="col-lg-12 skill-box">
                   <div class="skill-text">
@@ -415,7 +423,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     <!--  Main End  -->
 
     <!--  Mobile Next and Prev Button Start -->
-	
+	<!--
     <div class="next-prev-page d-block d-lg-none">
 	
    <div class="btn-group">   <button type="button" class="prev-page bg-base-color hstack">      
@@ -425,7 +433,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         <i class="bi bi-chevron-compact-right mx-auto"></i>
       </button></div>
     </div>
-	
+	-->
     <!--  Mobile Next and Prev Button End -->
     <!--  Navbar Button Mobile Start -->
     <div class="menu-toggle">
@@ -437,23 +445,23 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     <!--  Color Pallet  -->
     <div id="color-switcher" class="color-switcher">
       <div class="text-center color-pallet hide">
-	  <a class="btn btn-danger" href="#vietbot_update" role="button">Cập Nhật Chương Trình</a>
-	  <a class="btn btn-success" href="#UI_update" role="button">Cập Nhật Giao Diện</a>
+	  <a class="btn btn-danger" href="#vietbot_update" role="button" title="Nhấn Để Kiểm Tra, Cập Nhật Phầm Mềm">Cập Nhật Chương Trình</a>
+	  <a class="btn btn-success" href="#UI_update" role="button" title="Nhấn Để Kiểm Tra, Cập Nhật Dao Diện">Cập Nhật Giao Diện</a>
 
 	 
       <!--  <h6 class="text-center theme-skin-title">Đổi Màu Giao Diện</h6> -->
         <div class="colors text-center">
-          <span class="WhiteBg" id="colorss"></span>
-          <span class="01Bg" id="colorss"></span>
-          <span class="03Bg" id="colorss"></span>
-          <span class="BlackBg" id="colorss"></span>
-          <span class="GG01Bg" id="colorss"></span>
-          <span class="GG02Bg" id="colorss"></span>
+          <span class="WhiteBg" id="colorss" title="Nhấn Để Đổi Màu Dao Diện"></span>
+          <span class="01Bg" id="colorss" title="Nhấn Để Đổi Màu Dao Diện"></span>
+          <span class="03Bg" id="colorss" title="Nhấn Để Đổi Màu Dao Diện"></span>
+          <span class="BlackBg" id="colorss" title="Nhấn Để Đổi Màu Dao Diện"></span>
+          <span class="GG01Bg" id="colorss" title="Nhấn Để Đổi Màu Dao Diện"></span>
+          <span class="GG02Bg" id="colorss" title="Nhấn Để Đổi Màu Dao Diện"></span>
 
         </div>
 		
       </div>
-      <div class="pallet-button hide" title="Đổi Màu Giao Diện">
+      <div class="pallet-button hide" title="Nhấn Để Hiển Thị Cài Đặt">
           <a href="javascript:void(0)" class="cp-toggle"><i class="bi bi-gear"></i></a>
       </div>
 	

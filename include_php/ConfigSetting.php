@@ -46,6 +46,7 @@ include "../Configuration.php";
     "stt_gg_cloud" => "Google Cloud",
     "stt_gg_ass" => "Google Assistant",
     "stt_fpt" => "FPT",
+    "stt_hpda" => "HPDA",
     "stt_viettel" => "Viettel"
 );
 // Thực hiện thay thế từng từ khóa
@@ -626,7 +627,7 @@ foreach ($directories as $directory) {
 <table class="table align-middle">
 <tbody><tr>
 <th scope="row">Tên Người Dùng:</th><td colspan="3">
-<input type="text" class="form-control" name="my_user_name_input" value="<?php echo $MY_USER_NAME; ?>" placeholder="Nhập Tên Người Dùng Của Bạn" maxlength="14" required></td></tr>
+<input type="text" class="form-control" name="my_user_name_input" value="<?php echo $MY_USER_NAME; ?>" placeholder="Nhập Tên Người Dùng Của Bạn" title="Nhập Tên Người Dùng Của Bạn" maxlength="14" required></td></tr>
  <tr><th scope="row">Địa Chỉ:</th>
 <td><select class="custom-select" id="city" name="city"><option name="city" value="<?php echo $Address_City; ?>" selected><?php echo $Address_City; ?></option></select></td>
 <td><select class="custom-select" id="district" name="district"><option name="district" value="<?php echo $Address_district; ?>" selected><?php echo $Address_district; ?></option></select></td>
@@ -647,7 +648,7 @@ foreach ($directories as $directory) {
 <th scope="col"><center>Card ID:</center></th>
 <th scope="col"><center>Âm lượng:</center></th></tr><tr>
 <td><input type="number" class="form-control" title="Từ 0 Đến 3" title="Từ 0 Đến 3" name="input_number_card_number" size="28" value="<?php echo $GET_Speaker_Amixer_ID; ?>"  min="0" max="3" required></td>
-<td><input type="range" name="volume_value" min="10" max="100" step="1" value="<?php echo $value_volume; ?>" class="slider" oninput="updateSliderValue(this.value)">
+<td><input type="range" title="Kéo Để Thay Đổi Âm Lượng Sau Đó Nhấn Lưu" name="volume_value" min="10" max="100" step="1" value="<?php echo $value_volume; ?>" class="slider" oninput="updateSliderValue(this.value)">
 <span id="slider-value" class="slider-value"><?php echo $value_volume; ?>%</span></div> </td></tr></table></div></div></center><hr/>
 <!-- Kết Thúc  Volume --> 
 <!-- mục  Web Interface --> 
@@ -711,7 +712,13 @@ Google Free</label><label>
 <input type="radio" name="stt_type" title="Chuyển Giọng Nói Thành Văn Bản Server FPT" value="stt_fpt" <?php if ($GET_STT === 'stt_fpt') echo 'checked'; ?> required onchange="toggleTokenInput(this)">
 FPT</label><label>
 <input type="radio" name="stt_type" title="Chuyển Giọng Nói Thành Văn Bản Server Viettel" value="stt_viettel" <?php if ($GET_STT === 'stt_viettel') echo 'checked'; ?> required onchange="toggleTokenInput(this)">
-Viettel</label><br/>
+Viettel</label>
+
+<label>
+<input type="radio" name="stt_type" title="Chuyển Giọng Nói Thành Văn Bản Server HPDA" value="stt_hpda" <?php if ($GET_STT === 'stt_hpda') echo 'checked'; ?> required onchange="toggleTokenInput(this)">
+HPDA</label>
+
+<br/>
 <div id="tokenInputContainer" style="display: none;">
 <div class="row g-3 d-flex justify-content-center"><div class="col-auto">
 <table class="table table-responsive align-middle"><tbody>
@@ -1134,7 +1141,7 @@ else {
 
 
 
-     <div class="chatbox-container" onclick="toggleChatbox()"><center><b>Ngôn <br/>Ngữ</b></center></div>
+     <div class="chatbox-container" onclick="toggleChatbox()" title="Nhấn Để Thay Đổi Ngôn Ngữ Gọi Hotword"><center><b>Ngôn <br/>Ngữ</b></center></div>
     <div id="chatbox-content" class="chatbox-content"><br/>
 <div class="col-auto">
 <table class="table table-sm table-bordered table-responsive align-middle">
@@ -1743,7 +1750,15 @@ function validateInputs() {
     otherDiv.style.display = "none";
 	otherDivgcloud.style.display = "none";
     tokenInput.value = "Null";
-  } else {
+  }
+else if (radio.value === "stt_hpda") {
+    tokenInputContainer.style.display = "none";
+    otherDiv.style.display = "none";
+	otherDivgcloud.style.display = "none";
+    tokenInput.value = "Null";
+  }
+
+  else {
     tokenInputContainer.style.display = "none";
     otherDiv.style.display = "none";
 	otherDivgcloud.style.display = "none";
