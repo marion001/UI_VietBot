@@ -759,7 +759,7 @@ echo '</div>';
 Google Cloud</label><label>
 <input type="radio" name="stt_type" title="Chuyển Giọng Nói Thành Văn Bản Server Google Assistant" value="stt_gg_ass" <?php if ($GET_STT === 'stt_gg_ass') echo 'checked'; ?> required  onchange="toggleTokenInput(this)">
 Google Assistant</label><label>
-<input type="radio" name="stt_type" title="Chuyển Giọng Nói Thành Văn Bản Server Google Free" value="stt_gg_free" <?php if ($GET_STT === 'stt_gg_free') echo 'checked'; ?>  onchange="toggleTokenInput(this)">
+<input type="radio" name="stt_type" title="Chuyển Giọng Nói Thành Văn Bản Server Google Free" value="stt_gg_free" <?php if ($GET_STT === 'stt_gg_free') echo 'checked'; ?> required  onchange="toggleTokenInput(this)">
 Google Free</label><label>
 <input type="radio" name="stt_type" title="Chuyển Giọng Nói Thành Văn Bản Server FPT" value="stt_fpt" <?php if ($GET_STT === 'stt_fpt') echo 'checked'; ?> required onchange="toggleTokenInput(this)">
 FPT</label><label>
@@ -775,7 +775,7 @@ HPDA</label>
 <div class="row g-3 d-flex justify-content-center"><div class="col-auto">
 <table class="table table-responsive align-middle"><tbody>
 <tr><th scope="row">Token:</th>
-<td> <input type="text" class="form-control" title="Nhập, Thay Đổi Token" name="token_stt" id="tokenInput" value="<?php echo $GET_Token_STT; ?>" required placeholder="Nhập Token STT" required></td></tr>
+<td> <input type="text" class="form-control" title="Nhập, Thay Đổi Token" name="token_stt" id="tokenInput" value="<?php echo $GET_Token_STT; ?>" placeholder="Nhập Token STT"></td></tr>
 </tbody></table></div>
 </div>
 </div>
@@ -812,7 +812,7 @@ HPDA</label>
 <center><b>Bạn Đang Dùng TTS: </b><b><font color="red"><?php echo $GET_TTS_Type_Replacee; ?></font></b></center>
 <label><input type="radio" onclick="disableRadio()" name="tts_company" value="tts_gg_cloud" <?php if ($GET_TTS_Type === 'tts_gg_cloud') echo 'checked'; ?> onchange="showTokenInputTTS(this)" required>
 Google Cloud</label><label>
-<input type="radio" onclick="disableRadio()" name="tts_company" value="tts_gg_free" <?php if ($GET_TTS_Type === 'tts_gg_free') echo 'checked'; ?> onchange="showTokenInputTTS(this)">
+<input type="radio" onclick="disableRadio()" name="tts_company" value="tts_gg_free" <?php if ($GET_TTS_Type === 'tts_gg_free') echo 'checked'; ?> onchange="showTokenInputTTS(this)" required>
 Google Free</label><label>
 <input type="radio" onclick="disableRadio()" name="tts_company" value="tts_fpt" <?php if ($GET_TTS_Type === 'tts_fpt') echo 'checked'; ?> onchange="showTokenInputTTS(this)" required>
 FPT</label><label>
