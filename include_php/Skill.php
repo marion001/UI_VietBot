@@ -258,15 +258,31 @@ $stream_out1 = ssh2_fetch_stream($stream1, SSH2_STREAM_STDIO);
 stream_get_contents($stream_out1);
 header("Location: $PHP_SELF"); exit;
 }
-//////////////////////////////////////////
-
-?>
-<!-- Form để hiển thị và chỉnh sửa dữ liệu -->
-<form id="my-form"  method="POST">
-<?php
-// Thư mục cần kiểm tra
+//////////////////////////Khôi Phục Gốc Skill.Json
+if (isset($_POST['restore_skill_json'])) {
+$sourceFile = $DuognDanUI_HTML.'/assets/json/skill.json';
+$destinationFile = $DuognDanThuMucJson.'/skill.json';
+// Kiểm tra xem tệp nguồn tồn tại
+if (file_exists($sourceFile)) {
+	shell_exec("rm $destinationFile");
+    // Thực hiện sao chép bằng lệnh cp
+    $command = "cp $sourceFile $destinationFile";
+    $output = shell_exec($command);
+	shell_exec("chmod 0777 $destinationFile");
+    // Kiểm tra kết quả
+    if ($output === null) {
+        echo "<center>Khôi Phục Gốc <b>skill.json</b> thành công!</center>";
+    } else {
+        echo "<center>Đã xảy ra lỗi khi khôi phục gốc <b>skill.json</b> : $output</center>";
+    }
+} else {
+    echo "<center>Tệp gốc <b>skill.json</b> không tồn tại!</center>";
+}
+header("Location: $PHP_SELF"); exit;
+}
+// Thư mục cần kiểm tra 777
 $directories = array(
-    "$DuognDanThuMucJson"
+    "$Path_Vietbot_src"
 );
 function checkPermissions($path, &$hasPermissionIssue) {
     $files = scandir($path);
@@ -278,8 +294,8 @@ function checkPermissions($path, &$hasPermissionIssue) {
         if ($permissions !== false && ($permissions & 0777) !== 0777) {
             if (!$hasPermissionIssue) {
                // echo "<br/><center><h3 class='text-danger'>Một Số File,Thư Mục Trong <b>$path</b> Không Có Quyền Can Thiệp.<h3><br/>";
-			   echo "<br/><br/><br/><center>Phát hiện thấy một số nội dung bị thay đổi quyền hạn.<br/>";
-			echo " <button type='submit' name='set_full_quyen' class='btn btn-success'>Cấp Quyền Cho File, Thư Mục</button></center>";
+			   echo "<br/><br/><br/><center>Phát hiện thấy một số nội dung bị thay đổi quyền hạn.<br/><br/>";
+			echo " <form id='my-form'  method='POST'><button type='submit' name='set_full_quyen' class='btn btn-success'>Cấp Quyền Cho File, Thư Mục</button></center></form>";
 			
                 $hasPermissionIssue = true;
 				exit();
@@ -293,6 +309,23 @@ foreach ($directories as $directory) {
     $hasPermissionIssue = false;
     checkPermissions($directory, $hasPermissionIssue);
 }
+
+if (json_last_error() !== JSON_ERROR_NONE) {
+	echo "";
+    echo "<center><h1> <font color=red>Phát hiện lỗi, cấu trúc tập tin skill.json không hợp lệ!</font></h1><br/>- Mã Lỗi: <b>" . json_last_error_msg()."</b><br/>";
+	echo "- Bạn cần sửa trực tiếp trên file hoặc nhấn vào nút <b>Khôi Phục Gốc</b> bên dưới để về trạng thái khi mới flash";
+	echo "<br/><i>Lưu Ý: khi chọn <b>Khôi Phục Gốc</b> bạn cần cấu hình lại các tác vụ trong skill.json đã lưu trước đó.</i>";
+	echo '<br/><br/><form id="my-form"  method="POST"><button type="submit" name="restore_skill_json" class="btn btn-danger">Khôi Phục Gốc</button></center></form>';
+    exit(); // Kết thúc chương trình
+}
+
+
+?>
+<!-- Form để hiển thị và chỉnh sửa dữ liệu -->
+<form id="my-form"  method="POST">
+
+<?php
+
 ?>
 <h5>Open Weather Map: <i class="bi bi-info-circle-fill" onclick="togglePopupOpenWeatherMap()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
       <div id="popupContainerOpenWeatherMap" class="popup-container" onclick="hidePopupOpenWeatherMap()">

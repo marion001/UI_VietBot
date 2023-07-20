@@ -17,7 +17,7 @@ include "../Configuration.php";
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         if (isset($_GET['selectedFile']) && !empty($_GET['selectedFile'])) {
             $selectedFile = $_GET['selectedFile'];
-            $configFile = $backupDirz . "../config.json";
+            $configFile = $DuognDanThuMucJson . "/config.json";
             $fileContent = file_get_contents($selectedFile);
             file_put_contents($configFile, $fileContent);
 			header("Location: ".$PHP_SELF);
@@ -421,7 +421,28 @@ $stream_out1 = ssh2_fetch_stream($stream1, SSH2_STREAM_STDIO);
 stream_get_contents($stream_out1); 
 header("Location: $PHP_SELF"); exit;
 }
-
+//////////////////////////Khôi Phục Gốc Config.Json
+if (isset($_POST['restore_config_json'])) {
+$sourceFile = $DuognDanUI_HTML.'/assets/json/config.json';
+$destinationFile = $DuognDanThuMucJson.'/config.json';
+// Kiểm tra xem tệp nguồn tồn tại
+if (file_exists($sourceFile)) {
+	shell_exec("rm $destinationFile");
+    // Thực hiện sao chép bằng lệnh cp
+    $command = "cp $sourceFile $destinationFile";
+    $output = shell_exec($command);
+	shell_exec("chmod 0777 $destinationFile");
+    // Kiểm tra kết quả
+    if ($output === null) {
+        echo "<center>Khôi Phục Gốc <b>config.json</b> thành công!</center>";
+    } else {
+        echo "<center>Đã xảy ra lỗi khi khôi phục gốc <b>config.json</b> : $output</center>";
+    }
+} else {
+    echo "<center>Tệp gốc <b>config.json</b> không tồn tại!</center>";
+}
+header("Location: $PHP_SELF"); exit;
+}
 
 ?>
 <!DOCTYPE html>
@@ -581,8 +602,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
 <?php
 // Thư mục cần kiểm tra
 $directories = array(
-    "$DuognDanUI_HTML",
-    "$DuognDanThuMucJson"
+    "$Path_Vietbot_src"
 );
 function checkPermissions($path, &$hasPermissionIssue) {
     $files = scandir($path);
@@ -617,6 +637,38 @@ foreach ($directories as $directory) {
     $hasPermissionIssue = false;
     checkPermissions($directory, $hasPermissionIssue);
 }
+
+
+if (json_last_error() !== JSON_ERROR_NONE) {
+	echo "";
+    echo "<center><h1> <font color=red>Phát hiện lỗi, cấu trúc tập tin config.json không hợp lệ!</font></h1><br/>- Mã Lỗi: <b>" . json_last_error_msg()."</b><br/><br/>";
+	echo "Hướng Dẫn Khắc Phục 1 Trong Các Gợi Ý Dưới Đây:<i><br>- Bạn cần sửa trực tiếp trên file<br/>- Chọn <b>các file sao lưu trước đó</b><br/>- Nhấn vào nút <b>Khôi Phục Gốc</b> bên dưới để về trạng thái khi mới flash</i>";
+	echo "<br/><i>(Lưu Ý: khi chọn <b>Khôi Phục Gốc</b> bạn cần cấu hình lại các tác vụ trong config.json đã lưu trước đó.)</i><br/>";
+	  echo '<br/><div class="form-check form-switch d-flex justify-content-center"><br/>';
+// Kiểm tra xem có file nào trong thư mục hay không
+if (count($fileLists) > 0) {
+    // Tạo dropdown list để hiển thị các file
+    echo '<form method="get"><div class="input-group">';
+    echo '<select class="custom-select" id="inputGroupSelect04" name="selectedFile">';
+    echo '<option value="">Chọn file backup config</option>'; // Thêm lựa chọn "Chọn file"
+    foreach ($fileLists as $file) {
+        $fileName = basename($file);
+        echo '<option value="' . $file . '">' . $fileName . '</option>';
+    }
+    echo '</select><div class="input-group-append">';
+    echo '<input type="submit" class="btn btn-warning" title="Khôi Phục Lại File config.json trước đó đã sao lưu" value="Khôi Phục/Recovery">';
+    echo ' </div></div></form>';
+	echo '<br/><br/><form id="my-form"  method="POST"><button type="submit" name="restore_config_json" class="btn btn-danger">Khôi Phục Gốc</button></center></form>';
+}
+ else {
+    echo "Không tìm thấy file backup config trong thư mục.";
+}
+echo '</div>';
+    exit(); // Kết thúc chương trình
+}
+
+
+
 ?>
 <div id="loading-overlay"><img id="loading-icon" src="../assets/img/Loading.gif" alt="Loading...">
 <div id="loading-message">- Đang Thực Hiện<br/>- Bạn Cần Restart Lại VietBot Để Áp Dụng Dữ Liệu Mới</div>
@@ -708,7 +760,7 @@ foreach ($directories as $directory) {
 Google Cloud</label><label>
 <input type="radio" name="stt_type" title="Chuyển Giọng Nói Thành Văn Bản Server Google Assistant" value="stt_gg_ass" <?php if ($GET_STT === 'stt_gg_ass') echo 'checked'; ?> required  onchange="toggleTokenInput(this)">
 Google Assistant</label><label>
-<input type="radio" name="stt_type" title="Chuyển Giọng Nói Thành Văn Bản Server Google Free" value="stt_gg_free" <?php if ($GET_STT === 'stt_gg_free') echo 'checked'; ?>  onchange="toggleTokenInput(this)">
+<input type="radio" name="stt_type" title="Chuyển Giọng Nói Thành Văn Bản Server Google Free" value="stt_gg_free" <?php if ($GET_STT === 'stt_gg_free') echo 'checked'; ?> required  onchange="toggleTokenInput(this)">
 Google Free</label><label>
 <input type="radio" name="stt_type" title="Chuyển Giọng Nói Thành Văn Bản Server FPT" value="stt_fpt" <?php if ($GET_STT === 'stt_fpt') echo 'checked'; ?> required onchange="toggleTokenInput(this)">
 FPT</label><label>
@@ -761,7 +813,7 @@ HPDA</label>
 <center><b>Bạn Đang Dùng TTS: </b><b><font color="red"><?php echo $GET_TTS_Type_Replacee; ?></font></b></center>
 <label><input type="radio" onclick="disableRadio()" name="tts_company" value="tts_gg_cloud" <?php if ($GET_TTS_Type === 'tts_gg_cloud') echo 'checked'; ?> onchange="showTokenInputTTS(this)" required>
 Google Cloud</label><label>
-<input type="radio" onclick="disableRadio()" name="tts_company" value="tts_gg_free" <?php if ($GET_TTS_Type === 'tts_gg_free') echo 'checked'; ?> onchange="showTokenInputTTS(this)" required>
+<input type="radio" onclick="disableRadio()" name="tts_company" value="tts_gg_free" <?php if ($GET_TTS_Type === 'tts_gg_free') echo 'checked'; ?> onchange="showTokenInputTTS(this)">
 Google Free</label><label>
 <input type="radio" onclick="disableRadio()" name="tts_company" value="tts_fpt" <?php if ($GET_TTS_Type === 'tts_fpt') echo 'checked'; ?> onchange="showTokenInputTTS(this)" required>
 FPT</label><label>
@@ -798,7 +850,7 @@ Zalo</label>
 <input type="radio" id="myRadio5"  title="Nữ Miền Nam" name="tts_voice" value="female_southern_voice" <?php if ($GET_TTS_Voice_Name === 'female_southern_voice') echo 'checked'; ?> required>Nữ Miền Nam</label><label>
 <input type="radio" id="myRadio6" title="Viettel Nam Miền Nam" id="myRadio2" name="tts_voice" value="male_southern_voice" <?php if ($GET_TTS_Voice_Name === 'male_southern_voice') echo 'checked'; ?> required>Nam Miền Nam</label><label>
 
-<input type="radio" id="myRadio7" name="tts_voice" value="null" <?php if ($GET_TTS_Voice_Name === null) echo 'checked'; ?> required>Mặc Định</label></center><hr/>
+<input type="radio" id="myRadio7" name="tts_voice" value="null" <?php if ($GET_TTS_Voice_Name === null) echo 'checked'; ?>>Mặc Định</label></center><hr/>
 <!-- -->
 <h5>Console Ouput:</h5> 
 <div class="row g-3 d-flex justify-content-center"><div class="col-auto"> 
