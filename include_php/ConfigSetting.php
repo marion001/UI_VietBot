@@ -640,10 +640,9 @@ foreach ($directories as $directory) {
 
 
 if (json_last_error() !== JSON_ERROR_NONE) {
-	echo "";
     echo "<center><h1> <font color=red>Phát hiện lỗi, cấu trúc tập tin config.json không hợp lệ!</font></h1><br/>- Mã Lỗi: <b>" . json_last_error_msg()."</b><br/><br/>";
 	echo "Hướng Dẫn Khắc Phục 1 Trong Các Gợi Ý Dưới Đây:<i><br>- Bạn cần sửa trực tiếp trên file<br/>- Chọn <b>các file sao lưu trước đó</b><br/>- Nhấn vào nút <b>Khôi Phục Gốc</b> bên dưới để về trạng thái khi mới flash</i>";
-	echo "<br/><i>(Lưu Ý: khi chọn <b>Khôi Phục Gốc</b> bạn cần cấu hình lại các tác vụ trong config.json đã lưu trước đó.)</i><br/>";
+	echo "<br/><i>(Lưu Ý: khi chọn <b>Khôi Phục Gốc</b> bạn cần cấu hình lại các cài đặt trong config.json đã lưu trước đó.)</i><br/>";
 	  echo '<br/><div class="form-check form-switch d-flex justify-content-center"><br/>';
 // Kiểm tra xem có file nào trong thư mục hay không
 if (count($fileLists) > 0) {

@@ -117,9 +117,54 @@ $skillArray = json_decode($skillData, true);
 });
 </script>
 <?php
+// Đường dẫn đến thư mục "Backup_Config"
+$backupDirz = "Backup_Skill/";
+$fileLists = glob($backupDirz . "*.json");
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        if (isset($_GET['selectedFile']) && !empty($_GET['selectedFile'])) {
+            $selectedFile = $_GET['selectedFile'];
+            $skillFile = $DuognDanThuMucJson . "/skill.json";
+            $fileContent = file_get_contents($selectedFile);
+            file_put_contents($skillFile, $fileContent);
+			header("Location: ".$PHP_SELF);
+            exit();
+            //echo "Đã Khôi Phục File config.json Được Chọn Thành Công.";
+        }}
+	//END Khôi Phục File skill	
 // Kiểm tra nếu form đã được gửi
 //if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if (isset($_POST['skill_saver'])) {
+		-
+	//Backup Skill
+	$backupDir = __DIR__ . '/Backup_Skill/';
+	if (!is_dir($backupDir)) {
+    mkdir($backupDir, 0777, true);
+	}
+$backups = glob($backupDir . '*.json');
+$numBackups = count($backups);
+if ($numBackups >= $Limit_Skill_Backup) {
+    // Sắp xếp các tệp sao lưu theo thứ tự tăng dần về thời gian
+    usort($backups, function ($a, $b) {
+        return filemtime($a) - filemtime($b);
+    });
+    // Xóa các tệp sao lưu cũ nhất trừ tệp config_default.json và số lượng tệp cần giữ lại
+    $keepBackups = ['skill_default.json']; //Bỏ qua file
+    $numToDelete = $numBackups - $Limit_Skill_Backup;
+    $backupsToDelete = array_slice($backups, 0, $numToDelete);
+    foreach ($backupsToDelete as $backup) {
+        if (!in_array(basename($backup), $keepBackups)) {
+            unlink($backup);
+        }
+    }
+}
+$backupFile = $backupDir . 'backup_skill_' . date('d-m-Y_H:i:s') . '.json';
+copy($FileSkillJson, $backupFile);
+chmod($backupFile, 0777);
+	// echo "Đã sao chép thành công tệp tin skill.json sang $backupFile";
+	//END Backup Skill
+	
+		
+		
     $anniversary_data = $skillArray['anniversary_data'];
     $new_anniversary_data = [];
     $count = min(count($_POST['namei']), count($_POST['day']), count($_POST['month']));
@@ -309,24 +354,34 @@ foreach ($directories as $directory) {
     $hasPermissionIssue = false;
     checkPermissions($directory, $hasPermissionIssue);
 }
-
 if (json_last_error() !== JSON_ERROR_NONE) {
 	echo "";
-    echo "<center><h1> <font color=red>Phát hiện lỗi, cấu trúc tập tin skill.json không hợp lệ!</font></h1><br/>- Mã Lỗi: <b>" . json_last_error_msg()."</b><br/>";
-	echo "- Bạn cần sửa trực tiếp trên file hoặc nhấn vào nút <b>Khôi Phục Gốc</b> bên dưới để về trạng thái khi mới flash";
-	echo "<br/><i>Lưu Ý: khi chọn <b>Khôi Phục Gốc</b> bạn cần cấu hình lại các tác vụ trong skill.json đã lưu trước đó.</i>";
-	echo '<br/><br/><form id="my-form"  method="POST"><button type="submit" name="restore_skill_json" class="btn btn-danger">Khôi Phục Gốc</button></center></form>';
+     echo "<center><h1> <font color=red>Phát hiện lỗi, cấu trúc tập tin skill.json không hợp lệ!</font></h1><br/>- Mã Lỗi: <b>" . json_last_error_msg()."</b><br/><br/>";
+	echo "Hướng Dẫn Khắc Phục 1 Trong Các Gợi Ý Dưới Đây:<i><br>- Bạn cần sửa trực tiếp trên file<br/>- Chọn <b>các file sao lưu trước đó</b><br/>- Nhấn vào nút <b>Khôi Phục Gốc</b> bên dưới để về trạng thái khi mới flash</i>";
+	echo "<br/><i>(Lưu Ý: khi chọn <b>Khôi Phục Gốc</b> bạn cần cấu hình lại các tác vụ trong skill.json đã lưu trước đó.)</i><br/>";
+	echo '<br/><div class="form-check form-switch d-flex justify-content-center">';
+// Kiểm tra xem có file nào trong thư mục hay không
+if (count($fileLists) > 0) {
+    // Tạo dropdown list để hiển thị các file
+    echo '<form id="my-form" method="get"><div class="input-group">';
+    echo '<select class="custom-select" id="inputGroupSelect04" name="selectedFile">';
+    echo '<option value="">Chọn file backup skill</option>'; // Thêm lựa chọn "Chọn file"
+    foreach ($fileLists as $file) {
+        $fileName = basename($file);
+        echo '<option value="' . $file . '">' . $fileName . '</option>';
+    }
+    echo '</select><div class="input-group-append">';
+    echo '<input type="submit" class="btn btn-warning" title="Khôi Phục Lại File skill.json trước đó đã sao lưu" value="Khôi Phục/Recovery">';
+    echo ' </div></div></form><form id="my-form"  method="POST"><button type="submit" name="restore_skill_json" class="btn btn-danger">Khôi Phục Gốc</button></center></form></div>';
+}
+ else {
+    echo "Không tìm thấy file backup skill trong thư mục.";
+}
     exit(); // Kết thúc chương trình
 }
-
-
 ?>
 <!-- Form để hiển thị và chỉnh sửa dữ liệu -->
 <form id="my-form"  method="POST">
-
-<?php
-
-?>
 <h5>Open Weather Map: <i class="bi bi-info-circle-fill" onclick="togglePopupOpenWeatherMap()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
       <div id="popupContainerOpenWeatherMap" class="popup-container" onclick="hidePopupOpenWeatherMap()">
     <div id="popupContent" onclick="preventEventPropagationOpenWeatherMap(event)">
@@ -409,7 +464,6 @@ if (json_last_error() !== JSON_ERROR_NONE) {
       <center><b>Google Assistant Skill:</b></center><br/>
 	  - <b>Bật </b> để chạy chế độ Mặc Định (default)<br/>
 	  - <b>Tắt </b> để chạy chế độ Thủ Công (manual)
-
 </div></div>
 <div class="row justify-content-center"><div class="col-auto">	 
         <div class="custom-control custom-switch" title="Bật/Tắt để kích hoạt/huỷ kích hoạt">
@@ -458,8 +512,6 @@ if ($count > $Limit_Telegram) {
            
         }
 		echo "</div>";
-	
-	
 } else {
 ?>
 <table class="table table-responsive table-striped table-bordered align-middle">
@@ -699,8 +751,29 @@ stream_get_contents($stream_out);
  <button type="submit" name="restart_vietbot" class="btn btn-warning">Khởi Động Lại VietBot</button>
 </div>
 
-</div>
-</form>
+</div></form><hr/>
+<h5><center>Khôi Phục File skill.json</center></h5>
+  <div class="form-check form-switch d-flex justify-content-center"> 
+<?php
+// Kiểm tra xem có file nào trong thư mục hay không
+if (count($fileLists) > 0) {
+    // Tạo dropdown list để hiển thị các file
+    echo '<form id="my-form" method="get"><div class="input-group">';
+    echo '<select class="custom-select" id="inputGroupSelect04" name="selectedFile">';
+    echo '<option value="">Chọn file backup skill</option>'; // Thêm lựa chọn "Chọn file"
+    foreach ($fileLists as $file) {
+        $fileName = basename($file);
+        echo '<option value="' . $file . '">' . $fileName . '</option>';
+    }
+    echo '</select><div class="input-group-append">';
+    echo '<input type="submit" class="btn btn-warning" title="Khôi Phục Lại File config.json trước đó đã sao lưu" value="Khôi Phục/Recovery">';
+    echo ' </div></div></form>';
+}
+ else {
+    echo "Không tìm thấy file backup config trong thư mục.";
+}
+?></div>
+
 
 <script>
 //check button ẩn hiện thẻ div OpenWeatherMap
