@@ -320,8 +320,8 @@ if ($zip) {
   //  $messagee .= 'Đã tải xuống và giải nén giao diện mới thành công!\n';
     // Gọi hàm sao chép đệ quy
     copyRecursive($sourceDirectory, $DuognDanUI_HTML);
-    $messagee .= 'Cập nhật dao diện mới thành công!\n';
-    $messagee .= 'Bạn Hãy Tải Lại Trang Để Áp Dụng....!\n';
+    $messagee .= 'Cập nhật giao diện mới thành công!\n';
+    $messagee .= 'Bạn Hãy Tắt Trang Và Truy Cập Lại Để Áp Dụng, (Hoặc F5 Để Áp Dụng)....!\n';
     // Gọi hàm xóa đệ quy
     deleteRecursive($sourceDirectory);
 } else {
