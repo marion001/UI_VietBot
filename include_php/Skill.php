@@ -305,9 +305,13 @@ $connection = ssh2_connect($serverIP, $SSH_Port);
 if (!$connection) {die($E_rror_HOST);}
 if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
 $stream1 = ssh2_exec($connection, "sudo chmod -R 0777 $Path_Vietbot_src");
+$stream2 = ssh2_exec($connection, "sudo chown -R pi:pi $Path_Vietbot_src");
 stream_set_blocking($stream1, true); 
+stream_set_blocking($stream2, true); 
 $stream_out1 = ssh2_fetch_stream($stream1, SSH2_STREAM_STDIO); 
-stream_get_contents($stream_out1);
+$stream_out2 = ssh2_fetch_stream($stream2, SSH2_STREAM_STDIO); 
+stream_get_contents($stream_out1); 
+stream_get_contents($stream_out2); 
 header("Location: $PHP_SELF"); exit;
 }
 //////////////////////////Khôi Phục Gốc Skill.Json
@@ -466,11 +470,11 @@ B4: Go to Application -> Cookies -> __Secure-1PSID and __Secure-1PSIDTS
 <tr><th scope="row"colspan="2"><center>Session Google Bard</center></th>
 </tr>
 <tr><th scope="row"> <label for="hass_url">Secure-1PSID:</label></th>
-<td><input type="text" class="form-control" id="Secure-1PSID" name="Secure-1PSID" placeholder="Nhập Session Secure-1PSID Của Google bard" title="Nhập Session Secure-1PSID Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure-1PSID']; ?>">
+<td><input type="text" class="form-control" id="Secure-1PSID" name="Secure-1PSID" placeholder="Nhập Cookie Secure-1PSID Của Google bard" title="Nhập Cookie Secure-1PSID Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure-1PSID']; ?>">
 </td>
 </tr><tr>
 <th scope="row"> <label for="hass_key">Secure_1PSIDTS:</label></th>
-<td><input type="text" class="form-control" id="Secure_1PSIDTS" name="Secure_1PSIDTS" placeholder="Nhập Session Secure_1PSIDTS Của Google bard" title="Nhập Session Secure_1PSIDTS Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure_1PSIDTS']; ?>">
+<td><input type="text" class="form-control" id="Secure_1PSIDTS" name="Secure_1PSIDTS" placeholder="Nhập Cookie Secure_1PSIDTS Của Google bard" title="Nhập Cookie Secure_1PSIDTS Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure_1PSIDTS']; ?>">
 </td>
 </tr></tbody>
 </table></div></div>

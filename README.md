@@ -53,12 +53,10 @@ vào trong thư mục "html" theo đường dẫn: "/home/pi/vietbot_offline/htm
 			Configuration.php để dùng được các lệnh hệ thống /home/pi/vietbot_offline/html/Configuration.php
 
 B5: Cấu Hình Chỉnh Một Vài Tùy Chọn Khác Theo Ý Bạn Trong File Configuration.php
- Theo đường dẫn: /home/pi/vietbot_offline/html/Configuration.php
 
-	- Các File Backup Config sẽ nằm trong: /home/pi/vietbot_offline/html/include_php/Backup_Config/
- 	- Các File Backup Skill sẽ nằm trong: /home/pi/vietbot_offline/html/include_php/Backup_Skill/
- 	- Các file .tar.gz Backup UI sẽ nằm trong: /home/pi/vietbot_offline/html/ui_update/backup/
-  	- Các Tệp .tar.gz Backup Vietbot sẽ nằm trong: /home/pi/vietbot_offline/html/backup_update/backup/
+	- Các File Backup Config sẽ nằm trong: /home/pi/vietbot_offline/html/include_php/Backup_Config
+ 	- Các File Backup Skill sẽ nằm trong: /home/pi/vietbot_offline/html/include_php/Backup_Skill
+ 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 Chuyển UI từ "var/www/html" sang "home/pi/vietbot_offline/html/"
 
