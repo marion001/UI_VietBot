@@ -466,11 +466,11 @@ B4: Go to Application -> Cookies -> __Secure-1PSID and __Secure-1PSIDTS
 <tr><th scope="row"colspan="2"><center>Session Google Bard</center></th>
 </tr>
 <tr><th scope="row"> <label for="hass_url">Secure-1PSID:</label></th>
-<td><input type="text" class="form-control" id="Secure-1PSID" name="Secure-1PSID" placeholder="Nhập Cookie Secure-1PSID Của Google bard" title="Nhập Cookie Secure-1PSID Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure-1PSID']; ?>">
+<td><input type="text" class="form-control" id="Secure-1PSID" name="Secure-1PSID" placeholder="Nhập Session Secure-1PSID Của Google bard" title="Nhập Session Secure-1PSID Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure-1PSID']; ?>">
 </td>
 </tr><tr>
 <th scope="row"> <label for="hass_key">Secure_1PSIDTS:</label></th>
-<td><input type="text" class="form-control" id="Secure_1PSIDTS" name="Secure_1PSIDTS" placeholder="Nhập Cookie Secure_1PSIDTS Của Google bard" title="Nhập Cookie Secure_1PSIDTS Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure_1PSIDTS']; ?>">
+<td><input type="text" class="form-control" id="Secure_1PSIDTS" name="Secure_1PSIDTS" placeholder="Nhập Session Secure_1PSIDTS Của Google bard" title="Nhập Session Secure_1PSIDTS Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure_1PSIDTS']; ?>">
 </td>
 </tr></tbody>
 </table></div></div>
