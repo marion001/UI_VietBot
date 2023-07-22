@@ -453,7 +453,7 @@ if (isset($_POST['backup_update'])) {
             $sourceDirectory = $DuognDanUI_HTML.'/backup_update/extract/vietbot_offline-beta/src';
 			$sourceDirectoryyy = $DuognDanUI_HTML.'/backup_update/extract/vietbot_offline-beta/resources';
             copyFiles($sourceDirectory, $DuognDanThuMucJson, $excludedFiles, $copiedItems);
-			copyFiles($sourceDirectoryyy, $PathResources, $excludedFiles, $copiedItems);
+			copyFiles($sourceDirectoryyy, $DuognDanThuMucJson, $excludedFiles, $copiedItems);
             $messagee .= 'Đã tải xuống phiên bản Vietbot mới và cập nhật thành công!\n';
             $messagee .= 'BẠN CẦN KHỞI ĐỘNG LẠI LOA THÔNG MINH ĐỂ ÁP DỤNG LẠI CÀI ĐẶT!\n';
 			?>
