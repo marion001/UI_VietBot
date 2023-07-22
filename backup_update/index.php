@@ -421,8 +421,22 @@ if (isset($_POST['backup_update'])) {
                 }
             }
         } else {
-            $messagee .= 'Có lỗi xảy ra khi tạo bản sao lưu.\n';
+            $messagee .= 'Có lỗi xảy ra khi tạo bản sao lưu. Thư mục resources hoặc src không tồn tại .\n';
         }
+		
+	
+		
+		if (!file_exists($PathResources)) {
+    // Nếu không tồn tại, tạo mới thư mục
+    if (!mkdir($PathResources, 0777, true)) {
+       // die('Không thể tạo thư mục');
+    } else {
+        // Nếu tạo mới thành công, đặt quyền chmod 777 cho thư mục
+        chmod($PathResources, 0777);
+       // echo 'Tạo và đặt quyền thành công!';
+    }
+}
+		
 ///////////////////////
   //  $directory = '/home/pi/vietbot_offline/src';
     $excludedFiles = [];
@@ -453,7 +467,7 @@ if (isset($_POST['backup_update'])) {
             $sourceDirectory = $DuognDanUI_HTML.'/backup_update/extract/vietbot_offline-beta/src';
 			$sourceDirectoryyy = $DuognDanUI_HTML.'/backup_update/extract/vietbot_offline-beta/resources';
             copyFiles($sourceDirectory, $DuognDanThuMucJson, $excludedFiles, $copiedItems);
-			copyFiles($sourceDirectoryyy, $DuognDanThuMucJson, $excludedFiles, $copiedItems);
+			copyFiles($sourceDirectoryyy, $PathResources, $excludedFiles, $copiedItems);
             $messagee .= 'Đã tải xuống phiên bản Vietbot mới và cập nhật thành công!\n';
             $messagee .= 'BẠN CẦN KHỞI ĐỘNG LẠI LOA THÔNG MINH ĐỂ ÁP DỤNG LẠI CÀI ĐẶT!\n';
 			?>
