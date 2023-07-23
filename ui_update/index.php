@@ -204,11 +204,10 @@ if (isset($_POST['set_full_quyen'])) {
 $connection = ssh2_connect($serverIP, $SSH_Port);
 if (!$connection) {die($E_rror_HOST);}
 if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
-$stream1 = ssh2_exec($connection, 'sudo chmod -R 0777 '.$DuognDanUI_HTML);
-$stream2 = ssh2_exec($connection, 'sudo chmod -R 0777 '.$DuognDanThuMucJson);
-stream_set_blocking($stream1, true); stream_set_blocking($stream2, true);
-$stream_out1 = ssh2_fetch_stream($stream1, SSH2_STREAM_STDIO); $stream_out2 = ssh2_fetch_stream($stream2, SSH2_STREAM_STDIO);
-stream_get_contents($stream_out1); stream_get_contents($stream_out2);
+$stream1 = ssh2_exec($connection, 'sudo chmod -R 0777 '.$Path_Vietbot_src);
+stream_set_blocking($stream1, true);
+$stream_out1 = ssh2_fetch_stream($stream1, SSH2_STREAM_STDIO);
+stream_get_contents($stream_out1);
 header("Location: $PHP_SELF"); exit;
 }
 // Thư mục cần kiểm tra 777
