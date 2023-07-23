@@ -353,7 +353,7 @@ $output .=  stream_get_contents($stream_out);
 
 <div class="dropdown-divider"></div>  <button type="submit" name="start_manual_run" class="btn btn-primary" disabled>Chạy Manual Run</button>
 
- <div class="dropdown-divider"></div>  <button type="submit" name="stop_manual_run" class="btn btn-primary" disabled>Dừng Manual Run</button>
+ <div class="dropdown-divider"></div>  <button type="submit" name="stop_manual_run" class="btn btn-primary">Dừng Manual Run</button>
  </center></div></div>
 
 	
