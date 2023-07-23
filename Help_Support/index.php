@@ -51,8 +51,11 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
   </style>
 	  </head>
 	 <body onclick="closePopup(event)">
-	  <h1><center>Menu Hướng Dẫn Về Các Chức Năng Và Sử Dụng Vietbot</center></h1><br/>
-<h5>Các chức năng và hướng dẫn trong tab <b>config.json</b> và <b>skill.json</b> đều được diễn giải ở dấu: <i class="bi bi-info-circle-fill" title="Nhấn Để Tìm Hiểu Thêm"></i><h5>
+	  <h1><center>Menu Hướng Dẫn Về Các Chức Năng Và Sử Dụng Vietbot</center></h1>
+<h5>SSH:</h5>
+ - username: <b>pi</b><br/>
+ - password: <b>vietbot</b><hr/>
+<h5>Các chức năng và hướng dẫn trong tab <b>config.json</b> và <b>skill.json</b> đều được diễn giải ở dấu: <i class="bi bi-info-circle-fill" title="Nhấn Để Tìm Hiểu Thêm"></i><h5><hr/>
 <br/><h5>Chức Năng/Nút Nhấn:</h5><i>
  - Nút <b> Play: </b> Nhấn 1 lần sẽ gọi bot, ấn giữ nút sẽ phát thông tin hiện tại của loa<br>
  - Nút <b> Volume + -: </b> Nhấn 1 lần sẽ tăng/giảm volume, ấn giữ max volume 100%<br/>
