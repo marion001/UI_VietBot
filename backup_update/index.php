@@ -85,7 +85,10 @@ body {
         top: 10px;
         left: 10px;
     }
-
+        .right-align {
+            text-align: right;
+			 
+        }
 	</style>
 </head>
 <body>
@@ -317,6 +320,7 @@ if (!is_dir($DuognDanThuMucJson)) {
 	</div><br/>
 </div>
 	</form>
+	<br/> <p class="right-align"><b>Phiên bản Vietbot:  <font color=red><?php echo $dataVersionVietbot->vietbot_version->latest; ?></font></b></p>
 	<?php
 // Xử lý tải xuống tệp tin được chọn
 if (isset($_POST['download']) && isset($_POST['selectedFile'])) {

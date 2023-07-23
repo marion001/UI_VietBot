@@ -84,7 +84,10 @@ body {
         top: 10px;
         left: 10px;
     }
-
+        .right-align {
+            text-align: right;
+			 
+        }
 	</style>
 </head>
 <body>
@@ -249,9 +252,10 @@ $localValue = $localData['ui_version']['current'];
 // So sánh giá trị
 if ($remoteValue !== $localValue) {
     $messagee .= 'Có phiên bản mới: '.$remoteValue.'\n';
-    $messagee .= 'Phiên bản hiện tại của bạn: '.$localValue.'\n Vui lòng cập nhật.';
+    $messagee .= 'Phiên bản hiện tại của bạn: '.$localValue.'\n Vui lòng cập nhật.\n';
+    $messagee .= $remoteData['ui_version']['notification'].'\n';
 } else {
-    $messagee .= 'Bạn đang sử dụng phiên bản mới nhất: '.$localValue;
+    $messagee .= 'Bạn đang sử dụng phiên bản mới nhất: '.$localValue.'\n';
 }
 }
 
@@ -267,12 +271,10 @@ if ($returnCode === 0) {
   //  $messagee .= 'Tạo bản sao lưu giao diện thành công, hãy tải lại trang để áp dụng\n';
     $backupFiles = glob($backupDir . '/*.tar.gz');
     $numBackupFiles = count($backupFiles);
-
     if ($numBackupFiles > $maxBackupFilesUI) {
         usort($backupFiles, function ($a, $b) {
             return filemtime($a) - filemtime($b);
         });
-
         $filesToDelete = array_slice($backupFiles, 0, $numBackupFiles - $maxBackupFilesUI);
         foreach ($filesToDelete as $file) {
             unlink($file);
@@ -409,6 +411,7 @@ echo $selectDropdown;
 </div><br/>
   </div>
   </form>
+ <br/> <p class="right-align"><b>Phiên bản dao diện:  <font color=red><?php echo $dataVersionUI->ui_version->current; ?></font></b></p>
   
   	    <script>
         var messageElement = document.getElementById("message");
