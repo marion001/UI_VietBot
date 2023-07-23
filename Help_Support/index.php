@@ -169,8 +169,12 @@ script:<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data: Tắt Tivi phòng khách<br/>
 &nbsp;&nbsp;mode: single<br/>
 <hr/>
-
-<br/><h1>Comback Soon</h1>
+<h5>Nâng Cấp Full Dung Lượng Cho Thẻ:</h5>
+- Đăng nhập vào ssh rồi gõ lệnh sau:<br/>
+&nbsp;$: <b>sudo raspi-config</b><br/>
+- Chọn: <b>(6)Advance Options</b> -> <b>(A1)Expand File System</b> đợi vài giây -> <b>OK</b> -> <b>Fish</b> -> <b>Yes</b> để rebot<br/>
+<hr/>
+<h1>Comback Soon</h1>
 	  
 	  
 	  
