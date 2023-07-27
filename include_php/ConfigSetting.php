@@ -1541,7 +1541,7 @@ else if (radio.value === "tts_gg_free") {
     tokenInputContainerTTS.style.display = "none";
     tokenInputContainerTTSGGCLOUD.style.display = "none";
   // tự đông đánh dấu checked khi tích vào tts_gg_free
-    var targetRadio = document.getElementById("myRadio7"); 
+    var targetRadio = document.getElementById("myRadio5"); 
     targetRadio.checked = true;
   }
   else {
