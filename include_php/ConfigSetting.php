@@ -78,7 +78,7 @@ foreach ($keywordsSTT as $keywordSTT => $replacementSTT) {
 	///
 	//Lấy Giá Trị TTS
 	$GET_TTS_Type = $data_config['smart_answer']['tts']['type'];
-	$GET_TTS_Type_Replace = $data_config['smart_answer']['tts']['type'];
+	//$GET_TTS_Type_Replace = $data_config['smart_answer']['tts']['type'];
 	// Mảng chứa từ khóa và giá trị thay thế tương ứng
 	$keywordsTTS = array(
     "tts_gg_free" => "Google Free",
@@ -90,8 +90,8 @@ foreach ($keywordsSTT as $keywordSTT => $replacementSTT) {
 	);
 // Thực hiện thay thế từng từ khóa
 foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
-    if (strpos($GET_TTS_Type_Replace, $keywordTTS) !== false) {
-        $GET_TTS_Type_Replacee = str_replace($keywordTTS, $replacementTTS, $GET_TTS_Type_Replace);
+    if (strpos($GET_TTS_Type, $keywordTTS) !== false) {
+        $GET_TTS_Type_Replacee = str_replace($keywordTTS, $replacementTTS, $GET_TTS_Type);
     }}
 	// In ra chuỗi đã được thay thế
 	$GET_TTS_Voice_Name = $data_config['smart_answer']['tts']['voice_name'];
@@ -2319,6 +2319,47 @@ $(document).ready(function() {
         return true;
     }
 	*/
+	
+	
+// Disable các giọng đọc của tts khi được chọn 1 trong các tts 
+function disableRadioButtons() {
+    // Lấy dữ liệu JSON từ file PHP (điều này cần được thực hiện thông qua AJAX trong ứng dụng thực tế)
+    // Để đơn giản, ta chỉ sử dụng biến jsonData để lưu dữ liệu JSON trong ví dụ này.
+    var jsonData = "<?php echo $GET_TTS_Type; ?>";
+    // Kiểm tra nếu giá trị trong JSON là "tts_edge" thì disable các radio button có id tương ứng
+    if (jsonData === "tts_edge") {
+        document.getElementById("myRadio1").disabled = true;
+        document.getElementById("myRadio2").disabled = true;
+        document.getElementById("myRadio3").disabled = true;
+        document.getElementById("myRadio4").disabled = true;
+        document.getElementById("myRadio7").disabled = true;
+    }else if (jsonData === "tts_gg_cloud") {
+        document.getElementById("myRadio3").disabled = true;
+        document.getElementById("myRadio4").disabled = true;
+        document.getElementById("myRadio5").disabled = true;
+        document.getElementById("myRadio6").disabled = true;
+        document.getElementById("myRadio7").disabled = true;
+    }else if (jsonData === "tts_gg_free") {
+        document.getElementById("myRadio1").disabled = true;
+        document.getElementById("myRadio2").disabled = true;
+        document.getElementById("myRadio3").disabled = true;
+        document.getElementById("myRadio4").disabled = true;
+        document.getElementById("myRadio5").disabled = true;
+        document.getElementById("myRadio6").disabled = true;
+    } 	else {
+        // Trường hợp còn lại (không phải), sẽ enable lại các radio button
+        document.getElementById("myRadio1").disabled = false;
+        document.getElementById("myRadio2").disabled = false;
+        document.getElementById("myRadio3").disabled = false;
+        document.getElementById("myRadio4").disabled = false;
+        document.getElementById("myRadio5").disabled = false;
+        document.getElementById("myRadio6").disabled = false;
+        document.getElementById("myRadio7").disabled = false;
+    }
+}
+// Gọi hàm để disable radio buttons khi trang được load
+disableRadioButtons();
+	
 </script>
 </body>
 </html>
