@@ -1449,7 +1449,7 @@ if (count($fileLists) > 0) {
             }
 			 else if (companyRadio.value === 'tts_edge') {
                 ttsVoiceRadios.forEach(voiceRadio => {
-                    if (voiceRadio.value === 'female_northern_voice' || voiceRadio.value === 'female_southern_voice' || voiceRadio.value === 'female_middle_voice' || voiceRadio.value === 'male_northern_voice' || voiceRadio.value === 'male_southern_voice' || voiceRadio.value === 'male_middle_voice') {
+                    if (voiceRadio.value === 'female_northern_voice' || voiceRadio.value === 'male_northern_voice' || voiceRadio.value === 'female_middle_voice' || voiceRadio.value === 'male_middle_voice' || voiceRadio.value === 'null') {
                         voiceRadio.disabled = true;
                     } else {
                         voiceRadio.disabled = false;
