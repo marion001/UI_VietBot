@@ -389,11 +389,12 @@ if ($currentresult === $latestVersion) {
   $messagee .= "Bạn đang sử dụng phiên bản mới nhất: " . $currentresult;
 } else {
   $messagee .= "Có phiên bản mới: " . $latestVersion.'\n';
-  $messagee .= "Phiên bản hiện tại: " . $currentresult.'\n';
+  $messagee .= "Phiên bản hiện tại: " . $currentresult.'\n\n';
+  //$messagee .= $gitData['new_features'].'\n';
+ // $messagee .= $gitData['improvements'].'\n';
+  //$messagee .= "Lệnh Cần Bổ Sung: $:> ".$gitData['update_commands'].'\n';
 }
 }
-
-
 if (isset($_POST['backup_update'])) {
 /////////////////////
         // Tạo lệnh để nén thư mục
