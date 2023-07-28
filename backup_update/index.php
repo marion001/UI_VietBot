@@ -390,9 +390,9 @@ if ($currentresult === $latestVersion) {
 } else {
   $messagee .= "Có phiên bản mới: " . $latestVersion.'\n';
   $messagee .= "Phiên bản hiện tại: " . $currentresult.'\n\n';
-  //$messagee .= $gitData['new_features'].'\n';
- // $messagee .= $gitData['improvements'].'\n';
-  //$messagee .= "Lệnh Cần Bổ Sung: $:> ".$gitData['update_commands'].'\n';
+  $messagee .= $gitData['new_features'].'\n';
+  $messagee .= $gitData['improvements'].'\n';
+  $messagee .= "Lệnh Cần Bổ Sung: $:> ".$gitData['update_commands'].'\n';
 }
 }
 if (isset($_POST['backup_update'])) {
