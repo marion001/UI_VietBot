@@ -366,9 +366,6 @@ if (!is_dir($DuognDanThuMucJson)) {
 if (isset($_POST['download']) && isset($_POST['selectedFile'])) {
     $selectedFile = $_POST['selectedFile'];
     $filePath = '/backup_update/backup/' . $selectedFile; // Đường dẫn đến thư mục chứa tệp tin
-   // Tạo liên kết tới trang mục tiêu trong tab mới
-   // $targetLink = "http://$serverIP$filePath"; // Đặt đường dẫn mục tiêu tại đây
-    //echo "<script>window.open('$targetLink',  '_blank');</script>";
 	    if (!empty($selectedFile)) {
         // Tạo liên kết tới trang mục tiêu trong tab mới
         $targetLink = "http://$serverIP$filePath"; // Đặt đường dẫn mục tiêu tại đây
@@ -600,6 +597,7 @@ stream_get_contents($stream_out2);
 exec("rm $DuognDanUI_HTML/backup_update/backup/config_.json");
 exec("rm $DuognDanUI_HTML/backup_update/backup/skill_.json");
 }
+
 //Dowload backup restor
 //Chọn file backup và restore
 if (isset($_POST['restore']) && isset($_POST['selectedFile'])) {
@@ -630,20 +628,6 @@ if (file_exists($archivePath)) {
     $message .= 'Tệp tin giải nén không tồn tại: '.$selectedFile.'\n';
 }
 //End giải nén backup
-
-//Chmod 777 thưu mục src restore
-/*
-if (is_dir($sourceDirectory)) {
-    if (chmod($sourceDirectory, 0777)) {
-     //   $message .= 'Thay đổi quyền truy cập thành công: '.$sourceDirectory.'\n';
-    } else {
-        $message .= 'Thay đổi quyền truy cập thất bại: '.$sourceDirectory.'\n';
-    }
-} else {
-    $message .= 'Thư mục không tồn tại: '.$sourceDirectory.'\n';
-}
-*/
-
 $excludedFiles = array('excluded_file_VUTUYEN.txt'); //Bỏ Qua File không coppy giai đoạn thử nghiệm
 $copiedItems = array();
 copyFiles($sourceDirectory, $DuognDanThuMucJson, $excludedFiles, $copiedItems);
@@ -652,9 +636,8 @@ copyFiles($sourceDirectoryyy, $DuognDanThuMucJson, $excludedFiles, $copiedItems)
 ?>
 <div class="form-check form-switch d-flex justify-content-center"> 
 <div class="container">
-  <div class="row">
- 
- <div class="col div-div1 scrollable-menu">
+<div class="row">
+<div class="col div-div1 scrollable-menu">
 <?php
 //echo  '<font color="green"><b>Đã khôi phục Firmware Vietbot thành công file:</b></font><br/>';
 // Hiển thị danh sách các tệp tin đã được sao chép
