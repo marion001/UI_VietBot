@@ -1,7 +1,7 @@
 {
   "ui_version": {
-    "latest": "beta 30-07-2023",
-    "current": "beta 30-07-2023",
-    "notification": "Nội Dung Chính: Tự động kiểm tra và thêm mới các giá trị trong config và skill khi có thay đổi trong bản cập nhật Vietbot mới. Các giá trị bạn cấu hình trước đó sẽ được giữ nguyên (không cần cấu hình lại thủ công)"
+    "latest": "beta 31-07-2023",
+    "current": "beta 31-07-2023",
+    "notification": "Nội Dung Chính: Loại bỏ TTS Viettel và FPT (Fix Bug: Wake Up Reply)"
   }
 }
