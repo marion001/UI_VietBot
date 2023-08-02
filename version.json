@@ -1,7 +1,7 @@
 {
   "ui_version": {
-    "latest": "beta 31-07-2023",
-    "current": "beta 31-07-2023",
-    "notification": "Nội Dung Chính: Loại bỏ TTS Viettel và FPT (Fix Bug: Wake Up Reply)"
+    "latest": "beta 03-08-2023",
+    "current": "beta 03-08-2023",
+    "notification": "Nội Dung Chính: cập nhật tính năng nghe thử file âm thanh trước khi chọn ở tab Cấu Hình/Config"
   }
 }
