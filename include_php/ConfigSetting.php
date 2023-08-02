@@ -623,6 +623,10 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
     .chatbox-content.open {
         right: 0;
     }
+	  /* Ẩn trình phát âm thanh */
+  audio {
+    display: none;
+  }
 </style>
    <script src="../assets/js/11.0.18_dist_sweetalert2.all.min.js"></script>
   
@@ -948,7 +952,6 @@ Microsoft EDGE</label>
   $files = array_merge($files, glob($folderPath . '*.wav'));
   if (!empty($files)) {
     // Hiển thị dropdown list với danh sách các file
-  //  echo '<select id="path-dropdown" class="custom-select" style="display: none;">';
     echo '<select id="path-dropdown" name="mode_path" class="custom-select">';
     echo "<option value='$Welcome_Path'>".basename($Welcome_Path)."</option>";
     foreach ($files as $file) {
@@ -960,6 +963,18 @@ Microsoft EDGE</label>
   }
   ?>
   </center></td></tr>
+  
+  <tr>
+  <td><center>-</center>
+  </td> 
+<td> 
+ <audio id="audioPlayer" controls>
+  <source id="audioSource" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+<center><input type="button" id="playButtonWelcome" class="btn btn-warning" title="Nghe Thử Âm Thanh Khi Loa Khởi Động" value="Nghe Thử"></center></td></td>  <tr>
+  
+  
  <!-- <tr id="text-inputt">
   <td><b>Đọc địa chỉ ip:</b> <input type="checkbox"  name="welcome_ip" value=", | địa chỉ ai pi của mình là: <?php //echo $serverIP; ?>" <?php /* if ($Welcome_Text === $Welcome_Text_ip.', | địa chỉ ai pi của mình là: '.$serverIP) echo 'checked'; */ ?>>
 </td></tr> -->
@@ -979,7 +994,7 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
 <th scope="col"><center title="Khi kết thúc nghe lệnh bot sẽ phát âm thanh">Khi Kết Thúc</center></th>
 </tr></thead><tbody><tr><td><center>
 	  <?php
-	  echo '<select class="custom-select" name="startsound">';
+	  echo '<select class="custom-select" name="startsound" id="songSelect_start">';
 	foreach ($mp3Files as $mp3File) {
     $fileName = basename($mp3File);
 	$result_MP3 = str_replace($DuognDanThuMucJson.'/', '', $mp3File);
@@ -989,14 +1004,31 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
 ?>
 </center></td><td><center>
 <?php  
-	echo '<select class="custom-select" name="finishsound">';
+	echo '<select class="custom-select" name="finishsound" id="songSelect_finish"> ';
 	foreach ($mp3Files as $mp3File) {
     $fileNamee = basename($mp3File);
 	$result_NAME = str_replace($DuognDanThuMucJson.'/', '', $mp3File);
     echo '<option value="'.$result_NAME.'" '.(($data_config['smart_answer']['sound']['default']['finish'] === $result_NAME) ? 'selected' : '').'>'.$fileNamee.'</option>';
 	}
 	echo '</select>';
-?></center></td></tr><tbody></table></div></div><hr/>
+?></center></td></tr>
+<tr><td>
+<audio id="audioPlayer" controls>
+  <source id="audioSource" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+<center><input type="button" id="playButtonstart" class="btn btn-warning" title="Nghe thử Âm Thanh Khi Được Đánh Thức" value="Nghe Thử"></center></td>
+<td>
+<audio id="audioPlayer" controls>
+  <source id="audioSource" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+<center><input type="button" id="playButtonfinish" class="btn btn-warning" title="Nghe Thử Âm Thanh Khi Kết Thúc" value="Nghe Thử"></center></td>
+</td>
+</tr>
+
+
+<tbody></table></div></div><hr/>
 
 	<!--HOT WORK --> 
 <h5>HotWord: <i class="bi bi-info-circle-fill" onclick="togglePopuphw()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
@@ -2193,15 +2225,18 @@ else if (radio.value === "stt_hpda") {
       var textInput = document.getElementById("text-input");
     //  var textInputt = document.getElementById("text-inputt");
       var pathDropdown = document.getElementById("path-dropdown");
+      var playButtonWelcome = document.getElementById("playButtonWelcome");
 
       if (element.value === "text") {
         textInput.style.display = "block";
      //   textInputt.style.display = "block";
         pathDropdown.style.display = "none";
+        playButtonWelcome.style.display = "none";
       } else if (element.value === "path") {
         textInput.style.display = "none";
       //  textInputt.style.display = "none";
         pathDropdown.style.display = "block";
+        playButtonWelcome.style.display = "block";
       }
     }
 	
@@ -2362,6 +2397,82 @@ function disableRadioButtons() {
 // Gọi hàm để disable radio buttons khi trang được load
 disableRadioButtons();
 	
+</script>
+<script>
+  const audio = document.getElementById('audioPlayer');
+  const audioSource = document.getElementById('audioSource');
+  const songSelect_start = document.getElementById('songSelect_start');
+  const songSelect_finish = document.getElementById('songSelect_finish');
+  const playButtonstart = document.getElementById('playButtonstart');
+  const playButtonfinish = document.getElementById('playButtonfinish');
+  const songSelect_pathdropdown = document.getElementById('path-dropdown');
+  const playButtonWelcome = document.getElementById('playButtonWelcome');
+//Nghe thử âm thanh khi được đánh thức
+  playButtonstart.addEventListener('click', () => {
+    if (audio.paused) {
+      const selectedSong = songSelect_start.value;
+      // Gửi giá trị đường dẫn tới tệp PHP để lấy mã Base64
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', 'Listen.php?song=' + selectedSong, true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          const base64Audio = xhr.responseText;
+          audioSource.src = "data:audio/mpeg;base64," + base64Audio;
+          audio.load();
+          audio.play();
+        }
+      };
+      xhr.send();
+    } else {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+  });
+  //nghe thử âm thanh khi kết thúc 
+  playButtonfinish.addEventListener('click', () => {
+    if (audio.paused) {
+      const selectedSongsongSelect_finish = songSelect_finish.value;
+      
+      // Gửi giá trị đường dẫn tới tệp PHP để lấy mã Base64
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', 'Listen.php?song=' + selectedSongsongSelect_finish, true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          const base64Audio = xhr.responseText;
+          audioSource.src = "data:audio/mpeg;base64," + base64Audio;
+          audio.load();
+          audio.play();
+        }
+      };
+      xhr.send();
+    } else {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+  });
+  
+  //nghe thử âm thanh khi Loa khởi Động
+  playButtonWelcome.addEventListener('click', () => {
+    if (audio.paused) {
+      const selectedSongsongSelect_pathdropdown = songSelect_pathdropdown.value;
+      
+      // Gửi giá trị đường dẫn tới tệp PHP để lấy mã Base64
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', 'Listen.php?song=' + selectedSongsongSelect_pathdropdown, true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          const base64Audio = xhr.responseText;
+          audioSource.src = "data:audio/mpeg;base64," + base64Audio;
+          audio.load();
+          audio.play();
+        }
+      };
+      xhr.send();
+    } else {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+  });
 </script>
 </body>
 </html>
