@@ -151,8 +151,9 @@ function deviceScreen() {
 
 /*-------------------------  Date  -------------------------*/
 function date() {
-    var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
+   // var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
     //var dayNames= ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+	var monthNames = ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"];
     var newDate = new Date();
     newDate.setDate(newDate.getDate());
     $('#date').html('<span><b>' + newDate.getDate() + '</b></span>' + '<span>' + monthNames[newDate.getMonth()] + '</span> ' + newDate.getFullYear());
@@ -688,6 +689,7 @@ function portfolioIsotop() {
     });
 }
 
+
 /*-------------------------  MAGNIFIC POPUP JS  -------------------------*/
 function portfolioPopup() {
 
@@ -732,6 +734,7 @@ function portfolioPopup() {
 }
 
 /*-------------------------  GOOGLE Map  -------------------------*/
+
 function mapInit() {
 
     "use strict";
