@@ -12,12 +12,12 @@ $(document).ready(function() {
     deviceScreen();
     date();
     mobileDesign()
-    portfolioPopup();
+  //  portfolioPopup();
     sidebarMenu();
-    mapInit();
+  //  mapInit();
     mouseMagicCursor();
     ColorPallet();
-    themeOption();
+    //themeOption();
 });
 
 $window.on("load", function() {
@@ -106,6 +106,7 @@ $window.on("popstate", function(){
 
 
 /***typing***/ 
+/*
 const text = document.querySelector(".sec-text");
 
         const textLoad = () => {
@@ -122,7 +123,7 @@ const text = document.querySelector(".sec-text");
 
         textLoad();
         setInterval(textLoad, 12000);
-
+*/
 
 /******/
 
@@ -691,6 +692,8 @@ function portfolioIsotop() {
 
 
 /*-------------------------  MAGNIFIC POPUP JS  -------------------------*/
+/*
+
 function portfolioPopup() {
 
     "use strict";
@@ -732,8 +735,11 @@ function portfolioPopup() {
         });
     }
 }
+*/
 
 /*-------------------------  GOOGLE Map  -------------------------*/
+
+/*
 
 function mapInit() {
 
@@ -882,6 +888,7 @@ function mapInit() {
         marker1.setMap(map);
     }
 }
+*/
 
 /*-------------------------  Mouse Magic Cursor  -------------------------*/
 
