@@ -489,6 +489,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
     <link rel="stylesheet" href="../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../assets/css/bootstrap-icons.css">
  <link rel="stylesheet" href="../assets/css/4.5.2_css_bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/loading.css">
 <style>
     body {
         background-color: #dbe0c9;
@@ -553,36 +554,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
         text-decoration: none;
     }
     
-    #loading-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 9999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        display: none;
-    }
-    
-    #loading-icon {
-        width: 50px;
-        height: 50px;
-        position: absolute;
-        top: 42%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-    
-    #loading-message {
-        position: absolute;
-        color: White;
-        top: 60%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
+
     
     .chatbox-container {
         position: fixed;
@@ -633,7 +605,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
 </head>
 <body>
 <div id="loading-overlay"><img id="loading-icon" src="../assets/img/Loading.gif" alt="Loading...">
-<div id="loading-message">- Đang Thực Hiện<br/>- Bạn Cần Restart Lại VietBot Để Áp Dụng Dữ Liệu Mới</div>
+<div id="loading-message">- Đang Thực Hiện...</div>
 </div>
 <?php
 // Thư mục cần kiểm tra
@@ -2399,80 +2371,88 @@ disableRadioButtons();
 	
 </script>
 <script>
-  const audio = document.getElementById('audioPlayer');
-  const audioSource = document.getElementById('audioSource');
-  const songSelect_start = document.getElementById('songSelect_start');
-  const songSelect_finish = document.getElementById('songSelect_finish');
-  const playButtonstart = document.getElementById('playButtonstart');
-  const playButtonfinish = document.getElementById('playButtonfinish');
-  const songSelect_pathdropdown = document.getElementById('path-dropdown');
-  const playButtonWelcome = document.getElementById('playButtonWelcome');
-//Nghe thử âm thanh khi được đánh thức
-  playButtonstart.addEventListener('click', () => {
-    if (audio.paused) {
-      const selectedSong = songSelect_start.value;
-      // Gửi giá trị đường dẫn tới tệp PHP để lấy mã Base64
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', 'Listen.php?song=' + selectedSong, true);
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          const base64Audio = xhr.responseText;
-          audioSource.src = "data:audio/mpeg;base64," + base64Audio;
-          audio.load();
-          audio.play();
+    const audio = document.getElementById('audioPlayer');
+    const audioSource = document.getElementById('audioSource');
+    const songSelect_start = document.getElementById('songSelect_start');
+    const songSelect_finish = document.getElementById('songSelect_finish');
+    const playButtonstart = document.getElementById('playButtonstart');
+    const playButtonfinish = document.getElementById('playButtonfinish');
+    const songSelect_pathdropdown = document.getElementById('path-dropdown');
+    const playButtonWelcome = document.getElementById('playButtonWelcome');
+    //Nghe thử âm thanh khi được đánh thức
+    playButtonstart.addEventListener('click', () => {
+        if (audio.paused) {
+            document.getElementById("loading-overlay").style.display = "block";
+            const selectedSong = songSelect_start.value;
+            // Gửi giá trị đường dẫn tới tệp PHP để lấy mã Base64
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', 'Listen.php?song=' + selectedSong, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    const base64Audio = xhr.responseText;
+                    audioSource.src = "data:audio/mpeg;base64," + base64Audio;
+                    audio.load();
+                    audio.play();
+                    document.getElementById("loading-overlay").style.display = "none";
+                }
+            };
+            xhr.send();
+        } else {
+            audio.pause();
+            audio.currentTime = 0;
         }
-      };
-      xhr.send();
-    } else {
-      audio.pause();
-      audio.currentTime = 0;
-    }
-  });
-  //nghe thử âm thanh khi kết thúc 
-  playButtonfinish.addEventListener('click', () => {
-    if (audio.paused) {
-      const selectedSongsongSelect_finish = songSelect_finish.value;
-      
-      // Gửi giá trị đường dẫn tới tệp PHP để lấy mã Base64
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', 'Listen.php?song=' + selectedSongsongSelect_finish, true);
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          const base64Audio = xhr.responseText;
-          audioSource.src = "data:audio/mpeg;base64," + base64Audio;
-          audio.load();
-          audio.play();
+    });
+    //nghe thử âm thanh khi kết thúc 
+    playButtonfinish.addEventListener('click', () => {
+        if (audio.paused) {
+            document.getElementById("loading-overlay").style.display = "block";
+            const selectedSongsongSelect_finish = songSelect_finish.value;
+
+            // Gửi giá trị đường dẫn tới tệp PHP để lấy mã Base64
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', 'Listen.php?song=' + selectedSongsongSelect_finish, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    const base64Audio = xhr.responseText;
+                    audioSource.src = "data:audio/mpeg;base64," + base64Audio;
+                    audio.load();
+                    audio.play();
+                    document.getElementById("loading-overlay").style.display = "none";
+                }
+            };
+            xhr.send();
+        } else {
+            audio.pause();
+            audio.currentTime = 0;
         }
-      };
-      xhr.send();
-    } else {
-      audio.pause();
-      audio.currentTime = 0;
-    }
-  });
-  
-  //nghe thử âm thanh khi Loa khởi Động
-  playButtonWelcome.addEventListener('click', () => {
-    if (audio.paused) {
-      const selectedSongsongSelect_pathdropdown = songSelect_pathdropdown.value;
-      
-      // Gửi giá trị đường dẫn tới tệp PHP để lấy mã Base64
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', 'Listen.php?song=' + selectedSongsongSelect_pathdropdown, true);
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          const base64Audio = xhr.responseText;
-          audioSource.src = "data:audio/mpeg;base64," + base64Audio;
-          audio.load();
-          audio.play();
+    });
+
+    //nghe thử âm thanh khi Loa khởi Động
+    playButtonWelcome.addEventListener('click', () => {
+
+        if (audio.paused) {
+            document.getElementById("loading-overlay").style.display = "block";
+            const selectedSongsongSelect_pathdropdown = songSelect_pathdropdown.value;
+            // Gửi giá trị đường dẫn tới tệp PHP để lấy mã Base64
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', 'Listen.php?song=' + selectedSongsongSelect_pathdropdown, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    const base64Audio = xhr.responseText;
+                    audioSource.src = "data:audio/mpeg;base64," + base64Audio;
+                    audio.load();
+                    audio.play();
+                    document.getElementById("loading-overlay").style.display = "none";
+                }
+            };
+            xhr.send();
+
+        } else {
+            audio.pause();
+            audio.currentTime = 0;
         }
-      };
-      xhr.send();
-    } else {
-      audio.pause();
-      audio.currentTime = 0;
-    }
-  });
+
+    });
 </script>
 </body>
 </html>

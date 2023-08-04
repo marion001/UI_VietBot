@@ -15,6 +15,7 @@ $skillArray = json_decode($skillData, true);
     <link rel="stylesheet" href="../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../assets/css/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/css/4.5.2_css_bootstrap.min.css">
+	   <link rel="stylesheet" href="../assets/css/loading.css">
 		<script src="../assets/js/3.5.1_jquery.min.js"></script>
 		<script src="../assets/js/1.16.0_umd_popper.min.js"></script>
   <style>
@@ -65,34 +66,6 @@ $skillArray = json_decode($skillData, true);
       border: 1px solid gray;
       border-radius: 5px;
     }
-	#loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    display: none;
-}
-#loading-icon {
-    width: 30px;
-    height: 30px;
-    position: absolute;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-#loading-message {
-	   position: absolute;
-    color: white;
-	  top: 57%;
-    left: 50%;
-	  transform: translate(-50%, -50%);
-}
 .scrollable-divradio {
            
             height: 200px; 
