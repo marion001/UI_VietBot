@@ -123,6 +123,7 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	$Welcome_Path = $data_config['smart_answer']['sound']['welcome']['path'];
 	$Welcome_Text = $data_config['smart_answer']['sound']['welcome']['text'];
 	//address
+	
 	//Get Ưu tiên Trợ Lý Ảo/ AI
 	$external_bot_priority_1 = $data_config['smart_answer']['external_bot_priority_1'];
 	$external_bot_priority_2 = $data_config['smart_answer']['external_bot_priority_2'];
@@ -1063,55 +1064,12 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
 - <i>Khi thay đổi ngôn ngữ bạn sẽ cần phải cấu hình lại các Hotword ở mục <b>Cài Đặt Hotword</b></i>
 </div></div>
 <hr/>
+
 <!--END HOT WORK --> 
 
-<h5>Ưu Tiên Trợ Lý Ảo/AI:</h5>
-<div class="form-check form-switch d-flex justify-content-center">   <div class="col-auto">
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th scope="col" colspan="2"><center>Chọn Thứ Tự Ưu Tiên Trợ Lý Của Bạn</center></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">Top 1:</th>
-      <td>    
-	  <select class="custom-select" name="priority1" id="priority1">
-        <option value="">-- Chọn Trợ Lý/AI 1 --</option>
-        <option value="gg_bard" <?php if ($external_bot_priority_1 === "gg_bard") echo "selected"; ?>>Google Bard</option>
-        <option value="gg_ass" <?php if ($external_bot_priority_1 === "gg_ass") echo "selected"; ?>>Google Assistant</option>
-        <option value="chatGPT" <?php if ($external_bot_priority_1 === "chatGPT") echo "selected"; ?>>Chat GPT</option>
-    </select></td>
+<!-- <h5>Ưu Tiên Trợ Lý Ảo/AI:</h5> <hr/>-->
 
-    </tr>
-    <tr>
-      <th scope="row">Top 2:</th>
-      <td>    
-	  <select class="custom-select" name="priority2" id="priority2">
-        <option value="">-- Chọn Trợ Lý/AI 2 --</option>
-        <option value="gg_bard" <?php if ($external_bot_priority_2 === "gg_bard") echo "selected"; ?>>Google Bard</option>
-        <option value="gg_ass" <?php if ($external_bot_priority_2 === "gg_ass") echo "selected"; ?>>Google Assistant</option>
-        <option value="chatGPT" <?php if ($external_bot_priority_2 === "chatGPT") echo "selected"; ?>>Chat GPT</option>
-    </select></td>
 
-    </tr>
-    <tr>
-      <th scope="row">Top 3:</th>
-      <td>    
-	  <select class="custom-select" name="priority3" id="priority3" onchange="validateInputs()">
-        <option value="">-- Chọn Trợ Lý/AI 3 --</option>
-        <option value="gg_bard" <?php if ($external_bot_priority_3 === "gg_bard") echo "selected"; ?>>Google Bard</option>
-        <option value="gg_ass" <?php if ($external_bot_priority_3 === "gg_ass") echo "selected"; ?>>Google Assistant</option>
-        <option value="chatGPT" <?php if ($external_bot_priority_3 === "chatGPT") echo "selected"; ?>>Chat GPT</option>
-    </select></td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-<hr/>
 <!-- mục  Chọn Kiểu LED --> 
 <h5>Chọn Kiểu LED: <i class="bi bi-info-circle-fill" onclick="togglePopupLED()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
 <div class="form-check form-switch d-flex justify-content-center">   <div class="col-auto">
@@ -1831,6 +1789,7 @@ else if (radio.value === "tts_gg_free") {
 //End Led Script
 //Kiểm tra các chân gpio không được giống nhau
 function validateInputs() {
+/*
 	    const priority1 = document.getElementById("priority1").value;
         const priority2 = document.getElementById("priority2").value;
         const priority3 = document.getElementById("priority3").value;
@@ -1844,6 +1803,7 @@ function validateInputs() {
             }
         }
         return true;
+		*/
 		
     var name1 = document.getElementsByName("button[down][gpio]")[0].value.trim();
     var name2 = document.getElementsByName("button[up][gpio]")[0].value.trim();
