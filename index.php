@@ -445,7 +445,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
 <section id="config" class="bg-gray-400 text-white section">
     <div class="container">
         <!-- Servises -->
-        <div class="services  mb-6">
+        <div class="services">
             <div class="boxes">
                 <h3 class="subtitle">Config/Cấu Hình</h3>
                 <iframe src="./include_php/ConfigSetting.php" width="100%" height="470px"></iframe>
