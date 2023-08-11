@@ -17,8 +17,8 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title><?php echo $MYUSERNAME; ?>, VietBot Bảng Điều Khiển</title>
     <link rel="shortcut icon" href="assets/img/VietBot128.png">
-    <link href="assets/css/Font_Muli_300,400,600,700.css" rel="stylesheet">
-    <link href="assets/css/Font_Poppins_400,500,600,700.css" rel="stylesheet">
+ <!--   <link href="assets/css/Font_Muli_300,400,600,700.css" rel="stylesheet">
+    <link href="assets/css/Font_Poppins_400,500,600,700.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="assets/css/bootstrap.css">
     <link rel="stylesheet" href="assets/css/bootstrap-icons.css">
     <link rel="stylesheet" href="assets/css/all.min.css">
