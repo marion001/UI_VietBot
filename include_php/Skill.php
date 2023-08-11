@@ -19,10 +19,11 @@ $skillArray = json_decode($skillData, true);
 		<script src="../assets/js/3.5.1_jquery.min.js"></script>
 		<script src="../assets/js/1.16.0_umd_popper.min.js"></script>
   <style>
-  	body {
-    background-color: #dbe0c9;
-
-}
+    body, html {
+        background-color: #dbe0c9;
+		overflow-x: hidden; /* Ẩn thanh cuộn ngang */
+		max-width: 100%; /* Ngăn cuộn ngang trang */
+    }
 .scrollable-content {
   overflow-y: auto; 
   max-height: 400px; 
