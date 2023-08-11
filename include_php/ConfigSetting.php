@@ -492,8 +492,10 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
  <link rel="stylesheet" href="../assets/css/4.5.2_css_bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/loading.css">
 <style>
-    body {
+    body, html {
         background-color: #dbe0c9;
+		overflow-x: hidden; /* Ẩn thanh cuộn ngang */
+		max-width: 100%; /* Ngăn cuộn ngang trang */
     }
     
     .slider {
