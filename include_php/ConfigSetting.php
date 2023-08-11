@@ -846,7 +846,7 @@ Microsoft EDGE</label>
 </div>
 
 
-<br><b>Giọng Đọc:</b><br/><label>
+<br><b><font color=red>Giọng Đọc:</font></b><br/><label>
 <input type="radio" id="myRadio1" title="Nữ miền Bắc" name="tts_voice" value="female_northern_voice" <?php if ($GET_TTS_Voice_Name === 'female_northern_voice') echo 'checked'; ?> required> Nữ miền Bắc</label>&nbsp;<label>
 <input type="radio" id="myRadio2" title="Nam Miền Bắc" name="tts_voice" value="male_northern_voice" <?php if ($GET_TTS_Voice_Name === 'male_northern_voice') echo 'checked'; ?> required> Nam Miền Bắc</label>&nbsp;<label>
 
@@ -864,7 +864,7 @@ Microsoft EDGE</label>
 <table class="table">
  <thead>
      <tr>
-      <th scope="col" colspan="3"><center title="Cách hiển thị log trong terminal">Kiểu Hiển Thị Đầu Ra Bảng Điều Khiển</center></th>
+      <th scope="col" colspan="3"><center title="Cách hiển thị log trong terminal"><font color=red>Kiểu Hiển Thị Đầu Ra Bảng Điều Khiển</font></center></th>
     </tr>
     <tr>
       <th scope="col"><center title="Không hiển thị log trong terminal">Không</center></th>
@@ -897,7 +897,7 @@ Microsoft EDGE</label>
 <h5 title="Thông Báo Chào Mừng Khi Thiết Bị Khởi Động Xong">Thông Báo/Âm Thanh:</h5>
 <div class="row g-3 d-flex justify-content-center"><div class="col-auto">
   <table class="table table-bordered align-middle">
-  <thead><tr><th colspan="2"><center>Đọc Trạng Thái Ngay Sau Khi Khởi Động:</center></th></tr></thead>
+  <thead><tr><th colspan="2"><center><font color=red>Đọc Trạng Thái Ngay Sau Khi Khởi Động:</font></center></th></tr></thead>
 <tbody><tr><td colspan="2">
 <center>
 			<div class="custom-control custom-switch mt-3" title="Đọc Trạng Thái Khi Mà Loa Được Khởi Động">
@@ -908,7 +908,7 @@ Microsoft EDGE</label>
 			</td>
 			</tr>
 </tbody>
-  <thead><tr><th colspan="2"><center>Thông Báo Khi Khởi Động<c/enter></th></tr></thead>
+  <thead><tr><th colspan="2"><center><font color=red>Thông Báo Khi Khởi Động</font></center></th></tr></thead>
   <thead><tr>
       <th scope="col"><center>Đọc Văn Bản</center></th>
       <th scope="col"><center>Dùng File Âm Thanh</center></th></tr></thead><tbody><tr>
@@ -961,7 +961,7 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
 });
   ?>
   <thead><tr>
-<th scope="col" colspan="2"><center>Âm Thanh Phản Hồi</center></th>
+<th scope="col" colspan="2"><center><font color=red>Âm Thanh Phản Hồi</font></center></th>
 </tr></thead><thead><tr>
 <th scope="col"><center title="Khi bạn gọi bot thì sẽ có âm thanh phát ra để nghe lệnh">Khi Được Đánh Thức</center></th>
 <th scope="col"><center title="Khi kết thúc nghe lệnh bot sẽ phát âm thanh">Khi Kết Thúc</center></th>
@@ -1024,7 +1024,7 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
 <div class="row justify-content-center">
 <div class="col-auto">
 <table style="border-color:black;" class="table table-responsive table-bordered align-middle">
-<thead><tr> <th scope="col" colspan="4"><center class="text-success">Cài Đặt Hotword</center></th> </tr>
+<thead><tr> <th scope="col" colspan="4"><center class="text-success"><font color=red>Cài Đặt Hotword</font></center></th> </tr>
 <tr><th scope="col"><label for="" class="form-label"><center>Tên Hotword</center></label></th>
 <th scope="col"><label for="" title="Độ Nhạy Sensitive" class="form-label"><center>Độ Nhạy</center></label></th>
 <th scope="col"><label for="" title="Tích Để Bật/Tắt Hotword" class="form-label"><center>Kích Hoạt</center></label></th>
@@ -1073,10 +1073,10 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
 <!-- mục  Chọn Kiểu LED --> 
 <h5>Chọn Kiểu LED: <i class="bi bi-info-circle-fill" onclick="togglePopupLED()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
 <div class="form-check form-switch d-flex justify-content-center">   <div class="col-auto">
-<div id="toggleIcon" onclick="toggleDivz()">
+<font color=red><div id="toggleIcon" onclick="toggleDivz()"><font color=red>
     <i id="upIconz" class="bi bi-arrow-up-circle-fill" title="Nhấn Để Ẩn Cài Đặt LED" style="display: none;"></i>
-    <i id="downIconz" class="bi bi-arrow-down-circle-fill" title="Nhấn Để Hiển Thị Cài Đặt LED"></i>
-</div></div></div> 
+    <i id="downIconz" class="bi bi-arrow-down-circle-fill" title="Nhấn Để Hiển Thị Cài Đặt LED"></i></font>
+</div></font></div></div> 
 <div id="popupContainerLED" class="popup-container" onclick="hidePopupLED()">
 <div id="popupContent" onclick="preventEventPropagationLED(event)">
 <center><b>Cấu Hình Đèn LED</b></center><br/>
@@ -1121,8 +1121,8 @@ None (Không Dùng)</label></center>
 	<!--Button -->
 <h5>Cấu Hình Nút Nhấn: <i class="bi bi-info-circle-fill" onclick="togglePopupGPIO()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
 <div class="form-check form-switch d-flex justify-content-center"><div id="toggleIcon" onclick="toggleDivzx()">
-    <i id="upIconzx" title="Nhấn Để Đóng Cấu Hình Cài Đặt Nút Nhấn" class="bi bi-arrow-up-circle-fill" style="display: none;"></i>
-    <i id="downIconzx" title="Nhấn Để Mở Cấu Hình Cài Đặt Nút Nhấn" class="bi bi-arrow-down-circle-fill" ></i></div></div>
+ <font color=red> <i id="upIconzx" title="Nhấn Để Đóng Cấu Hình Cài Đặt Nút Nhấn" class="bi bi-arrow-up-circle-fill" style="display: none;"></i>
+    <i id="downIconzx" title="Nhấn Để Mở Cấu Hình Cài Đặt Nút Nhấn" class="bi bi-arrow-down-circle-fill" ></i></font></div></div>
 <div id="popupContainerGPIO" class="popup-container" onclick="hidePopupGPIO()">
 <div id="popupContent" onclick="preventEventPropagationGPIO(event)">
 <p><center><b>Cấu Hình Nút Nhấn GPIO</b></center><br/>
@@ -1154,9 +1154,9 @@ None (Không Dùng)</label></center>
 
 <h5>Thông Báo/Thời Gian Chờ:</h5>
 <div class="form-check form-switch d-flex justify-content-center"> 
-<div id="toggleIcon" onclick="toggleDivzxcans()">
+<div id="toggleIcon" onclick="toggleDivzxcans()"><font color=red>
 <i id="upIconzxcans" title="Nhấn Để Mở Cấu Hình Cài Đặt Wake Up Reply" class="bi bi-arrow-up-circle-fill" style="display: none;"></i>
-<i id="downIconzxcans" title="Nhấn Để Đóng Cấu Hình Cài Đặt Wake Up Reply" class="bi bi-arrow-down-circle-fill" ></i>
+<i id="downIconzxcans" title="Nhấn Để Đóng Cấu Hình Cài Đặt Wake Up Reply" class="bi bi-arrow-down-circle-fill" ></i></font>
 </div>
 </div>
  <div id="myDivzxcans" style="display: none;"> 
@@ -1189,9 +1189,9 @@ None (Không Dùng)</label></center>
 	<!-- <div id="additionalDiv" class="hidden">  -->
 <h5>Phản Hồi Của Bot Khi Đánh Thức: <i class="bi bi-info-circle-fill" onclick="togglePopupWAKEUP()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
 <div class="form-check form-switch d-flex justify-content-center"> 
-<div id="toggleIcon" onclick="toggleDivzxc()">
+<div id="toggleIcon" onclick="toggleDivzxc()"><font color=red>
 <i id="upIconzxc" title="Nhấn Để Mở Cấu Hình Cài Đặt Wake Up Reply" class="bi bi-arrow-up-circle-fill" style="display: none;"></i>
-<i id="downIconzxc" title="Nhấn Để Đóng Cấu Hình Cài Đặt Wake Up Reply" class="bi bi-arrow-down-circle-fill" ></i></div></div>
+<i id="downIconzxc" title="Nhấn Để Đóng Cấu Hình Cài Đặt Wake Up Reply" class="bi bi-arrow-down-circle-fill" ></i></font></div></div>
 
 <div id="popupContainerWAKEUP" class="popup-container" onclick="hidePopupWAKEUP()">
 <div id="popupContent" onclick="preventEventPropagationWAKEUP(event)">
@@ -1248,11 +1248,11 @@ else {
 <td><center><input type="radio" name="language_hotword" id="language_hotwordddd1" value="eng"></center></td>
 </tr><tr><th><center><button type="submit" name="language_hotword_submit" class="btn btn-success">Lưu Cài Đặt</button></th> 
 <th><p onclick="uncheckRadiolanguage_hotwordddd()" class="btn btn-danger">Bỏ Chọn</p></th></center></th></tr></tbody></table></div></div></form><hr/>    
-<center><h5>Khôi Phục File config.json: <i class="bi bi-info-circle-fill" onclick="togglePopupConfigRecovery()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5></center>
+<center><h5><font color=red>Khôi Phục File config.json: <i class="bi bi-info-circle-fill" onclick="togglePopupConfigRecovery()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5></font></center>
 <div class="form-check form-switch d-flex justify-content-center"> 
-<div id="toggleIcon" onclick="toggleDivConfigRecovery()">
+<div id="toggleIcon" onclick="toggleDivConfigRecovery()"><font color=red>
 <i id="upIconConfigRecovery" title="Nhấn Để Mở Cấu Hình Cài Đặt Wake Up Reply" class="bi bi-arrow-up-circle-fill" style="display: none;"></i>
-<i id="downIconConfigRecovery" title="Nhấn Để Đóng Cấu Hình Cài Đặt Wake Up Reply" class="bi bi-arrow-down-circle-fill" ></i></div></div>
+<i id="downIconConfigRecovery" title="Nhấn Để Đóng Cấu Hình Cài Đặt Wake Up Reply" class="bi bi-arrow-down-circle-fill" ></i></font></div></div>
  <div id="popupContainerConfigRecovery" class="popup-container" onclick="hidePopupConfigRecovery()">
 <div id="popupContent" onclick="preventEventPropagationConfigRecovery(event)">
 <p><center><b>Khôi Phục File Config</b></center><br/>
