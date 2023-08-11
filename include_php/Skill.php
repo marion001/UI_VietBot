@@ -239,6 +239,7 @@ chmod($backupFile, 0777);
 	//Google Brand
 	$Google_bard_Secure1PSID = @$_POST['Secure-1PSID'];
 	$Google_bard_Secure_1PSIDTS = @$_POST['Secure_1PSIDTS'];
+	$Google_bard_Secure_1PSIDCC = @$_POST['Secure-1PSIDCC'];
 	
 	//Telegram
 	$activeTelegram = isset($_POST['activeTelegram']) && $_POST['activeTelegram'] === 'on' ? true : false;
@@ -257,6 +258,7 @@ chmod($backupFile, 0777);
 	//Google Brand
     $skillArray['gg_bard']['Secure-1PSID'] = $Google_bard_Secure1PSID;
     $skillArray['gg_bard']['Secure_1PSIDTS'] = $Google_bard_Secure_1PSIDTS;
+    $skillArray['gg_bard']['Secure-1PSIDCC'] = $Google_bard_Secure_1PSIDCC;
 	// Google Asssitant Mode
     $skillArray['gg_ass']['mode'] = $Google_Assistant_Mode;
 	//Lưu Chế Độ Ưu Tiên
@@ -421,10 +423,10 @@ if (count($fileLists) > 0) {
 <div class="row justify-content-center"><div class="col-auto">	 
  <table class="table table-responsive table-striped table-bordered align-middle">
 <tbody>
-<tr><th scope="row"> <label for="hass_url">URL:</label></th>
+<tr><th scope="row"> <label>URL:</label></th>
 <td><input type="text" class="form-control" id="hass_url" name="hass_url" placeholder="http://192.168.14.104:8123" title="Nhập Url Của HomeAssistant" value="<?php echo $skillArray['hass']['url']; ?>"></td>
 </tr><tr>
-<th scope="row"> <label for="hass_key">Token Hass:</label></th>
+<th scope="row"> <label>Token Hass:</label></th>
 <td><input type="text" class="form-control" id="hass_key" name="hass_key" placeholder="Nhập Key Của HomeAssistant" title="Nhập Key Của HomeAssistant" value="<?php echo $skillArray['hass']['token']; ?>"></td>
 </tr><tr>
 <th scope="row"> <label title="Câu Trả Lời Có Thêm Chi Tiết Về Thiết Bị">Display Full State:</label></th>
@@ -445,16 +447,24 @@ B4: Go to Application -> Cookies -> __Secure-1PSID and __Secure-1PSIDTS
 <div class="row justify-content-center"><div class="col-auto">	 
  <table class="table table-responsive table-striped table-bordered align-middle">
 <tbody>
-<tr><th scope="row"colspan="2"><center>Session Google Bard</center></th>
+<tr><th scope="row"colspan="2"><center><font color=red>Session Google Bard</font></center></th>
 </tr>
-<tr><th scope="row"> <label for="hass_url">Secure-1PSID:</label></th>
+<tr><th scope="row"> <label>Secure-1PSID:</label></th>
 <td><input type="text" class="form-control" id="Secure-1PSID" name="Secure-1PSID" placeholder="Nhập Cookie Secure-1PSID Của Google bard" title="Nhập Cookie Secure-1PSID Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure-1PSID']; ?>">
 </td>
 </tr><tr>
-<th scope="row"> <label for="hass_key">Secure_1PSIDTS:</label></th>
+<th scope="row"> <label>Secure_1PSIDTS:</label></th>
 <td><input type="text" class="form-control" id="Secure_1PSIDTS" name="Secure_1PSIDTS" placeholder="Nhập Cookie Secure_1PSIDTS Của Google bard" title="Nhập Cookie Secure_1PSIDTS Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure_1PSIDTS']; ?>">
 </td>
-</tr></tbody>
+</tr>
+
+<tr>
+<th scope="row"> <label>Secure-1PSIDCC:</label></th>
+<td><input type="text" class="form-control" id="Secure-1PSIDCC" name="Secure-1PSIDCC" placeholder="Nhập Cookie Secure-1PSIDCC Của Google bard" title="Nhập Cookie Secure-1PSIDCC Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure-1PSIDCC']; ?>">
+</td>
+</tr>
+
+</tbody>
 </table></div></div>
 	
 	<hr/>
@@ -500,7 +510,7 @@ B4: Go to Application -> Cookies -> __Secure-1PSID and __Secure-1PSIDTS
 <table class="table table-bordered">
   <thead>
     <tr>
-      <th scope="col" colspan="2"><center>Chọn Thứ Tự Ưu Tiên Trợ Lý Của Bạn</center></th>
+      <th scope="col" colspan="2"><center><font color=red>Chọn Thứ Tự Ưu Tiên Trợ Lý Của Bạn</font></center></th>
     </tr>
   </thead>
   <tbody>
@@ -554,7 +564,7 @@ B4: Go to Application -> Cookies -> __Secure-1PSID and __Secure-1PSIDTS
 <table class="table table-bordered">
   <thead>
     <tr>
-      <th scope="col" colspan="2"><center>Chọn Thứ Tự Nguồn Phát Media Player</center></th>
+      <th scope="col" colspan="2"><center><font color=red>Chọn Thứ Tự Nguồn Phát Media Player</font></center></th>
     </tr>
   </thead>
   <tbody>
@@ -700,10 +710,10 @@ if ($count_news > $Limit_BaoTinTuc ) {
 ?>
 <table class="table table-responsive table-striped table-bordered align-middle">
   <thead> <tr>
-      <th colspan="3"><center>Tin Tức</center></th>
+      <th colspan="3"><center><font color=red>Tin Tức</font></center></th>
     </tr></thead><thead><tr><th></th>
- <th><label><center>Tên Báo</center></label></th>
-      <th><label><center>Link Báo RSS</center></label></th>
+ <th><label><center><font color=red>Tên Báo</font></center></label></th>
+      <th><label><center><font color=red>Link Báo RSS</font></center></label></th>
     </tr> </thead>
        <?php
 	    foreach ($news_Data as $new => $news_tintuc) {
@@ -745,8 +755,8 @@ if ($count_news > $Limit_BaoTinTuc ) {
 <table class="table">
   <thead>
     <tr>
-      <th scope="col"><center>Tên Đài</center></th>
-      <th scope="col"><center>Link Đài</center></th>
+      <th scope="col"><center><font color=red>Tên Đài</font></center></th>
+      <th scope="col"><center><font color=red>Link Đài</font></center></th>
     </tr>
   </thead>
   <tbody>
@@ -822,7 +832,7 @@ if ($count > $Limit_NgayKyNiem ) {
             $month = $anniversary['month'];
             $is_lunar_calendar = $anniversary['is_lunar_calendar'];
 			$indexxxxx = $index + 1;
-			echo "<table class='table table-responsive align-middle'><thead><tr><th colspan='2' class='table-success'><center>Sự Kiện/Ngày Kỉ Niệm $indexxxxx</center></th></tr> </thead> <tbody>";
+			echo "<table class='table table-responsive align-middle'><thead><tr><th colspan='2' class='table-success'><center><font color=red>Sự Kiện/Ngày Kỉ Niệm $indexxxxx</font></center></th></tr> </thead> <tbody>";
             echo "<tr class='table-success'> <th scope='row'><label for='nameb_$index'>Tên Sự Kiện: </label></th>";
             echo "<td><input type='text' placeholder='$name' class='form-control' id='nameb_$index' name='namei[]' value='$name'></td></tr>";
             echo "<tr class='table-success'> <th scope='row'><label for='day_$index'>Ngày: </label></th>";
@@ -837,7 +847,7 @@ if ($count > $Limit_NgayKyNiem ) {
         // Hiển thị trường nhập liệu trống để thêm mới
         if ($count < $Limit_NgayKyNiem ) {
             $newIndex = $count;
-            echo "<br/><table class='table table-responsive table-striped align-middle'> <thead><tr><th colspan='2' class='table-danger'><center>Thêm Mới Sự Kiện</center></th></tr> </thead> <tbody>";
+            echo "<br/><table class='table table-responsive table-striped align-middle'> <thead><tr><th colspan='2' class='table-danger'><center><font color=red>Thêm Mới Sự Kiện<font></center></th></tr> </thead> <tbody>";
 			echo "<tr class='table-danger'> <th scope='row'><label for='nameb_$newIndex'>Tên Sự Kiện:</label></th>";
             echo "<td><input class='form-control' type='text' id='nameb_$newIndex' placeholder='Tên sự kiện mới' name='namei[]'></td></tr>";
             echo "<tr class='table-danger'> <th scope='row'><label for='day_$newIndex'>Ngày:</label></th>";
@@ -879,7 +889,7 @@ stream_get_contents($stream_out);
 </div>
 
 </div></form><hr/>
-<h5><center>Khôi Phục File skill.json</center></h5>
+<h5><center><font color=red>Khôi Phục File skill.json</font></center></h5>
   <div class="form-check form-switch d-flex justify-content-center"> 
 <?php
 // Kiểm tra xem có file nào trong thư mục hay không
@@ -894,7 +904,7 @@ if (count($fileLists) > 0) {
     }
     echo '</select><div class="input-group-append">';
     echo '<input type="submit" class="btn btn-warning" title="Khôi Phục Lại File config.json trước đó đã sao lưu" value="Khôi Phục/Recovery">';
-    echo ' </div></div></form>';
+    echo ' </div></div></form><br/><br/>';
 }
  else {
     echo "Không tìm thấy file backup config trong thư mục.";
