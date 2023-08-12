@@ -13,9 +13,13 @@ include "../Configuration.php";
      <link rel="stylesheet" href="../assets/css/loading.css">
 
 <style>
-body {
-	background-color: #d2d8bb;
-	}
+
+
+	    body, html {
+        background-color: #d2d8bb;
+		overflow-x: hidden; /* Ẩn thanh cuộn ngang */
+		max-width: 100%; /* Ngăn cuộn ngang trang */
+    }
     .div-div1 {
       height: 200px; /* Chiều cao giới hạn của thẻ div */
       overflow: auto; /* Hiển thị thanh cuộn khi nội dung vượt quá chiều cao */
@@ -315,6 +319,17 @@ $stream_out1 = ssh2_fetch_stream($stream1, SSH2_STREAM_STDIO);
 $stream_out2 = ssh2_fetch_stream($stream2, SSH2_STREAM_STDIO); 
 stream_get_contents($stream_out1);
 stream_get_contents($stream_out2);
+///////////////////
+if (@$_POST['audioo_playmp3_success'] === "playmp3_success") {
+	echo '<audio style="display: none;" id="myAudio_success" controls autoplay>';
+    echo '<source src="../assets/audio/ui_update_success.mp3" type="audio/mpeg">';
+    echo 'Your browser does not support the audio element.';
+    echo '</audio>';
+	echo '<script>';
+	echo 'var audio = document.getElementById("myAudio_success");';
+    echo 'audio.play();';
+	echo '</script>';
+}
 }
 if (isset($_POST['restors_ui'])) {
     $selectedFile = $_POST['tarFile'];
@@ -348,10 +363,25 @@ if (isset($_POST['download']) && isset($_POST['tarFile'])) {
 }
 ?>
   <form method="POST" id="my-form" action="">
+  
    	<div class="my-div">
     <span class="corner-text"><h5>Cập Nhật:</h5></span><br/><br/>
 	<center> 
 	<div id="messagee"></div><br/></center>
+	<div class="row justify-content-center"><div class="col-auto">
+	<table class="table table-bordered">
+  <thead> 
+    <tr>
+      <th scope="col"><font color=red>Lựa Chọn Nâng Cao Khi Cập Nhật Hoàn Tất</font></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><center>Thông Báo Âm Thanh: <input type="checkbox" name="audioo_playmp3_success" value="playmp3_success" checked></center></td>
+    </tr>
+  </tbody>
+</table>
+	</div></div>
   <div class="row justify-content-center"><div class="col-auto"><div class="input-group">
     		  <input type="submit" name="checkforupdates_ui" class="btn btn-success" value="Kiểm tra">
 		   <input type="submit" name="ui_update" class="btn btn-warning" value="Cập Nhật">
