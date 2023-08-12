@@ -377,7 +377,7 @@ if (isset($_POST['download']) && isset($_POST['tarFile'])) {
   </thead>
   <tbody>
     <tr>
-      <td><center>Thông Báo Âm Thanh: <input type="checkbox" name="audioo_playmp3_success" value="playmp3_success" checked></center></td>
+      <th><center>Thông Báo Âm Thanh: <input type="checkbox" name="audioo_playmp3_success" value="playmp3_success" checked></center></th>
     </tr>
   </tbody>
 </table>
