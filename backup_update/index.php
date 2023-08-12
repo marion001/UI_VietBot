@@ -14,9 +14,11 @@ include "../Configuration.php";
     <link rel="stylesheet" href="../assets/css/loading.css">
 
     <style>
-        body {
-            background-color: #d2d8bb;
-        }
+		body, html {
+        background-color: #d2d8bb;
+		overflow-x: hidden; /* Ẩn thanh cuộn ngang */
+		max-width: 100%; /* Ngăn cuộn ngang trang */
+    }
         
         .div-div1 {
             height: 200px;
@@ -302,10 +304,15 @@ if (!is_dir($DuognDanThuMucJson)) {
                            <input type="checkbox" name="restart_vietbot_checked" class="single-checkbox form-check-input" title="Chỉ Khởi Động Lại Trợ Lý Vietbot" value="restart_vietbot_checked">
                         </td>
                     </tr>
+					<tr>
+									     <th colspan="4">
+                            <center title="Thông Báo Bằng Âm Thanh Khi Cập Nhật Được Hoàn Tất">Thông Báo Âm Thanh: <input type="checkbox" title="Thông Báo Bằng Âm Thanh Khi Cập Nhật Được Hoàn Tất" name="audioo_playmp3_success" value="playmp3_success" checked></center>
+                        </th></tr>
                     <tr>
                         <th scope="row" colspan="4">
                             <div class="form-check form-switch d-flex justify-content-center">
                                 <div class="input-group">
+								  
                                     <input type="submit" name="checkforupdates" class="btn btn-success" title="Kiểm Tra Phiên Bản Vietbot Mới" value="Kiểm Tra">
                                     <input type="submit" name="backup_update" class="btn btn-warning" title="Cập Nhật Lên Phiên Bản Vietbot Mới" value="Cập Nhật">
                                     <a class="btn btn-danger" href="<?php echo $PHP_SELF; ?>" role="button">Làm Mới</a>
@@ -462,10 +469,13 @@ exec("chmod 777 $DuognDanUI_HTML/backup_update/backup/skill_.json");
     }
 }
 ///////////////////////
-  //  $directory = '/home/pi/vietbot_offline/src';
-	//$reboot_checked = $_POST['reboot_checked'];
+
+
+/*
+
 	  if (@$_POST['reboot_checked'] === "sudo_reboot") {
             $reboot_checked_cmd = "sudo reboot";
+			$messagee .= 'ĐANG Reboot LẠI HỆ THỐNG VUI LÒNG CHỜ HỆ THỐNG KHỞI ĐỘNG LẠI!\n';
         } else {
             $reboot_checked_cmd = "uname"; //giá trị loại bỏ
         }
@@ -474,7 +484,10 @@ exec("chmod 777 $DuognDanUI_HTML/backup_update/backup/skill_.json");
             $restart_vietbot_checked = "systemctl --user restart vietbot";
         } else {
             $restart_vietbot_checked = "uname"; //giá trị loại bỏ
+			$messagee .= 'Đang restart lại Vietbot, vui lòng chờ Vietbot khởi động lại!\n';
         }
+		
+		*/
 		
     $excludedFiles = [];
     $excludedDirectories = [];
@@ -503,7 +516,6 @@ exec("chmod 777 $DuognDanUI_HTML/backup_update/backup/skill_.json");
             copyFiles($sourceDirectory, $DuognDanThuMucJson, $excludedFiles, $copiedItems);
 			copyFiles($sourceDirectoryyy, $PathResources, $excludedFiles, $copiedItems);
             $messagee .= 'Đã tải xuống phiên bản Vietbot mới và cập nhật thành công!\n';
-            $messagee .= 'BẠN CẦN KHỞI ĐỘNG LẠI LOA THÔNG MINH ĐỂ ÁP DỤNG LẠI CÀI ĐẶT!\n';
 			shell_exec("rm -rf $DuognDanUI_HTML/backup_update/extract/vietbot_offline-beta");
 			?>
 			<div class="form-check form-switch d-flex justify-content-center"> 
@@ -534,6 +546,17 @@ exec("chmod 777 $DuognDanUI_HTML/backup_update/backup/skill_.json");
     } else {
         $messagee .=  'Có lỗi xảy ra, không thể tải xuống tệp tin cập nhật.\n';
     }
+/////////////////////////////
+if (@$_POST['restart_vietbot_checked'] === "restart_vietbot_checked") {
+    $actionCommand = "systemctl --user restart vietbot";
+    $messagee .= 'Đang Restart lại Vietbot, vui lòng chờ Vietbot khởi động lại!';
+} elseif (@$_POST['reboot_checked'] === "reboot_checked") {
+    $actionCommand = "sudo reboot";
+    $messagee .= 'Đang Reboot hệ thống, vui lòng chờ hệ thống khởi động lại!';
+} else {
+	$actionCommand = "uname";
+    $messagee .= 'Hãy Restart lại Vietbot để áp dụng cập nhật mới.';
+}
 ///////////////////////////////////////
 // thay thế các giá trị config từ cũ sang mới
 $oldConfigPath = $DuognDanUI_HTML.'/backup_update/backup/config_.json';
@@ -592,29 +615,39 @@ if (!$connection) {die($E_rror_HOST);}
 if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
 $stream1 = ssh2_exec($connection, 'sudo chmod -R 0777 '.$Path_Vietbot_src);
 $stream2 = ssh2_exec($connection, 'sudo chown -R pi:pi '.$Path_Vietbot_src);
-$stream3 = ssh2_exec($connection, "$reboot_checked_cmd");
-$stream4 = ssh2_exec($connection, "$restart_vietbot_checked");
+$stream3 = ssh2_exec($connection, "$actionCommand");
+//$stream4 = ssh2_exec($connection, "$restart_vietbot_checked");
 
 stream_set_blocking($stream1, true); 
 stream_set_blocking($stream2, true); 
 stream_set_blocking($stream3, true); 
-stream_set_blocking($stream4, true); 
+//stream_set_blocking($stream4, true); 
 
 $stream_out1 = ssh2_fetch_stream($stream1, SSH2_STREAM_STDIO); 
 $stream_out2 = ssh2_fetch_stream($stream2, SSH2_STREAM_STDIO); 
 $stream_out3 = ssh2_fetch_stream($stream3, SSH2_STREAM_STDIO); 
-$stream_out4 = ssh2_fetch_stream($stream4, SSH2_STREAM_STDIO); 
+//$stream_out4 = ssh2_fetch_stream($stream4, SSH2_STREAM_STDIO); 
 
 stream_get_contents($stream_out1);
 stream_get_contents($stream_out2);
 stream_get_contents($stream_out3);
-stream_get_contents($stream_out4);
-
+//stream_get_contents($stream_out4);
 
 exec("rm $DuognDanUI_HTML/backup_update/backup/config_.json");
 exec("rm $DuognDanUI_HTML/backup_update/backup/skill_.json");
-}
 
+//Play Mp3 khi cập nhật hoàn tất
+if (@$_POST['audioo_playmp3_success'] === "playmp3_success") {
+	echo '<audio style="display: none;" id="myAudio_success" controls autoplay>';
+    echo '<source src="../assets/audio/vietbot_update_success.mp3" type="audio/mpeg">';
+    echo 'Your browser does not support the audio element.';
+    echo '</audio>';
+	echo '<script>';
+	echo 'var audio = document.getElementById("myAudio_success");';
+    echo 'audio.play();';
+	echo '</script>';
+}
+}
 //Dowload backup restor
 //Chọn file backup và restore
 if (isset($_POST['restore']) && isset($_POST['selectedFile'])) {
