@@ -239,7 +239,7 @@ chmod($backupFile, 0777);
 	$ChatGptKey = @$_POST['chatgpt_key'];
 	//Google Brand
 	$Google_bard_Secure1PSID = @$_POST['Secure-1PSID'];
-	$Google_bard_Secure_1PSIDTS = @$_POST['Secure_1PSIDTS'];
+	$Google_bard_Secure_1PSIDTS = @$_POST['Secure-1PSIDTS'];
 	$Google_bard_Secure_1PSIDCC = @$_POST['Secure-1PSIDCC'];
 	
 	//Telegram
@@ -258,7 +258,7 @@ chmod($backupFile, 0777);
     $skillArray['chatgpt']['token'] = $ChatGptKey;
 	//Google Brand
     $skillArray['gg_bard']['Secure-1PSID'] = $Google_bard_Secure1PSID;
-    $skillArray['gg_bard']['Secure_1PSIDTS'] = $Google_bard_Secure_1PSIDTS;
+    $skillArray['gg_bard']['Secure-1PSIDTS'] = $Google_bard_Secure_1PSIDTS;
     $skillArray['gg_bard']['Secure-1PSIDCC'] = $Google_bard_Secure_1PSIDCC;
 	// Google Asssitant Mode
     $skillArray['gg_ass']['mode'] = $Google_Assistant_Mode;
@@ -442,7 +442,7 @@ if (count($fileLists) > 0) {
 B1: Nhấn Vào <b>Dùng thử Bard</b> -> kéo hết điều khoản và sử dụng và chọn <b>Tôi Đồng Ý</b><br/>
 B2: khi hiện lên thông báo: <b>Bard là một thử nghiệm</b> Nhấn vào <b>Tiếp Tục</b><br/>
 B3: Nhấn F12 cho bảng điều khiển hoặc (nhấn chuột phải chọn Kiểm Tra Phần Tử)<br/>
-B4: Go to Application -> Cookies -> __Secure-1PSID and __Secure-1PSIDTS
+B4: Go to Application -> Cookies -> "__Secure-1PSID" và "__Secure-1PSIDTS" và "__Secure-1PSIDCC"
  
 </div> </div>
 <div class="row justify-content-center"><div class="col-auto">	 
@@ -454,8 +454,8 @@ B4: Go to Application -> Cookies -> __Secure-1PSID and __Secure-1PSIDTS
 <td><input type="text" class="form-control" id="Secure-1PSID" name="Secure-1PSID" placeholder="Nhập Cookie Secure-1PSID Của Google bard" title="Nhập Cookie Secure-1PSID Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure-1PSID']; ?>">
 </td>
 </tr><tr>
-<th scope="row"> <label>Secure_1PSIDTS:</label></th>
-<td><input type="text" class="form-control" id="Secure_1PSIDTS" name="Secure_1PSIDTS" placeholder="Nhập Cookie Secure_1PSIDTS Của Google bard" title="Nhập Cookie Secure_1PSIDTS Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure_1PSIDTS']; ?>">
+<th scope="row"> <label>Secure-1PSIDTS:</label></th>
+<td><input type="text" class="form-control" id="Secure-1PSIDTS" name="Secure-1PSIDTS" placeholder="Nhập Cookie Secure-1PSIDTS Của Google bard" title="Nhập Cookie Secure-1PSIDTS Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure-1PSIDTS']; ?>">
 </td>
 </tr>
 
@@ -573,7 +573,7 @@ B4: Go to Application -> Cookies -> __Secure-1PSID and __Secure-1PSIDTS
       <th scope="row">Top 1:</th>
       <td>    
 	  <select class="custom-select" name="music_source_priority1" id="music_source_priority1">
-        <option value="">-- Chọn Trợ Lý/AI 1 --</option>
+        <option value="">-- Chọn Nguồn Phát --</option>
         <option value="local" <?php if ($music_source_priority_1 === "local") echo "selected"; ?>>Local</option>
         <option value="ZingMP3" <?php if ($music_source_priority_1 === "ZingMP3") echo "selected"; ?>>ZingMP3</option>
         <option value="Youtube" <?php if ($music_source_priority_1 === "Youtube") echo "selected"; ?>>Youtube</option>
@@ -584,7 +584,7 @@ B4: Go to Application -> Cookies -> __Secure-1PSID and __Secure-1PSIDTS
       <th scope="row">Top 2:</th>
       <td>    
 	  <select class="custom-select" name="music_source_priority2" id="music_source_priority2">
-        <option value="">-- Chọn Trợ Lý/AI 2 --</option>
+        <option value="">-- Chọn Nguồn Phát --</option>
         <option value="local" <?php if ($music_source_priority_2 === "local") echo "selected"; ?>>Local</option>
         <option value="ZingMP3" <?php if ($music_source_priority_2 === "ZingMP3") echo "selected"; ?>>ZingMP3</option>
         <option value="Youtube" <?php if ($music_source_priority_2 === "Youtube") echo "selected"; ?>>Youtube</option>
@@ -595,7 +595,7 @@ B4: Go to Application -> Cookies -> __Secure-1PSID and __Secure-1PSIDTS
       <th scope="row">Top 3:</th>
       <td>    
 	  <select class="custom-select" name="music_source_priority3" id="music_source_priority3" onchange="vuTuyen()">
-        <option value="">-- Chọn Trợ Lý/AI 3 --</option>
+        <option value="">-- Chọn Nguồn Phát --</option>
         <option value="local" <?php if ($music_source_priority_3 === "local") echo "selected"; ?>>Local</option>
         <option value="ZingMP3" <?php if ($music_source_priority_3 === "ZingMP3") echo "selected"; ?>>ZingMP3</option>
         <option value="Youtube" <?php if ($music_source_priority_3 === "Youtube") echo "selected"; ?>>Youtube</option>
