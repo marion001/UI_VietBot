@@ -491,6 +491,9 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
     <link rel="stylesheet" href="../assets/css/bootstrap-icons.css">
  <link rel="stylesheet" href="../assets/css/4.5.2_css_bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/loading.css">
+    <link rel="stylesheet" href="../assets/css/11.3.1_styles_monokai-sublime.min.css">
+<script src="../assets/js/11.3.1_highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
 <style>
     body, html {
         background-color: #dbe0c9;
@@ -557,8 +560,6 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
         text-decoration: none;
     }
     
-
-    
     .chatbox-container {
         position: fixed;
         top: 40%;
@@ -602,6 +603,39 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
   audio {
     display: none;
   }
+  
+
+          pre {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            overflow: auto; /* Thêm thuộc tính này */
+            
+        }
+        #popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            align-items: center;
+            justify-content: center;
+			 z-index: 9999;
+        }
+
+        #popup-content {
+            background-color: #ffffff00;
+            padding: 5px;
+            border-radius: 5px;
+            width: 100vw; /* Sử dụng đơn vị vw cho chiều rộng tối đa */
+            height: 100%;
+            overflow: auto;
+		
+		}
 </style>
    <script src="../assets/js/11.0.18_dist_sweetalert2.all.min.js"></script>
   
@@ -1236,7 +1270,19 @@ else {
 <!--Kết Thúc mục  Wake Up Reply --> 		
 <center>
 <input type="submit" class="btn btn-success" name="config_setting" value="Lưu Cấu Hình">  <a href="<?php echo $PHP_SELF ?>"><button type="submit" class="btn btn-danger">Hủy Bỏ/Làm Mới</button></a>
- <button type="submit" name="restart_vietbot" class="btn btn-warning">Khởi Động Lại VietBot</button></center>
+ <button type="submit" name="restart_vietbot" class="btn btn-warning">Khởi Động Lại VietBot</button>
+
+ <input type="button" id="view-button" class="btn btn-info" value="Json View">
+ 
+ </center>
+ 
+    <div id="popup">
+        <div id="popup-content">
+            <pre><code class="json"><?php echo file_get_contents("$DuognDanThuMucJson/config.json"); ?></code></pre>
+			 <center><input type="button"  class="btn btn-info" id="close-button" value="Đóng"></center>
+        </div>
+    </div>
+	
      <div class="chatbox-container" onclick="toggleChatbox()" title="Nhấn Để Thay Đổi Ngôn Ngữ Gọi Hotword"><center><b>Ngôn <br/>Ngữ</b></center></div>
     <div id="chatbox-content" class="chatbox-content"><br/>
 <div class="col-auto">
@@ -2416,5 +2462,18 @@ disableRadioButtons();
 
     });
 </script>
+    <script>
+        const viewButton = document.getElementById('view-button');
+        const popup = document.getElementById('popup');
+        const closeButton = document.getElementById('close-button');
+
+        viewButton.addEventListener('click', () => {
+            popup.style.display = 'flex';
+        });
+
+        closeButton.addEventListener('click', () => {
+            popup.style.display = 'none';
+        });
+    </script>
 </body>
 </html>
