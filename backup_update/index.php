@@ -16,22 +16,14 @@ include "../Configuration.php";
     <style>
 		body, html {
         background-color: #d2d8bb;
-		overflow-x: hidden; /* Ẩn thanh cuộn ngang */
-		max-width: 100%; /* Ngăn cuộn ngang trang */
+		overflow-x: hidden;
+		max-width: 100%;
     }
-        
         .div-div1 {
             height: 200px;
-            /* Chiều cao giới hạn của thẻ div */
-            
             overflow: auto;
-            /* Hiển thị thanh cuộn khi nội dung vượt quá chiều cao */
-            
             border: 1px solid #ccc;
-            /* Đường viền cho thẻ div */
-            
             padding: 2px;
-            /* Khoảng cách giữa nội dung và đường viền */
         }
         
         ::-webkit-scrollbar {
@@ -78,7 +70,6 @@ include "../Configuration.php";
 
 <body>
     <br/>
-
     <script src="../assets/js/jquery.min.js"></script>
     <script src="../assets/js/popper.min.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
@@ -182,7 +173,6 @@ function checkPermissions($path, &$hasPermissionIssue) {
         $permissions = fileperms($filePath);
         if ($permissions !== false && ($permissions & 0777) !== 0777) {
             if (!$hasPermissionIssue) {
-               // echo "<br/><center><h3 class='text-danger'>Một Số File,Thư Mục Trong <b>$path</b> Không Có Quyền Can Thiệp.<h3><br/>";
 			   echo "<center>Phát hiện thấy một số nội dung bị thay đổi quyền hạn.<br/>";
 			echo "<form method='post' id='my-form' action='".$PHP_SELF."'> <button type='submit' name='set_full_quyen' class='btn btn-success'>Cấp Quyền</button></form></center>";
                 $hasPermissionIssue = true;
@@ -211,7 +201,6 @@ if (!is_dir($DuognDanThuMucJson)) {
         <div id="messagee"></div>
     </center>
     <br/>
-
     <form method="POST" id="my-form" action="">
         <div class="row g-3 d-flex justify-content-center">
             <div class="col-auto">
@@ -428,17 +417,18 @@ if (isset($_POST['backup_update'])) {
 //Coppy file config, skill và chmod ra bộ nhớ tạm để lấy và thay thế các value giống nhau
 exec("cp $DuognDanThuMucJson/config.json $DuognDanUI_HTML/backup_update/backup/config_.json");
 exec("cp $DuognDanThuMucJson/skill.json $DuognDanUI_HTML/backup_update/backup/skill_.json");
+exec("cp $DuognDanThuMucJson/state.json $DuognDanUI_HTML/backup_update/backup/state_.json");
 exec("chmod 777 $DuognDanUI_HTML/backup_update/backup/config_.json");
 exec("chmod 777 $DuognDanUI_HTML/backup_update/backup/skill_.json");
+exec("chmod 777 $DuognDanUI_HTML/backup_update/backup/state_.json");
 //END Coppy
 /////////////////////
         // Tạo lệnh để nén thư mục
-       // $tarCommand = 'tar -czvf ' . $backupFile . ' -C ' . dirname($DuognDanThuMucJson) . ' ' . basename($DuognDanThuMucJson);
 		$tarCommand = "tar -czvf " . $backupFile . " -C $Path_Vietbot_src resources src";
         exec($tarCommand, $output, $returnCode);
         if ($returnCode === 0) {
             chmod($backupFile, 0777);
-         //   $messagee .= 'Tạo bản sao lưu thành công\n';
+         //$messagee .= 'Tạo bản sao lưu thành công\n';
             // Xóa các file cũ nếu số lượng tệp tin sao lưu vượt quá giới hạn
             $backupFiles = glob($backupDir . '/*.tar.gz');
             $numBackupFiles = count($backupFiles);
@@ -469,25 +459,6 @@ exec("chmod 777 $DuognDanUI_HTML/backup_update/backup/skill_.json");
     }
 }
 ///////////////////////
-
-
-/*
-
-	  if (@$_POST['reboot_checked'] === "sudo_reboot") {
-            $reboot_checked_cmd = "sudo reboot";
-			$messagee .= 'ĐANG Reboot LẠI HỆ THỐNG VUI LÒNG CHỜ HỆ THỐNG KHỞI ĐỘNG LẠI!\n';
-        } else {
-            $reboot_checked_cmd = "uname"; //giá trị loại bỏ
-        }
-		
-	  if (@$_POST['restart_vietbot_checked'] === "restart_vietbot_checked") {
-            $restart_vietbot_checked = "systemctl --user restart vietbot";
-        } else {
-            $restart_vietbot_checked = "uname"; //giá trị loại bỏ
-			$messagee .= 'Đang restart lại Vietbot, vui lòng chờ Vietbot khởi động lại!\n';
-        }
-		
-		*/
 		
     $excludedFiles = [];
     $excludedDirectories = [];
@@ -608,7 +579,15 @@ recursiveReplaceSkill($newSkillData, $oldSkillData);
 $newSkillUpdatedContent = json_encode($newSkillData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 file_put_contents($newSkillPath, $newSkillUpdatedContent);
 /////////////////////////////////////////////////////////////
+//Thay Thế Giá Trị Volume ở file state.json từ cũ sang mới
+$input_json = file_get_contents($DuognDanUI_HTML.'/backup_update/backup/state_.json');
+$data_State = json_decode($input_json, true);
+$volume_State_value = $data_State['volume'];
+$data_State['volume'] = $volume_State_value;
+$output_State_json = json_encode($data_State, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+file_put_contents($DuognDanThuMucJson.'/state.json', $output_State_json);
 ////End thay thế các giá trị
+
 //Chmod 777 khi chạy xong backup
 $connection = ssh2_connect($serverIP, $SSH_Port);
 if (!$connection) {die($E_rror_HOST);}
@@ -635,6 +614,7 @@ stream_get_contents($stream_out3);
 
 exec("rm $DuognDanUI_HTML/backup_update/backup/config_.json");
 exec("rm $DuognDanUI_HTML/backup_update/backup/skill_.json");
+exec("rm $DuognDanUI_HTML/backup_update/backup/state_.json");
 
 //Play Mp3 khi cập nhật hoàn tất
 if (@$_POST['audioo_playmp3_success'] === "playmp3_success") {
@@ -742,7 +722,6 @@ stream_get_contents($stream_out1);
     </script>
 	 <script>
         const checkboxes = document.querySelectorAll('.single-checkbox');
-        
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', () => {
                 if (checkbox.checked) {
