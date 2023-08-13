@@ -15,9 +15,12 @@ $skillArray = json_decode($skillData, true);
     <link rel="stylesheet" href="../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../assets/css/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/css/4.5.2_css_bootstrap.min.css">
-	   <link rel="stylesheet" href="../assets/css/loading.css">
-		<script src="../assets/js/3.5.1_jquery.min.js"></script>
-		<script src="../assets/js/1.16.0_umd_popper.min.js"></script>
+	<link rel="stylesheet" href="../assets/css/loading.css">
+	<link rel="stylesheet" href="../assets/css/11.3.1_styles_monokai-sublime.min.css">
+	<script src="../assets/js/3.5.1_jquery.min.js"></script>
+	<script src="../assets/js/1.16.0_umd_popper.min.js"></script>
+	<script src="../assets/js/11.3.1_highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
   <style>
     body, html {
         background-color: #dbe0c9;
@@ -72,6 +75,39 @@ $skillArray = json_decode($skillData, true);
             height: 200px; 
             overflow: auto;
         }
+		
+
+          pre {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            overflow: auto; /* Thêm thuộc tính này */
+            
+        }
+        #popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            align-items: center;
+            justify-content: center;
+			 z-index: 9999;
+        }
+
+        #popup-content {
+            background-color: #ffffff00;
+            padding: 5px;
+            border-radius: 5px;
+            width: 100vw; /* Sử dụng đơn vị vw cho chiều rộng tối đa */
+            height: 100%;
+            overflow: auto;
+		
+		}
   </style>
 	</head>
 	<body>
@@ -882,14 +918,27 @@ stream_get_contents($stream_out);
 ?>
 
 <div class="row justify-content-center"><div class="col-auto">
-<input type="submit" name="skill_saver" class="btn btn-primary" value="Lưu Cài Đặt"></div><div class="col-auto"> <a href="<?php echo $PHP_SELF ?>"><button type="button" class="btn btn-danger">Hủy Bỏ/Làm Mới</button></a></div>
+<center>
+<input type="submit" name="skill_saver" class="btn btn-primary" value="Lưu Cài Đặt">
+
+ <a href="<?php echo $PHP_SELF ?>"><button type="button" class="btn btn-danger">Hủy Bỏ/Làm Mới</button></a>
 
 
-<div class="col-auto">
+
  <button type="submit" name="restart_vietbot" class="btn btn-warning">Khởi Động Lại VietBot</button>
-</div>
 
-</div></form><hr/>
+
+<input type="button" id="view-button" class="btn btn-info" value="Json View"></center>
+</div>
+</div></form>
+    <div id="popup">
+        <div id="popup-content">
+            <pre><code class="json"><?php echo file_get_contents("$DuognDanThuMucJson/skill.json"); ?></code></pre>
+			 <center><input type="button"  class="btn btn-info" id="close-button" value="Đóng"></center>
+        </div>
+    </div>
+<hr/>
+
 <h5><center><font color=red>Khôi Phục File skill.json</font></center></h5>
   <div class="form-check form-switch d-flex justify-content-center"> 
 <?php
@@ -1099,6 +1148,19 @@ function vuTuyen() {
 }
 
 </script>
+    <script>
+        const viewButton = document.getElementById('view-button');
+        const popup = document.getElementById('popup');
+        const closeButton = document.getElementById('close-button');
+
+        viewButton.addEventListener('click', () => {
+            popup.style.display = 'flex';
+        });
+
+        closeButton.addEventListener('click', () => {
+            popup.style.display = 'none';
+        });
+    </script>
 	<script src="../assets/js/bootstrap.js"></script>
 	<script src="../assets/js/jquery.min.js"></script>
 	<script src="../assets/js/axios_0.21.1.min.js"></script>
