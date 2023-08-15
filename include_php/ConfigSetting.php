@@ -165,6 +165,7 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 		$fileName = pathinfo($filePath, PATHINFO_FILENAME);
         $jsonData['smart_wakeup']['hotword'][] = [
             "type" => "porcupine",
+			"custom_skill" => false,
             "value" => null,
             "lang" => $selectedLanguage,
             "file_name" => $fileName.".ppn",
@@ -261,11 +262,13 @@ chmod($backupFile, 0777);
    $selectedSensitive = floatval($_POST['sensitive']);
     $selectedActive = isset($_POST['active']) ? true : false;
     $selectedSayReply = isset($_POST['say_reply']) ? true : false;
+    $selectedCustom_Skill = isset($_POST['custom_skill']) ? true : false;
     // Đọc dữ liệu từ file config.json
     // Tìm và cập nhật thông tin của hotword được chọn
     foreach ($data_config['smart_wakeup']['hotword'] as &$hotword) {
         if ($hotword['file_name'] === $selectedFileName) {
             $hotword['sensitive'] = $selectedSensitive;
+            $hotword['custom_skill'] = $selectedCustom_Skill;
             $hotword['active'] = $selectedActive;
             $hotword['command'] = $commandHW;
             $hotword['say_reply'] = $selectedSayReply;
@@ -1059,48 +1062,103 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
 <!-- <div id="myDivzxchw" style="display: none;"> -->
 <div class="row justify-content-center">
 <div class="col-auto">
-<table style="border-color:black;" class="table table-responsive table-bordered align-middle">
-<thead><tr> <th scope="col" colspan="4"><center class="text-success"><font color=red>Cài Đặt Hotword</font></center></th> </tr>
-<tr><th scope="col"><label for="" class="form-label"><center>Tên Hotword</center></label></th>
-<th scope="col"><label for="" title="Độ Nhạy Sensitive" class="form-label"><center>Độ Nhạy</center></label></th>
-<th scope="col"><label for="" title="Tích Để Bật/Tắt Hotword" class="form-label"><center>Kích Hoạt</center></label></th>
-<th scope="col"><label for="" title="Bật/Tắt Phản Hồi Của Bot Khi Được Đánh Thức" class="form-label"><center>Phản Hồi Lại</center></label></th>
-<tbody><tr><td><div>
+<!-- <table style="border-color:black;" class="table table-responsive table-bordered align-middle"> -->
+<table class="table table-responsive table-bordered align-middle">
+<thead><tr> <th scope="col" colspan="2"><center class="text-success"><font color=red>Cài Đặt Hotword</font></center></th> 
+</tr>
+ <tbody>
+    <tr>
+      <th scope="row"><label for="" class="form-label"><center>Tên Hotword:</center></label></th>
+      <td>
+	  <div>
 <select id="file_name" name="file_name" class="custom-select" onchange="showSensitiveInput(this.value)">
 <option value="">Chọn Hotword</option>
 <?php foreach ($data_config['smart_wakeup']['hotword'] as $hotword): ?>
 <option value="<?php echo $hotword['file_name']; ?>"><?php echo substr($hotword['file_name'], 0, strpos($hotword['file_name'], "_")); ?></option>
 <?php endforeach; ?>
-</select></div></td><td><div>
-<input type="number" id="sensitive" name="sensitive" style="width: 90px;" title="Chỉ Được Nhập Số Từ 0.1 Đến 1" placeholder="0.1->1" class="form-control" step="0.1" min="0.1" max="1">
-</div></td><td><div>
-<center><input type="checkbox" id="active" name="active" title="Tích vào để kích hoạt" class="form-check-input"></center>
-</div></td><td><div>
-<center><input type="checkbox" id="say_reply" name="say_reply" title="Tích vào để kích hoạt" class="form-check-input"></center></div></td>
+</select></div>
+</td>
+</tr>
+<tr>
+    <th scope="row">
+        <label for="" title="Tích Để Bật/Tắt Hotword" class="form-label">
+            <center>Kích Hoạt:</center>
+        </label>
+    </th>
+    <td>
+        <div>
+            <center>
+                <input type="checkbox" id="active" name="active" title="Tích vào để kích hoạt" class="form-check-input">
+            </center>
+        </div>
+    </td>
+</tr>
 
 <tr>
-<td colspan="4">
-<div class="input-group mb-3">
-  <div class="input-group-prepend">
-    <span class="input-group-text" id="basic-addon1">Kèm câu lệnh:</span>
-  </div>
-  <input type="text" id="command" name="command" placeholder="Nhập Lệnh Vào Đây" title="Nhập Lệnh Của Bạn" class="form-control">
-</div>
-</td></tr>
-</tr></tbody> </tr></thead></table> 
+    <th scope="row">
+        <label for="" title="Bật/Tắt Phản Hồi Của Bot Khi Được Đánh Thức" class="form-label">
+            <center>Phản Hồi Lại:</center>
+        </label>
+    </th>
+    <td>
+        <div>
+            <center>
+                <input type="checkbox" id="say_reply" name="say_reply" title="Tích vào để kích hoạt" class="form-check-input">
+            </center>
+        </div>
+    </td>
+</tr>
+<tr>
+    <th scope="row">Dùng Cho Custom Skill:</th>
+    <td>
+        <div>
+            <center>
+                <input type="checkbox" id="custom_skill" name="custom_skill" title="Tích vào để kích hoạt" class="form-check-input">
+            </center>
+        </div>
+    </td>
+</tr>
+<tr>
+    <th scope="row">
+        <label for="" title="Độ Nhạy Sensitive" class="form-label">
+            <center>Độ Nhạy:</center>
+        </label>
+    </th>
+    <td>
+        <div>
+            <input type="number" id="sensitive" name="sensitive" title="Chỉ Được Nhập Số Từ 0.1 Đến 1" placeholder="0.1 -> 1" class="form-control" step="0.1" min="0.1" max="1">
+        </div>
+    </td>
+</tr>
+<tr>
+    <td colspan="2">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Kèm câu lệnh:</span>
+            </div>
+            <input type="text" id="command" name="command" placeholder="Nhập Lệnh Vào Đây" title="Nhập Lệnh Của Bạn" class="form-control">
+        </div>
+    </td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <!-- </div> -->
-<div id="popupContainerhwlang" class="popup-container" onclick="hidePopuphwlang()"><div id="popupContent" onclick="preventEventPropagationhwlang(event)">
-<p><center><b>Thay Đổi Ngôn Ngữ Gọi Hotword</b></center><br/>
-- <b>1: </b> 2 file thư viện <a href="https://github.com/Picovoice/porcupine/blob/master/lib/common/porcupine_params.pv" target="_bank">tiếng anh</a> 
-	<b>"porcupine_params.pv"</b> và <a href="https://github.com/Picovoice/porcupine/blob/master/lib/common/porcupine_params_vn.pv" target="_bank">tiếng việt</a> 
-	<b>"porcupine_params_vn.pv"</b><br/>phải nằm cùng trong đường dẫn sau: "<b><?php echo $Lib_Hotword; ?></b>"<br/>
-- <b>2: </b>các file thư viện hotword, file hotword, thư viện picovoice phải cùng phiên bản.<br/>
-- <i>Khi thay đổi ngôn ngữ bạn sẽ cần phải cấu hình lại các Hotword ở mục <b>Cài Đặt Hotword</b></i>
-</div></div>
+<div id="popupContainerhwlang" class="popup-container" onclick="hidePopuphwlang()">
+    <div id="popupContent" onclick="preventEventPropagationhwlang(event)">
+        <p>
+            <center><b>Thay Đổi Ngôn Ngữ Gọi Hotword</b>
+            </center>
+            <br/> - <b>1: </b> 2 file thư viện <a href="https://github.com/Picovoice/porcupine/blob/master/lib/common/porcupine_params.pv" target="_bank">tiếng anh</a>
+            <b>"porcupine_params.pv"</b> và <a href="https://github.com/Picovoice/porcupine/blob/master/lib/common/porcupine_params_vn.pv" target="_bank">tiếng việt</a>
+            <b>"porcupine_params_vn.pv"</b>
+            <br/>phải nằm cùng trong đường dẫn sau: "<b><?php echo $Lib_Hotword; ?></b>"
+            <br/> - <b>2: </b>các file thư viện hotword, file hotword, thư viện picovoice phải cùng phiên bản.
+            <br/> - <i>Khi thay đổi ngôn ngữ bạn sẽ cần phải cấu hình lại các Hotword ở mục <b>Cài Đặt Hotword</b></i>
+    </div>
+</div>
 <hr/>
-
 <!--END HOT WORK --> 
 
 <!-- <h5>Ưu Tiên Trợ Lý Ảo/AI:</h5> <hr/>-->
@@ -1336,11 +1394,12 @@ if (count($fileLists) > 0) {
   <script>
        function showSensitiveInput(file_name) {
             var sensitiveInput = document.getElementById('sensitive');
-            var sensitiveLabel = document.querySelector('label[for="sensitive"]');
+           // var sensitiveLabel = document.querySelector('label[for="sensitive"]');
             var activeInput = document.getElementById('active');
             var sayReplyInput = document.getElementById('say_reply');
-             var commandInput = document.getElementById('command'); // Trường input command
-            var sayReplyLabel = document.querySelector('label[for="say_reply"]');
+            var customSkillInput = document.getElementById('custom_skill');
+            var commandInput = document.getElementById('command'); // Trường input command
+           // var sayReplyLabel = document.querySelector('label[for="say_reply"]');
             if (file_name !== '') {
                 sensitiveInput.classList.remove('hidden');
                 sensitiveInput.value = getSensitiveValue(file_name);
@@ -1348,9 +1407,11 @@ if (count($fileLists) > 0) {
                 activeInput.checked = getActiveValue(file_name);
                 sayReplyInput.classList.remove('hidden');
                 sayReplyInput.checked = getSayReplyValue(file_name);
-			         // Hiển thị dữ liệu command
-      commandInput.classList.remove('hidden');
-      commandInput.value = getCommandValue(file_name);
+				customSkillInput.classList.remove('hidden');
+                customSkillInput.checked = getCustomSkill(file_name);
+			    // Hiển thị dữ liệu command
+				commandInput.classList.remove('hidden');
+				commandInput.value = getCommandValue(file_name);
             } else {
                 sensitiveInput.classList.add('hidden');
                 sensitiveInput.value = '';
@@ -1358,9 +1419,12 @@ if (count($fileLists) > 0) {
                 activeInput.checked = false;
                 sayReplyInput.classList.add('hidden');
                 sayReplyInput.checked = false;
+				customSkillInput.classList.add('hidden');
+                customSkillInput.checked = false;
+				
 			    // Ẩn trường input command khi không có dữ liệu
-      commandInput.classList.add('hidden');
-      commandInput.value = '';
+				commandInput.classList.add('hidden');
+				commandInput.value = '';
             }
         }
         function getSensitiveValue(file_name) {
@@ -1390,16 +1454,25 @@ if (count($fileLists) > 0) {
             }
             return false;
         }
+        function getCustomSkill(file_name) {
+            var customSkillData = <?php echo json_encode($data_config['smart_wakeup']['hotword']); ?>;
+            for (var i = 0; i < customSkillData.length; i++) {
+                if (customSkillData[i]['file_name'] === file_name) {
+                    return customSkillData[i]['custom_skill'];
+                }
+            }
+            return false;
+        }
 		
 		function getCommandValue(file_name) {
-    var commandData = <?php echo json_encode($data_config['smart_wakeup']['hotword']); ?>;
-    for (var i = 0; i < commandData.length; i++) {
-      if (commandData[i]['file_name'] === file_name) {
-        return commandData[i]['command'];
-      }
-    }
-    return '';
-  }
+			var commandData = <?php echo json_encode($data_config['smart_wakeup']['hotword']); ?>;
+			for (var i = 0; i < commandData.length; i++) {
+				if (commandData[i]['file_name'] === file_name) {
+					return commandData[i]['command'];
+				}
+			}
+		return '';
+		}
   //ẩn hiện thẻ input của Wake Up
     $(document).ready(function() {
       $('#toggleButton').click(function() {
