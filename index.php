@@ -798,6 +798,19 @@ if ($remoteValue !== $localValue) {
             }
         }
     </script>
+	 
+	<script>
+function reloadHostPage() {
+  window.location.reload();
+}
+
+// Lắng nghe thông điệp từ iframe
+window.addEventListener('message', function(event) {
+  if (event.data === 'reload') {
+    reloadHostPage();
+  }
+});
+</script>
 </body>
 
 </html>
