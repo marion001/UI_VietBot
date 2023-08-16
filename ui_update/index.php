@@ -248,7 +248,12 @@ $localValue = $localData['ui_version']['current'];
 if ($remoteValue !== $localValue) {
     $messagee .= 'Có phiên bản mới: '.$remoteValue.'\n';
     $messagee .= 'Phiên bản hiện tại của bạn: '.$localValue.'\n Vui lòng cập nhật.\n';
-    $messagee .= $remoteData['ui_version']['notification'].'\n';
+    //$messagee .= $remoteData['ui_version']['notification'].'\n';
+	if (empty($remoteData['ui_version']['notification'])) {
+    //echo "Không có dữ liệu";
+	} else {
+    $messagee .= 'Nội Dung Cập Nhật: '.$remoteData['ui_version']['notification'].'\n';
+	}
 } else {
     $messagee .= 'Bạn đang sử dụng phiên bản mới nhất: '.$localValue.'\n';
 }
@@ -278,7 +283,7 @@ if ($returnCode === 0) {
            // $messagee .= 'Backup đạt giới hạn, đã xóa tệp tin sao lưu cũ: ' . $basenameeee . '\n';
         }
     }
-} else {
+} else { 
     $messagee .= 'Có lỗi xảy ra khi tạo bản sao lưu.\n';
 }
 //END sao Lưu

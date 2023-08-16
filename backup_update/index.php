@@ -65,6 +65,10 @@ include "../Configuration.php";
         .right-align {
             text-align: right;
         }
+		        .inline-elements {
+            display: inline-block;
+            vertical-align: middle;
+        }
     </style>
 </head>
 
@@ -290,32 +294,40 @@ if (!is_dir($DuognDanThuMucJson)) {
                             <center  title="Chỉ Khởi Động Lại Trợ Lý Vietbot">Restart Vietbot:</center>
                         </th>
 								  <td>
-                           <input type="checkbox" name="restart_vietbot_checked" class="single-checkbox form-check-input" title="Chỉ Khởi Động Lại Trợ Lý Vietbot" value="restart_vietbot_checked">
+                           <input type="checkbox" name="restart_vietbot_checked" class="single-checkbox form-check-input" title="Chỉ Khởi Động Lại Trợ Lý Vietbot" value="restart_vietbot_checked" checked>
                         </td>
                     </tr>
 					<tr>
-									     <th colspan="4">
-                            <center title="Thông Báo Bằng Âm Thanh Khi Cập Nhật Được Hoàn Tất">Thông Báo Âm Thanh: <input type="checkbox" title="Thông Báo Bằng Âm Thanh Khi Cập Nhật Được Hoàn Tất" name="audioo_playmp3_success" value="playmp3_success" checked></center>
-                        </th></tr>
-                    <tr>
-                        <th scope="row" colspan="4">
-                            <div class="form-check form-switch d-flex justify-content-center">
+									     <th colspan="3">Thông Báo Âm Thanh:</th>
+						<td><input type="checkbox" class="form-check-input" title="Thông Báo Bằng Âm Thanh Khi Cập Nhật Được Hoàn Tất" name="audioo_playmp3_success" value="playmp3_success" checked></td>
+						</tr>
+						
+					<tr>
+					<th colspan="3"><span class="inline-elements" title="Tự Động Tải Lại Trang Khi Cập Nhật Hoàn Tất">Tự Động Làm Mới Lại Trang: <font color=red><span id="countdown"></span></font></span></th>
+						<td><input type="checkbox" class="form-check-input" name="startCheckboxReload" id="startCheckbox" title="Tự Động Tải Lại Trang Khi Cập Nhật Hoàn Tất" value="start"></td>
+						</tr>
+						
+             
+					
+                </table>
+				           
+            </div>            
+        </div>
+   <div class="row g-3 d-flex justify-content-center">
+            <div class="col-auto">
                                 <div class="input-group">
 								  
                                     <input type="submit" name="checkforupdates" class="btn btn-success" title="Kiểm Tra Phiên Bản Vietbot Mới" value="Kiểm Tra">
                                     <input type="submit" name="backup_update" class="btn btn-warning" title="Cập Nhật Lên Phiên Bản Vietbot Mới" value="Cập Nhật">
-                                    <a class="btn btn-danger" href="<?php echo $PHP_SELF; ?>" role="button">Làm Mới</a>
+                                    <a class="btn btn-primary" href="<?php echo $PHP_SELF; ?>" role="button">Làm Mới</a>
+									 <button class="btn btn-danger" id="reloadButton">Tải Lại Trang</button>
                                     <button type="submit" name="restart_vietbot" class="btn btn-dark" title="Khởi Động Lại Trợ Lý VietBot">Restart VietBot</button>
                                 </div>
+                                </div>
 								
-                            </div>
-                        </th>
-                    </tr>
-					
-                </table>
-            </div>
-        </div>
-</div>
+                            </div><br/>
+							
+							</div>
 <br/>
 <div class="my-div">
     <span class="corner-text"><h5>Sao Lưu/Khôi Phục:</h5></span>
@@ -408,9 +420,30 @@ if ($currentresult === $latestVersion) {
 } else {
   $messagee .= "Có phiên bản mới: " . $latestVersion.'\n';
   $messagee .= "Phiên bản hiện tại: " . $currentresult.'\n\n';
-  $messagee .= $gitData['new_features'].'\n';
-  $messagee .= $gitData['improvements'].'\n';
-  $messagee .= "Lệnh Cần Bổ Sung $:> ".$gitData['update_command'].'\n';
+	if (empty($gitData['new_features'])) {
+    //echo "Không có dữ liệu";
+	} else {
+    $messagee .= 'Tính năng mới: '.$gitData['new_features'].'\n';
+	}
+	
+	if (empty($gitData['bug_fixed'])) {
+    //echo "Không có dữ liệu";
+	} else {
+    $messagee .= 'Sửa lỗi: '.$gitData['bug_fixed'].'\n';
+	}
+	
+	if (empty($gitData['improvements'])) {
+    //echo "Không có dữ liệu";
+	} else {
+    $messagee .= 'Cải thiện: '.$gitData['improvements'].'\n';
+	}
+	
+
+	if (empty($gitData['update_command'])) {
+    //echo "Không có dữ liệu";
+	} else {
+    $messagee .= 'Lệnh Cần Bổ Sung $:> '.$gitData['update_command'].'\n';
+	}
 }
 }
 if (isset($_POST['backup_update'])) {
@@ -627,6 +660,7 @@ if (@$_POST['audioo_playmp3_success'] === "playmp3_success") {
     echo 'audio.play();';
 	echo '</script>';
 }
+$startCheckboxReload = $_POST['startCheckboxReload'];
 }
 //Dowload backup restor
 //Chọn file backup và restore
@@ -734,5 +768,56 @@ stream_get_contents($stream_out1);
             });
         });
     </script>
+	
+	<script>
+var reloadButton = document.getElementById('reloadButton');
+var startCheckbox = document.getElementById('startCheckbox');
+var countdownElement = document.getElementById('countdown');
+var requiredValue = "<?php echo $startCheckboxReload; ?>";
+var countdown = "<?php echo $Page_Load_Time_Countdown; ?>";
+var countdownInterval;
+ 
+function updateCountdown() {
+  countdownElement.textContent = countdown;
+} 
+
+function reloadHostPage() {
+  // Gửi thông điệp tới trang chính để yêu cầu tải lại
+  window.parent.postMessage('reload', '*');
+  // Tải lại trang chính (host page) bằng cách truy cập vào window cha và gọi hàm location.reload()
+  window.parent.location.reload();
+}
+
+function startCountdown() {
+  //countdown = 3;
+  updateCountdown();
+  countdownInterval = setInterval(function() {
+    if (countdown === 0) {
+      clearInterval(countdownInterval);
+      reloadHostPage();
+    } else {
+      countdown--;
+      updateCountdown();
+    }
+  }, 1000);
+}
+
+if (startCheckbox.checked && startCheckbox.value === requiredValue) {
+  startCountdown();
+}
+
+reloadButton.addEventListener('click', function() {
+  reloadHostPage();
+});
+
+startCheckbox.addEventListener('change', function() {
+  if (startCheckbox.checked && startCheckbox.value === requiredValue) {
+    startCountdown();
+  } else {
+    clearInterval(countdownInterval);
+    countdownElement.textContent = "";
+  }
+});
+</script>
 </body>
 </html>
