@@ -247,7 +247,7 @@ $localValue = $localData['ui_version']['current'];
 // So sánh giá trị
 if ($remoteValue !== $localValue) {
     $messagee .= 'Có phiên bản mới: '.$remoteValue.'\n';
-    $messagee .= 'Phiên bản hiện tại của bạn: '.$localValue.'\n Vui lòng cập nhật.\n';
+    $messagee .= 'Phiên bản hiện tại của bạn: '.$localValue.'\n Vui lòng cập nhật.\n\n';
     //$messagee .= $remoteData['ui_version']['notification'].'\n';
 	if (empty($remoteData['ui_version']['notification'])) {
     //echo "Không có dữ liệu";
