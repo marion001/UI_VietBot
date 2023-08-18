@@ -5,7 +5,7 @@ include "../Configuration.php";
 	$FileConfigJson = "$DuognDanThuMucJson"."/config.json";
 	$FileVolumeJson = "$DuognDanThuMucJson"."/state.json";
 	$json_volume_data = file_get_contents($FileVolumeJson);
-    $json_config_data = file_get_contents($FileConfigJson);
+    	$json_config_data = file_get_contents($FileConfigJson);
 	$data_volume = json_decode($json_volume_data);
 	$data_config = json_decode($json_config_data, true);
 	$ttsCompany = '';
@@ -14,7 +14,7 @@ include "../Configuration.php";
 	// Đường dẫn đến thư mục "Backup_Config"
 	$backupDirz = "Backup_Config/";
 	$fileLists = glob($backupDirz . "*.json");
-    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    	if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         if (isset($_GET['selectedFile']) && !empty($_GET['selectedFile'])) {
             $selectedFile = $_GET['selectedFile'];
             $configFile = $DuognDanThuMucJson . "/config.json";
@@ -29,9 +29,9 @@ include "../Configuration.php";
 	$hotwords = $data_config['smart_wakeup']['hotword'];
 	$hotwords_get_langgg = $data_config['smart_wakeup']['hotword'][0]['lang'];
 	if ($hotwords_get_langgg === 'eng') {
-    $hotwords_get_lang = 'Tiếng Anh';
+    	$hotwords_get_lang = 'Tiếng Anh';
 	} elseif ($hotwords_get_langgg === 'vi') {
-    $hotwords_get_lang = 'Tiếng Việt';
+    	$hotwords_get_lang = 'Tiếng Việt';
 	}
 	//Lấy giá trị value trong file json
 	$value_volume = $data_volume->volume;
