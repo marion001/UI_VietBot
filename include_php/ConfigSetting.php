@@ -913,7 +913,7 @@ Microsoft EDGE</label>
 <input type="radio" id="myRadio6" title="Viettel Nam Miền Nam" id="myRadio2" name="tts_voice" value="male_southern_voice" <?php if ($GET_TTS_Voice_Name === 'male_southern_voice') echo 'checked'; ?> required> Nam Miền Nam</label>&nbsp;<label>
 <input type="radio" id="myRadio7" name="tts_voice" value="null" <?php if ($GET_TTS_Voice_Name === null) echo 'checked'; ?>> Mặc Định</label>
 <br/><br/>
-Tốc Độ: <input type="range" name="speed_tts" title="Phù Hợp Nhất Từ 0.5-1.5" min="0" max="1.5" step="0.1" value="<?php echo $Speed_TTS; ?>" class="slider" oninput="updateSliderValueTTS(this.value)"><font color=red><span id="slider-tts" class="slider-tts"><?php echo $Speed_TTS; ?></span></font>
+Tốc Độ: <input type="range" name="speed_tts" id="slider_tts" title="Phù Hợp Nhất Từ 0.5-1.5" min="0" max="1.5" step="0.1" value="<?php echo $Speed_TTS; ?>" class="slider" oninput="updateSliderValueTTS(this.value)"><font color=red><span id="slider-tts" class="slider-tts"><?php echo $Speed_TTS; ?></span></font>
 </center><hr/>
 
 
@@ -2576,5 +2576,24 @@ disableRadioButtons();
             popup.style.display = 'none';
         });
     </script>
+	<script>
+	//TTS slide Tốc Độ: 
+$(document).ready(function() {
+    var slider = document.getElementById("slider_tts");
+    var sliderValue = document.getElementById("slider-tts");
+
+    slider.addEventListener("input", function() {
+        var value = parseFloat(slider.value);
+        
+        if (value >= 0.1 && value <= 0.4) {
+            slider.value = 0.5; // Bỏ qua khoảng giá trị từ 0.1 đến 0.4
+            value = 0.5;
+        }
+        
+        sliderValue.innerHTML = value;
+    });
+});
+</script>
+
 </body>
 </html>
