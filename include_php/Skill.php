@@ -834,7 +834,7 @@ $value_hanet_agent_end_time_minute = explode(":", $skillArray['hanet']['agent'][
 ?>
 
 <!-- Start Camera Hanet -->
-<h5>Camera Hanet Skill:</h5>
+<h5>Camera Hanet</h5>
 
     <div class="form-group">
 	      <div class="row justify-content-center">
