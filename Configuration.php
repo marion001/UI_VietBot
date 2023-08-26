@@ -74,6 +74,13 @@ $Limit_Pre_Answer = "3";
 $Page_Load_Time_Countdown = "3"; //Giây
 
 ///////////////////////////////////////////////////////////////////////////////
+//API Config Setting
+$allowedCommands_ALL = "all"; //"all" Biến cho phép chạy tất cả các lệnh
+// Danh sách chỉ cho phép chạy các lệnh an toàn khi bỏ chữ "all" bên trên
+$allowedCommands = "ls,dir,touch,reboot,uname"; //Tester
+$apiKey = 'vietbot'; //api key, user cần mã hóa api key này dạng md5 3f406f61a2b5053b53cda80e0320a60b
+
+///////////////////////////////////////////////////////////////////////////////
 //Đọc, lấy vài dữ liệu của config.json
 $jsonSKILL = file_get_contents("$DuognDanThuMucJson"."/skill.json");
 $Data_Json_Skill = json_decode($jsonSKILL);
