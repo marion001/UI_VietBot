@@ -62,6 +62,33 @@ if (!isSafeCommand($command)) {
 		));
     exit();
 }
+
+if ($command === "reboot") {
+    // Perform reboot logic here
+    // For example:
+    if (isset($data['api_key']) && $data['api_key'] === md5($apiKey)) {
+        // exec("sudo reboot");
+        $rebootResult = "TEST Reboot command executed successfully.";
+        echo json_encode(array(
+            'message' => $rebootResult,
+            'http_response_code' => 200,
+            'output_api' => null,
+            'information' => $information
+        ));
+        exit();
+    } else {
+        http_response_code(401); // Unauthorized
+        echo json_encode(array(
+            'message' => 'Xác thực lỗi! Vui lòng kiểm tra lại key api.',
+            'http_response_code' => 401,
+            'output_api' => null,
+            'information' => $information
+        ));
+        exit();
+    }
+}
+
+
 // Thực thi lệnh shell sử dụng shell_exec
 //$output = shell_exec($command);
 // Bằng đoạn mã sau để sử dụng SSH2
@@ -70,7 +97,7 @@ if (ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) { // Thay 'use
     $stream = ssh2_exec($connection, $command); // Thực thi lệnh SSH
     stream_set_blocking($stream, true);
     $output = stream_get_contents($stream); // Lấy kết quả từ luồng kết nối
-	$messageee = "success";
+	$messageee = "successfully";
 	$http_response_code = 200;
     fclose($stream);
 } else {
@@ -94,7 +121,6 @@ echo json_encode(array(
 // Kiểm tra xem chuỗi lệnh có chứa từ khóa trong danh sách an toàn không
 function isSafeCommand($command) {
     global $allowedCommands_ALL, $allowedCommands;
-
     if ($allowedCommands_ALL === "all") {
         return true; // Cho phép chạy tất cả các lệnh nếu có chữ all trong biến file Configuration.php
     } else {
