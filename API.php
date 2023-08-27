@@ -64,8 +64,6 @@ if (!isSafeCommand($command)) {
 }
 
 if ($command === "reboot") {
-    // Perform reboot logic here
-    // For example:
     if (isset($data['api_key']) && $data['api_key'] === md5($apiKey)) {
         // exec("sudo reboot");
         $rebootResult = "TEST Reboot command executed successfully.";
@@ -87,11 +85,10 @@ if ($command === "reboot") {
         exit();
     }
 }
-
-
 // Thực thi lệnh shell sử dụng shell_exec
 //$output = shell_exec($command);
-// Bằng đoạn mã sau để sử dụng SSH2
+
+//SSH2
 $connection = ssh2_connect($serverIP, $SSH_Port); // Thay 'hostname' bằng địa chỉ IP hoặc tên miền của máy chủ SSH
 if (ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) { // Thay 'username' và 'password' bằng thông tin đăng nhập SSH
     $stream = ssh2_exec($connection, $command); // Thực thi lệnh SSH
