@@ -102,6 +102,7 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	
 	if ($data_config['smart_answer']['tts']['speed'] === null) {
 		$Speed_TTS = "0";
+		$Speed_TTS_MacDinh = "Mặc định";
 	} else {
 		$Speed_TTS = $data_config['smart_answer']['tts']['speed'];
 	}
@@ -913,7 +914,7 @@ Microsoft EDGE</label>
 <input type="radio" id="myRadio6" title="Viettel Nam Miền Nam" id="myRadio2" name="tts_voice" value="male_southern_voice" <?php if ($GET_TTS_Voice_Name === 'male_southern_voice') echo 'checked'; ?> required> Nam Miền Nam</label>&nbsp;<label>
 <input type="radio" id="myRadio7" name="tts_voice" value="null" <?php if ($GET_TTS_Voice_Name === null) echo 'checked'; ?>> Mặc Định</label>
 <br/><br/>
-Tốc Độ: <input type="range" name="speed_tts" id="slider_tts" title="Phù Hợp Nhất Từ 0.5-1.5" min="0" max="1.5" step="0.1" value="<?php echo $Speed_TTS; ?>" class="slider" oninput="updateSliderValueTTS(this.value)"><font color=red><span id="slider-tts" class="slider-tts"><?php echo $Speed_TTS; ?></span></font>
+Tốc Độ: <input type="range" name="speed_tts" id="slider_tts" title="Phù Hợp Nhất Từ 0.5-1.5" min="0" max="1.5" step="0.1" value="<?php echo $Speed_TTS; ?>" class="slider" oninput="updateSliderValueTTS(this.value)"><font color=red><span id="slider-tts" class="slider-tts"><?php echo $Speed_TTS_MacDinh; ?></span></font>
 </center><hr/>
 
 
@@ -2576,8 +2577,7 @@ disableRadioButtons();
             popup.style.display = 'none';
         });
     </script>
-	<script>
-	//TTS slide Tốc Độ: 
+<script>
 $(document).ready(function() {
     var slider = document.getElementById("slider_tts");
     var sliderValue = document.getElementById("slider-tts");
@@ -2585,15 +2585,19 @@ $(document).ready(function() {
     slider.addEventListener("input", function() {
         var value = parseFloat(slider.value);
         
-        if (value >= 0.1 && value <= 0.4) {
+        if (value === 0) {
+            sliderValue.innerHTML = "Mặc định"; // Hiển thị "mặc định" khi giá trị là 0
+        } else if (value >= 0.1 && value <= 0.4) {
             slider.value = 0.5; // Bỏ qua khoảng giá trị từ 0.1 đến 0.4
             value = 0.5;
+            sliderValue.innerHTML = value;
+        } else {
+            sliderValue.innerHTML = value;
         }
-        
-        sliderValue.innerHTML = value;
     });
 });
 </script>
+
 
 </body>
 </html>
