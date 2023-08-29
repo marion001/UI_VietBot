@@ -7,6 +7,7 @@
  * Version: 1.0
  */
 include "Configuration.php";
+include "./include_php/INFO_OS.php";
 $version = "1.0";
 $information = array(
         'api_version' => $version,
@@ -75,16 +76,76 @@ if ($command === "reboot") {
         ));
         exit();
     } else {
-        http_response_code(401); // Unauthorized
+		unauthorized();
+    }
+}
+
+
+if ($command === "restart_vietbot") {
+    if (isset($data['api_key']) && $data['api_key'] === md5($apiKey)) {
+$connection = ssh2_connect($serverIP, $SSH_Port);
+if (!$connection) {die($E_rror_HOST);}
+if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
+$stream = ssh2_exec($connection, 'systemctl --user restart vietbot');
+stream_set_blocking($stream, true);
+$stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
+$output =  stream_get_contents($stream_out);
         echo json_encode(array(
-            'message' => 'Xác thực lỗi! Vui lòng kiểm tra lại key api.',
-            'http_response_code' => 401,
-            'output_api' => null,
+            'message' => 'successfully',
+            'http_response_code' => 200,
+            'output_api' => $output,
             'information' => $information
         ));
         exit();
+    } else {
+		unauthorized();
     }
 }
+
+if ($command === "info") {
+    if (isset($data['api_key']) && $data['api_key'] === md5($apiKey)) {
+        echo json_encode(array(
+            'message' => 'successfully',
+            'http_response_code' => 200,
+            'output_api' => null,
+			'info_vietbot' => array(
+				'vietbot_version' => array(
+					'current_version' => 'dsdsd',
+					'new_version' => 'dsdsd',
+				),
+				'vietbot_update' => true, //hoặc false tùy theo người viết code =))
+			),
+            'info_os' => array(
+				'host_name' =>  gethostname(),
+				'uname_a' =>  php_uname(),
+				'kernel_version' => php_uname('v'),
+				'machine_type' => php_uname('m'),
+				'os_version' => php_uname('r'),
+				'server_name' => $_SERVER['SERVER_NAME'],
+				'client_ip' => get_client_ip(),
+				'php_version' => phpversion(),
+				'used_cpu_capacity' => $cpuload."%",
+				'cpu_count' => rtrim($cpu_count, "\n"),
+				'uptime' => $ut[0]." Ngày, " .$ut[1].":".$ut[2]."'",
+				'disk' => array(
+						'disk_total' => $disktotal."GB",
+						'disk_used' => $diskused."GB",
+						'disk_free' => $diskfree."GB"
+				),
+				'ram' => array(
+						'ram_total' => $memtotal."GB",
+						'ram_used' => $memused."GB",
+						'ram_free' => $memavailable."GB"
+				)
+			),
+            'information' => $information
+        ));
+        exit();
+    } else {
+		unauthorized();
+    }
+}
+
 // Thực thi lệnh shell sử dụng shell_exec
 //$output = shell_exec($command);
 
@@ -131,5 +192,16 @@ function isSafeCommand($command) {
         }
         return false;
     }
+}
+//thông báo xác thực key nếu thất bại
+function unauthorized(){
+        http_response_code(401); // Unauthorized
+        echo json_encode(array(
+            'message' => 'Xác thực lỗi! Vui lòng kiểm tra lại key api.',
+            'http_response_code' => 401,
+            'output_api' => null,
+            'information' => $information
+        ));
+        exit();
 }
 ?>
