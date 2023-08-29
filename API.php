@@ -110,10 +110,12 @@ if ($command === "info") {
             'output_api' => null,
 			'info_vietbot' => array(
 				'vietbot_version' => array(
-					'current_version' => 'dsdsd',
-					'new_version' => 'dsdsd',
+					'current_version' => 'beta 21-08-2023',
+					'new_version' => 'beta 29-08-2023',
 				),
-				'vietbot_update' => true, //hoặc false tùy theo người viết code =))
+				'vietbot_update' => true,
+				// automation check true/false tùy theo người viết code =))
+				// đẩy notify lên hass
 			),
             'info_os' => array(
 				'host_name' =>  gethostname(),
