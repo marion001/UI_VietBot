@@ -2,6 +2,6 @@
   "ui_version": {
     "latest": "beta 01-09-2023",
     "current": "beta 01-09-2023",
-    "notification": "Fix Bug, Cập nhật logging_type, API Web UI. Thông báo cập nhật lên hass."
+    "notification": "Fix Bug, Cập nhật logging_type,Led APA102, API Web UI. Thông báo cập nhật lên hass."
   }
 }
