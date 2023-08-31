@@ -17,10 +17,9 @@ $information = array(
         'author' => 'Vũ Tuyển',
         'last_update_time' =>  date("H:i"),
 		'query_instructions' => array(
-		'command' => 'restart, linux command (ls, sudo, dir, v..v...), ',
+		'command' => 'restart, linux command (ls, sudo, sudo reboot, dir, v..v...), ',
 		'query' => 'info'
 		)
-   
 );
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405); // Method Not Allowed
@@ -72,7 +71,7 @@ if (!isSafeCommand($command)) {
 		));
     exit();
 }
-
+/*
 if ($command === "reboot") {
     if (isset($data['api_key']) && $data['api_key'] === md5($apiKey)) {
         // exec("sudo reboot");
@@ -88,8 +87,7 @@ if ($command === "reboot") {
 		unauthorized();
     }
 }
-
-
+*/
 if ($command === "restart") {
     if (isset($data['api_key']) && $data['api_key'] === md5($apiKey)) {
 $connection = ssh2_connect($serverIP, $SSH_Port);
@@ -110,7 +108,6 @@ $output =  stream_get_contents($stream_out);
 		unauthorized();
     }
 }
-
 if ($query === "info") {
     if (isset($data['api_key']) && $data['api_key'] === md5($apiKey)) {
 //UI Update	
@@ -121,7 +118,6 @@ if ($query === "info") {
 	$UIlocalData = json_decode($UIlocalJsonData, true);
 	$UIremoteValue = $UIremoteData['ui_version']['latest'];
 	$UIlocalValue = $UIlocalData['ui_version']['current'];
-	
 	if ($UIremoteValue !== $UIlocalValue) {
 	$UI_update = true;
 	$UI_new_version = $UIremoteValue;
@@ -160,7 +156,6 @@ if ($query === "info") {
 	$VB_new_features = null;
 	$VB_bug_fixed = null;
 	$VB_improvements = null;
-
 	}
 
 //End Vietbot Update
@@ -172,7 +167,7 @@ if ($query === "info") {
 				'vietbot_version' => array(
 					'current_version' => $VBlocalValue,
 					'new_version' => $VB_new_version,
-					'update' => $VB_update,
+					'check_for_updates' => $VB_update,
 					'content' => array(
 						'update_command' => $VB_update_command,
 						'new_features' => $VB_new_features,
@@ -183,7 +178,7 @@ if ($query === "info") {
 				'ui_version' => array(
 					'current_version' => $UIlocalValue,
 					'new_version' => $UI_new_version,
-					'update' => $UI_update,
+					'check_for_updates' => $UI_update,
 					'content' => $UI_updated_content
 				),
 			),
@@ -218,9 +213,7 @@ if ($query === "info") {
     }
 }
 
-// Thực thi lệnh shell sử dụng shell_exec
-//$output = shell_exec($command);
-
+// Thực thi lệnh shell sử dụng thư viện SSH2
 //SSH2
 $connection = ssh2_connect($serverIP, $SSH_Port); // Thay 'hostname' bằng địa chỉ IP hoặc tên miền của máy chủ SSH
 if (ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) { // Thay 'username' và 'password' bằng thông tin đăng nhập SSH
@@ -236,8 +229,6 @@ if (ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) { // Thay 'use
     $messageee = "Kết nối tới ssh thất bại.";
 	$http_response_code = 401;
 }
-
-//$output = str_replace("\n", "", $output);
 // Thiết lập header cho response
 header('Content-Type: application/json');
 // Trả về kết quả từ lệnh shell
@@ -247,7 +238,6 @@ echo json_encode(array(
 	'output_api' => $output,
 	'information' => $information
 	));
-
 // Kiểm tra xem chuỗi lệnh có chứa từ khóa trong danh sách an toàn không
 function isSafeCommand($command) {
     global $allowedCommands_ALL, $allowedCommands;

@@ -207,7 +207,63 @@ Giá trị bắt buộc:<br/>
 &nbsp;--data '{<br/>
 &nbsp;  "command": "uname -a",<br/>
 &nbsp;  "api_key": "3f406f61a2b5053b53cda80e0320a60b"<br/>
-&nbsp;}'<hr/>
+&nbsp;}'
+<br/><br/>
+<b>(Ví Dụ)Cấu Hình Thông Báo Cập Nhật Dao Diện Web Và Vietbot Lên Home Assistant<br/>
+- Cấu Hình File sensors.yaml</b><br/>
+<i>(Lưu Ý: thay địa chỉ <b>192.168.14.194</b> thành địa chỉ ip loa vietbot của bạn)</i><br/>
+<font color=red>
+&nbsp;&nbsp;- platform: command_line<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;name: Vietbot API info<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;command: "curl -X POST -H 'Content-Type: application/json' -d '{\"query\": \"info\", \"api_key\": \"3f406f61a2b5053b53cda80e0320a60b\"}' http://192.168.14.194/API.php"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;value_template: "{{ value_json.message }}"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;scan_interval:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minutes: 360 #Mỗi 6 tiếng load API 1 lần<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;json_attributes:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- message<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- http_response_code<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- output_api<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- info_vietbot<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- info_os<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- information<br/>
+	  </font>
+<b>- Cấu Hình File automation.yaml<br/>
++)Automation Thông báo về phiên bản mới của giao diện UI Vietbot</b><br/>
+<font color=red>
+- id: '56465465435645656f3f'<br/>
+&nbsp;&nbsp;alias: Thông báo về phiên bản mới của giao diện UI Vietbot<br/>
+&nbsp;&nbsp;trigger:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;- platform: state<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;entity_id: sensor.vietbot_api_info<br/>
+&nbsp;&nbsp;condition:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;- condition: template<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value_template: "{{ trigger.to_state.attributes.info_vietbot.ui_version.check_for_updates == True }}"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#value_template: "{{ state_attr('sensor.vietbot_api_info', 'info_vietbot')['ui_version']['check_for_updates'] == True }}"<br/>
+&nbsp;&nbsp;action:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;- service: notify.mobile_app_iphone_6s_vu_tuyen<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;title: "Vietbot Web UI:"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message: "Có phiên bản dao diện mới: {{ state_attr('sensor.vietbot_api_info', 'info_vietbot')['ui_version']['new_version']}}"<br/>
+</font> <br/>
+<b>+)Automation Thông báo về cập nhật phiên bản Vietbot mới</b><br/>
+<font color=red>
+- id: '564654656576576575643f3f'<br/>
+&nbsp;alias: Thông báo có phiên bản cập nhật Phiên Bản Vietbot<br/>
+&nbsp;&nbsp;trigger:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;- platform: state<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;entity_id: sensor.vietbot_api_info<br/>
+&nbsp;&nbsp;condition:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;- condition: template<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value_template: "{{ trigger.to_state.attributes.info_vietbot.vietbot_version.check_for_updates == True }}"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#value_template: "{{ state_attr('sensor.vietbot_api_info', 'info_vietbot')['vietbot_version']['check_for_updates'] == True }}"<br/>
+&nbsp;&nbsp;action:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;- service: notify.mobile_app_iphone_6s_vu_tuyen<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;title: "Vietbot:"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message: "Có phiên bản mới: {{ state_attr('sensor.vietbot_api_info', 'info_vietbot')['vietbot_version']['new_version']}}"<br/>
+</font>
+<hr/>
+
 <h1>Comback Soon</h1>
 	  
 
