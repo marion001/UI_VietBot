@@ -114,10 +114,10 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	$MY_USER_NAME = $data_config['smart_config']['user_info']['name'];
 	
 	//console_ouput
-	if ($data_config['smart_config']['console_ouput'] === null) {
+	if ($data_config['smart_config']['logging_type'] === null) {
 		$Get_Console_Ouput = "Null";
 	} else {
-		$Get_Console_Ouput = $data_config['smart_config']['console_ouput'];
+		$Get_Console_Ouput = $data_config['smart_config']['logging_type'];
 	}
 	//Address
 	$Address_City = $data_config['smart_config']['user_info']['address']['province'];
@@ -396,10 +396,10 @@ chmod($backupFile, 0777);
 	//$data_config['smart_answer']['sound']['default']['start'] = ltrim($_POST['startsound'], "/");
 	$data_config['smart_answer']['sound']['default']['finish'] = @$_POST['finishsound'];
 	//$data_config['smart_answer']['sound']['default']['finish'] = ltrim($_POST['finishsound'], "/");
-	//console_ouput
-	if (strcasecmp(@$_POST['console_ouput'], "Null") === 0) {$console_ouputrepl = null;
-    } else {$console_ouputrepl = @$_POST['console_ouput'];}
-	$data_config['smart_config']['console_ouput'] = $console_ouputrepl;
+	//logging_type
+	if (strcasecmp(@$_POST['logging_type'], "Null") === 0) {$console_ouputrepl = null;
+    } else {$console_ouputrepl = @$_POST['logging_type'];}
+	$data_config['smart_config']['logging_type'] = $console_ouputrepl;
 	//speaker, card id
 	$data_config['smart_config']['speaker']['amixer_id'] = intval($GET_CARD_Speaker_Amixer_ID);
 	//web_interface
@@ -916,33 +916,32 @@ Microsoft EDGE</label>
 <br/><br/>
 Tốc Độ: <input type="range" name="speed_tts" id="slider_tts" title="Phù Hợp Nhất Từ 0.5-1.5" min="0" max="1.5" step="0.1" value="<?php echo $Speed_TTS; ?>" class="slider" oninput="updateSliderValueTTS(this.value)"><font color=red><span id="slider-tts" class="slider-tts"><?php echo $Speed_TTS_MacDinh; ?></span></font>
 </center><hr/>
-
-
-
-
-
 <!-- -->
-<h5>Console Ouput:</h5> 
+<h5>Log:</h5> 
 <div class="row g-3 d-flex justify-content-center"><div class="col-auto"> 
-<table class="table">
- <thead>
-     <tr>
-      <th scope="col" colspan="3"><center title="Cách hiển thị log trong terminal"><font color=red>Kiểu Hiển Thị Đầu Ra Bảng Điều Khiển</font></center></th>
-    </tr>
+<table class="table table-bordered">
+  <thead>
     <tr>
-      <th scope="col"><center title="Không hiển thị log trong terminal">Không</center></th>
-      <th scope="col"><center title="Hiển thị đầy đủ log trong terminal">Đầy Đủ</center></th>
-      <th scope="col"><center title="Xuất log đè lên nhau trong terminal">Xem Tức Thời</center></th>
+      <th scope="col" colspan="2"><center title="Cách hiển thị log trong terminal"><font color=red>Kiểu Hiển Thị Log</font></center></th>
     </tr>
   </thead>
-   <tbody>
+  <tbody>
     <tr>
-      <td><center><input type="radio" name="console_ouput" value="Null" <?php if ($Get_Console_Ouput === 'Null') echo 'checked'; ?> required></center></td>
-      <td><center><input type="radio" name="console_ouput" value="full" <?php if ($Get_Console_Ouput === 'full') echo 'checked'; ?> required></center></td>
-      <td><center><input type="radio" name="console_ouput" value="watching" <?php if ($Get_Console_Ouput === 'watching') echo 'checked'; ?> required></center></td>
+
+      <td colspan="2">
+	  <select name="logging_type" class="form-select" aria-label="Default select example">
+  <option value="Null" <?php if ($Get_Console_Ouput === 'Null') echo 'selected'; ?> title="Không hiển thị">Không hiển thị</option>
+  <option value="console" <?php if ($Get_Console_Ouput === 'console') echo 'selected'; ?> title="Hiển thị trên dao diện console ssh">Console</option>
+  <option value="web" <?php if ($Get_Console_Ouput === 'web') echo 'selected'; ?> title="Hiển thị trên dao diện web">Web</option>
+  <option value="both" <?php if ($Get_Console_Ouput === 'both') echo 'selected'; ?> title="Hiển thị trên cả 2 dao diện là Web và console">Cả hai</option>
+</select>
+</td>
+
     </tr>
-</tbody>
+  </tbody>
 </table>
+
+
 </div>
 </div>
 <hr/>
@@ -1759,15 +1758,15 @@ else if (radio.value === "tts_gg_free") {
 			} 
 			//APA102
 			else if (selectedLed === "APA102") {
-				disabledInputs["effect_mode_input"].disabled = false;
+		/*		disabledInputs["effect_mode_input"].disabled = false;
 				disabledInputs["effect_mode_input"].required = true;
                 //NumberModeLed.type = "text";
                 NumberModeLed.value = "";
 				EffectModeInput.type = "number";
 				EffectModeInput.value = "<?php echo $LED_EFFECT_MODE; ?>";
 				EffectModeInput.min = "1";
-				EffectModeInput.max = "2";
-				EffectModeInput.placeholder = "1->2"
+				EffectModeInput.max = "5";
+				EffectModeInput.placeholder = "1->5"
 				//BrightnessModeInput.type = "text";
 				BrightnessModeInput.value = "";
 				//WakeupColorModeInput.type = "text";
@@ -1783,6 +1782,48 @@ else if (radio.value === "tts_gg_free") {
 				//SpeakEffectModeInput.type = "text";
 				SpeakEffectModeInput.value = "";
 				SpeakEffectModeInput.placeholder = "";
+				*/
+				for (var i = 0; i < disabledInputs.length; i++) {
+				disabledInputs[i].disabled = false;
+					}
+					for (var i = 0; i < disabledInputs.length; i++) {
+				disabledInputs[i].required = true;
+					}
+				disabledInputs["effect_mode_input"].disabled = true;
+				disabledInputs["effect_mode_input"].required = false;
+				NumberModeLed.type = "number";
+				NumberModeLed.value = "<?php echo $LED_NUMBER_LED; ?>";
+				NumberModeLed.min = "0";
+				NumberModeLed.placeholder = "16";
+				EffectModeInput.type = "text";
+				EffectModeInput.value = "<?php echo $LED_EFFECT_MODE; ?>";
+				EffectModeInput.placeholder = ""
+				BrightnessModeInput.type = "number";
+				BrightnessModeInput.value = "<?php echo $LED_BRIGHTNESS; ?>";
+				BrightnessModeInput.min = "0";
+				BrightnessModeInput.placeholder = "150";
+				WakeupColorModeInput.type = "text";
+				WakeupColorModeInput.value = "<?php echo $LED_WAKEUP_COLOR; ?>";
+				MutedColorModeInput.type = "text";
+				MutedColorModeInput.value = "<?php echo $LED_MUTED_COLOR; ?>";
+				//ListenEffectModeInput.value = "";
+				ListenEffectModeInput.type = "number";
+				ListenEffectModeInput.value = "<?php echo $LED_LISTEN_EFFECT; ?>";
+				ListenEffectModeInput.min = "1";
+				ListenEffectModeInput.max = "3";
+				ListenEffectModeInput.placeholder = "1->3";
+				//ThinkEffectModeInput.value = "";
+				ThinkEffectModeInput.type = "number";
+				ThinkEffectModeInput.value = "<?php echo $LED_THINK_EFFECT; ?>";
+				ThinkEffectModeInput.min = "1";
+				ThinkEffectModeInput.max = "3";
+				ThinkEffectModeInput.placeholder = "1->3";
+				//SpeakEffectModeInput.value = "";
+				SpeakEffectModeInput.type = "number";
+				SpeakEffectModeInput.value = "<?php echo $LED_SPEAK_EFFECT; ?>";
+				SpeakEffectModeInput.min = "1";
+				SpeakEffectModeInput.max = "3";
+				SpeakEffectModeInput.placeholder = "1->3";
 			}
 			//ReSpeaker Mic Array v2.0 | ReSpeaker USB
 			else if (selectedLed === "ReSpeaker Mic Array v2.0") {
