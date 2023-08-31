@@ -2,6 +2,8 @@
 
 #Vũ Tuyển
 
+#Hướng dẫn sử dụng sẽ nằm trong: cài đặt (của dao diện web ui) => Hướng Dẫn / Sử Dụng Vietbot
+
 #Hướng Dẫn Cài VietBot: https://github.com/phanmemkhoinghiep/vietbot_offline
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
