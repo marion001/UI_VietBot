@@ -180,15 +180,37 @@ script:<br/>
 &nbsp;$: <b>sudo raspi-config</b><br/>
 - Chọn: <b>(6)Advance Options</b> -> <b>(A1)Expand File System</b> đợi vài giây -> <b>OK</b> -> <b>Fish</b> -> <b>Yes</b> để rebot<br/>
 <hr/>
+<h5>API WebUI:</h5>
+API: <a href="<?php echo "http://".$_SERVER['SERVER_ADDR']."/API.php"; ?>" target="_bank"><?php echo "http://".$_SERVER['SERVER_ADDR']."/API.php"; ?></a><br/>
+- Method: POST
+Giá trị bao gồm: <br/>
+<b>query</b> = Thực hiện truy vấn có giá trị là (info)<br/>
+<b>command</b> = Thực hiện sử dụng lệnh linux (sudo, cat, etc, v..v...) đặt giới hạn/Full các lệnh trong Configuration.php<br/>
+Giá trị bắt buộc:<br/>
+<b>api_key</b> = APi Key được mã hóa dạng MD5, được cấu hình trong file Configuration.php<br/><br/>
+<font color=red>Cấu Trúc Body(Ví Dụ):</font><br/>
+&nbsp;{<br/>
+&nbsp;  "command": "uname -a",<br/>
+&nbsp;  "api_key": "3f406f61a2b5053b53cda80e0320a60b"<br/>
+&nbsp;}<br/>
+
+<font color=red>Ví Dụ curl bash thực hiện truy vấn:</font><br/>
+&nbsp;curl --location 'http://192.168.14.194/API.php' \<br/>
+&nbsp;--header 'Content-Type: application/json' \<br/>
+&nbsp;--data '{<br/>
+&nbsp;  "query": "info",<br/>
+&nbsp;  "api_key": "3f406f61a2b5053b53cda80e0320a60b"<br/>
+&nbsp;}'<br/><br/>
+<font color=red>Ví Dụ curl command thực hiện truy vấn:</font><br/>
+&nbsp;curl --location 'http://192.168.14.194/API.php' \<br/>
+&nbsp;--header 'Content-Type: application/json' \<br/>
+&nbsp;--data '{<br/>
+&nbsp;  "command": "uname -a",<br/>
+&nbsp;  "api_key": "3f406f61a2b5053b53cda80e0320a60b"<br/>
+&nbsp;}'<hr/>
 <h1>Comback Soon</h1>
 	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
+
 	   <script>
     function togglePopup(event) {
       event.stopPropagation();
