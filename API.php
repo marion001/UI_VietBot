@@ -1,6 +1,6 @@
 <?php
 /**
- * File: secure_execute.php
+ * File: API.php
  * Description: Example code to execute shell commands securely through an API using cURL in PHP.
  * Author: Vũ Tuyển
  * Facebook: https://www.facebook.com/TWFyaW9uMDAx
@@ -13,7 +13,13 @@ $information = array(
         'api_version' => $version,
         'github_vietbot_offline' => $GitHub_VietBot_OFF,
         'ui_vietbot' => $UI_VietBot,
-        'author' => $MYUSERNAME
+        //'author' => $MYUSERNAME,
+        'author' => 'Vũ Tuyển',
+        'last_update_time' =>  date("H:i"),
+		'query_instructions' => array(
+		'command' => 'restart, linux command (ls, sudo, dir, v..v...), ',
+		'query' => 'info'
+		)
    
 );
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -28,17 +34,20 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 $input = file_get_contents('php://input');
 $data = json_decode($input, true);
-if (!isset($data['command']) || !isset($data['api_key'])) {
+
+//$presentFieldsCount = isset($data['command']) + isset($data['query']) + isset($data['api_key']);
+if (isset($data['command']) + isset($data['query']) + isset($data['api_key']) < 2) {
     http_response_code(400); // Bad Request
     echo json_encode(array(
-		'message' => 'Command or API key not provided.',
-		'http_response_code' => 400,
-		'output_api' => null,
-		'information' => $information
-		));
+        'message' => 'Dữ liệu đầu vào sai cú pháp hoặc API không được cung cấp cho truy vấn này',
+        'http_response_code' => 400,
+        'output_api' => null,
+        'information' => $information
+    ));
     exit();
 }
 $command = $data['command'];
+$query = $data['query'];
 $providedApiKey = $data['api_key'];
 // Kiểm tra xác thực API key
 if ($providedApiKey !== md5($apiKey)) {
@@ -81,7 +90,7 @@ if ($command === "reboot") {
 }
 
 
-if ($command === "restart_vietbot") {
+if ($command === "restart") {
     if (isset($data['api_key']) && $data['api_key'] === md5($apiKey)) {
 $connection = ssh2_connect($serverIP, $SSH_Port);
 if (!$connection) {die($E_rror_HOST);}
@@ -102,20 +111,81 @@ $output =  stream_get_contents($stream_out);
     }
 }
 
-if ($command === "info") {
+if ($query === "info") {
     if (isset($data['api_key']) && $data['api_key'] === md5($apiKey)) {
+//UI Update	
+	$UIlocalFile = $DuognDanUI_HTML.'/version.json';
+	$UIremoteJsonData = file_get_contents($UI_Version);
+	$UIremoteData = json_decode($UIremoteJsonData, true);
+	$UIlocalJsonData = file_get_contents($UIlocalFile);
+	$UIlocalData = json_decode($UIlocalJsonData, true);
+	$UIremoteValue = $UIremoteData['ui_version']['latest'];
+	$UIlocalValue = $UIlocalData['ui_version']['current'];
+	
+	if ($UIremoteValue !== $UIlocalValue) {
+	$UI_update = true;
+	$UI_new_version = $UIremoteValue;
+	if (empty($UIremoteData['ui_version']['notification'])) {
+	} else {
+    $UI_updated_content = $UIremoteData['ui_version']['notification'];
+	}
+	} else {
+	$UI_update = false;
+	$UI_new_version = null;
+	$UI_updated_content = null;
+	}
+//End UI update
+//Vietbot Update
+	$VBremoteJsonData = file_get_contents($Vietbot_Version);
+	$VBremoteData = json_decode($VBremoteJsonData, true);
+	
+	$VBlocalFile = $DuognDanThuMucJson.'/version.json';
+	$VBlocalJsonData = file_get_contents($VBlocalFile);
+	$VBlocalData = json_decode($VBlocalJsonData, true);
+	
+	$VBremoteValue = $VBremoteData['vietbot_version']['latest'];
+	$VBlocalValue = $VBlocalData['vietbot_version']['latest'];
+	
+	if ($VBremoteValue !== $VBlocalValue) {
+	$VB_update = true;
+	$VB_new_version = $VBremoteValue;
+	$VB_update_command = $VBremoteData['vietbot_version']['update_command'];
+	$VB_new_features = $VBremoteData['vietbot_version']['new_features'];
+	$VB_bug_fixed = $VBremoteData['vietbot_version']['bug_fixed'];
+	$VB_improvements = $VBremoteData['vietbot_version']['improvements'];
+	}
+	else {
+	$VB_update = false;
+	$VB_update_command = null;
+	$VB_new_features = null;
+	$VB_bug_fixed = null;
+	$VB_improvements = null;
+
+	}
+
+//End Vietbot Update
         echo json_encode(array(
             'message' => 'successfully',
             'http_response_code' => 200,
             'output_api' => null,
 			'info_vietbot' => array(
 				'vietbot_version' => array(
-					'current_version' => 'beta 21-08-2023',
-					'new_version' => 'beta 29-08-2023',
+					'current_version' => $VBlocalValue,
+					'new_version' => $VB_new_version,
+					'update' => $VB_update,
+					'content' => array(
+						'update_command' => $VB_update_command,
+						'new_features' => $VB_new_features,
+						'bug_fixed' => $VB_bug_fixed,
+						'improvements' => $VB_improvements
+					)
 				),
-				'vietbot_update' => true,
-				// automation check true/false tùy theo người viết code =))
-				// đẩy notify lên hass
+				'ui_version' => array(
+					'current_version' => $UIlocalValue,
+					'new_version' => $UI_new_version,
+					'update' => $UI_update,
+					'content' => $UI_updated_content
+				),
 			),
             'info_os' => array(
 				'host_name' =>  gethostname(),
