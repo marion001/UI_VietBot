@@ -210,6 +210,7 @@ Giá trị bắt buộc:<br/>
 &nbsp;}'
 <br/><br/>
 <b>(Ví Dụ)Cấu Hình Thông Báo Cập Nhật Dao Diện Web Và Vietbot Lên Home Assistant<br/>
+<a href="https://github.com/marion001/UI_VietBot/blob/main/README_HomeAssistant.md" target="_bank">Click Để Xem Chi tiết Trên Git</a><br/>
 - Cấu Hình File sensors.yaml</b><br/>
 <i>(Lưu Ý: thay địa chỉ <b>192.168.14.194</b> thành địa chỉ ip loa vietbot của bạn)</i><br/>
 <font color=red>
