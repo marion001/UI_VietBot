@@ -145,10 +145,10 @@ if ($query === "info") {
 	if ($VBremoteValue !== $VBlocalValue) {
 	$VB_update = true;
 	$VB_new_version = $VBremoteValue;
-	$VB_update_command = $VBremoteData['vietbot_version']['update_command'];
-	$VB_new_features = $VBremoteData['vietbot_version']['new_features'];
-	$VB_bug_fixed = $VBremoteData['vietbot_version']['bug_fixed'];
-	$VB_improvements = $VBremoteData['vietbot_version']['improvements'];
+	$VB_update_command = $VBremoteData['update_command'];
+	$VB_new_features = $VBremoteData['new_features'];
+	$VB_bug_fixed = $VBremoteData['bug_fixed'];
+	$VB_improvements = $VBremoteData['improvements'];
 	}
 	else {
 	$VB_update = false;
