@@ -1,7 +1,7 @@
 {
   "ui_version": {
-    "latest": "beta 01-09-2023",
-    "current": "beta 01-09-2023",
-    "notification": "Fix Bug, Cập nhật logging_type,Led APA102, API Web UI. Thông báo cập nhật lên hass."
+    "latest": "beta 02-09-2023",
+    "current": "beta 02-09-2023",
+    "notification": "Fix scrollbar-x với một số tỷ lệ màn hình trên thiết bị di động tab "Cập Nhật Trương Trình""
   }
 }
