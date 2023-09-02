@@ -16,7 +16,7 @@ include "../Configuration.php";
     <style>
 		body, html {
         background-color: #d2d8bb;
-		overflow-x: hidden;
+		/* overflow-x: hidden; */
 		max-width: 100%;
     }
         .div-div1 {
