@@ -37,7 +37,7 @@ Cấu hình trong automation.yaml
             title: "Vietbot:"
             message: "Có phiên bản mới: {{ state_attr('sensor.vietbot_api_info', 'info_vietbot')['vietbot_version']['new_version']}}"
 
-->Automation Thông Báo  Có Cập Nhật Dao Diện Web UI Mới:
+->Automation Thông Báo  Có Cập Nhật Giao Diện Web UI Mới:
 
     - id: '5646546543f3f'
       alias: Thông báo về phiên bản mới của giao diện UI của Vietbot
@@ -52,10 +52,10 @@ Cấu hình trong automation.yaml
         - service: notify.mobile_app_iphone_6s_vu_tuyen
           data:
             title: "Vietbot Web UI:"
-            message: "Có phiên bản dao diện mới: {{ state_attr('sensor.vietbot_api_info', 'info_vietbot')['ui_version']['new_version']}}"
+            message: "Có phiên bản giao diện mới: {{ state_attr('sensor.vietbot_api_info', 'info_vietbot')['ui_version']['new_version']}}"
 
 
-Dao Diện Love Lace:
+Giao Diện Love Lace:
 
     type: horizontal-stack
     cards:
@@ -78,7 +78,7 @@ Dao Diện Love Lace:
             - Cải Tiến: <font color=gree>{{ state_attr('sensor.vietbot_api_info', 'info_vietbot').vietbot_version.content.improvements }}</font>
             {% endif %}</font><br/>
         
-          Phiên Bản Dao Diện Web UI: <font color=gree> {{
+          Phiên Bản Giao Diện Web UI: <font color=gree> {{
           state_attr('sensor.vietbot_api_info','info_vietbot').ui_version.current_version}}</font><br/>
 
 
