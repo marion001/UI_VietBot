@@ -105,6 +105,7 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 		$Speed_TTS_MacDinh = "Mặc định";
 	} else {
 		$Speed_TTS = $data_config['smart_answer']['tts']['speed'];
+		$Speed_TTS_MacDinh = $data_config['smart_answer']['tts']['speed'];
 	}
 	//echo $GET_TTS_Token_Key;
 	$GET_Speaker_Amixer_ID = $data_config['smart_config']['speaker']['amixer_id'];
