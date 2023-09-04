@@ -344,9 +344,15 @@ function getTimestamp() {
 	  
 	  //Nếu Giá trị là undefined
 	if (typeof message === 'undefined') {
-		message = 'Nội đã được đọc ra loa.';
+		message = 'Nội dung đã được đọc ra loa';
 	    //return;
 	}
+	  //Nếu Giá trị là undefined
+	if (message === null) {
+		message = 'Không có dữ liệu';
+	    //return;
+	}
+	
     const messageElement = document.createElement('div');
     messageElement.classList.add('message');
 
