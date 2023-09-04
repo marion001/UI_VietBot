@@ -44,10 +44,13 @@ include "../Configuration.php";
     
     .chat-form {
         display: flex;
-        padding: 10px;
+      /*  padding: 10px; */ 
+       background-color: #f0f0f0;
+    }
+        .chat-form-button {
+		padding-bottom: 10px; 
         background-color: #f0f0f0;
     }
-    
     .chat-input {
         flex-grow: 1;
         margin-right: 10px;
@@ -145,7 +148,7 @@ include "../Configuration.php";
     
     .chat-wrapper {
         background-color: #f0f0f0;
-        padding: 10px;
+     /*   padding: 10px; */
     }
     
     .message-content {
@@ -209,12 +212,22 @@ include "../Configuration.php";
 </select>
                 </div>
                 <input type="text" class="form-control" id="user-input" class="chat-input" placeholder="Nhập tin nhắn..." aria-label="Recipient's username" aria-describedby="basic-addon2">
-                <div class="input-group-append">
+
+
+            
+			  <div class="input-group-append">
                     <button type="submit" class="btn btn-success">Gửi</button>
                 </div>
             </div>
         </form>
-        <button id="delete-all-button" class="btn btn-danger">Xóa tất cả tin nhắn</button>
+
+<center>
+  <div class="btn-group-toggle chat-form-button" data-toggle="buttons">
+  <label class="btn btn-secondary">
+    <input type="checkbox" checked autocomplete="off" id="show-timestamp-checkbox"> Hiển thị thời gian
+  </label>
+  <button id="delete-all-button" class="btn btn-danger">Xóa tất cả tin nhắn</button>
+</div></center>
     </div>
 <script>
 function getTimestamp() {
@@ -224,7 +237,6 @@ function getTimestamp() {
   const seconds = now.getSeconds().toString().padStart(2, '0');
   return `${hours}:${minutes}:${seconds}`;
 }
-
   const RESPONSE_TIMEOUT = 23000; // Thời gian chờ phản hồi cuối (21 giây) để hiển thị thông báo
   const WAIT_MESSAGE_TIMEOUT = 7000; // Thời gian chờ hiển thị thông báo "Vui lòng chờ thêm" (7 giây)
   const WAIT_MESSAGE = 'Vui lòng chờ thêm...'; // Nội dung thông báo chờ phản hồi
@@ -340,6 +352,15 @@ function getTimestamp() {
     }
   });
 
+
+const showTimestampCheckbox = document.getElementById('show-timestamp-checkbox');
+// Thêm một trình nghe sự kiện để xử lý sự thay đổi của ô kiểm
+showTimestampCheckbox.addEventListener('change', () => {
+  // Bật/tắt lớp 'hide-timestamp' trên khung chat dựa vào trạng thái của ô kiểm
+  chatContainer.classList.toggle('hide-timestamp', !showTimestampCheckbox.checked);
+});
+
+
   const displayMessage = (message, isUserMessage, isTimeoutMessage = false) => {
 	  
 	  //Nếu Giá trị là undefined
@@ -347,7 +368,7 @@ function getTimestamp() {
 		message = 'Nội dung đã được đọc ra loa';
 	    //return;
 	}
-	  //Nếu Giá trị là undefined
+	  //Nếu Giá trị là null
 	if (message === null) {
 		message = 'Không có dữ liệu';
 	    //return;
@@ -363,11 +384,22 @@ function getTimestamp() {
     }
 
 
-	const timestamp = getTimestamp(); // Lấy Hàm Thời Gian
-    const messageContent = document.createElement('div');
-    messageContent.classList.add('message-content');
-   // messageContent.textContent = message;
-	messageContent.textContent = `[${timestamp}] ${message}`; //  Thêm Hàm thời gian vào Chatbox
+  const timestamp = getTimestamp(); // Lấy thời gian
+  //const timestampElement = document.createElement('div');
+ // timestampElement.classList.add('message-timestamp');
+  //timestampElement.textContent = `[${timestamp}]`; // Bao gồm thời gian
+
+
+  const messageContent = document.createElement('div');
+  messageContent.classList.add('message-content');
+   // Kiểm tra trạng thái của ô kiểm "show-timestamp-checkbox"
+ if (showTimestampCheckbox.checked) {
+	messageContent.textContent = `[${timestamp}] ${message}`; //  Thêm Hàm thời gian vào Chatbox khi được tích
+  }else {
+    messageContent.textContent = message; //nếu không được tích
+  }
+	
+	
 
     const deleteButton = document.createElement('button');
     deleteButton.classList.add('delete-button');
