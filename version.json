@@ -2,6 +2,6 @@
   "ui_version": {
     "latest": "beta 04-09-2023",
     "current": "beta 04-09-2023",
-    "notification": "Fix Lưu Giá Trị logging_type cũ khi cập nhật phiên bản mới + cập nhật Chatbot"
+    "notification": "Fix Không Lưu Giá Trị logging_type khi cập nhật phiên bản mới + cập nhật Chatbot"
   }
 }
