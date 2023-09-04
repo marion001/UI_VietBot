@@ -197,7 +197,16 @@ include "../Configuration.php";
         <form id="chat-form" class="chat-form">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1">Chỉ đọc: &nbsp;<input title="Chỉ đọc nội dung văn bản bạn đã nhập ra loa và sẽ không hiển thị trong giao diện chatbox" type="checkbox" class="form-check-input" id="message-type-checkbox"></span>
+                    
+				<!--	<span class="input-group-text" id="basic-addon1">Chỉ đọc: &nbsp;<input title="Chỉ đọc nội dung văn bản bạn đã nhập ra loa và sẽ không hiển thị trong giao diện chatbox" type="checkbox" class="form-check-input" id="message-type-checkbox">
+					
+					
+					</span> -->
+  <select id="message-type-checkbox" class="form-select">
+  <option  selected value="4" title="Chế Độ Hỏi Đáp Ở Chatbox Không Phát Ra Loa">Hỏi Đáp</option>
+  <option value="1" title="TTS Chuyển Văn Bản Thành Giọng Nói Để Đọc Ra Loa">Chỉ Đọc</option>
+  <option value="2" title="Full Chức Năng">Full</option>
+</select>
                 </div>
                 <input type="text" class="form-control" id="user-input" class="chat-input" placeholder="Nhập tin nhắn..." aria-label="Recipient's username" aria-describedby="basic-addon2">
                 <div class="input-group-append">
@@ -218,6 +227,7 @@ include "../Configuration.php";
   const userInput = document.getElementById('user-input');
   const deleteAllButton = document.getElementById('delete-all-button');
   const messageTypeCheckbox = document.getElementById('message-type-checkbox');
+
   let typingIndicator;
   let isBotReplying = false;
   let waitMessageTimer; // Biến đếm thời gian chờ hiển thị WAIT_MESSAGE
@@ -232,7 +242,14 @@ include "../Configuration.php";
       return;
     }
 	//1 = tts, 4 = hỏi đáp
-    const messageType = messageTypeCheckbox.checked ? 1 : 4;
+    //const messageType = messageTypeCheckbox.checked ? 1 : 4;
+	//parseInt chuyển đổi giá trị thành một số nguyên (integer) không nằm trong dấu nháy
+    const messageType = parseInt(messageTypeCheckbox.value);
+
+	   // Hiển thị giá trị đã chọn và giá trị đã nhập trong console
+   // console.log("Giá trị đã chọn là: " + messageType);
+    // console.log("Tin nhắn của người dùng là: " + userMessage);
+	
     // Kiểm tra kết nối tới API trước khi gửi yêu cầu để đưa ra thông báo
     try {
       const response = await axios.get('http://<?php echo $serverIP; ?>:5000');
