@@ -217,6 +217,14 @@ include "../Configuration.php";
         <button id="delete-all-button" class="btn btn-danger">Xóa tất cả tin nhắn</button>
     </div>
 <script>
+function getTimestamp() {
+  const now = new Date();
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const seconds = now.getSeconds().toString().padStart(2, '0');
+  return `${hours}:${minutes}:${seconds}`;
+}
+
   const RESPONSE_TIMEOUT = 23000; // Thời gian chờ phản hồi cuối (21 giây) để hiển thị thông báo
   const WAIT_MESSAGE_TIMEOUT = 7000; // Thời gian chờ hiển thị thông báo "Vui lòng chờ thêm" (7 giây)
   const WAIT_MESSAGE = 'Vui lòng chờ thêm...'; // Nội dung thông báo chờ phản hồi
@@ -333,6 +341,12 @@ include "../Configuration.php";
   });
 
   const displayMessage = (message, isUserMessage, isTimeoutMessage = false) => {
+	  
+	  //Nếu Giá trị là undefined
+	if (typeof message === 'undefined') {
+		message = 'Nội đã được đọc ra loa.';
+	    //return;
+	}
     const messageElement = document.createElement('div');
     messageElement.classList.add('message');
 
@@ -342,9 +356,12 @@ include "../Configuration.php";
       messageElement.classList.add('bot-message');
     }
 
+
+	const timestamp = getTimestamp(); // Lấy Hàm Thời Gian
     const messageContent = document.createElement('div');
     messageContent.classList.add('message-content');
-    messageContent.textContent = message;
+   // messageContent.textContent = message;
+	messageContent.textContent = `[${timestamp}] ${message}`; //  Thêm Hàm thời gian vào Chatbox
 
     const deleteButton = document.createElement('button');
     deleteButton.classList.add('delete-button');
