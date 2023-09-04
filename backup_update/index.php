@@ -614,11 +614,20 @@ function recursiveReplace(&$oldArray, $newArray) {
 function replaceIfDifferent(&$oldValue, $newValue) {
     if (isset($newValue)) {
         $oldValue = $newValue;
-    }
+    } 
+	
+
+	
 }
 recursiveReplace($newConfigData, $oldConfigData);
 $newConfigUpdatedContent = json_encode($newConfigData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 file_put_contents($newConfigPath, $newConfigUpdatedContent);
+//Xử Lý Riêng logging_type chọn là Null
+//$GET_LOG_Null = $oldConfigData['smart_config']['logging_type'];
+$newConfigData['smart_config']['logging_type'] = $oldConfigData['smart_config']['logging_type'];
+    $new_json_data_config = json_encode($newConfigData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    file_put_contents($newConfigPath, $new_json_data_config);
+//END
 // thay thế các giá trị Skill từ cũ sang mới
 $oldSkillPath = $DuognDanUI_HTML.'/backup_update/backup/skill_.json';
 $oldSkillContent = file_get_contents($oldSkillPath);
