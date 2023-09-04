@@ -56,7 +56,9 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
 <h5>SSH:</h5>
  - username: <b>pi</b><br/>
  - password: <b>vietbot</b><hr/>
-<h5>Các chức năng và hướng dẫn trong tab <b>config.json</b> và <b>skill.json</b> đều được diễn giải ở dấu: <i class="bi bi-info-circle-fill" title="Nhấn Để Tìm Hiểu Thêm"></i><h5><hr/>
+<h5>- Các chức năng và hướng dẫn trong tab <b>config.json</b> và <b>skill.json</b> đều được diễn giải ở dấu: <i class="bi bi-info-circle-fill" title="Nhấn Để Tìm Hiểu Thêm"></i><br/>
+- Cấu hình thông số Web UI nằm ở file <font color=red>Configuration.php</font> theo đường dẫn: <font color=red>/home/pi/vietbot_offline/html/Configuration.php</font>
+<h5><hr/>
 <br/><h5>Chức Năng/Nút Nhấn:</h5><i>
  - Nút <b> Play: </b> Nhấn 1 lần sẽ gọi bot, ấn giữ nút sẽ phát thông tin hiện tại của loa<br>
  - Nút <b> Volume + -: </b> Nhấn 1 lần sẽ tăng/giảm volume, ấn giữ max volume 100%<br/>
