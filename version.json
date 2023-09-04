@@ -1,7 +1,7 @@
 {
   "ui_version": {
-    "latest": "beta 02-09-2023",
-    "current": "beta 02-09-2023",
-    "notification": "Fix scrollbar-x với một số tỷ lệ màn hình trên thiết bị di động tab: Cập Nhật Trương Trình"
+    "latest": "beta 04-09-2023",
+    "current": "beta 04-09-2023",
+    "notification": "Fix Lưu Giá Trị logging_type cũ khi cập nhật phiên bản mới + cập nhật Chatbot"
   }
 }
