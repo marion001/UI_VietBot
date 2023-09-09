@@ -1,7 +1,7 @@
 {
   "ui_version": {
-    "latest": "beta 04-09-2023-02",
-    "current": "beta 04-09-2023-02",
-    "notification": "Fix Không Lưu Giá Trị logging_type khi cập nhật phiên bản mới + cập nhật Chatbot"
+    "latest": "beta 10-09-2023",
+    "current": "beta 10-09-2023",
+    "notification": "Cập Nhật: Kiểm tra kết nối tới home assistant, thêm mật khẩu quản lý (đảm bảo quyền, thông tin của người dùng)"
   }
 }
