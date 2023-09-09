@@ -196,6 +196,17 @@ include "../Configuration.php";
         <div class="chat-wrapper">
             <div id="message-content" class="message-content">Chào bạn mình là loa thông minh Vietbot!</div>
         </div>
+		<?php
+// Kiểm tra xem người dùng đã đăng nhập hay chưa
+if (!isset($_SESSION['root_id'])) {
+    // Nếu chưa đăng nhập, chuyển hướng về trang đăng nhập (index.php)
+    //header("Location: ./index.php");
+	echo "<br/><center><h1>Có Vẻ Như Bạn Chưa Đăng Nhập!<br/><br>
+	- Nếu Bạn Đã Đăng Nhập, Hãy Nhấn Vào Nút Dưới<br/><br/><a href='$PHP_SELF'><button type='button' class='btn btn-danger'>Tải Lại</button></a></h1>
+	</center>";
+    exit();
+}
+?>
         <div id="chatbox" class="container-fluid"></div>
         <form id="chat-form" class="chat-form">
             <div class="input-group mb-3">

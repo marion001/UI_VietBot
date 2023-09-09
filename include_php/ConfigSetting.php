@@ -36,9 +36,7 @@ include "../Configuration.php";
 	//Lấy giá trị value trong file json
 	$value_volume = $data_volume->volume;
 	//lấy giá các trị wakeup_reply
-	
 	$GET_wakeupReply = $data_config['smart_wakeup']['wakeup_reply'];
-	
 	
 	//lấy giá các trị value của STT
 	$GET_STT = $data_config['smart_request']['stt']['type'];
@@ -134,9 +132,6 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	$external_bot_priority_1 = $data_config['smart_answer']['external_bot_priority_1'];
 	$external_bot_priority_2 = $data_config['smart_answer']['external_bot_priority_2'];
 	$external_bot_priority_3 = $data_config['smart_answer']['external_bot_priority_3'];
-	
-	
-	
 	
 	//Led
 	$LED_TYPE = $data_config['smart_config']['led']['type'];
@@ -291,8 +286,7 @@ chmod($backupFile, 0777);
 	//Đọc trạng thái sau khi khởi động
 	 $data_config['smart_answer']['startup_state_speaking'] = ($_POST['startup_state_speaking'] === 'true');
 
-	
-		//Chờ xử Lý Dữ Liệu
+	//Chờ xử Lý Dữ Liệu
     $preAnswerList = $_POST["pre_answer"];
     $numberCharactersToSwitchMode = $_POST["number_characters_to_switch_mode"];
 	
@@ -314,10 +308,8 @@ chmod($backupFile, 0777);
 	$STT_GG_Ass_Mode = @$_POST['stt_gg_ass_mode'];
     $STT_TimeOut = @$_POST['stt_time_out'];
 	if (strcasecmp(@$_POST['token_stt'], "Null") === 0) {$STT_Token = null;
-    } else {$STT_Token = @$_POST['token_stt'];}
-	
-
-	
+    } else {
+	$STT_Token = @$_POST['token_stt'];}
 	$TTS_Company = @$_POST['tts_company'];
 	$TTS_Voice = @$_POST['tts_voice'];
 	//$TTS_Token_Key = @$_POST['token_key_tts'];
@@ -374,7 +366,6 @@ chmod($backupFile, 0777);
     // Cập nhật lại mảng "wakeup_reply" trong dữ liệu
     $data_config["smart_wakeup"]["wakeup_reply"] = $wakeup_reply;
 	
-		
 	//stt
 	$data_config['smart_request']['stt']['type'] = $STT_Type;
 	$data_config['smart_request']['stt']['stt_gg_ass_mode'] = $STT_GG_Ass_Mode;
@@ -665,6 +656,17 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
 <div id="loading-message">- Đang Thực Hiện...</div>
 </div>
 <?php
+// Kiểm tra xem người dùng đã đăng nhập hay chưa
+if (!isset($_SESSION['root_id'])) {
+    // Nếu chưa đăng nhập, chuyển hướng về trang đăng nhập (index.php)
+    //header("Location: ./index.php");
+	echo "<br/><center><h1>Có Vẻ Như Bạn Chưa Đăng Nhập!<br/><br>
+	- Nếu Bạn Đã Đăng Nhập, Hãy Nhấn Vào Nút Dưới<br/><br/><a href='$PHP_SELF'><button type='button' class='btn btn-danger'>Tải Lại</button></a></h1>
+	</center>";
+    exit();
+}
+?>
+<?php
 // Thư mục cần kiểm tra
 $directories = array(
     "$Path_Vietbot_src"
@@ -703,7 +705,6 @@ foreach ($directories as $directory) {
     checkPermissions($directory, $hasPermissionIssue);
 }
 
-
 if (json_last_error() !== JSON_ERROR_NONE) {
     echo "<center><h1> <font color=red>Phát hiện lỗi, cấu trúc tập tin config.json không hợp lệ!</font></h1><br/>- Mã Lỗi: <b>" . json_last_error_msg()."</b><br/><br/>";
 	echo "Hướng Dẫn Khắc Phục 1 Trong Các Gợi Ý Dưới Đây:<i><br>- Bạn cần sửa trực tiếp trên file<br/>- Chọn <b>các file sao lưu trước đó</b><br/>- Nhấn vào nút <b>Khôi Phục Gốc</b> bên dưới để về trạng thái khi mới flash</i>";
@@ -722,7 +723,7 @@ if (count($fileLists) > 0) {
     echo '</select><div class="input-group-append">';
     echo '<input type="submit" class="btn btn-warning" title="Khôi Phục Lại File config.json trước đó đã sao lưu" value="Khôi Phục/Recovery">';
     echo ' </div></div></form>';
-	echo '<br/><br/><form id="my-form"  method="POST"><button type="submit" name="restore_config_json" class="btn btn-danger">Khôi Phục Gốc</button></center></form>';
+	echo '<br/><br/><form id="my-form"  method="POST"><button type="submit" name="restore_config_json" class="btn btn-success">Khôi Phục Gốc</button><a href="'.$PHP_SELF.'"><button type="button" class="btn btn-danger">Tải Lại/Làm Mới</button></center></form>';
 }
  else {
     echo "Không tìm thấy file backup config trong thư mục.";
@@ -730,8 +731,6 @@ if (count($fileLists) > 0) {
 echo '</div>';
     exit(); // Kết thúc chương trình
 }
-
-
 
 ?>
 <div id="loading-overlay"><img id="loading-icon" src="../assets/img/Loading.gif" alt="Loading...">
@@ -2538,7 +2537,7 @@ disableRadioButtons();
             const selectedSong = songSelect_start.value;
             // Gửi giá trị đường dẫn tới tệp PHP để lấy mã Base64
             const xhr = new XMLHttpRequest();
-            xhr.open('GET', 'Listen.php?song=' + selectedSong, true);
+            xhr.open('GET', 'Ajax/Listen.php?song=' + selectedSong, true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     const base64Audio = xhr.responseText;
@@ -2562,7 +2561,7 @@ disableRadioButtons();
 
             // Gửi giá trị đường dẫn tới tệp PHP để lấy mã Base64
             const xhr = new XMLHttpRequest();
-            xhr.open('GET', 'Listen.php?song=' + selectedSongsongSelect_finish, true);
+            xhr.open('GET', 'Ajax/Listen.php?song=' + selectedSongsongSelect_finish, true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     const base64Audio = xhr.responseText;
@@ -2587,7 +2586,7 @@ disableRadioButtons();
             const selectedSongsongSelect_pathdropdown = songSelect_pathdropdown.value;
             // Gửi giá trị đường dẫn tới tệp PHP để lấy mã Base64
             const xhr = new XMLHttpRequest();
-            xhr.open('GET', 'Listen.php?song=' + selectedSongsongSelect_pathdropdown, true);
+            xhr.open('GET', 'Ajax/Listen.php?song=' + selectedSongsongSelect_pathdropdown, true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     const base64Audio = xhr.responseText;
@@ -2639,7 +2638,5 @@ $(document).ready(function() {
     });
 });
 </script>
-
-
 </body>
 </html>
