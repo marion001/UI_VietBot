@@ -107,9 +107,14 @@ $dataVersionVietbot = json_decode($jsonDataVersionVietbot);
 $PORT_CHATBOT = $dataVTGET->smart_config->web_interface->port;
 $MYUSERNAME = $dataVTGET->smart_config->user_info->name;
 
-$wards_Lang = $dataVTGET->smart_config->user_info->address->wards; //Xã
+//Vị Trí, Địa Chỉ
+$wards_Lang = $dataVTGET->smart_config->user_info->address->wards; 
 $wards_Huyen = $dataVTGET->smart_config->user_info->address->district;
 $wards_Tinh = $dataVTGET->smart_config->user_info->address->province;
+
+//Lấy Dữ Liệu Config Chặn Cập Nhật
+$block_updates_vietbot_program = $dataVTGET->smart_config->block_updates->vietbot_program;
+$block_updates_web_ui = $dataVTGET->smart_config->block_updates->web_ui;
 
 $apiKeyWeather = $Data_Json_Skill->weather->openweathermap_key;
 ?>
