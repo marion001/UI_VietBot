@@ -2,6 +2,6 @@
   "ui_version": {
     "latest": "beta 10-09-2023",
     "current": "beta 10-09-2023",
-    "notification": "Cập Nhật: Kiểm tra kết nối tới home assistant, thêm mật khẩu quản lý Web UI (đảm bảo quyền, thông tin của người dùng)"
+    "notification": "thêm tính năng cho phép Bật/Tắt update Vietbot và Web UI trong tab Config Setting"
   }
 }
