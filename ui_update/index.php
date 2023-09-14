@@ -246,20 +246,24 @@ $remoteValue = $remoteData['ui_version']['latest'];
 $localValue = $localData['ui_version']['current'];
 // So sánh giá trị
 if ($remoteValue !== $localValue) {
-    $messagee .= 'Có phiên bản mới: '.$remoteValue.'\n';
-    $messagee .= 'Phiên bản hiện tại của bạn: '.$localValue.'\n Vui lòng cập nhật.\n\n';
+    $messagee .= 'Có phiên bản mới: <font color=red>'.$remoteValue.'</font><br/>';
+    $messagee .= 'Phiên bản hiện tại của bạn: <font color=red>'.$localValue.',</font> vui lòng cập nhật.<br/>';
     //$messagee .= $remoteData['ui_version']['notification'].'\n';
 	if (empty($remoteData['ui_version']['notification'])) {
     //echo "Không có dữ liệu";
 	} else {
-    $messagee .= 'Nội Dung Cập Nhật: '.$remoteData['ui_version']['notification'].'\n';
+    $messagee .= 'Nội Dung Cập Nhật: <font color=red>'.$remoteData['ui_version']['notification'].'</font><br/>';
 	}
 } else {
-    $messagee .= 'Bạn đang sử dụng phiên bản mới nhất: '.$localValue.'\n';
+    $messagee .= 'Bạn đang sử dụng phiên bản mới nhất: <font color=red>'.$localValue.'<br/>';
 }
 }
 
 if (isset($_POST['ui_update'])) {
+	if (isset($block_updates_web_ui) && $block_updates_web_ui === true) {
+        //echo "Checkbox được tích và không cho cập nhật.";
+        $messagee .= '<font color=red><i>Cập Nhật <b>Web UI</b> Đã Bị Tắt, Cần Đi Tới Tab <b>Cấu Hình Config</b> Để Bỏ Tích</i></font>';
+    } else {
 $backupDir = $DuognDanUI_HTML.'/ui_update/backup'; // Đường dẫn thư mục sao lưu lại file sao lưu
 $timestamp = date('d_m_Y_His'); 
 $startCheckboxReload = $_POST['startCheckboxReload'];
@@ -284,7 +288,7 @@ if ($returnCode === 0) {
         }
     }
 } else { 
-    $messagee .= 'Có lỗi xảy ra khi tạo bản sao lưu.\n';
+    $messagee .= '<font color=red>Có lỗi xảy ra khi tạo bản sao lưu.</font><br/>';
 }
 //END sao Lưu
 $url = $UI_VietBot.'/archive/master.zip';
@@ -323,13 +327,13 @@ if ($zip) {
   //  $messagee .= 'Đã tải xuống và giải nén giao diện mới thành công!\n';
     // Gọi hàm sao chép đệ quy
     copyRecursive($sourceDirectory, $DuognDanUI_HTML);
-    $messagee .= 'Cập nhật giao diện mới thành công!\n';
+    $messagee .= '<font color=red>Cập nhật giao diện mới thành công!</font>';
    // $messagee .= 'Bạn Hãy Tắt Trang Và Truy Cập Lại Để Áp Dụng, (Hoặc F5 Để Áp Dụng)....!\n';
     // Gọi hàm xóa đệ quy
     deleteRecursive($sourceDirectory);
 	shell_exec("rm $zipFile");
 } else {
-    $messagee .= 'Có lỗi xảy ra, không thể mở tập tin giao diện đã tải về!\n';
+    $messagee .= '<font color=red>Có lỗi xảy ra, không thể mở tập tin giao diện đã tải về!</font>';
 }
 //Chmod 777 khi chạy xong backup
 $connection = ssh2_connect($serverIP, $SSH_Port);
@@ -358,11 +362,17 @@ if (@$_POST['audioo_playmp3_success'] === "playmp3_success") {
 ?>
 
 <?php
+
+
+
+
+
+}
 }
 if (isset($_POST['restors_ui'])) {
     $selectedFile = $_POST['tarFile'];
     if ($selectedFile === "....") {
-        $message .= 'Vui lòng chọn file cần khôi phục!\n\n';
+        $message .= '<font color=red>Vui lòng chọn file cần khôi phục!</font>';
     } else {
         $tarFile = $DuognDanUI_HTML.'/ui_update/backup/' . $selectedFile;
         $extractDirectory = $DuognDanUI_HTML.'/ui_update/extract';
@@ -374,15 +384,15 @@ if (isset($_POST['restors_ui'])) {
         copyRecursiveExclude($extractDirectory . '/html', $DuognDanUI_HTML, array('.zip', '.tar.gz'));
         // Xóa thư mục /home/pi/vietbot_offline/html/ui_update/extract/html
         deleteDirectory($deleteDirectory);
-         $message .= 'Đã khôi phục giao diện backup thành công! \n';
-         $message .= 'Bạn Hãy Tải Lại Trang Để Áp Dụng....! \n';
+         $message .= '<font color=red>Đã khôi phục giao diện backup thành công!<br/>';
+         $message .= 'Bạn Hãy Tải Lại Trang Để Áp Dụng....!</font>';
     }
 }
 if (isset($_POST['download']) && isset($_POST['tarFile'])) {
     $selectedFile = $_POST['tarFile'];
     $filePath = '/ui_update/backup/' . $selectedFile; // Đường dẫn đến thư mục chứa tệp tin
     if ($selectedFile === "....") {
-         $message .= 'Vui lòng chọn file cần tải xuống!\n\n';
+         $message .= '<font color=red>Vui lòng chọn file cần tải xuống!</font>';
     } else {
         // Tạo liên kết tới trang mục tiêu trong tab mới
         $targetLink = "http://$serverIP$filePath"; // Đặt đường dẫn mục tiêu tại đây
@@ -458,14 +468,16 @@ echo $selectDropdown;
   	    <script>
         var messageElement = document.getElementById("message");
         var message = "<?php echo $message; ?>";
-        messageElement.innerText = message;
+       // messageElement.innerText = message;
+        messageElement.innerHTML = message;
     </script>
 	
 	
 	    <script>
         var messageElementt = document.getElementById("messagee");
         var messagee = "<?php echo $messagee; ?>";
-        messageElementt.innerText = messagee;
+       // messageElementt.innerText = messagee;
+        messageElementt.innerHTML = messagee;
     </script>
 	
 	<script>
