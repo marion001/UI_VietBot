@@ -5,7 +5,7 @@ include "../Configuration.php";
 	$FileConfigJson = "$DuognDanThuMucJson"."/config.json";
 	$FileVolumeJson = "$DuognDanThuMucJson"."/state.json";
 	$json_volume_data = file_get_contents($FileVolumeJson);
-    	$json_config_data = file_get_contents($FileConfigJson);
+    $json_config_data = file_get_contents($FileConfigJson);
 	$data_volume = json_decode($json_volume_data);
 	$data_config = json_decode($json_config_data, true);
 	$ttsCompany = '';
@@ -132,6 +132,10 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	$external_bot_priority_1 = $data_config['smart_answer']['external_bot_priority_1'];
 	$external_bot_priority_2 = $data_config['smart_answer']['external_bot_priority_2'];
 	$external_bot_priority_3 = $data_config['smart_answer']['external_bot_priority_3'];
+	
+	//Chặn Cập Nhật Vietbot
+	$block_updates_vietbot_program = $data_config['smart_config']['block_updates']['vietbot_program'];
+	$block_updates_web_ui = $data_config['smart_config']['block_updates']['web_ui'];
 	
 	//Led
 	$LED_TYPE = $data_config['smart_config']['led']['type'];
@@ -281,6 +285,10 @@ chmod($backupFile, 0777);
 	// Lưu lại dữ liệu vào file config.json
 	//Hỏi liên tục\
 	 $data_config['smart_request']['continuous_asking'] = ($_POST['continuous_asking'] === 'true');
+	 
+	 //Lưu Chặn Cập Nhật
+	 $data_config['smart_config']['block_updates']['vietbot_program'] = ($_POST['block_updates_vietbot_program'] === 'true');
+	 $data_config['smart_config']['block_updates']['web_ui'] = ($_POST['block_updates_web_ui'] === 'true');
 	 	//end hỏi liên tục
 		
 	//Đọc trạng thái sau khi khởi động
@@ -1348,7 +1356,44 @@ else {
     ?>
 </div><hr/>
 <!-- </div> -->
-<!--Kết Thúc mục  Wake Up Reply --> 		
+<!--Kết Thúc mục  Wake Up Reply --> 	
+
+
+  <h5>Chặn Cập Nhật: <i class="bi bi-info-circle-fill" onclick="togglePopupBLOCLUPDATE()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
+
+	
+<div class="form-check form-switch d-flex justify-content-center"> 
+<div id="toggleIcon" onclick="toggleDivblockupdates()"><font color=red>
+<i id="upIconblockupdates" title="Nhấn Để Mở Cấu Hình Cài Đặt Wake Up Reply" class="bi bi-arrow-up-circle-fill" style="display: none;"></i>
+<i id="downIconblockupdates" title="Nhấn Để Đóng Cấu Hình Cài Đặt Wake Up Reply" class="bi bi-arrow-down-circle-fill" ></i></font></div></div>
+
+ <div id="myDivblockupdates" style="display: none;"> 
+
+		<div class="row justify-content-center"><div class="col-auto">
+<table class="table table-bordered">
+  <tbody>
+    <tr>
+      <th scope="row"><font color=red>Chặn Cập Nhật Phần Mềm Vietbot:</font></th>
+      <td><input type="checkbox" name="block_updates_vietbot_program" value="true" title="Tích vào để kích hoạt" class="form-check-input" <?php echo ($block_updates_vietbot_program) ? 'checked' : ''; ?>></td>
+    </tr>
+	<tr>
+	<th scope="row"><font color=red>Chặn Cập Nhật Web_UI:</font></th>
+	
+	<td><input type="checkbox" name="block_updates_web_ui" title="Tích vào để kích hoạt" value="true" class="form-check-input" <?php echo ($block_updates_web_ui) ? 'checked' : ''; ?>></td>
+  
+	
+
+	</tr/>
+  </tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+
+
+	<hr/>
 <center>
 <input type="submit" class="btn btn-success" name="config_setting" value="Lưu Cấu Hình">  <a href="<?php echo $PHP_SELF ?>"><button type="submit" class="btn btn-danger">Hủy Bỏ/Làm Mới</button></a>
  <button type="submit" name="restart_vietbot" class="btn btn-warning">Khởi Động Lại VietBot</button>
@@ -2308,6 +2353,21 @@ else if (radio.value === "stt_hpda") {
       }
     }
 	
+	// aanrh iện chặn cập nhật
+    function toggleDivblockupdates() {
+      var div = document.getElementById("myDivblockupdates");
+      var upIcon = document.getElementById("upIconblockupdates");
+      var downIcon = document.getElementById("downIconblockupdates");
+      if (div.style.display === "none") {
+        div.style.display = "block";
+		upIcon.style.display = "inline-block";
+        downIcon.style.display = "none";
+      } else {
+        div.style.display = "none";
+		upIcon.style.display = "none";
+        downIcon.style.display = "inline-block";
+      }
+    }
 	
 	
 
