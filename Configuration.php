@@ -79,7 +79,7 @@ $Limit_Radio = "10";
 $Limit_Pre_Answer = "3";
 
 //Thời gian đếm ngược tải lại trang khi update UI và Vietbot
-$Page_Load_Time_Countdown = "3"; //Giây
+$Page_Load_Time_Countdown = "6"; //Giây
 
 ///////////////////////////////////////////////////////////////////////////////
 //API Config Setting
