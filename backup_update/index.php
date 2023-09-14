@@ -372,6 +372,8 @@ if (!isset($_SESSION['root_id'])) {
 							
 							</div>
 <br/>
+
+<br/>
 <div class="my-div">
     <span class="corner-text"><h5>Sao Lưu/Khôi Phục:</h5></span>
     <br/>
@@ -413,7 +415,7 @@ if (isset($_POST['download']) && isset($_POST['selectedFile'])) {
         echo "<script>window.open('$targetLink',  '_blank');</script>";
     } else {
         // Xử lý khi $selectedFile không có giá trị
-        $message .= 'Không có tệp tin được chọn để tải xuống\n';
+        $message .= '<font color=red>Không có tệp tin được chọn để tải xuống</font>';
     }
 }
 ?>
@@ -459,37 +461,41 @@ $gitData = json_decode($gitJson, true);
 $latestVersion = $gitData['vietbot_version']['latest'];
 // So sánh giá trị "vietbot_version" từ cURL và từ GitHub
 if ($currentresult === $latestVersion) {
-  $messagee .= "Bạn đang sử dụng phiên bản mới nhất: " . $currentresult;
+  $messagee .= "Bạn đang sử dụng phiên bản mới nhất: <font color=red>" . $currentresult . "</font>";
 } else {
-  $messagee .= "Có phiên bản mới: " . $latestVersion.'\n';
-  $messagee .= "Phiên bản hiện tại: " . $currentresult.'\n\n';
+  $messagee .= "Có phiên bản mới: <font color=red>" . $latestVersion.'<font><br/>';
+  $messagee .= "Phiên bản hiện tại: <font color=red>" . $currentresult.'<font><br/><br/>';
 	if (empty($gitData['new_features'])) {
     //echo "Không có dữ liệu";
 	} else {
-    $messagee .= 'Tính năng mới: '.$gitData['new_features'].'\n';
+    $messagee .= 'Tính năng mới: <font color=red>'.$gitData['new_features'].'<font><br/>';
 	}
 	
 	if (empty($gitData['bug_fixed'])) {
     //echo "Không có dữ liệu";
 	} else {
-    $messagee .= 'Sửa lỗi: '.$gitData['bug_fixed'].'\n';
+    $messagee .= 'Sửa lỗi: <font color=red>'.$gitData['bug_fixed'].'<font><br/>';
 	}
 	
 	if (empty($gitData['improvements'])) {
     //echo "Không có dữ liệu";
 	} else {
-    $messagee .= 'Cải thiện: '.$gitData['improvements'].'\n';
+    $messagee .= 'Cải thiện: <font color=red>'.$gitData['improvements'].'<font><br/>';
 	}
 	
 
 	if (empty($gitData['update_command'])) {
     //echo "Không có dữ liệu";
 	} else {
-    $messagee .= 'Lệnh Cần Bổ Sung $:> '.$gitData['update_command'].'\n';
+    $messagee .= 'Lệnh Cần Bổ Sung $:> <font color=red>'.$gitData['update_command'].'<font><br/>';
 	}
 }
 }
 if (isset($_POST['backup_update'])) {
+	if (isset($block_updates_vietbot_program) && $block_updates_vietbot_program === true) {
+        //echo "Checkbox được tích và không cho cập nhật.";
+        $messagee .= '<font color=red>Cập Nhật Phần Mềm Đã Bị Tắt, Cần Đi Tới <b><i>Tab Cấu hình Config</i></b> Để Bỏ Tích</font>';
+    } else {
 //Coppy file config, skill và chmod ra bộ nhớ tạm để lấy và thay thế các value giống nhau
 exec("cp $DuognDanThuMucJson/config.json $DuognDanUI_HTML/backup_update/backup/config_.json");
 exec("cp $DuognDanThuMucJson/skill.json $DuognDanUI_HTML/backup_update/backup/skill_.json");
@@ -522,7 +528,7 @@ exec("chmod 777 $DuognDanUI_HTML/backup_update/backup/state_.json");
                 }
             }
         } else {
-            $messagee .= 'Có lỗi xảy ra khi tạo bản sao lưu. Thư mục resources hoặc src không tồn tại .\n';
+            $messagee .= 'Có lỗi xảy ra khi tạo bản sao lưu. Thư mục <font color=red>resources</font> hoặc <font color=red>src</font> không tồn tại.<br/>';
         }
 		if (!file_exists($PathResources)) {
     // Nếu không tồn tại, tạo mới thư mục
@@ -562,7 +568,7 @@ exec("chmod 777 $DuognDanUI_HTML/backup_update/backup/state_.json");
 			$sourceDirectoryyy = $DuognDanUI_HTML.'/backup_update/extract/vietbot_offline-beta/resources';
             copyFiles($sourceDirectory, $DuognDanThuMucJson, $excludedFiles, $excludedDirectories, $copiedItems);
 			copyFiles($sourceDirectoryyy, $PathResources, $excludedFiles, $excludedDirectories, $copiedItems);
-            $messagee .= 'Đã tải xuống phiên bản Vietbot mới và cập nhật thành công!\n';
+            $messagee .= '<font color=red>Đã tải xuống phiên bản Vietbot mới và cập nhật thành công!</font><br/>';
 			shell_exec("rm -rf $DuognDanUI_HTML/backup_update/extract/vietbot_offline-beta");
 			?>
 			<div class="form-check form-switch d-flex justify-content-center"> 
@@ -587,22 +593,22 @@ exec("chmod 777 $DuognDanUI_HTML/backup_update/backup/state_.json");
 			</div></div></div></div>
 			<?php
         } else {
-            $messagee .=  'Có lỗi xảy ra, không thể giải nén tệp tin cập nhật.\n';
+            $messagee .=  '<font color=red>Có lỗi xảy ra, không thể giải nén tệp tin cập nhật.</font><br/>';
         }
         unlink($zipFilePath);
     } else {
-        $messagee .=  'Có lỗi xảy ra, không thể tải xuống tệp tin cập nhật.\n';
+        $messagee .=  '<font color=red>Có lỗi xảy ra, không thể tải xuống tệp tin cập nhật.</font><br/>';
     }
 /////////////////////////////
 if (@$_POST['restart_vietbot_checked'] === "restart_vietbot_checked") {
     $actionCommand = "systemctl --user restart vietbot";
-    $messagee .= 'Đang Restart lại Vietbot, vui lòng chờ Vietbot khởi động lại!';
+    $messagee .= '<font color=red>Đang Restart lại Vietbot, vui lòng chờ Vietbot khởi động lại!</font>';
 } elseif (@$_POST['reboot_checked'] === "reboot_checked") {
     $actionCommand = "sudo reboot";
-    $messagee .= 'Đang Reboot hệ thống, vui lòng chờ hệ thống khởi động lại!';
+    $messagee .= '<font color=red>Đang Reboot hệ thống, vui lòng chờ hệ thống khởi động lại!</font>';
 } else {
 	$actionCommand = "uname";
-    $messagee .= 'Hãy Restart lại Vietbot để áp dụng cập nhật mới.';
+    $messagee .= '<font color=red>Hãy Restart lại Vietbot để áp dụng cập nhật mới.</font>';
 }
 ///////////////////////////////////////
 // thay thế các giá trị config từ cũ sang mới
@@ -706,7 +712,19 @@ if (@$_POST['audioo_playmp3_success'] === "playmp3_success") {
 	echo '</script>';
 }
 $startCheckboxReload = $_POST['startCheckboxReload'];
+
+
+
+
+
+
 }
+}
+
+
+
+
+
 //Dowload backup restor
 //Chọn file backup và restore
 if (isset($_POST['restore']) && isset($_POST['selectedFile'])) {
@@ -731,10 +749,10 @@ if (file_exists($archivePath)) {
     if (file_exists($extractPath)) {
         //$message .= 'Giải nén thành công: '.$selectedFile.'\n';
     } else {
-        $message .= 'Có lỗi xảy ra khi giải nén: '.$selectedFile.'\n';
+        $message .= 'Có lỗi xảy ra khi giải nén: <font color=red>'.$selectedFile.'</font>';
     }
 } else {
-    $message .= 'Tệp tin giải nén không tồn tại: '.$selectedFile.'\n';
+    $message .= 'Tệp tin giải nén không tồn tại: <font color=red>'.$selectedFile.'</font>';
 	
 }
 //End giải nén backup
@@ -743,7 +761,7 @@ $excludedDirectories = array('excluded_file_VUTUYEN'); //Bỏ Qua thư mục kh�
 $copiedItems = array();
 copyFiles($sourceDirectory, $DuognDanThuMucJson, $excludedFiles, $excludedDirectories, $copiedItems);
 copyFiles($sourceDirectoryyy, $PathResources, $excludedFiles, $excludedDirectories, $copiedItems);
- $message .= 'Khôi phục bản sao lưu thành công\n';
+ $message .= '<font color=red>Khôi phục bản sao lưu thành công</font>';
 ?>
 <div class="form-check form-switch d-flex justify-content-center"> 
 <div class="container">
@@ -776,7 +794,7 @@ foreach ($deletedItems as $deletedItem) {
 }
     } else {
         // Xử lý khi $selectedFile không có giá trị
-        $message .= "Không có tệp tin được chọn để tiến hành khôi phục.";
+        $message .= "<font color=red>Không có tệp tin được chọn để tiến hành khôi phục.</font>";
     }	
 //Chmod 777 khi restor xong backup
 $connection = ssh2_connect($serverIP, $SSH_Port);
@@ -804,11 +822,11 @@ stream_get_contents($stream_out2);
 	    <script>
         var messageElement = document.getElementById("message");
         var message = "<?php echo $message; ?>";
-        messageElement.innerText = message;
+        messageElement.innerHTML = message;
 
         var messageElementt = document.getElementById("messagee");
         var messagee = "<?php echo $messagee; ?>";
-        messageElementt.innerText = messagee;
+        messageElementt.innerHTML = messagee;
     </script>
 	 <script>
         const checkboxes = document.querySelectorAll('.single-checkbox');
