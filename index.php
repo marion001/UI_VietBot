@@ -313,20 +313,69 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
 <div class="info">
 <?php
 
+// Đường dẫn tới tệp JSON
+$jsonFilePath = "$DuognDanUI_HTML/assets/json/password.json";
+// Kiểm tra xem tệp JSON đã tồn tại chưa
+if (!file_exists($jsonFilePath)) {
+    // Tạo một mảng mặc định nếu tệp JSON không tồn tại
+    $defaultData = [
+        "password_ui" => "",
+		"salt" => "",
+		"mail" => ""
+    ];
+    // Tạo tệp JSON và ghi dữ liệu mặc định vào nó
+    file_put_contents($jsonFilePath, json_encode($defaultData,JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+
+    // Đặt quyền truy cập cho tệp JSON thành 644 (quyền đọc và ghi cho người sở hữu, quyền đọc cho các người dùng khác)
+    chmod($jsonFilePath, 0777);
+}
+// Đọc nội dung từ tệp JSON
+$jsonData = file_get_contents($jsonFilePath);
+// Chuyển dữ liệu JSON thành mảng PHP
+$data = json_decode($jsonData, true);
+
+
+
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Kiểm tra xem người dùng đã đăng nhập hay chưa
+	
+        if (isset($_POST['password1']) && isset($_POST['password2'])) {
+            $password1 = $_POST['password1'];
+            $password2 = $_POST['password2'];
+            $mailllgmail = $_POST['mailllgmail'];
+
+            // Kiểm tra xem mật khẩu và xác nhận mật khẩu có khớp nhau
+            if ($password1 === $password2) {
+                // Lưu mật khẩu vào mảng và ghi vào tệp JSON
+                $data['password_ui'] = md5($password1);
+                $data['salt'] = base64_encode($password1);
+                $data['mail'] = $mailllgmail;
+                file_put_contents($jsonFilePath, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+
+                // Đặt quyền truy cập cho tệp JSON thành 644 (quyền đọc và ghi cho người sở hữu, quyền đọc cho các người dùng khác)
+                chmod($jsonFilePath, 0777);
+
+                // Đăng nhập thành công, đánh dấu phiên đã đăng nhập
+                $_SESSION['logged_in'] = true;
+                echo "<br/><center><font size=3><b><i>- Tạo mật khẩu mới thành công!<br/>- Hãy nhập mật khẩu để đăng nhập</i></b></font></center>";
+            } else {
+                echo "<br/><center><font size=3><b><i>Mật khẩu không khớp, vui lòng thử lại!</i></b></font></center>";
+            }
+        }else {
+			
+			    // Kiểm tra xem người dùng đã đăng nhập hay chưa
     if (isset($_SESSION['root_id'])) {
-		
 		if (isset($_POST['logout'])) {
 			// Xử lý đăng xuất
 			session_unset();
 			session_destroy();
-			echo "<br/><br/><center><i>Đăng xuất thành công!</i></center><br/>";
+			echo "<br/><center><font size=3><b><i>Đăng xuất thành công!</i></b></font></center>";
 		}
     } else {
         // Nếu chưa đăng nhập, xử lý đăng nhập
         $password = $_POST["password"];
-        if (md5($password) === $Pass_Login_UI) {
+        if (md5($password) === $data['password_ui']) {
             $_SESSION['root_id'] = "$SESSION_ID_Name"; // Thêm biến root_id
             $_SESSION['username'] = 'example_user';
             echo "<i>Đăng nhập thành công!</i>";
@@ -334,9 +383,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Kết thúc thực thi của script sau khi đăng nhập
             //exit();
         } else {
-            echo "<br/><br/><center><i>Đăng nhập thất bại. Vui lòng kiểm tra lại mật khẩu</i></center><br/>";
+            echo "<br/><center><font size=3><b><i>Đăng nhập thất bại, vui lòng kiểm tra lại mật khẩu</i></b></font></center>";
         }
     }
+	
+		}
+
 }
 ?>
     <?php
@@ -359,15 +411,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Nếu chưa đăng nhập, hiển thị biểu mẫu đăng nhập
         ?>
 		 <br/><center>
-        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" id="my-form" method="post">
-		
-           <label for="password">Mật khẩu:</label>
-            <input placeholder="Nhập Mật Khẩu Vào Đây"  type="password" id="password" name="password" required> <i class="bi bi-info-circle-fill" onclick="showPopup()" title="Nhấn Để Tìm Hiểu Thêm"></i>
-			
-			
-			<br><br>
-            <input class="btn btn-success" type="submit" value="Đăng nhập">
-        </form></center>
+		    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" id="my-form" method="post">
+  <?php if (empty($data['password_ui'])) : ?>
+		Tạo Mật Khẩu Mới Cho Web UI<br/>
+        <label for="password1">Mật khẩu mới:</label>
+        <input type="password" id="password"  class="input-group-text" name="password1" required>
+        <label for="password2">Nhập lại mật khẩu:</label>
+        <input type="password" id="confirmPassword" class="input-group-text" name="password2" required>
+		<label for="mailll">Địa chỉ mail:</label>
+		<input type="text" id="mailll" class="input-group-text" name="mailllgmail" required>
+		<br/>
+		<input type="checkbox" id="showPassword">
+		<label for="showPassword">Hiển Thị Mật Khẩu</label>
+		<br/>
+        <input type="submit" class="btn btn-success" value="Tạo Mật Khẩu Mới">
+        <?php else : ?>
+
+        <label for="passwordd">Nhập Mật khẩu:</label>
+
+        <input type="password" id="passwordd" class="input-group-text" name="password" required><br>
+		<input type="checkbox" id="showPasswordd">
+		<label for="showPasswordd">Hiển Thị Mật Khẩu</label> | <a style="color:Yellow" href="#ForgotPassword"><b>Quên mật khẩu</b></a>
+		<br/>
+        <input type="submit" class="btn btn-success" value="Đăng nhập">
+        <?php endif; ?>
+        </form>
+		</center>
 		 <!-- Thông báo pop-up -->
     <div id="popup" class="popup">
         - Mật khẩu mặc định: <font color=red><b>admin</b></font><br/>
@@ -376,10 +445,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		- Nhấn Vào Đây Để Tới Link Mã Hóa: <a href="/Help_Support/MD5.php" target="_bank"><b>MD5 HASH</b></a>
        <center> <br/><button class="btn btn-danger" onclick="hidePopup()">Đóng</button></center>
     </div>
-
     <?php } ?>
-	  
-	  
 	  	</div>
       </section>
       <!--  Hero End  -->
@@ -535,13 +601,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 </div>
 </div>
-
 </div>
 </div>
 </div>
 </section>
 <!--  About End  -->
-
 <!--  Resume Start  -->
 <section id="config" class="bg-gray-400 text-white section">
     <div class="container">
@@ -568,7 +632,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <iframe src="./include_php/ChatBot.php" width="100%" height="570px"></iframe>
 </section>
 <!--  Blog End  -->
-
 <section id="vietbot_update" class="section blog bg-gray-400 text-white">
     <div class="container">
         <h3 class="subtitle">Cập Nhật Chương Trình</h3>
@@ -583,12 +646,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <iframe src="./ui_update/index.php" width="100%" height="570px"></iframe>
 	</div>
 </section>
-<!-- Contact Start -->
-<section id="Skill" class="section contact w-100 bg-gray-400 text-white">
+<section id="PasswordChange" class="section blog bg-gray-400 text-white">
     <div class="container">
-        <h3 class="subtitle">VietBot Skill</h3>
+        <h3 class="subtitle">Thay Đổi Mật Khẩu</h3>
+			<div class="rounded-iframe">
+        <iframe src="./include_php/ChangePassword.php" width="100%" height="570px"></iframe>
+	</div>
+</section>
+<section id="PasswordChange" class="section blog bg-gray-400 text-white">
+    <div class="container">
+        <h3 class="subtitle">Thay Đổi Mật Khẩu</h3>
+			<div class="rounded-iframe">
+        <iframe src="./include_php/ChangePassword.php" width="100%" height="570px"></iframe>
+	</div>
+</section>
+<!-- Contact Start -->
+<section id="ForgotPassword" class="section contact w-100 bg-gray-400 text-white">
+    <div class="container">
+        <h3 class="subtitle">Quên Mật Khẩu</h3>
 		<div class="rounded-iframe">
-        <iframe src="./include_php/Skill.php" width="100%" height="470px"></iframe>
+        <iframe src="./include_php/ForgotPassword.php" width="100%" height="470px"></iframe>
 </div>
 
     </div>
@@ -624,7 +701,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a class="btn btn-danger" href="#vietbot_update" role="button" title="Nhấn Để Kiểm Tra, Cập Nhật Phầm Mềm">Cập Nhật Chương Trình</a>
         <a class="btn btn-success" href="#UI_update" role="button" title="Nhấn Để Kiểm Tra, Cập Nhật Giao Diện">Cập Nhật Giao Diện</a>
         <a class="btn btn-secondary" href="./Help_Support/index.php" role="button" target="_bank" title="Nhấn Để Kiểm Tra, Cập Nhật Giao Diện">Hướng Dẫn / Sử Dụng Vietbot</a>
-
+		
+        <a class="btn btn-info" href="#PasswordChange" role="button" title="Đổi Mật Khẩu">Đổi Mật Khẩu Web UI</a>
         <form action="" id="my-form" method="post">
          <button class="btn btn-warning" type="submit" name="logout" title="Đăng Xuất">Đăng Xuất Hệ Thống</button>
         </form>
@@ -819,6 +897,7 @@ if ($remoteValue !== $localValue) {
     const linkElement = document.querySelector('.btn-success');
     const buttonElement = document.querySelector('.btn-danger');
     const buttonnElement = document.querySelector('.btn-secondary');
+    const buttonnnElement = document.querySelector('.btn-info');
 
     buttonElement.addEventListener('click', function() {
         // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
@@ -826,6 +905,11 @@ if ($remoteValue !== $localValue) {
         divElement.classList.add('hide');
     });
 	    buttonnElement.addEventListener('click', function() {
+        // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
+        divElement.classList.remove('show');
+        divElement.classList.add('hide');
+    });
+	    buttonnnElement.addEventListener('click', function() {
         // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
         divElement.classList.remove('show');
         divElement.classList.add('hide');
@@ -912,6 +996,45 @@ window.addEventListener('message', function(event) {
   }
 });
 </script>
+ <script>
+        // Lấy các phần tử cần thao tác
+        const showPasswordCheckbox = document.getElementById('showPassword');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+		
+
+        // Thêm sự kiện change cho checkbox
+        showPasswordCheckbox.addEventListener('change', function () {
+            // Nếu checkbox được tích, thay đổi type thành "text", ngược lại thì là "password"
+            if (showPasswordCheckbox.checked) {
+                passwordInput.type = 'text';
+                confirmPasswordInput.type = 'text';
+                
+            } else {
+                passwordInput.type = 'password';
+                confirmPasswordInput.type = 'password';
+                
+            }
+        });
+		
+    </script>
+	
+    <script>
+        // Lấy các phần tử cần thao tác
+        const showPasswordCheckboxx = document.getElementById('showPasswordd');
+        const passwordInputt = document.getElementById('passwordd');
+
+        // Thêm sự kiện change cho checkbox
+        showPasswordCheckboxx.addEventListener('change', function () {
+            // Nếu checkbox được tích, thay đổi type thành "text", ngược lại thì là "password"
+            if (showPasswordCheckboxx.checked) {
+                passwordInputt.type = 'text';
+            } else {
+                passwordInputt.type = 'password';
+            }
+        });
+    </script>
+	
 </body>
 
 </html>

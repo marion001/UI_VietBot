@@ -23,7 +23,7 @@ $Vietbot_Version = "https://raw.githubusercontent.com/phanmemkhoinghiep/vietbot_
 $UI_Version = "https://raw.githubusercontent.com/marion001/UI_VietBot/main/version.json";
 
 //Mật Khẩu Đăng Nhập Các Chức Năng Web UI
-$Pass_Login_UI = "21232f297a57a5a743894a0e4a801fc3"; //Mã hóa md5 = admin
+//$Pass_Login_UI = "21232f297a57a5a743894a0e4a801fc3"; //Mã hóa md5 = admin
 //Mật Khẩu Đăng Nhập Trình Quản Lý File Manager
 $Pass_Login_File_Manager = "admin"; // admin
 
