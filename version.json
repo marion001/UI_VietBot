@@ -1,7 +1,7 @@
 {
   "ui_version": {
-    "latest": "beta 14-09-2023",
-    "current": "beta 14-09-2023",
-    "notification": "thêm tính năng cho phép Bật/Tắt update Vietbot và Web UI trong tab Config Setting"
+    "latest": "beta 16-09-2023",
+    "current": "beta 16-09-2023",
+    "notification": "Tái cơ cấu mật khẩu đăng nhập ui, thêm chức năng đổi mật khẩu"
   }
 }
