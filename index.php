@@ -655,9 +655,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </section>
 <section id="PasswordChange" class="section blog bg-gray-400 text-white">
     <div class="container">
-        <h3 class="subtitle">Thay Đổi Mật Khẩu</h3>
+        <h3 class="subtitle">Cấu hình skill</h3>
 			<div class="rounded-iframe">
-        <iframe src="./include_php/ChangePassword.php" width="100%" height="570px"></iframe>
+        <iframe src="./include_php/Skill.php" width="100%" height="570px"></iframe>
 	</div>
 </section>
 <!-- Contact Start -->
