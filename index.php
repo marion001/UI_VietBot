@@ -653,7 +653,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <iframe src="./include_php/ChangePassword.php" width="100%" height="570px"></iframe>
 	</div>
 </section>
-<section id="PasswordChange" class="section blog bg-gray-400 text-white">
+<section id="Skill" class="section blog bg-gray-400 text-white">
     <div class="container">
         <h3 class="subtitle">Cấu hình skill</h3>
 			<div class="rounded-iframe">
