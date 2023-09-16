@@ -1,7 +1,7 @@
 {
   "ui_version": {
-    "latest": "beta 16-09-2023",
-    "current": "beta 16-09-2023",
-    "notification": "Tái cơ cấu mật khẩu đăng nhập ui, thêm chức năng đổi mật khẩu"
+    "latest": "beta 16-09-2023-1",
+    "current": "beta 16-09-2023-1",
+    "notification": "Fix Tab Skill, Tái cơ cấu mật khẩu đăng nhập ui, thêm chức năng đổi mật khẩu"
   }
 }
