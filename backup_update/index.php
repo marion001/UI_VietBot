@@ -463,31 +463,31 @@ $latestVersion = $gitData['vietbot_version']['latest'];
 if ($currentresult === $latestVersion) {
   $messagee .= "Bạn đang sử dụng phiên bản mới nhất: <font color=red>" . $currentresult . "</font>";
 } else {
-  $messagee .= "Có phiên bản mới: <font color=red>" . $latestVersion.'<font><br/>';
-  $messagee .= "Phiên bản hiện tại: <font color=red>" . $currentresult.'<font><br/><br/>';
+  $messagee .= "Có phiên bản mới: <font color=red>" . $latestVersion.'</font><br/>';
+  $messagee .= "Phiên bản hiện tại: <font color=red>" . $currentresult.'</font><br/><br/>';
 	if (empty($gitData['new_features'])) {
     //echo "Không có dữ liệu";
 	} else {
-    $messagee .= 'Tính năng mới: <font color=red>'.$gitData['new_features'].'<font><br/>';
+    $messagee .= 'Tính năng mới: <font color=red>'.$gitData['new_features'].'</font><br/>';
 	}
 	
 	if (empty($gitData['bug_fixed'])) {
     //echo "Không có dữ liệu";
 	} else {
-    $messagee .= 'Sửa lỗi: <font color=red>'.$gitData['bug_fixed'].'<font><br/>';
+    $messagee .= 'Sửa lỗi: <font color=red>'.$gitData['bug_fixed'].'</font><br/>';
 	}
 	
 	if (empty($gitData['improvements'])) {
     //echo "Không có dữ liệu";
 	} else {
-    $messagee .= 'Cải thiện: <font color=red>'.$gitData['improvements'].'<font><br/>';
+    $messagee .= 'Cải thiện: <font color=red>'.$gitData['improvements'].'</font><br/>';
 	}
 	
 
 	if (empty($gitData['update_command'])) {
     //echo "Không có dữ liệu";
 	} else {
-    $messagee .= 'Lệnh Cần Bổ Sung $:> <font color=red>'.$gitData['update_command'].'<font><br/>';
+    $messagee .= 'Lệnh Cần Bổ Sung $:> <font color=red>'.$gitData['update_command'].'</font><br/>';
 	}
 }
 }
