@@ -2,6 +2,7 @@
 //Code By: Vũ Tuyển
 //Facebook: https://www.facebook.com/TWFyaW9uMDAx
 //Bỏ qua hiển thị lỗi trên màn hình nếu có
+//Mail: vietbotsmartspeaker@gmail.com
 @error_reporting(0);
 @date_default_timezone_set('Asia/Ho_Chi_Minh');
 // Khởi động session
@@ -30,9 +31,9 @@ $Pass_Login_File_Manager = "admin"; // admin
 //Cấu Hình Send Mail
 //App Passwords: https://myaccount.google.com/apppasswords
 //Tài Khoản Gmail
-$Mail_Gmail = "vietbotsmartspeaker@gmail.com"; //Giữ Nguyên
+$Mail_Gmail = "dmlldGJvdHNtYXJ0c3BlYWtlckBnbWFpbC5jb20="; //Giữ Nguyên Encode B64
 //Key App Passwords (Thay Cho Mật Khẩu) Của Gmail
-$Mail_APP_Passwords = "cbuifczbpdltztif";  //Giữ Nguyên
+$Mail_APP_Passwords = "Y2J1aWZjemJwZGx0enRpZg==";  //Giữ Nguyên Encode B64 "cbuifczbpdltztif"
 $Mail_Host = "smtp.gmail.com";  //Giữ Nguyên
 $Mail_Port = 587;  //Giữ Nguyên
 $Mail_SMTPSecure = "tls";  //Giữ Nguyên

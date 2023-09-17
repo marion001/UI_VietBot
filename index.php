@@ -119,20 +119,6 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     overflow: hidden; /* Để làm tròn góc thì cần che phần dư thừa */
   }
 </style>
-  <style>
-        /* CSS cho thông báo pop-up */
-        .popup {
-			border-radius: 10px;
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #000;
-            padding: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-        }
-    </style>
 </head>
 <body>
 	    <div id="loading-overlay">
@@ -152,18 +138,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
 </script>
 
 
-	<script>
-        // JavaScript để hiển thị và ẩn thông báo pop-up
-        function showPopup() {
-            var popup = document.getElementById("popup");
-            popup.style.display = "block";
-        }
 
-        function hidePopup() {
-            var popup = document.getElementById("popup");
-            popup.style.display = "none";
-        }
-    </script>
     <script>
     $(document).ready(function() {
         var apiKey = "<?php echo $apiKeyWeather; ?>";
@@ -391,26 +366,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 }
 ?>
-    <?php
-    // Kiểm tra xem người dùng đã đăng nhập hay chưa
-    if (isset($_SESSION['root_id'])) {
-		?>
-				<center><h1>Xin chào, <?php echo $MYUSERNAME; ?>!</h1></center>
-				<p><b>Chào mừng bạn đến với trang quản trị VietBot</b><br/><br/><i>- Nền tảng loa thông minh tương tác hàng đầu!<br/>
-				- Tận hưởng trí tuệ nhân tạo tiên tiến và trải nghiệm âm thanh vượt trội với VietBot, 
-				người bạn đồng hành đáng tin cậy trong không gian sống của bạn.</i></p>
-				- <i>Với tính năng trí tuệ nhân tạo tiên tiến, Vietbot không chỉ là một loa thông minh thông thường, 
-				mà còn là một trợ thủ đa năng trong cuộc sống hàng ngày của bạn. Bạn có thể giao tiếp với Vietbot bằng giọng nói tự nhiên, yêu cầu phát nhạc, đọc tin tức, tìm kiếm thông tin,
-				và thực hiện nhiều tác vụ khác một cách thuận tiện.</i><br/><br/>
-				- <i>Vietbot sẽ lắng nghe và đáp ứng mọi yêu cầu của bạn.
-				Hãy đồng hành cùng Vietbot và khám phá một thế giới mới của công nghệ âm thanh và trí tuệ nhân tạo.
-				Chúng tôi tin rằng bạn sẽ trải nghiệm những điều tuyệt vời và hài lòng với Vietbot.
-				Nếu có bất kỳ câu hỏi hoặc yêu cầu nào, chúng tôi luôn sẵn lòng <b><a class="text-white" href="https://www.facebook.com/groups/1082404859211900" target="_bank">hỗ trợ</a></b> bạn. </i>
-	  <?php
-	   } else {
-        // Nếu chưa đăng nhập, hiển thị biểu mẫu đăng nhập
-        ?>
-		 <br/><center>
+
+
+
+
+
+<?php	
+if (isset($Web_UI_Login) && $Web_UI_Login === true) {
+if (!isset($_SESSION['root_id'])) {
+?>
+ <br/><center>
 		    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" id="my-form" method="post">
   <?php if (empty($data['password_ui'])) : ?>
 		Tạo Mật Khẩu Mới Cho Web UI<br/>
@@ -438,16 +403,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php endif; ?>
         </form>
 		</center>
-		 <!-- Thông báo pop-up -->
-    <div id="popup" class="popup">
-        - Mật khẩu mặc định: <font color=red><b>admin</b></font><br/>
-		- Thay đổi mật khẩu mặc định trong file: "<font color=red><b>Configuration.php</b></font>", tìm tới dòng: "<font color=red><b>$Pass_Login_UI</b></font>"<br/>
-		- Mật khẩu cần được mã hóa dạng <font color=red><b>MD5</b></font><br/>
-		- Nhấn Vào Đây Để Tới Link Mã Hóa: <a href="/Help_Support/MD5.php" target="_bank"><b>MD5 HASH</b></a>
-       <center> <br/><button class="btn btn-danger" onclick="hidePopup()">Đóng</button></center>
-    </div>
-    <?php } ?>
+
+<?php
+
+
+} else {
+    include "include_php/Fork_PHP/index_.php";
+}
+	
+	} else {
+	   
+	   include "include_php/Fork_PHP/index_.php";
+	   
+	   
+	}
+?>	
+		
+
+	
 	  	</div>
+
       </section>
       <!--  Hero End  -->
 	        <section id="LogServiceCMD" class="section about bg-secondary text-primary">
@@ -702,13 +677,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a class="btn btn-danger" href="#vietbot_update" role="button" title="Nhấn Để Kiểm Tra, Cập Nhật Phầm Mềm">Cập Nhật Chương Trình</a>
         <a class="btn btn-success" href="#UI_update" role="button" title="Nhấn Để Kiểm Tra, Cập Nhật Giao Diện">Cập Nhật Giao Diện</a>
         <a class="btn btn-secondary" href="./Help_Support/index.php" role="button" target="_bank" title="Nhấn Để Kiểm Tra, Cập Nhật Giao Diện">Hướng Dẫn / Sử Dụng Vietbot</a>
-		
-        <a class="btn btn-info" href="#PasswordChange" role="button" title="Đổi Mật Khẩu">Đổi Mật Khẩu Web UI</a>
-        <form action="" id="my-form" method="post">
+
+		<?php	
+if (isset($Web_UI_Login) && $Web_UI_Login === true) {
+	echo '<a class="btn btn-info" href="#PasswordChange" role="button" title="Đổi Mật Khẩu">Đổi Mật Khẩu Web UI</a>';
+	echo '<form action="" id="my-form" method="post">
          <button class="btn btn-warning" type="submit" name="logout" title="Đăng Xuất">Đăng Xuất Hệ Thống</button>
-        </form>
-
-
+        </form>';
+	} else {
+		//nếu trong config là false thì sẽ ẩn
+	   echo '<!-- <a class="btn btn-info" href="#PasswordChange" role="button" title="Đổi Mật Khẩu">Đổi Mật Khẩu Web UI</a> -->';
+	}
+?>	
         <!--  <h6 class="text-center theme-skin-title">Đổi Màu Giao Diện</h6> -->
         <div class="colors text-center">
             <span class="WhiteBg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
