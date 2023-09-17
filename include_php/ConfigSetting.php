@@ -136,6 +136,7 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	//Chặn Cập Nhật Vietbot
 	$block_updates_vietbot_program = $data_config['smart_config']['block_updates']['vietbot_program'];
 	$block_updates_web_ui = $data_config['smart_config']['block_updates']['web_ui'];
+	$web_ui_login = $data_config['smart_config']['block_updates']['web_ui_login'];
 	
 	//Led
 	$LED_TYPE = $data_config['smart_config']['led']['type'];
@@ -289,6 +290,7 @@ chmod($backupFile, 0777);
 	 //Lưu Chặn Cập Nhật
 	 $data_config['smart_config']['block_updates']['vietbot_program'] = ($_POST['block_updates_vietbot_program'] === 'true');
 	 $data_config['smart_config']['block_updates']['web_ui'] = ($_POST['block_updates_web_ui'] === 'true');
+	 $data_config['smart_config']['block_updates']['web_ui_login'] = ($_POST['web_ui_login'] === 'true');
 	 	//end hỏi liên tục
 		
 	//Đọc trạng thái sau khi khởi động
@@ -1359,7 +1361,7 @@ else {
 <!--Kết Thúc mục  Wake Up Reply --> 	
 
 
-  <h5>Chặn Cập Nhật: <i class="bi bi-info-circle-fill" onclick="togglePopupBLOCLUPDATE()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
+  <h5>Cài Đặt UI, Cập Nhật: <i class="bi bi-info-circle-fill" onclick="togglePopupBLOCLUPDATE()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
 
 	
 <div class="form-check form-switch d-flex justify-content-center"> 
@@ -1383,7 +1385,16 @@ else {
   
 	
 
-	</tr/>
+	</tr>
+	<tr>
+	<th scope="row"><font color=red>Đăng Nhập Trên WEB UI:</font></th>
+	
+	<td><input type="checkbox" name="web_ui_login" title="Tích vào để kích hoạt" value="true" class="form-check-input" <?php echo ($web_ui_login) ? 'checked' : ''; ?>></td>
+  
+	
+
+	</tr>
+	
   </tbody>
 </table>
 
