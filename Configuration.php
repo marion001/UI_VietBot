@@ -116,6 +116,7 @@ $dataVersionVietbot = json_decode($jsonDataVersionVietbot);
 
 $PORT_CHATBOT = $dataVTGET->smart_config->web_interface->port;
 $MYUSERNAME = $dataVTGET->smart_config->user_info->name;
+$Web_UI_Login = $dataVTGET->smart_config->block_updates->web_ui_login;
 
 //Vị Trí, Địa Chỉ
 $wards_Lang = $dataVTGET->smart_config->user_info->address->wards; 
