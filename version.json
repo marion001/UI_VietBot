@@ -2,6 +2,6 @@
   "ui_version": {
     "latest": "beta 17-09-2023",
     "current": "beta 17-09-2023",
-    "notification": "Cập Nhật Tính Năng Quên Mật Khẩu Đăng Nhập WEB UI"
+    "notification": "Bổ sung tính năng Bật/Tắt đăng nhập trên web ui, trong tab config cấu hình"
   }
 }
