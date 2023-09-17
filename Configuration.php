@@ -27,6 +27,16 @@ $UI_Version = "https://raw.githubusercontent.com/marion001/UI_VietBot/main/versi
 //Mật Khẩu Đăng Nhập Trình Quản Lý File Manager
 $Pass_Login_File_Manager = "admin"; // admin
 
+//Cấu Hình Send Mail
+//App Passwords: https://myaccount.google.com/apppasswords
+//Tài Khoản Gmail
+$Mail_Gmail = "vietbotsmartspeaker@gmail.com"; //Giữ Nguyên
+//Key App Passwords (Thay Cho Mật Khẩu) Của Gmail
+$Mail_APP_Passwords = "cbuifczbpdltztif";  //Giữ Nguyên
+$Mail_Host = "smtp.gmail.com";  //Giữ Nguyên
+$Mail_Port = 587;  //Giữ Nguyên
+$Mail_SMTPSecure = "tls";  //Giữ Nguyên
+
 //ĐƯờng Dẫn VietBot Chính
 $Path_Vietbot_src = "/home/pi/vietbot_offline";
 

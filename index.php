@@ -424,7 +424,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		<input type="checkbox" id="showPassword">
 		<label for="showPassword">Hiển Thị Mật Khẩu</label>
 		<br/>
-        <input type="submit" class="btn btn-success" value="Tạo Mật Khẩu Mới">
+        <input type="submit" class="btn btn-success" value="Tạo Mật Khẩu Mới"><a href='<?php echo $PHP_SELF; ?>'><button type='button' class='btn btn-danger'>Tải Lại</button></a>
         <?php else : ?>
 
         <label for="passwordd">Nhập Mật khẩu:</label>
@@ -434,6 +434,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		<label for="showPasswordd">Hiển Thị Mật Khẩu</label> | <a style="color:Yellow" href="#ForgotPassword"><b>Quên mật khẩu</b></a>
 		<br/>
         <input type="submit" class="btn btn-success" value="Đăng nhập">
+		<a href='<?php echo $PHP_SELF; ?>'><button type='button' class='btn btn-danger'>Tải Lại</button></a>
         <?php endif; ?>
         </form>
 		</center>
