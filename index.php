@@ -1,6 +1,6 @@
 <?php
 include "Configuration.php";
-include "./include_php/INFO_OS.php";
+include "./include_php/Fork_PHP/INFO_OS.php";
 $jsonDatazXZzz = file_get_contents("assets/json/List_Lat_Lon_Huyen_VN.json");
 $dataVTGETtt = json_decode($jsonDatazXZzz);
 $latitude = $dataVTGETtt->$wards_Tinh->latitude;
