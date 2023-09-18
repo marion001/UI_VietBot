@@ -7,6 +7,10 @@ $skillArray = json_decode($skillData, true);
 ?>
 
 	<body>
+	<!-- Nút Nhấn đầu Trang -->
+<i onclick="scrollToTop()" class="bi bi-chevron-double-up" id="scrollToTopButtonup"></i>
+<!-- Nút Nhấn Xuống Cuối Trang -->
+<i onclick="scrollToBottom()" class="bi bi-chevron-double-down" id="scrollToTopButtondown"></i>
 	    <div id="loading-overlay">
           <img id="loading-icon" src="../assets/img/Loading.gif" alt="Loading...">
 		  <div id="loading-message">Đang Thực Thi...</div>
@@ -1508,7 +1512,17 @@ if (count($fileLists) > 0) {
         }
     });
 </script>
-	
+	<script>
+    // Hàm để cuộn lên đầu trang
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
+
+    // Hàm để cuộn xuống cuối trang
+    function scrollToBottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+</script>
 	<script src="../assets/js/bootstrap.js"></script>
 	<script src="../assets/js/jquery.min.js"></script>
 	<script src="../assets/js/axios_0.21.1.min.js"></script>

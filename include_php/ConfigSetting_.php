@@ -502,9 +502,7 @@ header("Location: $PHP_SELF"); exit;
 ?>
 
 <body>
-<div id="loading-overlay"><img id="loading-icon" src="../assets/img/Loading.gif" alt="Loading...">
-<div id="loading-message">- Đang Thực Hiện...</div>
-</div>
+
 
 <?php
 // Thư mục cần kiểm tra
@@ -588,7 +586,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
     <link rel="stylesheet" href="../assets/css/loading.css">
     <link rel="stylesheet" href="../assets/css/11.3.1_styles_monokai-sublime.min.css">
 <script src="../assets/js/11.3.1_highlight.min.js"></script>
-
+<script>hljs.initHighlightingOnLoad()</script>
 <style>
     body, html {
         background-color: #dbe0c9;
@@ -716,10 +714,10 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgb(219 219 219);
             align-items: center;
             justify-content: center;
-			 z-index: 9999;
+			z-index: 4;
         }
 
         #popup-content {
@@ -732,9 +730,52 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
 		
 		}
 </style>
+   <style>
+        /* CSS cho nút ở mép lề bên phải */
+        #scrollToTopButtonup {
+		
+        position: fixed;
+        top: 30%;
+        right: 0;
+        bottom: auto;
+        padding: 10px;
+        background-color: #f1f1f1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: right 0.5s;
+        border-top-left-radius: 999px;
+        border-bottom-left-radius: 999px;
+		z-index: 3;
+        }
+         
+		#scrollToTopButtondown {
+        position: fixed;
+        top: 57%;
+        right: 0;
+        bottom: auto;
+        padding: 10px;
+        background-color: #f1f1f1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: right 0.5s;
+        border-top-left-radius: 999px;
+        border-bottom-left-radius: 999px;
+		z-index: 3;
+        }
+    </style>
    <script src="../assets/js/11.0.18_dist_sweetalert2.all.min.js"></script>
   
 </head>
+
+<body>
+<!-- Nút Nhấn đầu Trang -->
+<i onclick="scrollToTop()" class="bi bi-chevron-double-up" id="scrollToTopButtonup"></i>
+<!-- Nút Nhấn Xuống Cuối Trang -->
+<i onclick="scrollToBottom()" class="bi bi-chevron-double-down" id="scrollToTopButtondown"></i>
 <div id="loading-overlay"><img id="loading-icon" src="../assets/img/Loading.gif" alt="Loading...">
 <div id="loading-message">- Đang Thực Hiện<br/>- Bạn Cần Restart Lại VietBot Để Áp Dụng Dữ Liệu Mới</div>
 </div>
@@ -2700,6 +2741,17 @@ $(document).ready(function() {
         }
     });
 });
+</script>
+<script>
+    // Hàm để cuộn lên đầu trang
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
+
+    // Hàm để cuộn xuống cuối trang
+    function scrollToBottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
 </script>
 </body>
 </html>

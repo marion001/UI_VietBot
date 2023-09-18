@@ -18,7 +18,7 @@ include "../Configuration.php";
 	<script src="../assets/js/3.5.1_jquery.min.js"></script>
 	<script src="../assets/js/1.16.0_umd_popper.min.js"></script>
 	<script src="../assets/js/11.3.1_highlight.min.js"></script>
-   
+   <script>hljs.initHighlightingOnLoad()</script>
 <style>
     body,
     html {
@@ -92,18 +92,18 @@ include "../Configuration.php";
         /* Thêm thuộc tính này */
     }
     
-    #popup {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-    }
+        #popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgb(219 219 219);
+            align-items: center;
+            justify-content: center;
+			z-index: 4;
+        }
     
     #popup-content {
         background-color: #ffffff00;
@@ -175,6 +175,43 @@ include "../Configuration.php";
         right: 50%;
     }
 </style>
+  <style>
+        /* CSS cho nút ở mép lề bên phải */
+        #scrollToTopButtonup {
+		
+        position: fixed;
+        top: 40%;
+        right: 0;
+        bottom: auto;
+        padding: 10px;
+        background-color: #f1f1f1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: right 0.5s;
+        border-top-left-radius: 999px;
+        border-bottom-left-radius: 999px;
+		z-index: 3;
+        }
+         
+		#scrollToTopButtondown {
+        position: fixed;
+        top: 50%;
+        right: 0;
+        bottom: auto;
+        padding: 10px;
+        background-color: #f1f1f1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: right 0.5s;
+        border-top-left-radius: 999px;
+        border-bottom-left-radius: 999px;
+		z-index: 3;
+        }
+    </style>
 	</head>
 
 <?php	
