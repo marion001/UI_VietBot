@@ -1,7 +1,7 @@
 {
   "ui_version": {
-    "latest": "beta 17-09-2023",
-    "current": "beta 17-09-2023",
-    "notification": "Bổ sung tính năng Bật/Tắt đăng nhập trên web ui, trong tab config cấu hình"
+    "latest": "beta 18-09-2023",
+    "current": "beta 18-09-2023",
+    "notification": "Bổ sung tính năng Bật/Tắt đăng nhập trên web ui,thao tác trong tab config cấu hình"
   }
 }
