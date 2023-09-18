@@ -1,3 +1,7 @@
+<!--
+Code By: Vũ Tuyển
+Facebook: https://www.facebook.com/TWFyaW9uMDAx
+-->
 <?php
 	$FileConfigJson = "$DuognDanThuMucJson"."/config.json";
 	$FileVolumeJson = "$DuognDanThuMucJson"."/state.json";
@@ -584,7 +588,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
     <link rel="stylesheet" href="../assets/css/loading.css">
     <link rel="stylesheet" href="../assets/css/11.3.1_styles_monokai-sublime.min.css">
 <script src="../assets/js/11.3.1_highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+
 <style>
     body, html {
         background-color: #dbe0c9;
@@ -855,7 +859,7 @@ HPDA</label>
 <td><center><input type="radio" name="stt_gg_ass_mode" title="Google Assistatn Mode default" value="default" <?php if ($GET_STT_GG_ASS_MODE === 'default') echo 'checked'; ?>></center></td>
 <td><center><input type="radio" name="stt_gg_ass_mode" title="Google Assistatn Mode manual" value="manual" <?php if ($GET_STT_GG_ASS_MODE === 'manual') echo 'checked'; ?>></center></td>
 </tr></tbody></table></div></div></div>
-<br/><label title="Nếu bọi bot dậy, hết thời gian chờ mà không ra lệnh cho bot, thì bot sẽ quay trở lại trạng thái sleep"> Thời Gian Chờ:</label>
+<br/><span title="Nếu bọi bot dậy, hết thời gian chờ mà không ra lệnh cho bot, thì bot sẽ quay trở lại trạng thái sleep"> Thời Gian Chờ:</span>
 <input type="range" name="stt_time_out" title="Nếu bọi bot dậy, hết thời gian chờ mà không ra lệnh cho bot, thì bot sẽ quay trở lại trạng thái sleep" min="3000" max="8000" step="100" value="<?php echo $GET_TimeOut_STT; ?>" class="slider" oninput="updateSliderValueSTT(this.value)">
 <font color=red><span id="slider-stt" class="slider-stt"><?php echo $GET_TimeOut_STT,"ms"; ?> </span><br/>(1000 = 1 Giây)</font></center><hr/>
 <!--Kết thúc STT Speak To Text --> 
@@ -1089,7 +1093,7 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
 </tr>
  <tbody>
     <tr>
-      <th scope="row"><label for="" class="form-label"><center>Tên Hotword:</center></label></th>
+      <th scope="row"><center>Tên Hotword:</center></th>
       <td>
 	  <div>
 <select id="file_name" name="file_name" class="custom-select" onchange="showSensitiveInput(this.value)">
@@ -1102,7 +1106,7 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
 </tr>
 <tr>
     <th scope="row">
-        <label for="" title="Tích Để Bật/Tắt Hotword" class="form-label">
+        <label for="active" title="Tích Để Bật/Tắt Hotword" class="form-label">
             <center>Kích Hoạt:</center>
         </label>
     </th>
@@ -1117,7 +1121,7 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
 
 <tr>
     <th scope="row">
-        <label for="" title="Bật/Tắt Phản Hồi Của Bot Khi Được Đánh Thức" class="form-label">
+        <label for="say_reply" title="Bật/Tắt Phản Hồi Của Bot Khi Được Đánh Thức" class="form-label">
             <center>Phản Hồi Lại:</center>
         </label>
     </th>
@@ -1141,7 +1145,7 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
 </tr>
 <tr>
     <th scope="row">
-        <label for="" title="Độ Nhạy Sensitive" class="form-label">
+        <label for="sensitive" title="Độ Nhạy Sensitive" class="form-label">
             <center>Độ Nhạy:</center>
         </label>
     </th>

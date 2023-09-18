@@ -28,12 +28,13 @@ $UI_Version = "https://raw.githubusercontent.com/marion001/UI_VietBot/main/versi
 //Mật Khẩu Đăng Nhập Trình Quản Lý File Manager
 $Pass_Login_File_Manager = "admin"; // admin
 
+
 //Cấu Hình Send Mail
 //App Passwords: https://myaccount.google.com/apppasswords
 //Tài Khoản Gmail
-$Mail_Gmail = "dmlldGJvdHNtYXJ0c3BlYWtlckBnbWFpbC5jb20="; //Giữ Nguyên Encode B64
+$Mail_Gmail = "dmlldGJvdHNtYXJ0c3BlYWtlckBnbWFpbC5jb20="; //Giữ Nguyên  B64
 //Key App Passwords (Thay Cho Mật Khẩu) Của Gmail
-$Mail_APP_Passwords = "Y2J1aWZjemJwZGx0enRpZg==";  //Giữ Nguyên Encode B64 "cbuifczbpdltztif"
+$Mail_APP_Passwords = "Y2J1aWZjemJwZGx0enRpZg==";  //Giữ Nguyên  B64
 $Mail_Host = "smtp.gmail.com";  //Giữ Nguyên
 $Mail_Port = 587;  //Giữ Nguyên
 $Mail_SMTPSecure = "tls";  //Giữ Nguyên

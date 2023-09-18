@@ -3,6 +3,7 @@
 // Facebook: https://www.facebook.com/TWFyaW9uMDAx
 include "../Configuration.php";
 ?>
+<!DOCTYPE html>
 <html>
 <head>
     <title><?php echo $MYUSERNAME; ?>, Cấu Hình Skill VietBot</title>
@@ -17,7 +18,7 @@ include "../Configuration.php";
 	<script src="../assets/js/3.5.1_jquery.min.js"></script>
 	<script src="../assets/js/1.16.0_umd_popper.min.js"></script>
 	<script src="../assets/js/11.3.1_highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+   
 <style>
     body,
     html {

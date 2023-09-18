@@ -1,7 +1,7 @@
 <?php
 // Code By: Vũ Tuyển
 // Facebook: https://www.facebook.com/TWFyaW9uMDAx
-include "../Configuration.php";
+include "../../Configuration.php";
 ?>
 
 <!DOCTYPE html>
@@ -10,8 +10,8 @@ include "../Configuration.php";
   <title><?php echo $MYUSERNAME; ?> Lấy Lại Mật Khẩu</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<link rel="stylesheet" href="../assets/css/bootstrap.min.css">
- <link rel="stylesheet" href="../assets/css/loading.css">
+<link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+ <link rel="stylesheet" href="../../assets/css/loading.css">
  <style>
     body,
     html {
@@ -26,7 +26,7 @@ include "../Configuration.php";
 </head>
 <?php	
 if (isset($Web_UI_Login) && $Web_UI_Login === true) {
-include "Fork_PHP/ForgotPassword_.php";
+include "ForgotPassword_.php";
 	
 	} else {
 	   

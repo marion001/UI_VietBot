@@ -1,5 +1,5 @@
 <?php
-include "../Configuration.php";
+include "../../Configuration.php";
 ?>
 <?php
 $CONFIG = '{"lang":"vi","error_reporting":false,"show_hidden":false,"hide_Cols":false,"theme":"light"}';
@@ -128,16 +128,16 @@ if (is_readable($config_file)) {
 
 // External CDN resources that can be used in the HTML (replace for GDPR compliance)
 $external = array(
-    'css-bootstrap' => '<link href="../assets/css/bootstrap.min.css" rel="stylesheet">',
-    'css-dropzone' => '<link href="../assets/css/dropzone.min.css" rel="stylesheet">',
-    'css-font-awesome' => '<link rel="stylesheet" href="../assets/css/font-awesome.min.css" crossorigin="anonymous">',
-    'css-highlightjs' => '<link rel="stylesheet" href="../assets/css/' . $highlightjs_style . '.min.css">',
-    'js-ace' => '<script src="assets/js/ace.js"></script>',
-    'js-bootstrap' => '<script src="../assets/js/bootstrap.bundle.min.js"></script>',
-    'js-dropzone' => '<script src="../assets/js/dropzone.min.js"></script>',
-    'js-jquery' => '<script src="../assets/js/jquery-3.6.1.min.js"></script>',
-    'js-jquery-datatables' => '<script src="../assets/js/datatables.min.js"></script>',
-    'js-highlightjs' => '<script src="../assets/js/highlight.min.js"></script>',
+    'css-bootstrap' => '<link href="../../assets/css/bootstrap.min.css" rel="stylesheet">',
+    'css-dropzone' => '<link href="../../assets/css/dropzone.min.css" rel="stylesheet">',
+    'css-font-awesome' => '<link rel="stylesheet" href="../../assets/css/font-awesome.min.css" crossorigin="anonymous">',
+    'css-highlightjs' => '<link rel="stylesheet" href="../../assets/css/' . $highlightjs_style . '.min.css">',
+    'js-ace' => '<script src="../../assets/js/ace.js"></script>',
+    'js-bootstrap' => '<script src="../../assets/js/bootstrap.bundle.min.js"></script>',
+    'js-dropzone' => '<script src="../../assets/js/dropzone.min.js"></script>',
+    'js-jquery' => '<script src="../../assets/js/jquery-3.6.1.min.js"></script>',
+    'js-jquery-datatables' => '<script src="../../assets/js/datatables.min.js"></script>',
+    'js-highlightjs' => '<script src="../../assets/js/highlight.min.js"></script>',
 );
 
 // --- EDIT BELOW CAREFULLY OR DO NOT EDIT AT ALL ---
@@ -2485,7 +2485,7 @@ function fm_is_exclude_items($file) {
  */
 function fm_get_translations($tr) {
     try {
-        $content = @file_get_contents('../assets/json/translation.json');
+        $content = @file_get_contents('../../assets/json/translation.json');
         if($content !== FALSE) {
             $lng = json_decode($content, TRUE);
             global $lang_list;
@@ -3625,7 +3625,7 @@ $isStickyNavBar = $sticky_navbar ? 'navbar-fixed' : 'navbar-normal';
     <?php print_external('css-highlightjs'); ?>
     <?php endif; ?>
     <script type="text/javascript">window.csrf = '<?php echo $_SESSION['token']; ?>';</script>
- <link href="../assets/css/loginshell.css" rel="stylesheet"> 
+ <link href="../../assets/css/loginshell.css" rel="stylesheet"> 
     <?php
     if (FM_THEME == "dark"): ?>
         <style>
@@ -3772,7 +3772,7 @@ $isStickyNavBar = $sticky_navbar ? 'navbar-fixed' : 'navbar-normal';
     <script>hljs.highlightAll(); var isHighlightingEnabled = true;</script>
 <?php endif; ?>
 
-<script src="../assets/js/webshell.js"></script>
+<script src="../../assets/js/webshell.js"></script>
 
 
 <?php if (isset($_GET['edit']) && isset($_GET['env']) && FM_EDIT_FILE && !FM_READONLY):

@@ -1,18 +1,19 @@
 <?php
 //Code By: Vũ Tuyển
 //Facebook: https://www.facebook.com/TWFyaW9uMDAx
-include "../Configuration.php";
+include "../../Configuration.php";
 ?>
+<!DOCTYPE html>
 <html><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title><?php echo $MYUSERNAME; ?>, Check Log, Services, CMD VietBot</title>
-    <link rel="shortcut icon" href="../assets/img/VietBot128.png">
-  <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-     <link rel="stylesheet" href="../assets/css/loading.css">
-  <script src="../assets/js/jquery.min.js"></script>
-  <script src="../assets/js/popper.min.js"></script>
-  <script src="../assets/js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" href="../../assets/img/VietBot128.png">
+  <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+     <link rel="stylesheet" href="../../assets/css/loading.css">
+  <script src="../../assets/js/jquery.min.js"></script>
+  <script src="../../assets/js/popper.min.js"></script>
+  <script src="../../assets/js/bootstrap.min.js"></script>
   <style>
     body, html {
         background-color: #dbe0c9;

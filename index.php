@@ -368,9 +368,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 
-
-
-
 <?php	
 if (isset($Web_UI_Login) && $Web_UI_Login === true) {
 if (!isset($_SESSION['root_id'])) {
@@ -419,6 +416,9 @@ if (!isset($_SESSION['root_id'])) {
 	}
 ?>	
 		
+
+
+
 
 	
 	  	</div>
@@ -600,7 +600,7 @@ if (!isset($_SESSION['root_id'])) {
 <!--  Resume End  -->
 <!--  Portfolio Start  -->
 <section id="File_Shell" class="section portfolio bg-gray-400 text-white">
-    <iframe src="./include_php/Shell.php" width="100%" height="470px"></iframe>
+    <iframe src="./include_php/Fork_PHP/Shell.php" width="100%" height="470px"></iframe>
 </section>
 <!--  Portfolio End  -->
 <!--  Blog Start  -->
@@ -626,7 +626,7 @@ if (!isset($_SESSION['root_id'])) {
     <div class="container">
         <h3 class="subtitle">Thay Đổi Mật Khẩu</h3>
 			<div class="rounded-iframe">
-        <iframe src="./include_php/ChangePassword.php" width="100%" height="570px"></iframe>
+        <iframe src="./include_php/Fork_PHP/ChangePassword.php" width="100%" height="570px"></iframe>
 	</div>
 </section>
 <section id="Skill" class="section blog bg-gray-400 text-white">
@@ -641,7 +641,7 @@ if (!isset($_SESSION['root_id'])) {
     <div class="container">
         <h3 class="subtitle">Quên Mật Khẩu</h3>
 		<div class="rounded-iframe">
-        <iframe src="./include_php/ForgotPassword.php" width="100%" height="470px"></iframe>
+        <iframe src="./include_php/Fork_PHP/ForgotPassword.php" width="100%" height="470px"></iframe>
 </div>
 
     </div>
@@ -890,11 +890,17 @@ if ($remoteValue !== $localValue) {
         divElement.classList.remove('show');
         divElement.classList.add('hide');
     });
-	    buttonnnElement.addEventListener('click', function() {
+	
+		//bỏ qua lỗi nếu phần tử không tồn tại
+		if (buttonnnElement) {
+  	    buttonnnElement.addEventListener('click', function() {
         // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
         divElement.classList.remove('show');
         divElement.classList.add('hide');
-    });
+		});
+		}
+	
+
     // Gắn sự kiện click vào liên kết
     linkElement.addEventListener('click', function() {
         // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
@@ -984,7 +990,8 @@ window.addEventListener('message', function(event) {
         const confirmPasswordInput = document.getElementById('confirmPassword');
 		
 
-        // Thêm sự kiện change cho checkbox
+	if (showPasswordCheckbox) {
+          // Thêm sự kiện change cho checkbox
         showPasswordCheckbox.addEventListener('change', function () {
             // Nếu checkbox được tích, thay đổi type thành "text", ngược lại thì là "password"
             if (showPasswordCheckbox.checked) {
@@ -998,6 +1005,10 @@ window.addEventListener('message', function(event) {
             }
         });
 		
+}
+
+
+
     </script>
 	
     <script>
@@ -1005,7 +1016,9 @@ window.addEventListener('message', function(event) {
         const showPasswordCheckboxx = document.getElementById('showPasswordd');
         const passwordInputt = document.getElementById('passwordd');
 
-        // Thêm sự kiện change cho checkbox
+
+		if (showPasswordCheckboxx) {
+         // Thêm sự kiện change cho checkbox
         showPasswordCheckboxx.addEventListener('change', function () {
             // Nếu checkbox được tích, thay đổi type thành "text", ngược lại thì là "password"
             if (showPasswordCheckboxx.checked) {
@@ -1014,6 +1027,9 @@ window.addEventListener('message', function(event) {
                 passwordInputt.type = 'password';
             }
         });
+}
+
+
     </script>
 	
 </body>

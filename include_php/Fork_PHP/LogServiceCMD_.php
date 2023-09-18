@@ -1,7 +1,7 @@
 
 
 	<body>
- <script src="../assets/js/jquery-3.6.1.min.js"></script>
+ <script src="../../assets/js/jquery-3.6.1.min.js"></script>
 <script>
 $(document).ready(function() {
     $('#my-form').on('submit', function() {
@@ -356,10 +356,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hash_generator'])) {
  </center></div></div>
     </form>
     <div id="loading-overlay">
-          <img id="loading-icon" src="../assets/img/Loading.gif" alt="Loading...">
+          <img id="loading-icon" src="../../assets/img/Loading.gif" alt="Loading...">
 		  <div id="loading-message">Đang Thực Thi...</div>
     </div>
-    <br/><br/><textarea  style="width: 95%; height: 340px;" class="text-info form-control bg-dark" disabled rows="10" cols="50"><?php echo $output; ?></textarea>
+    <br/><br/><textarea name="textarea_log_command" style="width: 95%; height: 340px;" class="text-info form-control bg-dark" disabled rows="10" cols="50"><?php echo $output; ?></textarea>
 </center>
 
 

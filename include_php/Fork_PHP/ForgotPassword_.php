@@ -1,6 +1,6 @@
 
 <body>
- <script src="../assets/js/jquery-3.6.1.min.js"></script>
+ <script src="../../assets/js/jquery-3.6.1.min.js"></script>
 <script>
 $(document).ready(function() {
     $('#my-form').on('submit', function() {
@@ -97,7 +97,7 @@ if (isset($_POST['start_send_mail'])) {
 ?>
 <form id='my-form'  method='POST'>
 
- Mail: 
+ Mail của bạn: 
  	<?php 
 $parts = explode('@', $data['mail']);
 // Lấy phần username
@@ -112,19 +112,21 @@ $visibleUsername .= substr($username, -2);
 $hiddenEmail = $visibleUsername . '@' . $domain;
 echo "<font color=red>".$hiddenEmail."</font><br/>";
 	?>
- 
- <input type="text" class="input-group-text" name="mail_forgot" placeholder="Nhập Địa Chỉ Mail" required><br/>
- <button type='submit' name='start_send_mail' class='btn btn-success'>Send Mail</button>
- <button type='submit' name='re_configuration' class='btn btn-warning'>Re-Configuration</button>
- <a href='ForgotPassword.php'><button type='button' class='btn btn-danger'>Tải Lại</button></a><br/>
+ <br/>Nhập Địa Chỉ Mail:
+ <input type="text" class="input-group-text" name="mail_forgot" placeholder="Nhập Địa Chỉ Mail" title="Nhập địa chỉ mail của bạn đã cấu hình trước đó" required><br/>
+ <button type='submit' name='start_send_mail' class='btn btn-success' title="Gửi mật khẩu về mail đã được thiết lập trước đó.">Send Mail</button>
+ <button type='submit' name='re_configuration' class='btn btn-warning' title="Xóa tất cả dữ liệu được lưu trước đó bao gồm Mật Khẩu, Mail. Sau đó bạn cần nhập mới lại tại Trang Chính">Re-Configuration</button>
+ <a href='ForgotPassword.php'><button type='button' class='btn btn-danger' title="Tải lại trang">Tải Lại</button></a><br/>
  
  </center></form><br/><br/>
- - <b>Send Mail: <i>Gửi mật khẩu về mail đã được thiết lập trước đó.</i></b><br/>
- - <b>Re-Configuration: <i>Xóa tất cả dữ liệu được lưu trước đó bao gồm Mật Khẩu, Mail. Sau đó bạn cần nhập mới lại tại Trang Chính</i></b>
+ - <b>Lưu Lý:</b> <i>cần nhập mail của bạn vào ô trước, sau đó click vào 1 trong 2 nút 
+	<font color=red>Send Mail:</font> hoặc <font color=red>Re-Configuration:</font> tương ứng với yêu cầu của bạn</i></b><br/><br/>
+ - <b><font color=red>Send Mail:</b></font> <i>Gửi mật khẩu về mail đã được thiết lập trước đó.</i></b><br/>
+ - <b><font color=red>Re-Configuration:</font> <i>Xóa tất cả dữ liệu được lưu trước đó bao gồm Mật Khẩu, Mail. Sau đó bạn cần nhập mới lại tại Trang Chính</i></b>
  
  
      <div id="loading-overlay">
-          <img id="loading-icon" src="../assets/img/Loading.gif" alt="Loading...">
+          <img id="loading-icon" src="../../assets/img/Loading.gif" alt="Loading...">
 		  <div id="loading-message">Đang Thực Thi...</div>
     </div>
  

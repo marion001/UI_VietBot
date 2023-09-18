@@ -428,14 +428,14 @@ if (count($fileLists) > 0) {
 <div class="row justify-content-center"><div class="col-auto">	 
  <table class="table table-responsive table-striped table-bordered align-middle">
 <tbody>
-<tr><th scope="row"> <label>URL:</label></th>
+<tr><th scope="row">URL:</th>
 <td><input type="text" class="form-control" id="hass_url" name="hass_url" placeholder="http://192.168.14.104:8123" title="Nhập Url Của HomeAssistant" value="<?php echo $skillArray['hass']['url']; ?>"></td>
 </tr><tr>
-<th scope="row"> <label>Token Hass:</label></th>
+<th scope="row"> Token Hass:</th>
 <td><input type="text" class="form-control" id="hass_key" name="hass_key" placeholder="Nhập Key Của HomeAssistant" title="Nhập Key Của HomeAssistant" value="<?php echo $skillArray['hass']['token']; ?>"></td>
 </tr>
 <tr>
-<th scope="row"> <label title="Câu Trả Lời Có Thêm Chi Tiết Về Thiết Bị">Display Full State:</label></th>
+<th scope="row" title="Câu Trả Lời Có Thêm Chi Tiết Về Thiết Bị">Display Full State:</th>
 <td><input type="checkbox" id="hass_display_full_state" name="hass_display_full_state" title="Tích Để Bật/Tắt" <?php echo $skillArray['hass']['display_full_state'] ? 'checked' : ''; ?>></td>
 </tr>
 
@@ -483,17 +483,17 @@ B4: Go to Application -> Cookies -> "__Secure-1PSID" và "__Secure-1PSIDTS" và 
 <tbody>
 <tr><th scope="row"colspan="2"><center><font color=red>Session Google Bard</font></center></th>
 </tr>
-<tr><th scope="row"> <label>Secure-1PSID:</label></th>
+<tr><th scope="row">Secure-1PSID:</th>
 <td><input type="text" class="form-control" id="Secure-1PSID" name="Secure-1PSID" placeholder="Nhập Cookie Secure-1PSID Của Google bard" title="Nhập Cookie Secure-1PSID Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure-1PSID']; ?>">
 </td>
 </tr><tr>
-<th scope="row"> <label>Secure-1PSIDTS:</label></th>
+<th scope="row">Secure-1PSIDTS:</th>
 <td><input type="text" class="form-control" id="Secure-1PSIDTS" name="Secure-1PSIDTS" placeholder="Nhập Cookie Secure-1PSIDTS Của Google bard" title="Nhập Cookie Secure-1PSIDTS Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure-1PSIDTS']; ?>">
 </td>
 </tr>
 
 <tr>
-<th scope="row"> <label>Secure-1PSIDCC:</label></th>
+<th scope="row">Secure-1PSIDCC:</th>
 <td><input type="text" class="form-control" id="Secure-1PSIDCC" name="Secure-1PSIDCC" placeholder="Nhập Cookie Secure-1PSIDCC Của Google bard" title="Nhập Cookie Secure-1PSIDCC Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure-1PSIDCC']; ?>">
 </td>
 </tr>
@@ -689,8 +689,8 @@ if ($count > $Limit_Telegram) {
   <thead> <tr>
       <th colspan="3"><center>Danh Bạ Người Gửi</center></th>
     </tr></thead><thead><tr><th></th>
- <th><label><center>Tên Người Nhận</center></label></th>
-      <th><label><center>ID Người Nhận</center></label></th>
+ <th><center>Tên Người Nhận</center></th>
+      <th><center>ID Người Nhận</center></th>
     </tr> </thead>
        <?php
         foreach ($telegramData as $index => $telegram) {
@@ -745,8 +745,8 @@ if ($count_news > $Limit_BaoTinTuc ) {
   <thead> <tr>
       <th colspan="3"><center><font color=red>Tin Tức</font></center></th>
     </tr></thead><thead><tr><th></th>
- <th><label><center><font color=red>Tên Báo</font></center></label></th>
-      <th><label><center><font color=red>Link Báo RSS</font></center></label></th>
+ <th><center><font color=red>Tên Báo</font></center></th>
+      <th><center><font color=red>Link Báo RSS</font></center></th>
     </tr> </thead>
        <?php
 	    foreach ($news_Data as $new => $news_tintuc) {
