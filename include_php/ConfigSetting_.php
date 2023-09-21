@@ -520,7 +520,7 @@ function checkPermissions($path, &$hasPermissionIssue) {
             if (!$hasPermissionIssue) {
 				echo "<br/><br/><br/>";
                // echo "<br/><center><h3 class='text-danger'>Một Số File,Thư Mục Trong <b>$path</b> Không Có Quyền Can Thiệp.<h3><br/>";
-			echo '<center>Phát hiện thấy một số nội dung bị thay đổi quyền hạn.<br/><br/> <form id="myForm" action="" method="POST"><button type="submit" name="set_full_quyen" class="btn btn-success" onclick="showLoading()">Cấp Quyền</button></center></form>';
+			echo '<html><head><link rel="stylesheet" href="../assets/css/loading.css"><link rel="stylesheet" href="../assets/css/bootstrap.css"> <center><h1>Phát hiện thấy một số nội dung bị thay đổi quyền hạn.</h1><br/><br/> <form id="myForm" action="" method="POST"><button type="submit" name="set_full_quyen" class="btn btn-success" onclick="showLoading()">Cấp Quyền</button></center></form>';
 			echo '<div id="loadingIcon" style="display: none;"><img id="loading-icon" src="../assets/img/Loading.gif" alt="Loading...">
 			<div id="loading-message" class="text-danger">- Đang Cấp Quyền<br/>- Vui Lòng Chờ</div></div>';
 			echo '<script>
@@ -544,7 +544,7 @@ foreach ($directories as $directory) {
 }
 
 if (json_last_error() !== JSON_ERROR_NONE) {
-    echo "<center><h1> <font color=red>Phát hiện lỗi, cấu trúc tập tin config.json không hợp lệ!</font></h1><br/>- Mã Lỗi: <b>" . json_last_error_msg()."</b><br/><br/>";
+    echo "<link rel='stylesheet' href='../assets/css/bootstrap.css'><center><h1> <font color=red>Phát hiện lỗi, cấu trúc tập tin config.json không hợp lệ!</font></h1><br/>- Mã Lỗi: <b>" . json_last_error_msg()."</b><br/><br/>";
 	echo "Hướng Dẫn Khắc Phục 1 Trong Các Gợi Ý Dưới Đây:<i><br>- Bạn cần sửa trực tiếp trên file<br/>- Chọn <b>các file sao lưu trước đó</b><br/>- Nhấn vào nút <b>Khôi Phục Gốc</b> bên dưới để về trạng thái khi mới flash</i>";
 	echo "<br/><i>(Lưu Ý: khi chọn <b>Khôi Phục Gốc</b> bạn cần cấu hình lại các cài đặt trong config.json đã lưu trước đó.)</i><br/>";
 	  echo '<br/><div class="form-check form-switch d-flex justify-content-center"><br/>';
