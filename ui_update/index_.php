@@ -357,10 +357,10 @@ if (isset($_POST['download']) && isset($_POST['tarFile'])) {
 </table>
 	</div></div>
   <div class="row justify-content-center"><div class="col-auto"><div class="input-group">
-    		  <input type="submit" name="checkforupdates_ui" class="btn btn-success" value="Kiểm tra">
+    		<center>  <input type="submit" name="checkforupdates_ui" class="btn btn-success" value="Kiểm tra">
 		   <input type="submit" name="ui_update" class="btn btn-warning" value="Cập Nhật">
 		   <a class="btn btn-primary" href="<?php echo $PHP_SELF; ?>" role="button">Làm Mới</a>
-		   <button class="btn btn-danger" id="reloadButton">Tải Lại Trang</button>
+		   <button class="btn btn-danger" id="reloadButton">Tải Lại Trang</button></center>
 		   </div>
 		   </div>
 		   </div>  <br/></div>
