@@ -127,7 +127,21 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	$Welcome_Mode = $data_config['smart_answer']['sound']['welcome']['mode'];
 	$Welcome_Path = $data_config['smart_answer']['sound']['welcome']['path'];
 	$Welcome_Text = $data_config['smart_answer']['sound']['welcome']['text'];
-	//address
+	
+	//bot_mode "Tối Ưu Tốc Độ", "Cân Bằng", "Đầy Đủ Tính Năng"
+	//$Bot_Mode_Text = $data_config['smart_config']['bot_mode'];
+	if ($data_config['smart_config']['bot_mode'] === 'rapid') {
+		$Bot_Mode = "1";
+		$Bot_Mode_Text = "Tối Ưu Tốc Độ";
+	} elseif ($data_config['smart_config']['bot_mode'] === 'medium') {
+		$Bot_Mode = "2";
+		$Bot_Mode_Text = "Cân Bằng";
+	} elseif ($data_config['smart_config']['bot_mode'] === 'feature') {
+		$Bot_Mode = "3";
+		$Bot_Mode_Text = "Đầy Đủ Tính Năng";
+	}
+	
+	
 	
 	//Get Ưu tiên Trợ Lý Ảo/ AI
 	$external_bot_priority_1 = $data_config['smart_answer']['external_bot_priority_1'];
@@ -376,6 +390,20 @@ chmod($backupFile, 0777);
     }
     // Cập nhật lại mảng "wakeup_reply" trong dữ liệu
     $data_config["smart_wakeup"]["wakeup_reply"] = $wakeup_reply;
+	
+	//bot_mode
+	if ($_POST['bot_mode_slide'] === '1') {
+		$data_config['smart_config']['bot_mode'] = "rapid";
+		
+	} elseif ($_POST['bot_mode_slide'] === '2') {
+		
+		$data_config['smart_config']['bot_mode'] = "medium";
+		
+	} elseif ($_POST['bot_mode_slide'] === '3') {
+		
+		$data_config['smart_config']['bot_mode'] = "feature";
+	}
+	
 	
 	//stt
 	$data_config['smart_request']['stt']['type'] = $STT_Type;
@@ -766,6 +794,12 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
         border-bottom-left-radius: 999px;
 		z-index: 3;
         }
+		        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 1px; /* Khoảng cách giữa nút "Low", "Medium", và "High" */
+            position: relative;
+        }
     </style>
    <script src="../assets/js/11.0.18_dist_sweetalert2.all.min.js"></script>
   
@@ -793,6 +827,33 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
 </tbody></table>
 </div></div><hr/>
 <!--END thông tin người dùng -->
+<h5>Hiệu Năng Phần Cứng:</h5>
+<div class="row g-3 d-flex justify-content-center"><div class="col-auto"> 
+
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col"><center><font color=red>Chế Độ Của Loa</font></center></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+	          <div class="slider-labels">
+            <span>Thấp</span>
+            <span>Trung bình</span>
+            <span>Cao</span>
+        </div>
+	  <input type="range" class="slider" min="1" max="3" step="1" name="bot_mode_slide" id="slider_bot_mode" value="<?php echo $Bot_Mode; ?>">
+<p class="text-center"><font color=red><span id="currentLevel_bot_mode"><?php echo $Bot_Mode_Text; ?></span></font></p></td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+</div>
+<hr/>
 	<!-- mục  Volume --> 
 <h5> Sound Card/Volume:  <i class="bi bi-info-circle-fill" onclick="togglePopupVOLUME()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5> <center>   
 <div id="popupContainerVOLUME" class="popup-container" onclick="hidePopupVOLUME()">
@@ -2742,6 +2803,17 @@ $(document).ready(function() {
     });
 });
 </script>
+    <script>
+        // JavaScript for slider functionality
+        const slider_bot_mode = document.getElementById("slider_bot_mode");
+        const currentLevelTextbot_mode = document.getElementById("currentLevel_bot_mode");
+        const levels_bot_mode = ["Tối Ưu Tốc Độ", "Cân Bằng", "Đầy Đủ Tính Năng"];
+
+        slider_bot_mode.addEventListener("input", () => {
+            const selectedLevelbot_mode = levels_bot_mode[slider_bot_mode.value - 1];
+            currentLevelTextbot_mode.textContent = selectedLevelbot_mode;
+        });
+    </script>
 <script>
     // Hàm để cuộn lên đầu trang
     function scrollToTop() {
