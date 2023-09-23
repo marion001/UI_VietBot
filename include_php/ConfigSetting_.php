@@ -888,7 +888,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
 <h5>Hotword Engine KEY: <i class="bi bi-info-circle-fill" onclick="togglePopup()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
 <div class="row g-3 d-flex justify-content-center"><div class="col-auto"> 
 <table class="table table-responsive align-middle">
-<tbody><tr><th scope="row">Token:</th>
+<tbody><tr><th scope="row"><center>Token:</center></th></tr><tr>
 <td><input type="text" placeholder="Nhập Key Của Bạn" title="Nhập Key Picovoice" class="form-control" style="width: 290px;" name="hotword_engine_key"  value="<?php echo $HOTWORD_ENGINE_KEY ?>" required></td>
 </tr></tbody></table></div></div>
 <div id="popupContainer" class="popup-container" onclick="hidePopup()">
