@@ -185,9 +185,9 @@ if (!is_dir($DuognDanThuMucJson)) {
                         </th>
                     </tr>
                     <tr>
-                        <th scope="row">config.json</th>
+                        <th scope="row" title="Hệ thống sẽ tự động xử lý, bạn không cần phải lựa chọn">config.json</th>
                         <!--	<td><input type="checkbox" class="form-check-input" name="exclude[]" value="config.json" disabled></td> -->
-                        <td>-</td>
+                        <td title="Hệ thống sẽ tự động xử lý, bạn không cần phải lựa chọn">-</td>
                         <th scope="row">tts_saved</th>
                         <td>
                             <input type="checkbox" class="form-check-input" name="exclude[]" value="tts_saved" checked>
@@ -195,9 +195,9 @@ if (!is_dir($DuognDanThuMucJson)) {
 
                     </tr>
                     <tr>
-                        <th scope="row">skill.json</th>
+                        <th scope="row" title="Hệ thống sẽ tự động xử lý, bạn không cần phải lựa chọn">skill.json</th>
                         <!-- <td><input type="checkbox" class="form-check-input" name="exclude[]" value="skill.json" disabled></td><td>-</td> -->
-                        <td>-</td>
+                        <td title="Hệ thống sẽ tự động xử lý, bạn không cần phải lựa chọn">-</td>
                         <th scope="row">hotword</th>
                         <td>
                             <input type="checkbox" class="form-check-input" name="exclude[]" value="hotword" checked>
