@@ -281,12 +281,13 @@ if (!is_dir($DuognDanThuMucJson)) {
    <div class="row g-3 d-flex justify-content-center">
             <div class="col-auto">
                                 <div class="input-group">
-								  
+								  <center>
                                     <input type="submit" name="checkforupdates" class="btn btn-success" title="Kiểm Tra Phiên Bản Vietbot Mới" value="Kiểm Tra">
                                     <input type="submit" name="backup_update" class="btn btn-warning" title="Cập Nhật Lên Phiên Bản Vietbot Mới" value="Cập Nhật">
                                     <a class="btn btn-primary" href="<?php echo $PHP_SELF; ?>" role="button">Làm Mới</a>
 									 <button class="btn btn-danger" id="reloadButton">Tải Lại Trang</button>
                                     <button type="submit" name="restart_vietbot" class="btn btn-dark" title="Khởi Động Lại Trợ Lý VietBot">Restart VietBot</button>
+									</center>
                                 </div>
                                 </div>
 								
