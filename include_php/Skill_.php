@@ -567,6 +567,13 @@ if (count($fileLists) > 0) {
 <th scope="row"> <label for="openweathermap_key">Token OpenWeatherMap:</label></th>
 <td><input type="text" class="form-control" id="openweathermap_key" name="openweathermap_key" placeholder="Nhập Key Của OpenWeatherMap" title="Nhập Key Của OpenWeatherMap" value="<?php echo $skillArray['weather']['openweathermap_key']; ?>"></td>
 </tr>
+<tr>
+<th scope="row" colspan="2"><center>
+
+
+ <input type="button" id="OpenWeatherMapshowPopup" class="btn btn-warning" value="Kiểm Tra Kết Nối">
+
+</center></th></tr>
 </tbody>
 </table>
 </div></div>
@@ -617,13 +624,8 @@ if (count($fileLists) > 0) {
 
 	
     <div id="popupHass" class="popup-hass">
-	
         <div class="popup-hass-content" id="popupContentHass">
             <!-- Nội dung JSON sẽ được hiển thị ở đây -->
-			 
-			   
-			  
- 
         </div>
 		 <input type="button"class="close-button btn btn-primary" id="closeButtonHass" value="Đóng">
     </div>
@@ -1354,7 +1356,6 @@ if (count($fileLists) > 0) {
 }
 ?></div>
 
-
 <script>
     //check button ẩn hiện thẻ div OpenWeatherMap
     $(document).ready(function() {
@@ -1591,9 +1592,6 @@ if (count($fileLists) > 0) {
     var closeButtonHass = document.getElementById('closeButtonHass');
     var urlInput = document.getElementById('hass_url');
     var tokenInput = document.getElementById('hass_key');
-
-    //var loadingIcon = document.getElementById('loading-icon'); // Biểu tượng loading
-
     HomeAssistantshowPopupshowPopupButton.addEventListener('click', function() {
         $('#loading-overlay').show();
 
@@ -1633,8 +1631,8 @@ if (count($fileLists) > 0) {
                     popupContentHass.innerHTML += '<font color=red>Múi Giờ:<b> ' + home_assistant_time_zone + '</b></font>';
                     popupContentHass.innerHTML += '<font color=red>Quốc Gia:<b> ' + home_assistant_country + '</b></font>';
                     popupContentHass.innerHTML += '<font color=red>Ngôn Ngữ:<b> ' + home_assistant_language + '</b></font>';
-                    popupContentHass.innerHTML += '<font color=red>Địa Chỉ URL Ngoài:<b> <a href="'+home_assistant_external_url+'" target="_bank">' + home_assistant_external_url + '</a></b></font>';
-                    popupContentHass.innerHTML += '<font color=red>Địa Chỉ URL Local:<b> <a href="'+home_assistant_internal_url+'" target="_bank">' + home_assistant_internal_url + '</a></b></font>';;
+                    popupContentHass.innerHTML += '<font color=red>Địa Chỉ URL Ngoài:<b> <a href="' + home_assistant_external_url + '" target="_bank">' + home_assistant_external_url + '</a></b></font>';
+                    popupContentHass.innerHTML += '<font color=red>Địa Chỉ URL Local:<b> <a href="' + home_assistant_internal_url + '" target="_bank">' + home_assistant_internal_url + '</a></b></font>';;
                     popupContentHass.innerHTML += '<font color=red>Phiên Bản HomeAssistant:<b> ' + home_assistant_version + '</b></font>';
                     popupContentHass.innerHTML += '<font color=red>Trạng Thái Hoạt Động:<b> ' + home_assistant_state + '</b></font>';
                 } else {
@@ -1671,7 +1669,66 @@ if (count($fileLists) > 0) {
         }
     });
 </script>
-	<script>
+
+<script>
+    //check key OpenWeatherMapshowPopup
+    var HomeAssistantshowPopupshowPopupButton = document.getElementById('OpenWeatherMapshowPopup');
+    var tokenInput_openweathermap_key = document.getElementById('openweathermap_key');
+    HomeAssistantshowPopupshowPopupButton.addEventListener('click', function() {
+        $('#loading-overlay').show();
+        var apiToken_openweathermap_key = tokenInput_openweathermap_key.value;
+        //console.log(apiUrl);
+        // Hiển thị popup
+        popupHass.style.display = 'block';
+        // Gửi yêu cầu AJAX đến tệp PHP
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'Ajax/Check_OpenWeatherMap.php?token=' + apiToken_openweathermap_key, true);
+        xhr.onload = function() {
+            $('#loading-overlay').hide();
+            if (xhr.status === 200) {
+                var responseDataa = JSON.parse(xhr.responseText);
+                // Kiểm tra xem có location_name trong JSON hay không
+                //console.log(responseDataa);
+                if (responseDataa.name) {
+                    var namee = responseDataa.name;
+                    popupContentHass.innerHTML = '<font color=red><center><h5>Token Hợp Lệ<br/> Kết Nối Tới Open Weather Map Thành Công</h5></center></font>';
+                    //popupContentHass.innerHTML += '<font color=red>Tên: <b>' + namee + '</b></font>';
+                } else {
+                    var error_php = responseDataa.cod
+                    var messageege = responseDataa.message
+                        //Thông báo lỗi
+                    popupContentHass.innerHTML = '<font color=red>Lỗi Kết Nối Tới Open Weather Map</font>';
+                    popupContentHass.innerHTML += 'Mã Lỗi: <font color=red>' + error_php + '</font>';
+                    popupContentHass.innerHTML += 'Nội Dung: <font color=red>' + messageege + '</font>';
+                }
+            } else if (xhr.status === 401) {
+                popupContentHass.innerHTML = '<font color=red>Lỗi [401], không có quyền truy cập, Hãy kiểm tra lại mã token</font>';
+            } else if (xhr.status === 404) {
+                popupContentHass.innerHTML = '<font color=red>Lỗi [404], không tìm thấy dữ liệu, hãy kiểm tra lại địa chỉ HomeAssistant hoặc Token</font>';
+            } else {
+                popupContentHass.innerHTML = '<font color=red>Lỗi khi gửi yêu cầu</font>';
+            }
+        };
+
+        xhr.onerror = function() {
+            popupContentHass.innerHTML = '<font color=red>Lỗi kết nối</font>';
+        };
+        xhr.send();
+    });
+    closeButtonHass.addEventListener('click', function() {
+        // Đóng popup khi nút đóng được nhấn
+        popupHass.style.display = 'none';
+    });
+    popupHass.addEventListener('click', function(event) {
+        if (event.target === popupHass) {
+            // Đóng popup khi bấm vào ngoài vùng popup
+            popupHass.style.display = 'none';
+        }
+    });
+</script>
+
+
+<script>
     // Hàm để cuộn lên đầu trang
     function scrollToTop() {
         window.scrollTo(0, 0);
