@@ -133,7 +133,7 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	if ($data_config['smart_config']['bot_mode'] === 'rapid') {
 		$Bot_Mode = "1";
 		$Bot_Mode_Text = "Tối Ưu Tốc Độ";
-	} elseif ($data_config['smart_config']['bot_mode'] === 'medium') {
+	} elseif ($data_config['smart_config']['bot_mode'] === 'custom') {
 		$Bot_Mode = "2";
 		$Bot_Mode_Text = "Cân Bằng";
 	} elseif ($data_config['smart_config']['bot_mode'] === 'feature') {
@@ -397,7 +397,7 @@ chmod($backupFile, 0777);
 		
 	} elseif ($_POST['bot_mode_slide'] === '2') {
 		
-		$data_config['smart_config']['bot_mode'] = "medium";
+		$data_config['smart_config']['bot_mode'] = "custom";
 		
 	} elseif ($_POST['bot_mode_slide'] === '3') {
 		
@@ -623,7 +623,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
     }
     
     .slider {
-        width: 200px;
+        width: 250px;
     }
     
     .slider-value {
@@ -827,23 +827,23 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
 </tbody></table>
 </div></div><hr/>
 <!--END thông tin người dùng -->
-<h5>Hiệu Năng Phần Cứng:</h5>
+<h5>Tùy Chọn Chế Độ Tối Ưu Cho:</h5>
 <div class="row g-3 d-flex justify-content-center"><div class="col-auto"> 
 
 
 <table class="table table-bordered">
   <thead>
     <tr>
-      <th scope="col"><center><font color=red>Chế Độ Của Loa</font></center></th>
+      <th scope="col"><center>Thiết Lập Chế Độ:</center></th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
 	          <div class="slider-labels">
-            <span>Thấp</span>
-            <span>Trung bình</span>
-            <span>Cao</span>
+            <span>Tốc độ</span>
+            <span>Tùy chỉnh</span>
+            <span>Tính năng</span>
         </div>
 	  <input type="range" class="slider" min="1" max="3" step="1" name="bot_mode_slide" id="slider_bot_mode" value="<?php echo $Bot_Mode; ?>">
 <p class="text-center"><font color=red><span id="currentLevel_bot_mode"><?php echo $Bot_Mode_Text; ?></span></font></p></td>
@@ -866,7 +866,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
 <th scope="col"><center>Card ID:</center></th>
 <th scope="col"><center>Âm lượng:</center></th></tr><tr>
 <td><input type="number" class="form-control" title="Từ 0 Đến 3" title="Từ 0 Đến 3" name="input_number_card_number" size="28" value="<?php echo $GET_Speaker_Amixer_ID; ?>"  min="0" max="3" required></td>
-<td><input type="range" title="Kéo Để Thay Đổi Âm Lượng Sau Đó Nhấn Lưu" name="volume_value" min="10" max="100" step="1" value="<?php echo $value_volume; ?>" class="slider" oninput="updateSliderValue(this.value)">
+<td><input type="range" title="Kéo Để Thay Đổi Âm Lượng Sau Đó Nhấn Lưu" name="volume_value" min="10" max="100" step="1" value="<?php echo $value_volume; ?>" style="width:200px;" oninput="updateSliderValue(this.value)">
 <font color=red><span id="slider-value" class="slider-value"><?php echo $value_volume; ?>%</span></font></div> </td></tr></table></div></div></center><hr/>
 <!-- Kết Thúc  Volume --> 
 <!-- mục  Web Interface --> 
