@@ -104,7 +104,7 @@ echo "<font color=red>".$hiddenEmail."</font><br/>";
         <input type="password" class="input-group-text" id="confirmNewPassword" name="confirmNewPassword" required>
         <br>
         <input type="checkbox" id="showPassword">
-        <label for="showPassword">Hiển Thị Mật Khẩu</label> <!--| <a style="color:Green" href=""><b>Quên mật khẩu</b></a> --><br/> 
+        <label for="showPassword">Hiển Thị Mật Khẩu</label> | <a style="color:Green" href="/#ForgotPassword" target="_bank"><b>Quên mật khẩu</b></a><br/> 
         <input type="submit" class="btn btn-primary" value="Đổi Mật Khẩu">
     </form></center>
 	
