@@ -1691,7 +1691,7 @@ if (count($fileLists) > 0) {
                 //console.log(responseDataa);
                 if (responseDataa.name) {
                     var namee = responseDataa.name;
-                    popupContentHass.innerHTML = '<font color=red><center><h5>Token Hợp Lệ<br/> Kết Nối Tới Open Weather Map Thành Công</h5></center></font>';
+                    popupContentHass.innerHTML = '<font color=green><center><h5>Token Hợp Lệ<br/> Kết Nối Tới Open Weather Map Thành Công</h5></center></font>';
                     //popupContentHass.innerHTML += '<font color=red>Tên: <b>' + namee + '</b></font>';
                 } else {
                     var error_php = responseDataa.cod
