@@ -1626,7 +1626,7 @@ if (count($fileLists) > 0) {
                     var latitude = responseData.latitude;
                     var longitude = responseData.longitude;
                     // popupContent.textContent = 'Location Name: <span class="red-text">' + home_assistant_locationName + '</span><br>Time Zone: ' + home_assistant_time_zone;
-                    popupContentHass.innerHTML = '<center><h5>Kết Nối Tới HomeAssistant Thành Công</h5></center>';
+                    popupContentHass.innerHTML = '<center><h5><font color=green>Kết Nối Tới HomeAssistant Thành Công</font></h5></center>';
                     popupContentHass.innerHTML += '<font color=red>Tên: <b>' + home_assistant_locationName + '</b></font>';
                     popupContentHass.innerHTML += '<font color=red>Múi Giờ:<b> ' + home_assistant_time_zone + '</b></font>';
                     popupContentHass.innerHTML += '<font color=red>Quốc Gia:<b> ' + home_assistant_country + '</b></font>';
@@ -1641,17 +1641,20 @@ if (count($fileLists) > 0) {
                     popupContentHass.innerHTML = '<font color=red>' + error_php + '</font>';
                 }
             } else if (xhr.status === 401) {
-                popupContentHass.innerHTML = '<font color=red>Lỗi [401], không có quyền truy cập, Hãy kiểm tra lại mã token</font>';
+                popupContentHass.innerHTML = '<center><h5><font color=red>Kết Nối Tới HomeAssistant Thất Bại</font></h5></center>';
+                popupContentHass.innerHTML += '<font color=red>Lỗi [401], không có quyền truy cập, Hãy kiểm tra lại mã token</font>';
             } else if (xhr.status === 404) {
-                popupContentHass.innerHTML = '<font color=red>Lỗi [404], không tìm thấy dữ liệu, hãy kiểm tra lại địa chỉ HomeAssistant hoặc Token</font>';
+                popupContentHass.innerHTML = '<center><h5><font color=red>Kết Nối Tới HomeAssistant Thất Bại</font></h5></center>';
+                popupContentHass.innerHTML += '<font color=red>Lỗi [404], không tìm thấy dữ liệu, hãy kiểm tra lại địa chỉ HomeAssistant hoặc Token</font>';
             } else {
-                popupContentHass.innerHTML = '<font color=red>Lỗi khi gửi yêu cầu</font>';
+                popupContentHass.innerHTML = '<center><h5><font color=red>Kết Nối Tới HomeAssistant Thất Bại</font></h5></center>';
+                popupContentHass.innerHTML += '<font color=red>Lỗi khi gửi yêu cầu</font>';
             }
         };
 
         xhr.onerror = function() {
             //$('#loading-overlay').hidden();
-            popupContentHass.innerHTML = '<font color=red>Lỗi kết nối</font>';
+            popupContentHass.innerHTML = '<font color=red>Lỗi kết nối xhr.onerror</font>';
         };
 
         xhr.send();
