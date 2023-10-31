@@ -288,23 +288,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hash_generator'])) {
 	<div class="row g-3 d-flex justify-content-center">
   <div class="col-auto"> 
   <input type="text" name="commandnd" class="form-control input-sm" placeholder="Nhập Lệnh/Nội Dung" aria-label="Recipient's username" aria-describedby="basic-addon2">
-</div> <div class="col-auto"> 
+</div> 
+
+<div class="col-auto"> 
     <button class="btn btn-success" name="commandd" type="submit">Command</button>
 	
     <button class="btn btn-success" name="hash_generator" type="submit">Hash Generator</button>
 	
 	
 	
-	<label for="fetchCheckbox" class="btn btn-warning">   <input type="checkbox" id="fetchCheckbox" onchange="startStopFetching(this)">
-    Đọc Log Debug</label>
-	
-	
-	
- 
-	
 	
  </div>
-</div><br/><center>
+ <div class="col-auto"> 
+ 	<label for="fetchCheckbox" class="btn btn-warning">   <input type="checkbox" id="fetchCheckbox" onchange="startStopFetching(this)">
+    Đọc Log Debug</label>
+	
+</div>
+</div>
+<br/><center>
 <div class="btn-group">
   <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     Kiểm Tra Log
@@ -371,6 +372,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hash_generator'])) {
 		  <div id="loading-message">Đang Thực Thi...</div>
     </div>
     <br/><br/><textarea name="textarea_log_command" id="log-textarea" style="width: 95%; height: 340px;" class="text-info form-control bg-dark" readonly rows="10" cols="50"><?php echo $output; ?></textarea>
+
+
+
 </center>
 
 
@@ -410,7 +414,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hash_generator'])) {
                             logTextarea.val(logEntry + logTextarea.val()); 
                         });
 
-                        logTextarea.scrollTop(scrollTop + 1000); 
+                        logTextarea.scrollTop(scrollTop + 2000); 
                     },
                     error: function(xhr, status, error) {
                         console.error('Error fetching data:', error);
