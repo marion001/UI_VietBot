@@ -1416,14 +1416,13 @@ None (Không Dùng)</label></center>
 
 <div id="popupContainerWAKEUP" class="popup-container" onclick="hidePopupWAKEUP()">
 <div id="popupContent" onclick="preventEventPropagationWAKEUP(event)">
-<p><center><b>Wake Up Reply</b></center><br/>
 <b><center>Phản Hồi Của Bot Khi Đánh Thức</center></b>
 - <i><b>Yêu Cầu:</b> Tích Vào <b>"Phản Hồi Của Bot Khi Đánh Thức"</b> Trong Mục Hotword Để Kích Hoạt Theo Từng Hotword<br/></i>
 - <i><b>Chức Năng:</b> Trả lời khi được gọi hoặc đánh thức<br/></i>
 - <i><b>Câu Trả Lời:</b> tự động chọn ngẫu nhiên 1 trong các câu trả lời để phản hồi lại.<br/></i>
 - <i><b>Muốn Xóa Câu trả Lời:</b> Xóa văn bản 1 hoặc nhiều ô rồi nhấn lưu.<br/></i>
 <i><center>Nếu Wake Up Reply không hiển thị để chỉnh sửa tức là nội dung trong <b>config.json</b> không phù hợp, vượt quá <?php echo $Limit_Wakeup_Reply; ?> giá trị</center></i>
-<br/></div></div>
+</div></div>
  <div id="myDivzxc" style="display: none;"> 
     <?php
 if (count($data_config['smart_wakeup']['wakeup_reply']) > $Limit_Wakeup_Reply) {
