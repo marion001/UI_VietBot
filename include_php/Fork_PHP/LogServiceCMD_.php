@@ -292,6 +292,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hash_generator'])) {
     <button class="btn btn-success" name="commandd" type="submit">Command</button>
 	
     <button class="btn btn-success" name="hash_generator" type="submit">Hash Generator</button>
+	
+	
+	
+	<label for="fetchCheckbox" class="btn btn-warning">   <input type="checkbox" id="fetchCheckbox" onchange="startStopFetching(this)">
+    Đọc Log Debug</label>
+	
+	
+	
+ 
+	
+	
  </div>
 </div><br/><center>
 <div class="btn-group">
@@ -359,9 +370,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hash_generator'])) {
           <img id="loading-icon" src="../../assets/img/Loading.gif" alt="Loading...">
 		  <div id="loading-message">Đang Thực Thi...</div>
     </div>
-    <br/><br/><textarea name="textarea_log_command" style="width: 95%; height: 340px;" class="text-info form-control bg-dark" disabled rows="10" cols="50"><?php echo $output; ?></textarea>
+    <br/><br/><textarea name="textarea_log_command" id="log-textarea" style="width: 95%; height: 340px;" class="text-info form-control bg-dark" readonly rows="10" cols="50"><?php echo $output; ?></textarea>
 </center>
 
+
+    <script>
+        let intervalId;
+        let logType = "<?php echo $check_current_log_status; ?>"; // Default log type
+
+        function startStopFetching(checkbox) {
+            const validLogTypes = ['web', 'both'];
+
+            if (checkbox.checked) {
+                if (validLogTypes.includes(logType)) {
+                    // đặt thời gian load dữ liệu 1 lần
+                    intervalId = setInterval(fetchData, <?php echo $Log_Load_Time_Countdown; ?>);
+                } else {
+                    // Hiển thị cảnh báo cho loại nhật ký không hợp lệ
+                    alert('Có vẻ như bạn chưa bật chế độ: "Kiểu hiển thị log" trên Web \n\n Bạn cần đi tới tab "Cấu Hình/Config -> Log -> Kiểu Hiển Thị Log"\n\n Chọn vào "Web" hoặc "Cả Hai" sau đó Lưu Cấu Hình và Khởi Động Lại VietBot để áp dụng.');
+                    checkbox.checked = false;
+                }
+            } else {
+                clearInterval(intervalId);
+            }
+        }
+
+        function fetchData() {
+            if (logType === 'web' || logType === 'both') {
+                $.ajax({
+                    type: "GET",
+                    url: "http://<?php echo $serverIP; ?>:5000/get_log",
+                    success: function(data) {
+                        const logTextarea = $("#log-textarea");
+                        const scrollTop = logTextarea.scrollTop(); 
+                        logTextarea.val(''); 
+
+                        data.forEach(function(item) {
+                            const logEntry = item.message + '\n';
+                            logTextarea.val(logEntry + logTextarea.val()); 
+                        });
+
+                        logTextarea.scrollTop(scrollTop + 1000); 
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            }
+        }
+
+
+    </script>
 
 </body>
 
