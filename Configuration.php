@@ -93,6 +93,9 @@ $Limit_Pre_Answer = "3";
 //Thời gian đếm ngược tải lại trang khi update UI và Vietbot
 $Page_Load_Time_Countdown = "6"; //Giây
 
+//thời gian đếm ngược đọc log màn hình 1000 = 1 giây
+$Log_Load_Time_Countdown = "2000"; //2000 = 2Giây
+
 ///////////////////////////////////////////////////////////////////////////////
 //API Config Setting
 $allowedCommands_ALL = "all"; //"all" Biến cho phép chạy tất cả các lệnh
@@ -128,6 +131,8 @@ $wards_Tinh = $dataVTGET->smart_config->user_info->address->province;
 //Lấy Dữ Liệu Config Chặn Cập Nhật
 $block_updates_vietbot_program = $dataVTGET->smart_config->block_updates->vietbot_program;
 $block_updates_web_ui = $dataVTGET->smart_config->block_updates->web_ui;
+//lấy dữ liệu config kiểm tra trạng thái hiển thị log hiện tại
+$check_current_log_status = $dataVTGET->smart_config->logging_type;
 
 $apiKeyWeather = $Data_Json_Skill->weather->openweathermap_key;
 ?>
