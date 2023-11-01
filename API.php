@@ -18,7 +18,8 @@ $information = array(
         'last_update_time' =>  date("H:i"),
 		'query_instructions' => array(
 		'command' => 'restart, linux command (ls, sudo, sudo reboot, dir, v..v...), ',
-		'query' => 'info'
+		'query' => 'info',
+		'volume' => '0->100'
 		)
 );
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -35,7 +36,7 @@ $input = file_get_contents('php://input');
 $data = json_decode($input, true);
 
 //$presentFieldsCount = isset($data['command']) + isset($data['query']) + isset($data['api_key']);
-if (isset($data['command']) + isset($data['query']) + isset($data['api_key']) < 2) {
+if (isset($data['command']) + isset($data['query']) + isset($data['volume']) + isset($data['api_key']) < 2) {
     http_response_code(400); // Bad Request
     echo json_encode(array(
         'message' => 'Dữ liệu đầu vào sai cú pháp hoặc API không được cung cấp cho truy vấn này',
@@ -47,6 +48,7 @@ if (isset($data['command']) + isset($data['query']) + isset($data['api_key']) < 
 }
 $command = $data['command'];
 $query = $data['query'];
+$volume = $data['volume'];
 $providedApiKey = $data['api_key'];
 // Kiểm tra xác thực API key
 if ($providedApiKey !== md5($apiKey)) {
@@ -70,6 +72,44 @@ if (!isSafeCommand($command)) {
 		'information' => $information
 		));
     exit();
+}
+
+
+if ($volume === "$volume") {
+$volume_mapping = array(
+0 => 0,1 => 12,2 => 23,3 => 30,4 => 35,5 => 39,6 => 42,7 => 45,8 => 48,9 => 51,10 => 53,11 => 55,12 => 57,13 => 58,14 => 60,15 => 61,16 => 63,17 => 64,18 => 65,19 => 66,20 => 67,
+21 => 68,22 => 69,23 => 70,24 => 71,25 => 72,26 => 73,27 => 73,28 => 74,29 => 75,30 => 76,31 => 76,32 => 76,33 => 77,34 => 78,35 => 79,36 => 80,37 => 80,38 => 80,39 => 81,40 => 81,
+41 => 82,42 => 82,43 => 83,44 => 83,45 => 83,46 => 84,47 => 84,48 => 85,49 => 85,50 => 86,51 => 86,52 => 87,53 => 87,54 => 87,55 => 87,56 => 88,57 => 88,58 => 89,59 => 89,60 => 89,
+61 => 90,62 => 90,63 => 90,64 => 90,65 => 90,66 => 91,67 => 91,68 => 92,69 => 92,70 => 92,71 => 93,72 => 93,73 => 93,74 => 94,75 => 94,76 => 94,77 => 94,78 => 94,79 => 95,80 => 95,
+81 => 95,82 => 95,83 => 96,84 => 96,85 => 96,86 => 97,87 => 97,88 => 97,89 => 98,90 => 98,91 => 98,92 => 98,93 => 98,94 => 98,95 => 98,96 => 99,97 => 99,98 => 99,99 => 99,100 => 100
+);
+	
+	
+if (isset($volume_mapping[$volume])) {
+    $result_volume = $volume_mapping[$volume];
+} else {
+    // Nếu không khớp với các giá trị trong mảng, giữ nguyên giá trị ban đầu
+    $result_volume = $volume;
+}
+
+if (isset($data['api_key']) && $data['api_key'] === md5($apiKey)) {
+$connection = ssh2_connect($serverIP, $SSH_Port);
+if (!$connection) {die($E_rror_HOST);}
+if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
+$stream = ssh2_exec($connection, "amixer sset 'Speaker' $result_volume.'%'");
+stream_set_blocking($stream, true);
+$stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
+$output =  stream_get_contents($stream_out);
+        echo json_encode(array(
+            'message' => 'volume change '.$volume.'%',
+            'http_response_code' => 200,
+            'output_api' => $output,
+            'information' => $information
+        ));
+        exit();
+    } else {
+		unauthorized();
+    }
 }
 
 
@@ -239,7 +279,7 @@ if (ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) { // Thay 'use
 header('Content-Type: application/json');
 // Trả về kết quả từ lệnh shell
 echo json_encode(array(
-	'message' => $messageee,
+	'message4' => $messageee,
 	'http_response_code' => $http_response_code,
 	'output_api' => $output,
 	'information' => $information
