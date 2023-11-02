@@ -97,7 +97,7 @@ $Log_Load_Time_Countdown = "2000"; //2000 = 2Giây
 
 ///////////////////////////////////////////////////////////////////////////////
 //API webui Config Setting
-$API_Messenger_Disabled = "Thao tác thất bại, API chưa được bật";
+$API_Messenger_Disabled = "Thao tác thất bại, API WEB UI chưa được bật";
 $allowedCommands_ALL = "all"; //"all" Biến cho phép chạy tất cả các lệnh
 // Danh sách chỉ cho phép chạy các lệnh an toàn khi bỏ chữ "all" bên trên
 $allowedCommands = "ls,dir,touch,reboot,uname"; //Tester
