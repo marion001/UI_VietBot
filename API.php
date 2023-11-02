@@ -76,6 +76,13 @@ if (!isSafeCommand($command)) {
 
 
 if ($volume === "$volume") {
+
+//Ghi volume vào file state.json
+$dataaa = json_decode(file_get_contents("$DuognDanThuMucJson/state.json"), true);
+$dataaa['volume'] = intval($volume);
+$newJsonStringVolume = json_encode($dataaa, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+file_put_contents("$DuognDanThuMucJson/state.json", $newJsonStringVolume);
+
 $volume_mapping = array(
 0 => 0,1 => 12,2 => 23,3 => 30,4 => 35,5 => 39,6 => 42,7 => 45,8 => 48,9 => 51,10 => 53,11 => 55,12 => 57,13 => 58,14 => 60,15 => 61,16 => 63,17 => 64,18 => 65,19 => 66,20 => 67,
 21 => 68,22 => 69,23 => 70,24 => 71,25 => 72,26 => 73,27 => 73,28 => 74,29 => 75,30 => 76,31 => 76,32 => 76,33 => 77,34 => 78,35 => 79,36 => 80,37 => 80,38 => 80,39 => 81,40 => 81,
@@ -83,8 +90,6 @@ $volume_mapping = array(
 61 => 90,62 => 90,63 => 90,64 => 90,65 => 90,66 => 91,67 => 91,68 => 92,69 => 92,70 => 92,71 => 93,72 => 93,73 => 93,74 => 94,75 => 94,76 => 94,77 => 94,78 => 94,79 => 95,80 => 95,
 81 => 95,82 => 95,83 => 96,84 => 96,85 => 96,86 => 97,87 => 97,88 => 97,89 => 98,90 => 98,91 => 98,92 => 98,93 => 98,94 => 98,95 => 98,96 => 99,97 => 99,98 => 99,99 => 99,100 => 100
 );
-	
-	
 if (isset($volume_mapping[$volume])) {
     $result_volume = $volume_mapping[$volume];
 } else {
