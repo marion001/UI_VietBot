@@ -10,9 +10,10 @@ include "Configuration.php";
 include "./include_php/Fork_PHP/INFO_OS.php";
 $version = "1.0";
 
-$Web_ui_jSon = json_decode(file_get_contents("assets/json/webui_.json"), true);
+//$Web_ui_jSon = json_decode(file_get_contents("assets/json/webui_.json"), true);
 
-$Enable_API = $Web_ui_jSon['enable_api'];
+//$Enable_API = $Web_ui_jSon['enable_api'];
+$Enable_API = $Web_UI_Enable_Api;
 //echo "$apiActive";
 $information = array(
         'api_version' => $version,
