@@ -4,11 +4,11 @@
  * Description: Example code to execute shell commands securely through an API using cURL in PHP.
  * Author: Vũ Tuyển
  * Facebook: https://www.facebook.com/TWFyaW9uMDAx
- * Version: 1.0
+ * Version: 1.1
  */
 include "Configuration.php";
 include "./include_php/Fork_PHP/INFO_OS.php";
-$version = "1.0";
+$version = "1.1";
 
 //$Web_ui_jSon = json_decode(file_get_contents("assets/json/webui_.json"), true);
 
@@ -19,6 +19,7 @@ $information = array(
         'api_version' => $version,
         'github_vietbot_offline' => $GitHub_VietBot_OFF,
         'ui_vietbot' => $UI_VietBot,
+        'api_webui_guide' => "https://github.com/marion001/UI_VietBot/blob/main/README_HomeAssistant.md",
         //'author' => $MYUSERNAME,
         'author' => 'Vũ Tuyển',
         'last_update_time' =>  date("H:i"),
