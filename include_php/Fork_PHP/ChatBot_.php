@@ -27,7 +27,7 @@
   <select id="message-type-checkbox" class="form-select">
   <option  selected value="4" title="Chế Độ Hỏi Đáp Ở Chatbox Không Phát Ra Loa">Hỏi Đáp</option>
   <option value="1" title="TTS Chuyển Văn Bản Thành Giọng Nói Để Đọc Ra Loa">Chỉ Đọc</option>
-  <option value="2" title="Full Chức Năng" disabled>Full</option>
+  <option value="2" title="Full Chức Năng">Full</option>
 </select>
                 </div>
                 <input type="text" class="form-control" id="user-input" class="chat-input" placeholder="Nhập tin nhắn..." aria-label="Recipient's username" aria-describedby="basic-addon2">
