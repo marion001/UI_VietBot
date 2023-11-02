@@ -9,6 +9,11 @@
 include "Configuration.php";
 include "./include_php/Fork_PHP/INFO_OS.php";
 $version = "1.0";
+
+$Web_ui_jSon = json_decode(file_get_contents("assets/json/webui_.json"), true);
+
+$Enable_API = $Web_ui_jSon['enable_api'];
+//echo "$apiActive";
 $information = array(
         'api_version' => $version,
         'github_vietbot_offline' => $GitHub_VietBot_OFF,
@@ -16,10 +21,12 @@ $information = array(
         //'author' => $MYUSERNAME,
         'author' => 'Vũ Tuyển',
         'last_update_time' =>  date("H:i"),
+		'enable_api' => $Enable_API,
 		'query_instructions' => array(
 		'command' => 'restart, linux command (ls, sudo, sudo reboot, dir, v..v...), ',
 		'query' => 'info',
 		'volume' => '0->100'
+		
 		)
 );
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -74,15 +81,13 @@ if (!isSafeCommand($command)) {
     exit();
 }
 
-
+if ($Enable_API === true) {
 if ($volume === "$volume") {
-
 //Ghi volume vào file state.json
 $dataaa = json_decode(file_get_contents("$DuognDanThuMucJson/state.json"), true);
 $dataaa['volume'] = intval($volume);
 $newJsonStringVolume = json_encode($dataaa, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 file_put_contents("$DuognDanThuMucJson/state.json", $newJsonStringVolume);
-
 $volume_mapping = array(
 0 => 0,1 => 12,2 => 23,3 => 30,4 => 35,5 => 39,6 => 42,7 => 45,8 => 48,9 => 51,10 => 53,11 => 55,12 => 57,13 => 58,14 => 60,15 => 61,16 => 63,17 => 64,18 => 65,19 => 66,20 => 67,
 21 => 68,22 => 69,23 => 70,24 => 71,25 => 72,26 => 73,27 => 73,28 => 74,29 => 75,30 => 76,31 => 76,32 => 76,33 => 77,34 => 78,35 => 79,36 => 80,37 => 80,38 => 80,39 => 81,40 => 81,
@@ -96,7 +101,6 @@ if (isset($volume_mapping[$volume])) {
     // Nếu không khớp với các giá trị trong mảng, giữ nguyên giá trị ban đầu
     $result_volume = $volume;
 }
-
 if (isset($data['api_key']) && $data['api_key'] === md5($apiKey)) {
 $connection = ssh2_connect($serverIP, $SSH_Port);
 if (!$connection) {die($E_rror_HOST);}
@@ -116,8 +120,16 @@ $output =  stream_get_contents($stream_out);
 		unauthorized();
     }
 }
+}else {
+    // Xuất thông báo nếu API không được kích hoạt
+    echo json_encode(array(
+        'message' => $API_Messenger_Disabled,
+        'information' => $information
+    ));
+	exit();
+}
 
-
+if ($Enable_API === true) {
 if ($command === "reboot") {
     if (isset($data['api_key']) && $data['api_key'] === md5($apiKey)) {
 $connection = ssh2_connect($serverIP, $SSH_Port);
@@ -128,7 +140,7 @@ stream_set_blocking($stream, true);
 $stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
 $output =  stream_get_contents($stream_out);
         echo json_encode(array(
-            'message' => 'reboot successfully',
+            'message' => 'reboot hệ thống thành công',
             'http_response_code' => 200,
             'output_api' => $output,
             'information' => $information
@@ -138,7 +150,16 @@ $output =  stream_get_contents($stream_out);
 		unauthorized();
     }
 }
+}else {
+    // Xuất thông báo nếu API không được kích hoạt
+    echo json_encode(array(
+        'message' => $API_Messenger_Disabled,
+        'information' => $information
+    ));
+	exit();
+}
 
+if ($Enable_API === true) {
 if ($command === "restart") {
     if (isset($data['api_key']) && $data['api_key'] === md5($apiKey)) {
 $connection = ssh2_connect($serverIP, $SSH_Port);
@@ -149,7 +170,7 @@ stream_set_blocking($stream, true);
 $stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
 $output =  stream_get_contents($stream_out);
         echo json_encode(array(
-            'message' => 'restart successfully',
+            'message' => 'restart Vietbot thành công',
             'http_response_code' => 200,
             'output_api' => $output,
             'information' => $information
@@ -158,6 +179,14 @@ $output =  stream_get_contents($stream_out);
     } else {
 		unauthorized();
     }
+}
+}else {
+    // Xuất thông báo nếu API không được kích hoạt
+    echo json_encode(array(
+        'message' => $API_Messenger_Disabled,
+        'information' => $information
+    ));
+	exit();
 }
 if ($query === "info") {
     if (isset($data['api_key']) && $data['api_key'] === md5($apiKey)) {
@@ -264,6 +293,8 @@ if ($query === "info") {
     }
 }
 
+
+if ($Enable_API === true) {
 // Thực thi lệnh shell sử dụng thư viện SSH2
 //SSH2
 $connection = ssh2_connect($serverIP, $SSH_Port); // Thay 'hostname' bằng địa chỉ IP hoặc tên miền của máy chủ SSH
@@ -284,11 +315,23 @@ if (ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) { // Thay 'use
 header('Content-Type: application/json');
 // Trả về kết quả từ lệnh shell
 echo json_encode(array(
-	'message4' => $messageee,
+	'message' => $messageee,
 	'http_response_code' => $http_response_code,
 	'output_api' => $output,
 	'information' => $information
 	));
+}else {
+    // Xuất thông báo nếu API không được kích hoạt
+    echo json_encode(array(
+        'message' => $API_Messenger_Disabled,
+        'information' => $information
+    ));
+	exit();
+}
+	
+	
+	
+	
 // Kiểm tra xem chuỗi lệnh có chứa từ khóa trong danh sách an toàn không
 function isSafeCommand($command) {
     global $allowedCommands_ALL, $allowedCommands;
