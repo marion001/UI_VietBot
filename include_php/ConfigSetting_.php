@@ -1456,7 +1456,7 @@ else {
 <!--Kết Thúc mục  Wake Up Reply --> 	
 
 
-  <h5>Cài Đặt UI, API, Cập Nhật: <i class="bi bi-info-circle-fill" onclick="togglePopupBLOCLUPDATE()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
+  <h5>Cài Đặt UI, API, Cập Nhật:</h5>
 
 	
 <div class="form-check form-switch d-flex justify-content-center"> 
@@ -1492,7 +1492,7 @@ else {
 		<tr>
 	<th scope="row"><font color="red" title="tích để Bật/Tắt api của web ui">API WEB UI:</font></th>
 	
-	<td><input type="checkbox" name="api_web_ui" title="Tích vào để kích hoạt" value="true" class="form-check-input" <?php echo ($api_web_ui) ? 'checked' : ''; ?>></td>
+	<td><input type="checkbox" name="api_web_ui" value="true" title="tích để Bật/Tắt api của web ui" class="form-check-input" <?php echo ($api_web_ui) ? 'checked' : ''; ?>></td>
   
 	
 
