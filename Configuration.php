@@ -121,6 +121,7 @@ $dataVersionVietbot = json_decode(file_get_contents("$DuognDanThuMucJson"."/vers
 $PORT_CHATBOT = $dataVTGET->smart_config->web_interface->port;
 $MYUSERNAME = $dataVTGET->smart_config->user_info->name;
 $Web_UI_Login = $dataVTGET->smart_config->block_updates->web_ui_login;
+$Web_UI_Enable_Api = $dataVTGET->smart_config->block_updates->enable_api;
 
 //Vị Trí, Địa Chỉ
 $wards_Lang = $dataVTGET->smart_config->user_info->address->wards; 
