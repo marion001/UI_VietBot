@@ -1490,7 +1490,7 @@ else {
 
 	</tr>
 		<tr>
-	<th scope="row"><font color="red" title="tích để Bật/Tắt api của web ui">API WEB UI:</font></th>
+	<th scope="row"><font color="red" title="tích để Bật/Tắt api của web ui">API WEB UI: <a href="http://<?php echo $serverIP.'/API.php'; ?>" target="_bank">URL API</a></font></th>
 	
 	<td><input type="checkbox" name="api_web_ui" value="true" title="tích để Bật/Tắt api của web ui" class="form-check-input" <?php echo ($api_web_ui) ? 'checked' : ''; ?>></td>
   
