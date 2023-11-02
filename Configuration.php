@@ -28,7 +28,6 @@ $UI_Version = "https://raw.githubusercontent.com/marion001/UI_VietBot/main/versi
 //Mật Khẩu Đăng Nhập Trình Quản Lý File Manager
 $Pass_Login_File_Manager = "admin"; // admin
 
-
 //Cấu Hình Send Mail
 //App Passwords: https://myaccount.google.com/apppasswords
 //Tài Khoản Gmail
@@ -97,27 +96,27 @@ $Page_Load_Time_Countdown = "6"; //Giây
 $Log_Load_Time_Countdown = "2000"; //2000 = 2Giây
 
 ///////////////////////////////////////////////////////////////////////////////
-//API Config Setting
+//API webui Config Setting
+$API_Messenger_Disabled = "Thao tác thất bại, API chưa được bật";
 $allowedCommands_ALL = "all"; //"all" Biến cho phép chạy tất cả các lệnh
 // Danh sách chỉ cho phép chạy các lệnh an toàn khi bỏ chữ "all" bên trên
 $allowedCommands = "ls,dir,touch,reboot,uname"; //Tester
 $apiKey = 'vietbot'; //api key, user cần mã hóa api key này dạng md5 3f406f61a2b5053b53cda80e0320a60b
 
+
 ///////////////////////////////////////////////////////////////////////////////
 //Đọc, lấy vài dữ liệu của config.json
-$jsonSKILL = file_get_contents("$DuognDanThuMucJson"."/skill.json");
-$Data_Json_Skill = json_decode($jsonSKILL);
+//$jsonSKILL = file_get_contents("$DuognDanThuMucJson"."/skill.json");
+$Data_Json_Skill = json_decode(file_get_contents("$DuognDanThuMucJson"."/skill.json"));
 
-$jsonDatazXZ = file_get_contents("$DuognDanThuMucJson"."/config.json");
-$dataVTGET = json_decode($jsonDatazXZ);
+//$jsonDatazXZ = file_get_contents("$DuognDanThuMucJson"."/config.json");
+$dataVTGET = json_decode(file_get_contents("$DuognDanThuMucJson"."/config.json"));
 
-$jsonDataVersionUI = file_get_contents("$DuognDanUI_HTML"."/version.json");
-$dataVersionUI = json_decode($jsonDataVersionUI);
+//$jsonDataVersionUI = file_get_contents("$DuognDanUI_HTML"."/version.json");
+$dataVersionUI = json_decode(file_get_contents("$DuognDanUI_HTML"."/version.json"));
 
-$jsonDataVersionVietbot = file_get_contents("$DuognDanThuMucJson"."/version.json");
-$dataVersionVietbot = json_decode($jsonDataVersionVietbot);
-
-
+//$jsonDataVersionVietbot = file_get_contents("$DuognDanThuMucJson"."/version.json");
+$dataVersionVietbot = json_decode(file_get_contents("$DuognDanThuMucJson"."/version.json"));
 
 $PORT_CHATBOT = $dataVTGET->smart_config->web_interface->port;
 $MYUSERNAME = $dataVTGET->smart_config->user_info->name;
