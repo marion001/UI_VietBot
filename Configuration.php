@@ -38,6 +38,11 @@ $Mail_Host = "smtp.gmail.com";  //Giữ Nguyên
 $Mail_Port = 587;  //Giữ Nguyên
 $Mail_SMTPSecure = "tls";  //Giữ Nguyên
 
+
+//Media Player 
+//Key youtube
+$apiKeyYoutube = "AIzaSyDPokTvyB7XGaCrpBptSnqwDDOrZ9oV6rQ"; // Thay YOUR_YOUTUBE_API_KEY bằng khóa API YouTube của bạn
+
 //ĐƯờng Dẫn VietBot Chính
 $Path_Vietbot_src = "/home/pi/vietbot_offline";
 
@@ -95,6 +100,9 @@ $Page_Load_Time_Countdown = "6"; //Giây
 //thời gian đếm ngược đọc log màn hình 1000 = 1 giây
 $Log_Load_Time_Countdown = "2000"; //2000 = 2Giây
 
+//thời gian chờ time out media player api
+$Time_Out_MediaPlayer_API = "4000"; //4000 bằng 4 giây
+
 ///////////////////////////////////////////////////////////////////////////////
 //API webui Config Setting
 $API_Messenger_Disabled = "Thao tác thất bại, API WEB UI chưa được bật";
@@ -117,6 +125,11 @@ $dataVersionUI = json_decode(file_get_contents("$DuognDanUI_HTML"."/version.json
 
 //$jsonDataVersionVietbot = file_get_contents("$DuognDanThuMucJson"."/version.json");
 $dataVersionVietbot = json_decode(file_get_contents("$DuognDanThuMucJson"."/version.json"));
+
+$action_json = json_decode(file_get_contents("$DuognDanThuMucJson"."/action.json"));
+
+$object_json = json_decode(file_get_contents("$DuognDanThuMucJson"."/object.json"));
+
 
 $PORT_CHATBOT = $dataVTGET->smart_config->web_interface->port;
 $MYUSERNAME = $dataVTGET->smart_config->user_info->name;
