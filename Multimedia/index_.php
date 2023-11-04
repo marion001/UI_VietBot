@@ -1,7 +1,7 @@
 <?php
 // Code By: Vũ Tuyển
 // Facebook: https://www.facebook.com/TWFyaW9uMDAx
-$api_Search_Zing = "http://ac.mp3.zing.vn/complete?type=song&num=10&query=";
+$api_Search_Zing = "http://ac.mp3.zing.vn/complete?type=song&num=5&query=";
 
 // Hàm để lấy URL cuối cùng sau khi chuyển hướng
 function getFinalUrl($url)
