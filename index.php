@@ -253,13 +253,23 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
               <span>File</span>
             </a>
           </li>
+		  
+		  
+		 		  		          <li class="list-group-item">
+            <a href="#MediaPlayer" class="custom-btn">
+              <i class="bi bi-disc" title="Media Player"></i>
+              <span>Media</span>
+            </a>
+          </li>    
+		  
+		  
           <li class="list-group-item">
             <a href="#about" class="custom-btn">
               <i class="bi bi-info-circle-fill" title="Thông Tin"></i>
               <span>Info</span>
             </a>
           </li>
-		  		           
+        
          
         </ul>
         <div class="menu-footer">
@@ -607,6 +617,17 @@ if (!isset($_SESSION['root_id'])) {
 <section id="ChatBot" class="section blog bg-gray-400 text-white">
     <iframe src="./include_php/ChatBot.php" width="100%" height="570px"></iframe>
 </section>
+
+
+
+<section id="MediaPlayer" class="section blog bg-gray-400 text-white">
+    <div class="container">
+        <h3 class="subtitle">Media Player</h3>
+			<div class="rounded-iframe">
+     <iframe src="./Multimedia/index.php" width="100%" height="570px"></iframe>
+		</div>
+</section>
+
 <!--  Blog End  -->
 <section id="vietbot_update" class="section blog bg-gray-400 text-white">
     <div class="container">
