@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $Data_TenBaiHat = $_POST['tenbaihat'];
     $NguonNhac = $_POST['action'];
     // Attention! Here you have to set how many data you want to pull. By default, it pulls a maximum of 20 data.  Here ↴
-    $searchUrlYoutube = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" . urlencode($Data_TenBaiHat) . "&maxResults=20&key=" . $apiKeyYoutube;
+    $searchUrlYoutube = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" . urlencode($Data_TenBaiHat) . "&maxResults=20&key=" . base64_decode($apiKeyYoutube);
 
 /*
 if (strpos($Data_TenBaiHat, 'http') !== false) {
