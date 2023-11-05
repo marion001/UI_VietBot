@@ -266,6 +266,7 @@ if ($query === "info") {
 			),
             'info_os' => array(
 				'host_name' =>  gethostname(),
+				'temperature_cpu' =>  round(file_get_contents("/sys/class/thermal/thermal_zone0/temp") / 1000, 1)." °C",
 				'uname_a' =>  php_uname(),
 				'kernel_version' => php_uname('v'),
 				'machine_type' => php_uname('m'),
