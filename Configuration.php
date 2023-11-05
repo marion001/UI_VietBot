@@ -40,8 +40,8 @@ $Mail_SMTPSecure = "tls";  //Giữ Nguyên
 
 
 //Media Player 
-//Key youtube
-$apiKeyYoutube = "AIzaSyDPokTvyB7XGaCrpBptSnqwDDOrZ9oV6rQ"; // Thay YOUR_YOUTUBE_API_KEY bằng khóa API YouTube của bạn
+//Key youtube mã hóa base64
+$apiKeyYoutube = "QUl6YVN5RFBva1R2eUI3WEdhQ3JwQnB0U25xd0RET3JaOW9WNnJR"; // Thay YOUR_YOUTUBE_API_KEY bằng khóa API YouTube của bạn
 
 //ĐƯờng Dẫn VietBot Chính
 $Path_Vietbot_src = "/home/pi/vietbot_offline";
