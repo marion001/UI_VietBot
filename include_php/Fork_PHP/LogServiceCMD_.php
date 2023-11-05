@@ -275,10 +275,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hash_generator'])) {
 		else {
 	$Hash_MD5_Encode = md5($Hash_input); //MD5
 	$Hash_Base64_Encode = base64_encode($Hash_input); //base64_encode
+	$Hash_Base64_Decode = base64_decode($Hash_input); //base64_decode
+	$Hash_URL_Decode = urldecode($Hash_input); //base64_decode
+	$Hash_URL_Encode = urlencode($Hash_input); //base64_decode
 	
-	$output = "Hash Generator:~> $Hash_input\n\n";
-	$output .= "MD5: $Hash_MD5_Encode\n";
-	$output .= "Base64 Encode: $Hash_Base64_Encode\n";
+	$output = "Hash Generator:> $Hash_input\n\n";
+	$output .= "MD5:> $Hash_MD5_Encode\n";
+	$output .= "Base64 Encode:> $Hash_Base64_Encode\n";
+	$output .= "Base64 Decode:> $Hash_Base64_Decode\n";
+	$output .= "URL Encode:> $Hash_URL_Encode\n";
+	$output .= "URL Decode:> $Hash_URL_Decode\n";
 		}
 	
 }
