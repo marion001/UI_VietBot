@@ -11,36 +11,40 @@ $api_Search_Zing = "http://ac.mp3.zing.vn/complete?type=song&num=20&query=";
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th colspan="2" scope="col">
+                            <th colspan="3" scope="col">
                                 <center>Chọn Nguồn Nhạc:</center>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-
+<td>
+                                <!-- Checkbox với giá trị "keymp3" -->
+                                <input type="radio" id="LocalMp3" name="action" value="Local" onchange="handleRadioChangeLocal()">
+                                <label for="LocalMp3">Local MP3</label>
+                            </td>
                             <td>
                                 <!-- Checkbox với giá trị "keymp3" -->
-                                <input type="radio" id="keyzingmp3" name="action" value="ZingMp3" checked>
+                                <input type="radio" id="keyzingmp3" name="action" value="ZingMp3" checked onchange="handleRadioChangeLocal()">
                                 <label for="keyzingmp3">Zing MP3</label>
                             </td>
 
                             <td>
                                 <!-- Checkbox với giá trị "keyyoutube" -->
-                                <input type="radio" id="keyyoutube" name="action" value="Youtube">
+                                <input type="radio" id="keyyoutube" name="action" value="Youtube" onchange="handleRadioChangeLocal()">
                                 <label for="keyyoutube">YouTube</label>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2">
+                            <td colspan="3">
                                 <div class="input-group mb-3">
-                                    <input type="text" id="tenbaihatInput" class="form-control" name="tenbaihat" required placeholder="Nhập Tên Bài Hát, link.mp3" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                    <input type="text" id="tenbaihatInput" class="form-control" name="tenbaihat" required placeholder="Nhập Tên Bài Hát, link.mp3" aria-label="Recipient's username" aria-describedby="basic-addon2" oninput="handleInputHTTP()">
                                     <div class="input-group-append">
-                                        <button class="btn btn-primary" type="submit">Tìm Kiếm</button>
+                                        <button class="btn btn-primary" id="TimKiem" type="submit">Tìm Kiếm</button>
                                     </div>
                                     <div class="input-group-append">
 
-                                        <button type="button" id="submitButton" class="ajax-button btn btn-success" data-song-artist="Không có dữ liệu" data-song-images="../assets/img/VietBotlogoWhite.png" data-song-name="Không có dữ liệu" data-song-id="" value="">Play .Mp3</button>
+                                        <button type="button" id="submitButton" class="ajax-button btn btn-success" data-song-artist="Không có dữ liệu" data-song-images="../assets/img/VietBotlogoWhite.png" data-song-name="Không có dữ liệu" data-song-id="" value="" hidden>Play .Mp3</button>
                                     </div>
                                 </div>
                             </td>
@@ -50,7 +54,7 @@ $api_Search_Zing = "http://ac.mp3.zing.vn/complete?type=song&num=20&query=";
             </form>
 
             <tr>
-                <td colspan="2">
+                <td colspan="3">
                     <center>
                         <button type="button" id="volumeDown" class="btn btn-info"><i class="bi bi-volume-down"></i>
                         </button>
@@ -68,7 +72,7 @@ $api_Search_Zing = "http://ac.mp3.zing.vn/complete?type=song&num=20&query=";
 
             </tr>
             <tr>
-                <td colspan="2">
+                <td colspan="3">
                     <center>
                         <div id="messagee"></div>
                     </center>
@@ -90,6 +94,28 @@ $api_Search_Zing = "http://ac.mp3.zing.vn/complete?type=song&num=20&query=";
 
             <div class="custom-div">
 <?php
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'Local') {
+$directory = '/home/pi/vietbot_offline/src/mp3';
+$pattern = '*.mp3';
+
+$mp3Files = glob($directory . DIRECTORY_SEPARATOR . $pattern);
+
+if (count($mp3Files) > 0) {
+    echo "Danh sách các file MP3 trên thiết bị:<br/>";
+    foreach ($mp3Files as $mp3File) {
+        echo $mp3File . "<br/>";
+    }
+} else {
+    echo "Không tìm thấy file MP3 nào trong thư mục Local /home/pi/vietbot_offline/src/mp3";
+}
+
+
+}
+
+
+
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'Youtube') {
     $Data_TenBaiHat = $_POST['tenbaihat'];
@@ -164,6 +190,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     die();
 }
 */
+
+
+ 
 
     $curl = curl_init();
     curl_setopt_array($curl, array(
@@ -386,7 +415,6 @@ if ($response === false) {
     });
 </script>
 
-
 <script>
     // Đặt tên mới cho hàm
     function myFunctionmp3local() {
@@ -395,7 +423,11 @@ if ($response === false) {
                 // Lấy giá trị từ thẻ input
                 var tenbaihatValue = $('#tenbaihatInput').val();
                 // Kiểm tra nếu giá trị không bắt đầu bằng "http"
-                if (!tenbaihatValue.startsWith("http")) {
+
+                var inputValueLowercase = tenbaihatValue.toLowerCase();
+                var searchStringLowercase = "http";
+
+                if (!inputValueLowercase.startsWith(searchStringLowercase)) {
                     alert("Dữ liệu đầu vào để Play .mp3 phải bắt đầu bằng 'http'");
                     event.preventDefault(); // Ngăn chặn hành động mặc định của nút
                     return; // Dừng thực thi nếu không hợp lệ
@@ -412,7 +444,51 @@ if ($response === false) {
 </script>
 
 
+<script>
+    function handleRadioChangeLocal() {
+        // Lấy tham chiếu đến radio button và input
+        var radio_Local = document.getElementById("LocalMp3");
+        var button_Playmp3 = document.getElementById("submitButton");
+        var input_tenbaihatInput = document.getElementById("tenbaihatInput");
+        var timkiemButton = document.getElementById("TimKiem");
 
+        // Nếu radio được chọn, disabled input
+        if (radio_Local.checked) {
+            input_tenbaihatInput.disabled = true;
+            input_tenbaihatInput.value = "";
+            button_Playmp3.disabled = true;
+            button_Playmp3.hidden = true;
+            timkiemButton.hidden = false;
+            timkiemButton.disabled = false;
+        } else {
+            input_tenbaihatInput.disabled = false;
+            input_tenbaihatInput.value = "";
+            button_Playmp3.disabled = true;
+            button_Playmp3.hidden = true;
+            timkiemButton.hidden = false;
+            timkiemButton.disabled = false;
+        }
+    }
+
+    function handleInputHTTP() {
+        var input_http = document.getElementById("tenbaihatInput");
+        var timkiemButton = document.getElementById("TimKiem");
+        var submitButton = document.getElementById("submitButton");
+        var inputValueLowercase = input_http.value.toLowerCase();
+        var searchStringLowercase = "http";
+        if (inputValueLowercase.startsWith(searchStringLowercase)) {
+            timkiemButton.disabled = true;
+            timkiemButton.hidden = true;
+            submitButton.hidden = false;
+            submitButton.disabled = false;
+        } else {
+            timkiemButton.disabled = false;
+            timkiemButton.hidden = false;
+            submitButton.hidden = true;
+            submitButton.disabled = true;
+        }
+    }
+</script>
 
 
 <script src="../assets/js/bootstrap.min.js"></script>
