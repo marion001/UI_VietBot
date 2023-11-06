@@ -1707,7 +1707,7 @@ if (count($fileLists) > 0) {
             } else if (xhr.status === 401) {
                 popupContentHass.innerHTML = '<font color=red>Lỗi [401], không có quyền truy cập, Hãy kiểm tra lại mã token</font>';
             } else if (xhr.status === 404) {
-                popupContentHass.innerHTML = '<font color=red>Lỗi [404], không tìm thấy dữ liệu, hãy kiểm tra lại địa chỉ HomeAssistant hoặc Token</font>';
+                popupContentHass.innerHTML = '<font color=red>Lỗi [404], không tìm thấy dữ liệu, hãy kiểm tra lại địa chỉ url hoặc Token</font>';
             } else {
                 popupContentHass.innerHTML = '<font color=red>Lỗi khi gửi yêu cầu</font>';
             }
