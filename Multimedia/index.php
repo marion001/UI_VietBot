@@ -102,6 +102,7 @@ include "../Configuration.php";
                 /* Xoay ảnh 360 độ */
             }
         }
+	
     </style>
 </head>
 
@@ -109,6 +110,67 @@ include "../Configuration.php";
     <div id="loading-overlay"><img id="loading-icon" src="../assets/img/Loading.gif" alt="Loading...">
         <div id="loading-message">- Đang Thực Hiện</div>
     </div>
+<?php
+$phpIniPath = php_ini_loaded_file(); // Lấy đường dẫn đến tệp php.ini được tải
+//chuyển đổi đơn vị sang MB
+function convertToMB($size, $unit)
+{
+    if ($unit === 'K') {
+        return $size / 1024;
+    } elseif ($unit === 'G') {
+        return $size * 1024;
+    } else {
+        return $size;
+    }
+}
+if ($phpIniPath) {
+    $phpIniContent = file_get_contents($phpIniPath); // Đọc nội dung của tệp php.ini
+    // Tìm giá trị của upload_max_filesize
+    if (preg_match('/upload_max_filesize\s*=\s*(.*)/i', $phpIniContent, $uploadMatches)) {
+        $uploadMaxSize = trim($uploadMatches[1]);
+        // Tìm giá trị của post_max_size
+        if (preg_match('/post_max_size\s*=\s*(.*)/i', $phpIniContent, $postMatches)) {
+            $postMaxSize = trim($postMatches[1]);
+            // Kiểm tra giá trị upload_max_filesize
+            if (preg_match('/(\d+)([KMG]?)/i', $uploadMaxSize, $uploadSizeMatches) &&
+                preg_match('/(\d+)([KMG]?)/i', $postMaxSize, $postSizeMatches)
+            ) {
+                $uploadSize = convertToMB($uploadSizeMatches[1], strtoupper($uploadSizeMatches[2]));
+                $postSize = convertToMB($postSizeMatches[1], strtoupper($postSizeMatches[2]));
+                // Kiểm tra nếu bất kỳ giá trị nào dưới 100MB
+                if ($uploadSize < $Upload_Max_Size || $postSize < $Upload_Max_Size) {
+                    //echo "Cảnh báo: ";
+                    if ($uploadSize < $Upload_Max_Size) {
+                       // echo "Giá trị upload_max_filesize là {$uploadSize}MB, dưới ngưỡng 100MB. ";
+						$connection = ssh2_connect($serverIP, $SSH_Port);
+						if (!$connection) {die($E_rror_HOST);}
+						if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
+						$stream = ssh2_exec($connection, "sudo sed -i 's/upload_max_filesize = .*/upload_max_filesize = $Upload_Max_Size'M'/' $phpIniPath");
+						stream_set_blocking($stream, true);
+						$stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
+						stream_get_contents($stream_out);
+                    }
+                    if ($postSize < $Upload_Max_Size) {
+                        //echo "Giá trị post_max_size là {$postSize}MB, dưới ngưỡng 100MB.";
+						$connection = ssh2_connect($serverIP, $SSH_Port);
+						if (!$connection) {die($E_rror_HOST);}
+						if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
+						$stream = ssh2_exec($connection, "sudo sed -i 's/post_max_size = .*/post_max_size = $Upload_Max_Size'M'/' $phpIniPath");
+						stream_set_blocking($stream, true);
+						$stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
+						stream_get_contents($stream_out);
+                    }
+                } 
+				//else {echo "Cảnh báo: Không thấy giá trị dưới ".$Upload_Max_Size."MB";}
+            } 
+			//else {echo "Không thể phân tích giá trị của upload_max_filesize hoặc post_max_size.";}
+        } 
+		//else {echo "Không thể tìm thấy giá trị post_max_size trong tệp php.ini.";}
+    } 
+	//else {echo "Không thể tìm thấy giá trị upload_max_filesize trong tệp php.ini."}
+} 
+//else {echo "Không thể xác định đường dẫn đến tệp php.ini.";}
+?>
 <?php	
 if (isset($Web_UI_Login) && $Web_UI_Login === true) {
 	if (!isset($_SESSION['root_id'])) {

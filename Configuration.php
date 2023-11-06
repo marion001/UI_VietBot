@@ -39,7 +39,8 @@ $Mail_Port = 587;  //Giữ Nguyên
 $Mail_SMTPSecure = "tls";  //Giữ Nguyên
 
 
-//Media Player 
+//upload MP3 Media Player 
+$Upload_Max_Size = "300"; //MB
 //Key youtube mã hóa base64
 $apiKeyYoutube = "QUl6YVN5RFBva1R2eUI3WEdhQ3JwQnB0U25xd0RET3JaOW9WNnJR"; // Thay YOUR_YOUTUBE_API_KEY bằng khóa API YouTube của bạn
 
@@ -113,17 +114,12 @@ $apiKey = 'vietbot'; //api key, user cần mã hóa api key này dạng md5 3f40
 
 
 ///////////////////////////////////////////////////////////////////////////////
-//Đọc, lấy vài dữ liệu của config.json
-//$jsonSKILL = file_get_contents("$DuognDanThuMucJson"."/skill.json");
 $Data_Json_Skill = json_decode(file_get_contents("$DuognDanThuMucJson"."/skill.json"));
 
-//$jsonDatazXZ = file_get_contents("$DuognDanThuMucJson"."/config.json");
 $dataVTGET = json_decode(file_get_contents("$DuognDanThuMucJson"."/config.json"));
 
-//$jsonDataVersionUI = file_get_contents("$DuognDanUI_HTML"."/version.json");
 $dataVersionUI = json_decode(file_get_contents("$DuognDanUI_HTML"."/version.json"));
 
-//$jsonDataVersionVietbot = file_get_contents("$DuognDanThuMucJson"."/version.json");
 $dataVersionVietbot = json_decode(file_get_contents("$DuognDanThuMucJson"."/version.json"));
 
 $action_json = json_decode(file_get_contents("$DuognDanThuMucJson"."/action.json"));
