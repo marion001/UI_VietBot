@@ -1,31 +1,9 @@
 <?php
 // Code By: Vũ Tuyển
 // Facebook: https://www.facebook.com/TWFyaW9uMDAx
-$api_Search_Zing = "http://ac.mp3.zing.vn/complete?type=song&num=7&query=";
-
-// Hàm để lấy URL cuối cùng sau khi chuyển hướng
-function getFinalUrl($url)
-{
-    $ch = curl_init($url);
-    // Thiết lập cURL để trả về dữ liệu thay vì hiển thị nó
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    // Thiết lập cURL để theo dõi tất cả các chuyển hướng
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    // Thiết lập thời gian chờ
-    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-    // Tắt chế độ DNS lookup (chỉ sử dụng IPv4)
-    curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
-    // Tắt SSL verification
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    // Thực hiện yêu cầu cURL và lấy thông tin về chuyển hướng
-    curl_exec($ch);
-    $finalUrl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-    // Đóng kết nối cURL
-    curl_close($ch);
-    return $finalUrl;
-}
-
+$api_Search_Zing = "http://ac.mp3.zing.vn/complete?type=song&num=20&query=";
 ?>
+
 <div class="container">
     <div class="row">
         <div class="col-sm-6">
@@ -82,7 +60,6 @@ function getFinalUrl($url)
                         </button>
                         <button type="button" id="stopButton" class="btn btn-danger"><i class="bi bi-stop-circle"></i>
                         </button>
-
                         <button type="button" id="volumeUp" class="btn btn-info"><i class="bi bi-volume-up"></i>
                         </button>
 
@@ -117,7 +94,6 @@ function getFinalUrl($url)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'Youtube') {
     $Data_TenBaiHat = $_POST['tenbaihat'];
     $NguonNhac = $_POST['action'];
-    // Attention! Here you have to set how many data you want to pull. By default, it pulls a maximum of 20 data.  Here ↴
     $searchUrlYoutube = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" . urlencode($Data_TenBaiHat) . "&maxResults=20&key=" . base64_decode($apiKeyYoutube);
 
 /*
@@ -218,22 +194,17 @@ if ($response === false) {
             foreach ($data['data'][0]['song'] as $song) {
                 $ID_MP3 = $song['id'];
                 $originalUrl = "http://api.mp3.zing.vn/api/streaming/audio/$ID_MP3/128";
-
-                // Sử dụng hàm để lấy URL cuối cùng sau khi chuyển hướng
-             
-			  $finalUrl = getFinalUrl($originalUrl);
                 $img_images = "https://photo-zmp3.zmdcdn.me/" . $song['thumb'];
                 echo " <div class='image-container'>";
                 echo "<img src='$img_images' class='imagesize' alt='' /> <div class='caption'>";
                 echo '<b>Tên bài hát:</b> ' . $song['name'] . '<br/><b>Nghệ sĩ:</b> ' . $song['artist'] . '<br/>';
                 //echo 'ID bài hát: ' . $song['id'] . ' <br/>';
-                echo '<button class="ajax-button btn btn-success" data-song-artist="' . $song['artist'] . '" data-song-name="' . $song['name'] . '" data-song-images="' . $img_images . '" data-song-id="' . $finalUrl . '">Phát Nhạc</button>';
+                echo '<button class="ajax-button btn btn-success" data-song-artist="' . $song['artist'] . '" data-song-name="' . $song['name'] . '" data-song-images="' . $img_images . '" data-song-id="' . $originalUrl . '">Phát Nhạc</button>';
                 //echo "Original URL: $originalUrl<br>";
                 // echo "MP3 128 URL: $finalUrl<br/><br/>";
                 echo "</div></div><br/>";
             }
         } else {
-            //echo json_encode(['error' => 'Không thể lấy dữ liệu.']);
             echo "Không có dữ liệu với từ khóa đang tìm kiếm trên ZingMp3";
         }
     }
@@ -248,76 +219,98 @@ if ($response === false) {
 </div>
 <!-- Đoạn mã JavaScript của bạn -->
 <script>
-$(document).ready(function () {
-    // Xử lý sự kiện khi nút Ajax được nhấn
-    $('.ajax-button').on('click', function () {
-        var songId = $(this).data('song-id');
-        var songImages = $(this).data('song-images');
-        var songArtist = $(this).data('song-artist');
-        var songName = $(this).data('song-name');
-        var startTime = new Date(); // Lấy thời gian bắt đầu yêu cầu
-		var getTime = formatTime(startTime.getHours()) + ':' + formatTime(startTime.getMinutes()) + ':' + formatTime(startTime.getSeconds());
-         if (!songId) {
-        //alert('Không có dữ liệu cho songId');
-        return; // Dừng thực thi nếu không có dữ liệu đầu vào
-    }
-	   var settings = {
-            "url": "http://<?php echo $serverIP; ?>:5000",
-            "method": "POST",
-            "timeout": <?php echo $Time_Out_MediaPlayer_API; ?>, // Timeout sau 4 giây
-            "headers": {
-                "Content-Type": "application/json"
-            },
-            "data": JSON.stringify({
-                "type": 3,
-                "data": "<?php echo $object_json->music[0]->value; ?>",
-                "link": songId
-            }),
-        };
+    $(document).ready(function() {
+        // Xử lý sự kiện khi nút Ajax được nhấn
+        $('.ajax-button').on('click', function() {
+            var songId = $(this).data('song-id');
+            var songImages = $(this).data('song-images');
+            var songArtist = $(this).data('song-artist');
+            var songName = $(this).data('song-name');
+            var startTime = new Date(); // Lấy thời gian bắt đầu yêu cầu
+            var getTime = formatTime(startTime.getHours()) + ':' + formatTime(startTime.getMinutes()) + ':' + formatTime(startTime.getSeconds());
+            if (!songId) {
+                //alert('Không có dữ liệu cho songId');
+                return; // Dừng thực thi nếu không có dữ liệu đầu vào
+            }
 
-        // Gửi yêu cầu Ajax
-        $.ajax(settings)
-            .done(function (response) {
-                var messageElement = document.getElementById("messagee");
-                var messageinfomusicplayer = document.getElementById("infomusicplayer");
-                let modifiedStringSuccess = response.state.replace("Success", "Truyền Dữ Liệu Thành Công");
-                var endTime = new Date(); // Lấy thời gian kết thúc yêu cầu
-                var elapsedTime = endTime - startTime; // Tính thời gian thực hiện yêu cầu
-                messageElement.innerHTML =   '<div style="color: green;"><b>'+getTime+' - ' + modifiedStringSuccess + ' | ' + elapsedTime + 'ms</b></div>';
-  			   //messageElement.innerHTML += '<div style="color: green;"><b>' + modifiedStringSuccess + '</b></div>';
-			   
-			   messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src='+songImages+' alt="" /></div><div class="caption"><b>Tên bài hát: </b> '+songName+'<br/><b>Nghệ sĩ:</b> '+songArtist+'</div></div>';
-			   
-			   
-            })
-            .fail(function (jqXHR, textStatus, errorThrown) {
-                var messageElement = document.getElementById("messagee");
-                var endTime = new Date(); // Lấy thời gian kết thúc yêu cầu
-                var elapsedTime = endTime - startTime; // Tính thời gian thực hiện yêu cầu
-                if (textStatus === "timeout") {
-                    messageElement.innerHTML = '<div style="color: red;"><b>'+getTime+' - Lỗi: Yêu cầu đã vượt quá thời gian chờ. | ' + elapsedTime + 'ms</b></div>';
-                  //  messageElement.innerHTML += '<div style="color: red;"><b>Lỗi: Yêu cầu đã vượt quá thời gian chờ.</b></div>';
-                } else {
-                    messageElement.innerHTML = '<div style="color: red;"><b>'+getTime+' - Lỗi: Không thể kết nối đến API. | ' + elapsedTime + 'ms</b></div>';
-                   // messageElement.innerHTML += '<div style="color: red;"><b>Lỗi: Không thể kết nối đến API.</b></div>';
+            // console.log('song id:', songId);
+            $.ajax({
+                url: '../include_php/Ajax/Get_Final_Url_ZingMp3.php?url=' + encodeURIComponent(songId),
+                method: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.finalUrl) {
+                        var finalUrl = response.finalUrl;
+                        //    console.log('Final URL:', finalUrl);
+                        // Phần còn lại của đoạn mã xử lý Ajax
+                        var settings = {
+                            "url": "http://<?php echo $serverIP; ?>:5000",
+                            "method": "POST",
+                            "timeout": <?php echo $Time_Out_MediaPlayer_API; ?> ,
+                            "headers": {
+                                "Content-Type": "application/json"
+                            },
+                            "data": JSON.stringify({
+                                "type": 3,
+                                "data": "<?php echo $object_json->music[0]->value; ?>",
+                                "link": finalUrl
+                            }),
+                        };
+
+                        // Gửi yêu cầu Ajax
+                        $.ajax(settings)
+                            .done(function(response) {
+                                var messageElement = document.getElementById("messagee");
+                                var messageinfomusicplayer = document.getElementById("infomusicplayer");
+                                let modifiedStringSuccess = response.state.replace("Success", "Truyền Dữ Liệu Thành Công");
+                                var endTime = new Date(); // Lấy thời gian kết thúc yêu cầu
+                                var elapsedTime = endTime - startTime; // Tính thời gian thực hiện yêu cầu
+                                messageElement.innerHTML = '<div style="color: green;"><b>' + getTime + ' - ' + modifiedStringSuccess + ' | ' + elapsedTime + 'ms</b></div>';
+                                messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + songImages + ' alt="" /></div><div class="caption"><b>Tên bài hát: </b> ' + songName + '<br/><b>Nghệ sĩ:</b> ' + songArtist + '</div></div>';
+
+
+                            })
+                            .fail(function(jqXHR, textStatus, errorThrown) {
+                                var messageElement = document.getElementById("messagee");
+                                var endTime = new Date(); // Lấy thời gian kết thúc yêu cầu
+                                var elapsedTime = endTime - startTime; // Tính thời gian thực hiện yêu cầu
+                                if (textStatus === "timeout") {
+                                    messageElement.innerHTML = '<div style="color: red;"><b>' + getTime + ' - Lỗi: Yêu cầu đã vượt quá thời gian chờ. | ' + elapsedTime + 'ms</b></div>';
+
+                                } else {
+                                    messageElement.innerHTML = '<div style="color: red;"><b>' + getTime + ' - Lỗi: Không thể kết nối đến API. | ' + elapsedTime + 'ms</b></div>';
+                                }
+                            });
+                    } else {
+                        // console.error('Lỗi:', response.error || 'Không xác định');
+                        messageElement.innerHTML = '<div style="color: red;"><b>' + getTime + ' - Lỗi: ' + response.error + ' Không xác định || ' + elapsedTime + 'ms</b></div>';
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    //console.error('Lỗi AJAX:', textStatus, errorThrown);
+                    messageElement.innerHTML = '<div style="color: red;"><b>' + getTime + ' - Lỗi AJAX: ' + textStatus + ' || ' + errorThrown + ' || ' + elapsedTime + 'ms</b></div>';
                 }
             });
+
+        });
     });
-});
-//đổi thời gian nếu có 1 số thì thêm số 0 phía trước
-	function formatTime(time) {
-    return (time < 10) ? '0' + time : time;
-}
-	
-	//icon Loading
-$(document).ready(function() {
-    $('#my-form').on('submit', function() {
-        // Hiển thị biểu tượng loading
-        $('#loading-overlay').show();
-        // Vô hiệu hóa nút gửi
-        $('#submit-btn').attr('disabled', true);
+
+
+
+    //đổi thời gian nếu có 1 số thì thêm số 0 phía trước
+    function formatTime(time) {
+        return (time < 10) ? '0' + time : time;
+    }
+
+    //icon Loading
+    $(document).ready(function() {
+        $('#my-form').on('submit', function() {
+            // Hiển thị biểu tượng loading
+            $('#loading-overlay').show();
+            // Vô hiệu hóa nút gửi
+            $('#submit-btn').attr('disabled', true);
+        });
     });
-});
 </script>
 <script>
     function setupAudioControls() {
@@ -362,7 +355,7 @@ $(document).ready(function() {
 
                     messageElement.innerHTML = response.answer || '<div style="color: green;"><b>Âm Lượng: ' + response.new_volume + '%</b></div>';
                     //console.log('sending audio control command:', response);
-                    // Kiểm tra nếu giá trị trả về 
+                    // Kiểm tra nếu giá trị trả về  và thay thế
                     if (response.answer === "All players is paused!") {
                         messageElement.innerHTML = '<div style="color: green;"><b>Đã tạm dừng Phát Nhạc</b></div>';
                     } else if (response.answer === "All players is continued!") {
@@ -403,7 +396,7 @@ $(document).ready(function() {
                 var tenbaihatValue = $('#tenbaihatInput').val();
                 // Kiểm tra nếu giá trị không bắt đầu bằng "http"
                 if (!tenbaihatValue.startsWith("http")) {
-                    alert("Dữ liệu đầu vào Play .mp3 phải bắt đầu bằng 'http'");
+                    alert("Dữ liệu đầu vào để Play .mp3 phải bắt đầu bằng 'http'");
                     event.preventDefault(); // Ngăn chặn hành động mặc định của nút
                     return; // Dừng thực thi nếu không hợp lệ
                 }
@@ -417,7 +410,6 @@ $(document).ready(function() {
         // Gọi hàm mới khi trang đã sẵn sàng
     $(document).ready(myFunctionmp3local);
 </script>
-
 
 
 
