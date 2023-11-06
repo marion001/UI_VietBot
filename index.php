@@ -829,7 +829,7 @@ if ($remoteValue !== $localValue) {
 
     <!--  JavaScripts  -->
     <!--  Jquery 3.4.1  -->
-    <script src="assets/js/jquery-3.4.1.min.js"></script>
+    <script src="assets/js/jquery-3.6.1.min.js"></script>
     <!--  Bootstrap Js  -->
     <script src="assets/js/bootstrap.js"></script>
     <!--  Malihu ScrollBar Js  -->

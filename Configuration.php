@@ -41,6 +41,8 @@ $Mail_SMTPSecure = "tls";  //Giữ Nguyên
 
 //upload MP3 Media Player 
 $Upload_Max_Size = "300"; //MB
+//Số lượng tệp tối đa được phép tải lên file mp3, quá 20 cần can thiệp trong file php.ini
+$maxFilesUploadMp3 = "20"; 
 //Key youtube mã hóa base64
 $apiKeyYoutube = "QUl6YVN5RFBva1R2eUI3WEdhQ3JwQnB0U25xd0RET3JaOW9WNnJR"; // Thay YOUR_YOUTUBE_API_KEY bằng khóa API YouTube của bạn
 

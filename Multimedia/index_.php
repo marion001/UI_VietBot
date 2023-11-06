@@ -1,6 +1,7 @@
 <?php
 // Code By: Vũ Tuyển
 // Facebook: https://www.facebook.com/TWFyaW9uMDAx
+error_reporting(E_ALL);
 ?>
 
 
@@ -60,7 +61,7 @@
 <div class="input-group" >
 
   <div class="custom-file">
-	<input type="file" class="form-control" name="mp3File" id="mp3File" accept=".mp3" required>
+	<input type="file" class="form-control" name="mp3Files[]" id="mp3File" max="<?php echo $maxFilesUploadMp3; ?>" multiple accept=".mp3" required>
 	<input type="hidden" name="action" value="UploadMp3">
   </div>
   <div class="input-group-append">
@@ -118,63 +119,84 @@
 <?php
 $api_Search_Zing = "http://ac.mp3.zing.vn/complete?type=song&num=20&query=";
 
-//upload MP3 file
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'UploadMp3') {
     $targetDirectory = $DuognDanThuMucJson.'/mp3/';
-	$name_file_mp3 = basename($_FILES["mp3File"]["name"]);
-    $targetFile = $targetDirectory . basename($_FILES["mp3File"]["name"]);
-    $uploadOk = 1;
-    $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
-
-    // Kiểm tra định dạng file
-    if ($fileType !== "mp3") {
-echo "<script>";
-echo "var messageElement = document.getElementById('messagee');";
-echo "messageElement.innerHTML = '<font color=red>Chỉ chấp nhận file có đuôi .mp3</font>';";
-echo "</script>";
-        $uploadOk = 0;
-    }
-    // Kiểm tra xem file đã tồn tại chưa
-    if (file_exists($targetFile)) {
-echo "<script>";
-echo "var messageElement = document.getElementById('messagee');";
-echo "messageElement.innerHTML = '<font color=red>File<b> $name_file_mp3 </b>đã tồn tại</font>';";
-echo "</script>";
-        $uploadOk = 0;
-    }
-    // Kiểm tra kích thước file (giả sử giới hạn là 10MB)
-    if ($_FILES["mp3File"]["size"] > 300 * 1024 * 1024) {
-echo "<script>";
-echo "var messageElement = document.getElementById('messagee');";
-echo "messageElement.innerHTML = '<font color=red>File quá lớn, vui lòng chọn file dưới 300MB</font>';";
-echo "</script>";
-        $uploadOk = 0;
-    }
-    // Kiểm tra trạng thái upload
-    if ($uploadOk == 0) {
-echo "<script>";
-echo "var messageElement = document.getElementById('messagee');";
-echo "messageElement.innerHTML = '<font color=red>Không thể upload file, hoặc file đã tồn tại</font>';";
-echo "</script>";	
-		
+	$uploadedFilesSelect_name = array();
+	$successCountUploadFile = 0; 
+	//giới hạn file tải lên
+	if (count($_FILES["mp3Files"]["name"]) > $maxFilesUploadMp3) {
+        echo "<script>";
+        echo "var messageElement = document.getElementById('messagee');";
+        echo "messageElement.innerHTML = '<font color=red>Chỉ được phép tải lên tối đa $maxFilesUploadMp3 tệp tin</font>';";
+        echo "</script>";
     } else {
-        // Nếu mọi điều kiện ok, thực hiện upload
-        if (move_uploaded_file($_FILES["mp3File"]["tmp_name"], $targetFile)) {
-chmod($targetFile, 0777);	
-echo "<script>";
-echo "var messageElement = document.getElementById('messagee');";
-echo "messageElement.innerHTML = '<font color=green>File <b>".basename($_FILES["mp3File"]["name"])."</b> đã được tải lên thành công</font>';";
-echo "</script>";
+    // Lặp qua mỗi file đã tải lên
+    foreach ($_FILES["mp3Files"]["name"] as $key => $name) {
+        $name_file_mp3 = basename($name);
+        $targetFile = $targetDirectory . $name_file_mp3;
+        $uploadOk = 1;
+        $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
+        // Kiểm tra định dạng file
+        if ($fileType !== "mp3") {
+            echo "<script>";
+            echo "var messageElement = document.getElementById('messagee');";
+            echo "messageElement.innerHTML = '<font color=red>Chỉ chấp nhận file có đuôi .mp3</font>';";
+            echo "</script>";
+            $uploadOk = 0;
+        }
+
+        // Kiểm tra xem file đã tồn tại chưa
+        if (file_exists($targetFile)) {
+            echo "<script>";
+            echo "var messageElement = document.getElementById('messagee');";
+            echo "messageElement.innerHTML = '<font color=red>File<b> $name_file_mp3 </b>đã tồn tại</font>';";
+            echo "</script>";
+            $uploadOk = 0;
+        }
+
+        // Kiểm tra kích thước file (giả sử giới hạn là 300MB)
+        if ($_FILES["mp3Files"]["size"][$key] > 300 * 1024 * 1024) {
+            echo "<script>";
+            echo "var messageElement = document.getElementById('messagee');";
+            echo "messageElement.innerHTML = '<font color=red>File quá lớn, vui lòng chọn file dưới 300MB</font>';";
+            echo "</script>";
+            $uploadOk = 0;
+        }
+
+        // Kiểm tra trạng thái upload
+        if ($uploadOk == 0) {
+            echo "<script>";
+            echo "var messageElement = document.getElementById('messagee');";
+            echo "messageElement.innerHTML = '<font color=red>Không thể upload file, hoặc file đã tồn tại</font>';";
+            echo "</script>";
+			//return; // Dừng lại nếu không thành công
         } else {
-echo "<script>";
-echo "var messageElement = document.getElementById('messagee');";
-echo "messageElement.innerHTML = '<font color=green>có lỗi xảy ra khi tải file lên, mã lỗi: <b>".basename($_FILES["mp3File"]["name"])."</b> đã được tải lên thành công</font>';";
-echo "</script>";
+            // Nếu mọi điều kiện ok, thực hiện upload
+            if (move_uploaded_file($_FILES["mp3Files"]["tmp_name"][$key], $targetFile)) {
+                chmod($targetFile, 0777);
+				//liệt kê tên file vào bộ nhớ tạm
+				$uploadedFilesSelect_name[] = $name_file_mp3;
+				//đếm file tải lên ok
+				$successCountUploadFile++;
+            } else {
+                echo "<script>";
+                echo "var messageElement = document.getElementById('messagee');";
+                echo "messageElement.innerHTML = '<font color=red>Có lỗi xảy ra khi tải lên file: <b>$name_file_mp3</b></font>';";
+                echo "</script>";
+            }
         }
     }
+	        // Hiển thị các file được tải lên thành công
+        if ($successCountUploadFile > 0) {
+            echo "<script>";
+            echo "var successElement = document.getElementById('messagee');";
+            echo "successElement.innerHTML = '<font color=green>" .$successCountUploadFile. " File được tải lên thành công: <br/><b> " . implode("<hr/>", $uploadedFilesSelect_name) . "<b></font>';";
+            echo "</script>";
+        }
 }
-
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'Local') {
 $directory = $DuognDanThuMucJson.'/mp3';
