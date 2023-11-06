@@ -1,7 +1,7 @@
 <?php
 // Code By: Vũ Tuyển
 // Facebook: https://www.facebook.com/TWFyaW9uMDAx
-error_reporting(E_ALL);
+//error_reporting(E_ALL);
 ?>
 
 
