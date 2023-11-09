@@ -47,7 +47,7 @@ require_once '../assets/lib_php/getid3/getid3.php';
                                     </div>
                                     <div class="input-group-append">
 
-                                        <button type="button" id="submitButton" class="ajax-button btn btn-success" data-song-link_type="direct" data-song-artist="Không có dữ liệu" data-song-images="../assets/img/NotNhac.png" data-song-name="Không có dữ liệu" data-song-id="" value="" hidden>Play .Mp3</button>
+                                        <button type="button" id="submitButton" class="ajax-button btn btn-success" data-song-kichthuoc="---" data-song-thoiluong="---" data-song-link_type="direct" data-song-artist="---" data-song-images="../assets/img/NotNhac.png" data-song-name="Không có dữ liệu" data-song-id="" value="" hidden>Play .Mp3</button>
                                     </div>
 									                         <div class="input-group-append">
 
@@ -399,6 +399,7 @@ if ($response === false) {
     $(document).ready(function() {
         // Xử lý sự kiện khi nút Ajax được nhấn
         $('.ajax-button').on('click', function() {
+			
             var songId = $(this).data('song-id');
             var link_type = $(this).data('song-link_type');
             var songImages = $(this).data('song-images');
@@ -413,7 +414,7 @@ if ($response === false) {
                 return; // Dừng thực thi nếu không có dữ liệu đầu vào
             }
 
-             console.log('song id:', songId);
+           //  console.log('song id:', songId);
             $.ajax({
                 url: '../include_php/Ajax/Get_Final_Url_ZingMp3.php?url=' + encodeURIComponent(songId),
                 method: 'GET',
@@ -421,7 +422,7 @@ if ($response === false) {
                 success: function(response) {
                     if (response.finalUrl) {
                         var finalUrl = response.finalUrl;
-                            console.log('Final URL:', finalUrl);
+                        //    console.log('Final URL:', finalUrl);
                         // Phần còn lại của đoạn mã xử lý Ajax
                         var settings = {
                             "url": "http://<?php echo $serverIP; ?>:5000",
