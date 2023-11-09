@@ -79,9 +79,6 @@ $maxBackupFilesUI = "5";
 //giới hạn tệp backup Google Dirver
 $maxBackupGoogleDrive = "10";
 
-//Tên thư mục Backup Trên Google Drive
-$folderBackupGDrive = "Vietbot_Backup";
-
 //Giới hạn ngày kỷ niệm: 10 giá trị
 $Limit_NgayKyNiem = "15"; 
 
