@@ -34,11 +34,11 @@ require '/home/pi/vendor/autoload.php';
     <span class="corner-text"><h5>Cập Nhật:</h5></span><br/><br/>
 	<center> 
 	<div id="messagee"></div><br/></center>
-	<hr/>
+	
 	<center>
 		 <div id="MessageGDriver"></div>
 		 </center>
-	<div class="row justify-content-center"><div class="col-auto">
+	<br/><div class="row justify-content-center"><div class="col-auto">
 	<table class="table table-bordered">
   <thead> 
     <tr>
@@ -59,7 +59,7 @@ require '/home/pi/vendor/autoload.php';
 	  <td> <input class="form-check-input" type="checkbox" name="startCheckboxReload" id="startCheckbox" title="Tự Động Tải Lại Trang Khi Cập Nhật Hoàn Tất" value="start" checked></td>
     </tr>
   </tbody>
-</table>
+</table> 
 	</div></div>
   <div class="row justify-content-center"><div class="col-auto"><div class="input-group">
     		<center>  <input type="submit" name="checkforupdates_ui" class="btn btn-success" value="Kiểm tra">
@@ -412,7 +412,7 @@ if (isset($Web_UI_Enable_GDrive_Backup) && $Web_UI_Enable_GDrive_Backup === true
             echo "MessageGDriverrr.innerHTML += '<br/><font color=red>Lỗi khi làm mới token: $get_loi_e_Messager</font>';";
             echo "</script>";
             }
-        }
+        } 
     }  else {
 		    echo "<script>";
             echo "var MessageGDriverrr = document.getElementById('MessageGDriver');";
@@ -431,7 +431,7 @@ if (isset($Web_UI_Enable_GDrive_Backup) && $Web_UI_Enable_GDrive_Backup === true
             'name' => $parentFolderName,
             'mimeType' => 'application/vnd.google-apps.folder',
         ));
-        try {
+        try { 
             $newParentFolder = $driveService->files->create($parentFolderMetadata, array('fields' => 'id'));
             $parentFolderId = $newParentFolder->id;
         } catch (Exception $e) {
@@ -630,7 +630,7 @@ foreach ($files as $file) {
     $selectDropdown .= '<option value="' . $filename . '">' . $filename . '</option>';
 }
 $selectDropdown .= '</select>';
-// Hiển thị select dropdown
+// Hiển thị select dropdow
 echo $selectDropdown; 
 ?>
 <input type="submit" name="download" class="btn btn-primary" value="Tải xuống">
@@ -642,20 +642,9 @@ echo $selectDropdown;
   </form>
  <br/> <p class="right-align"><b>Phiên bản giao diện:  <font color=red><?php echo $dataVersionUI->ui_version->current; ?></font></b></p>
   
-  	    <script>
-        var messageElement = document.getElementById("message");
-        var message = "<?php echo $message; ?>";
-       // messageElement.innerText = message;
-        messageElement.innerHTML = message;
-    </script>
+
 	
-	
-	    <script>
-        var messageElementt = document.getElementById("messagee");
-        var messagee = "<?php echo $messagee; ?>";
-       // messageElementt.innerText = messagee;
-        messageElementt.innerHTML = messagee;
-    </script>
+
 	
 	<script>
 var reloadButton = document.getElementById('reloadButton');
