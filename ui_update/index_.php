@@ -2,6 +2,7 @@
 //Code By: Vũ Tuyển
 //Facebook: https://www.facebook.com/TWFyaW9uMDAx
 //include "../Configuration.php";
+require '/home/pi/vendor/autoload.php';
 ?>
 
 
@@ -42,7 +43,7 @@
   <thead> 
     <tr>
       <th scope="col" colspan="2"><font color=red>Lựa Chọn Nâng Cao Khi Cập Nhật Hoàn Tất</font></th> 
-    </tr>
+    </tr> 
   </thead>
   <tbody>
     <tr>
@@ -204,29 +205,41 @@ $remoteJsonData = file_get_contents($UI_Version);
 $remoteData = json_decode($remoteJsonData, true);
 // Đọc nội dung JSON từ tệp tin cục bộ
 $localJsonData = file_get_contents($localFile);
-$localData = json_decode($localJsonData, true);
+$localData = json_decode($localJsonData, true); 
 // Lấy giá trị 'value' từ cả hai nguồn dữ liệu
 $remoteValue = $remoteData['ui_version']['latest'];
 $localValue = $localData['ui_version']['current'];
 // So sánh giá trị
 if ($remoteValue !== $localValue) {
-    $messagee .= 'Có phiên bản mới: <font color=red>'.$remoteValue.'</font><br/>';
-    $messagee .= 'Phiên bản hiện tại của bạn: <font color=red>'.$localValue.',</font> vui lòng cập nhật.<br/>';
-    //$messagee .= $remoteData['ui_version']['notification'].'\n';
+			echo "<script>";
+            echo "var messagee = document.getElementById('messagee');";
+            echo "messagee.innerHTML += 'Có phiên bản mới: <font color=red>$remoteValue</font><br/>';";
+            echo "messagee.innerHTML += 'Phiên bản hiện tại của bạn: <font color=red>$localValue</font> vui lòng cập nhật.<br/>';";
+            echo "</script>";
 	if (empty($remoteData['ui_version']['notification'])) {
     //echo "Không có dữ liệu";
 	} else {
-    $messagee .= 'Nội Dung Cập Nhật: <font color=red>'.$remoteData['ui_version']['notification'].'</font><br/>';
+	$NoiDungCapnhat = $remoteData['ui_version']['notification'];
+			echo "<script>";
+            echo "var messagee = document.getElementById('messagee');";
+            echo "messagee.innerHTML += 'Nội Dung Cập Nhật: <font color=red>$NoiDungCapnhat</font><br/>';";
+            echo "</script>";
 	}
 } else {
-    $messagee .= 'Bạn đang sử dụng phiên bản mới nhất: <font color=red>'.$localValue.'<br/>';
+			echo "<script>";
+            echo "var messagee = document.getElementById('messagee');";
+            echo "messagee.innerHTML += 'Bạn đang sử dụng phiên bản mới nhất: <font color=red>$localValue<br/>';";
+            echo "</script>";
 }
 }
 
 if (isset($_POST['ui_update'])) {
 	if (isset($block_updates_web_ui) && $block_updates_web_ui === true) {
         //echo "Checkbox được tích và không cho cập nhật.";
-        $messagee .= '<font color=red><i>Cập Nhật <b>Web UI</b> Đã Bị Tắt, Cần Đi Tới Tab <b>Cấu Hình Config</b> Để Bỏ Tích</i></font>';
+			echo "<script>";
+            echo "var messagee = document.getElementById('messagee');";
+            echo "messagee.innerHTML += '<font color=red><i>Cập Nhật <b>Web UI</b> Đã Bị Tắt, Cần Đi Tới Tab <b>Cấu Hình Config</b> Để Bỏ Tích</i></font><br/>';";
+            echo "</script>";
     } else {
 $backupDir = $DuognDanUI_HTML.'/ui_update/backup'; // Đường dẫn thư mục sao lưu lại file sao lưu
 $timestamp = date('d_m_Y_His'); 
@@ -252,7 +265,11 @@ if ($returnCode === 0) {
         }
     }
 } else { 
-    $messagee .= '<font color=red>Có lỗi xảy ra khi tạo bản sao lưu.</font><br/>';
+			echo "<script>";
+            echo "var messagee = document.getElementById('messagee');";
+            echo "messagee.innerHTML += '<font color=red>Có lỗi xảy ra khi tạo bản sao lưu.</font><br/>';";
+            echo "</script>";
+	
 }
 //END sao Lưu
 $url = $UI_VietBot.'/archive/master.zip';
@@ -291,13 +308,20 @@ if ($zip) {
   //  $messagee .= 'Đã tải xuống và giải nén giao diện mới thành công!\n';
     // Gọi hàm sao chép đệ quy
     copyRecursive($sourceDirectory, $DuognDanUI_HTML);
-    $messagee .= '<font color=red>Cập nhật giao diện mới thành công!</font>';
-   // $messagee .= 'Bạn Hãy Tắt Trang Và Truy Cập Lại Để Áp Dụng, (Hoặc F5 Để Áp Dụng)....!\n';
+			echo "<script>";
+            echo "var messagee = document.getElementById('messagee');";
+            echo "messagee.innerHTML += '<font color=green>Cập nhật giao diện mới thành công!</font><br/>';";
+            echo "</script>";
     // Gọi hàm xóa đệ quy
     deleteRecursive($sourceDirectory);
 	shell_exec("rm $zipFile");
 } else {
-    $messagee .= '<font color=red>Có lỗi xảy ra, không thể mở tập tin giao diện đã tải về!</font>';
+   // $messagee .= '<font color=red>Có lỗi xảy ra, không thể mở tập tin giao diện đã tải về!</font>';
+			echo "<script>";
+            echo "var messagee = document.getElementById('messagee');";
+            echo "messagee.innerHTML += '<font color=red>Có lỗi xảy ra, không thể mở tập tin giao diện đã tải về!</font><br/>';";
+            echo "</script>";
+	
 }
 //Chmod 777 khi chạy xong backup
 $connection = ssh2_connect($serverIP, $SSH_Port);
@@ -312,6 +336,212 @@ $stream_out2 = ssh2_fetch_stream($stream2, SSH2_STREAM_STDIO);
 stream_get_contents($stream_out1);
 stream_get_contents($stream_out2);
 ///////////////////
+
+
+
+
+
+
+
+
+if (isset($Web_UI_Enable_GDrive_Backup) && $Web_UI_Enable_GDrive_Backup === true) {
+    $jsonFilePath = $DuognDanUI_HTML.'/GoogleDrive/client_secret.json';
+    $jsonData = file_get_contents($jsonFilePath);
+    $DataArrayClient_Secret = json_decode($jsonData, true);
+    if ($DataArrayClient_Secret === null) {
+       $get_loi_e_Messager = $e->getMessage();
+			echo "<script>";
+            echo "var MessageGDriverrr = document.getElementById('MessageGDriver');";
+            echo "MessageGDriverrr.innerHTML += '<br/><font color=red>Lỗi khi đọc và chuyển đổi dữ liệu file JSON /GoogleDrive/client_secret.json: $get_loi_e_Messager</font>';";
+            echo "</script>";
+    }
+    $tokenFilePath = $DuognDanUI_HTML.'/GoogleDrive/token.json';
+    $parentFolderName = $folderBackupGDrive;
+    $subFolderName = 'Vietbot_WebUi';
+    $client = new Google_Client();
+    $client->setClientId($DataArrayClient_Secret['installed']['client_id']);
+    $client->setClientSecret($DataArrayClient_Secret['installed']['client_secret']);
+    $client->setRedirectUri('urn:ietf:wg:oauth:2.0:oob');
+    $client->setScopes(['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/drive.file']);
+    function saveTokenToFile($token, $filePath)
+    {
+        file_put_contents($filePath, json_encode($token));
+    }
+    function readTokenFromFile($filePath)
+    {
+        return json_decode(file_get_contents($filePath), true);
+    }
+    function listFilesInFolder($service, $folderId)
+    {
+        $result = array();
+        $pageToken = null;
+        do {
+            try {
+                $parameters = array(
+                    'q' => "'" . $folderId . "' in parents",
+                    'fields' => 'files(id, name, createdTime)',
+                    'orderBy' => 'createdTime',
+                    'pageToken' => $pageToken,
+                );
+                $files = $service->files->listFiles($parameters);
+                $result = array_merge($result, $files->getFiles());
+                $pageToken = $files->getNextPageToken();
+            } catch (Exception $e) {
+            $get_loi_e_Messager = $e->getMessage();
+			echo "<script>";
+            echo "var MessageGDriverrr = document.getElementById('MessageGDriver');";
+            echo "MessageGDriverrr.innerHTML += '<br/><font color=red>Lỗi khi lấy danh sách file: $get_loi_e_Messager</font>';";
+            echo "</script>";
+            $pageToken = null;
+            }
+        } while ($pageToken);
+        return $result;
+    }
+    if (file_exists($tokenFilePath)) {
+        $accessToken = readTokenFromFile($tokenFilePath);
+        $client->setAccessToken($accessToken);
+        if ($client->isAccessTokenExpired()) {
+            try {
+                $newAccessToken = $client->fetchAccessTokenWithRefreshToken();
+                saveTokenToFile($newAccessToken, $tokenFilePath);
+                chmod($tokenFilePath, 0777);
+            } catch (Exception $e) {
+            $get_loi_e_Messager = $e->getMessage();
+			echo "<script>";
+            echo "var MessageGDriverrr = document.getElementById('MessageGDriver');";
+            echo "MessageGDriverrr.innerHTML += '<br/><font color=red>Lỗi khi làm mới token: $get_loi_e_Messager</font>';";
+            echo "</script>";
+            }
+        }
+    }  else {
+		    echo "<script>";
+            echo "var MessageGDriverrr = document.getElementById('MessageGDriver');";
+            echo "MessageGDriverrr.innerHTML += '<font color=red><b>Google Drive Auto Backup</b> chưa được xác thực với <b>Vietbot</b>.<br/></font>';";
+            echo "MessageGDriverrr.innerHTML += '<font color=red><b>Sẽ không có file backup nào được tải lên<br/></font>';";
+            echo "MessageGDriverrr.innerHTML += '<font color=red><a href=../#Google_Drive_Auto_Backup target=_bank>Nhấn vào đây để tới trang Cấu Hình Xác Thực</a><br></font>';";
+            echo "MessageGDriverrr.innerHTML += '<font color=red>Xác thực xong bạn cần quay lại đây để <b>Cập Nhật</b> lại.<br/><br></font>';";
+            echo "</script>";
+    }
+    $driveService = new Google_Service_Drive($client);
+    $parentFolders = $driveService->files->listFiles(array(
+        'q' => "mimeType='application/vnd.google-apps.folder' and name='$parentFolderName'",
+    ));
+    if (empty($parentFolders->getFiles())) {
+        $parentFolderMetadata = new Google_Service_Drive_DriveFile(array(
+            'name' => $parentFolderName,
+            'mimeType' => 'application/vnd.google-apps.folder',
+        ));
+        try {
+            $newParentFolder = $driveService->files->create($parentFolderMetadata, array('fields' => 'id'));
+            $parentFolderId = $newParentFolder->id;
+        } catch (Exception $e) {
+         $get_loi_e_Messager = $e->getMessage();
+			echo "<script>";
+            echo "var MessageGDriverrr = document.getElementById('MessageGDriver');";
+            echo "MessageGDriverrr.innerHTML += '<br/><font color=red>Lỗi khi tạo thư mục cha $parentFolderName Mã Lỗi: $get_loi_e_Messager</font>';";
+            echo "</script>";
+          //  die();
+        }
+    } else {
+        $parentFolderId = $parentFolders->getFiles()[0]->getId();
+    }
+    $subFolders = $driveService->files->listFiles(array(
+        'q' => "mimeType='application/vnd.google-apps.folder' and name='$subFolderName' and '$parentFolderId' in parents",
+    ));
+    if (empty($subFolders->getFiles())) {
+        $subFolderMetadata = new Google_Service_Drive_DriveFile(array(
+            'name' => $subFolderName,
+            'mimeType' => 'application/vnd.google-apps.folder',
+            'parents' => array($parentFolderId),
+        ));
+        try {
+            $newSubFolder = $driveService->files->create($subFolderMetadata, array('fields' => 'id'));
+            $subFolderId = $newSubFolder->id;
+        } catch (Exception $e) {
+         $get_loi_e_Messager = $e->getMessage();
+			echo "<script>";
+            echo "var MessageGDriverrr = document.getElementById('MessageGDriver');";
+            echo "MessageGDriverrr.innerHTML += '<br/><font color=red>Lỗi khi tạo thư mục con $subFolderName Mã Lỗi: $get_loi_e_Messager</font>';";
+            echo "</script>";
+          //  die();
+        }
+    } else {
+        $subFolderId = $subFolders->getFiles()[0]->getId();
+    }
+    $filesInSubFolder = listFilesInFolder($driveService, $subFolderId);
+    if (count($filesInSubFolder) >= $maxBackupGoogleDrive) {
+        $oldestFileId = $filesInSubFolder[0]->getId();
+        $oldestFileTime = $filesInSubFolder[0]->getCreatedTime();
+
+        foreach ($filesInSubFolder as $file) {
+            $fileTime = $file->getCreatedTime();
+            if ($fileTime < $oldestFileTime) {
+                $oldestFileTime = $fileTime;
+                $oldestFileId = $file->getId();
+            }
+        }
+        try {
+            $driveService->files->delete($oldestFileId);
+			echo "<script>";
+            echo "var MessageGDriverrr = document.getElementById('MessageGDriver');";
+            echo "MessageGDriverrr.innerHTML += '<br/><font color=red>Google Drive đã đạt tối đa <b>$maxBackupGoogleDrive</b> file backup. <br/>Đã xóa file Backup cũ nhất</font>';";
+            echo "</script>";
+        } catch (Exception $e) {
+            $get_loi_e_Messager = $e->getMessage();
+			echo "<script>";
+            echo "var MessageGDriverrr = document.getElementById('MessageGDriver');";
+            echo "MessageGDriverrr.innerHTML += '<br/><font color=red>Lỗi khi xóa file cũ nhất: $get_loi_e_Messager</font>';";
+            echo "</script>";
+          //  die();
+        }
+    }
+    $filePath = $backupFile;
+    $content = file_get_contents($filePath);
+    $fileMetadata = new Google_Service_Drive_DriveFile(array(
+        'name' => basename($filePath),
+        'parents' => array($subFolderId),
+    ));
+    try {
+        $file = $driveService->files->create($fileMetadata, array(
+            'data' => $content,
+            'mimeType' => 'application/octet-stream',
+            'uploadType' => 'media',
+        ));
+		$get_id_file_backup = $file->id;
+		$get_ten_file_backup = basename($filePath);
+			echo "<script>";
+            echo "var MessageGDriverrr = document.getElementById('MessageGDriver');";
+            echo "MessageGDriverrr.innerHTML += '<br/><font color=green>File Backup: <b> $get_ten_file_backup </b> được tải lên Google Drive thành công</font>';";
+            echo "</script>";
+    } catch (Exception $e) {
+		$get_loi_e_Messager = $e->getMessage();
+			echo "<script>";
+            echo "var MessageGDriverrr = document.getElementById('MessageGDriver');";
+            echo "MessageGDriverrr.innerHTML += '<br/><font color=red>Lỗi khi tải file lên: $get_loi_e_Messager</font>';";
+            echo "</script>";
+     //   die();
+    }
+} else {
+			echo "<script>";
+            echo "var MessageGDriverrr = document.getElementById('MessageGDriver');";
+            echo 'MessageGDriverrr.innerHTML += "<br/><font color=red>Google Drive Auto Backup chưa được bật trong Config/Cấu Hình</font>";';
+            echo 'MessageGDriverrr.innerHTML += "<br/><font color=red>Sẽ không có file backup nào được tải lên!</font>";';
+            echo "</script>";
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 if (@$_POST['audioo_playmp3_success'] === "playmp3_success") {
 	echo '<audio style="display: none;" id="myAudio_success" controls autoplay>';
@@ -337,27 +567,41 @@ if (@$_POST['audioo_playmp3_success'] === "playmp3_success") {
 if (isset($_POST['restors_ui'])) {
     $selectedFile = $_POST['tarFile'];
     if ($selectedFile === "....") {
-        $message .= '<font color=red>Vui lòng chọn file cần khôi phục!</font>';
+			echo "<script>";
+            echo "var message = document.getElementById('message');";
+            echo "message.innerHTML += '<font color=red>Vui lòng chọn file cần khôi phục!</font><br/>';";
+            echo "</script>";
     } else {
         $tarFile = $DuognDanUI_HTML.'/ui_update/backup/' . $selectedFile;
         $extractDirectory = $DuognDanUI_HTML.'/ui_update/extract';
         //$copyDestination = '/home/pi/vietbot_offline/html';
         $deleteDirectory = $extractDirectory . '/html';
-        // Giải nén tệp tin .tar.gz
+        // Giải nén tệp tin .tar.gz 
         extractTarGz($tarFile, $extractDirectory);
         // Sao chép nội dung và loại trừ các tệp .zip và .tar.gz
         copyRecursiveExclude($extractDirectory . '/html', $DuognDanUI_HTML, array('.zip', '.tar.gz'));
         // Xóa thư mục /home/pi/vietbot_offline/html/ui_update/extract/html
         deleteDirectory($deleteDirectory);
-         $message .= '<font color=red>Đã khôi phục giao diện backup thành công!<br/>';
-         $message .= 'Bạn Hãy Tải Lại Trang Để Áp Dụng....!</font>';
+        // $message .= '<font color=red>Đã khôi phục giao diện backup thành công!<br/>';
+        // $message .= 'Bạn Hãy Tải Lại Trang Để Áp Dụng....!</font>';
+		 
+			echo "<script>";
+            echo "var message = document.getElementById('message');";
+            echo "message.innerHTML += '<font color=red>Đã khôi phục giao diện backup thành công!</font><br/>';";
+            echo "message.innerHTML += '<font color=red>Bạn Hãy Tải Lại Trang Để Áp Dụng....!</font><br/>';";
+            echo "</script>";
+		 
     }
 }
 if (isset($_POST['download']) && isset($_POST['tarFile'])) {
     $selectedFile = $_POST['tarFile'];
     $filePath = '/ui_update/backup/' . $selectedFile; // Đường dẫn đến thư mục chứa tệp tin
     if ($selectedFile === "....") {
-         $message .= '<font color=red>Vui lòng chọn file cần tải xuống!</font>';
+        // $message .= '<font color=red>Vui lòng chọn file cần tải xuống!</font>';
+		 	echo "<script>";
+            echo "var message = document.getElementById('message');";
+            echo "message.innerHTML += '<font color=red>Vui lòng chọn file cần tải xuống!</font><br/>';";
+            echo "</script>";
     } else {
         // Tạo liên kết tới trang mục tiêu trong tab mới
         $targetLink = "http://$serverIP$filePath"; // Đặt đường dẫn mục tiêu tại đây
