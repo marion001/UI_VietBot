@@ -143,7 +143,7 @@ if (!is_dir($DuognDanThuMucJson)) {
 }
 ?>
 <div class="my-div">
-    <span class="corner-text"><h5>Cập Nhật:</h5></span>
+    <span class="corner-text"><h5>Sao Lưu/Cập Nhật:</h5></span>
     <br/>
     <br/>
     <center>
@@ -158,6 +158,14 @@ if (!is_dir($DuognDanThuMucJson)) {
             <div class="col-auto">
 
                 <table class="table table-bordered">
+
+
+					
+                   <tr>
+                        <th colspan="4">
+                            <center class="text-danger">Cập Nhật</center>
+                        </th>
+                    </tr>
 
                     <tr>
                         <th colspan="2">
@@ -227,7 +235,37 @@ if (!is_dir($DuognDanThuMucJson)) {
                         <td>-</td>
 
                     </tr>
-					                  <br/>  <tr>
+					                                    <tr>
+                        <th colspan="4">
+                            <center class="text-danger">Loại Trừ File/Thư Mục Không Cho Sao Lưu</center>
+                        </th>
+                    </tr>
+
+                    <tr>
+                        <th colspan="2">
+                            <center class="text-danger">File</center>
+                        </th>
+                        <th colspan="2">
+                            <center class="text-danger">Thư Mục</center>
+                        </th>
+                    </tr>
+                    <tr>
+					<th><center>-</center></th>
+					<th><center>-</center></th>
+					<th><center>mp3</center></th>
+                    <th><input type="checkbox" class="form-check-input" name="mp33" value="mp3/*" checked></th>
+                    </tr>
+					<tr>
+					<th><center>-</center></th>
+					<th><center>-</center></th>
+					<th><center>tts_saved</center></th>
+                    <th><input type="checkbox" class="form-check-input" name="tts_savedd" value="tts_saved/*" checked></th>
+                    </tr>
+
+
+
+
+									  <tr>
 									     <th colspan="4">
                             <center class="text-danger">Lựa Chọn Nâng Cao Khi Cập Nhật/Khôi Phục Hoàn Tất</center>
                         </th></tr><tr>
@@ -295,7 +333,7 @@ if (!is_dir($DuognDanThuMucJson)) {
 
 <br/>
 <div class="my-div">
-    <span class="corner-text"><h5>Sao Lưu/Khôi Phục:</h5></span>
+    <span class="corner-text"><h5>Khôi Phục:</h5></span>
     <br/>
     <br/>
     <center>
@@ -462,7 +500,9 @@ exec("chmod 777 $DuognDanUI_HTML/backup_update/backup/state_.json");
 //END Coppy
 /////////////////////
         // Tạo lệnh để nén thư mục
-		$tarCommand = "tar -czvf " . $backupFile . " -C $Path_Vietbot_src resources src";
+		$mp33 = $_POST['mp33'];
+		$tts_savedd = $_POST['tts_savedd'];
+		$tarCommand = "tar -czvf " . $backupFile ." -C $Path_Vietbot_src --exclude=$tts_savedd --exclude=$mp33 resources src";
         exec($tarCommand, $output, $returnCode);
         if ($returnCode === 0) {
             chmod($backupFile, 0777);
