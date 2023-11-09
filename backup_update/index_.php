@@ -700,7 +700,7 @@ if (isset($Web_UI_Enable_GDrive_Backup) && $Web_UI_Enable_GDrive_Backup === true
             echo "</script>";
     }
     $tokenFilePath = $DuognDanUI_HTML.'/GoogleDrive/token.json';
-    $parentFolderName = 'Vietbot_Backup';
+    $parentFolderName = $folderBackupGDrive;
     $subFolderName = 'Vietbot_Source';
     $client = new Google_Client();
     $client->setClientId($DataArrayClient_Secret['installed']['client_id']);
