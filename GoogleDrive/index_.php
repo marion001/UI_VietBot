@@ -69,7 +69,9 @@ if (json_last_error() !== JSON_ERROR_NONE) {
 }
 
     if ($DataArrayClient_Secret === null) {
-        die('Lỗi cấu trúc khi đọc và chuyển đổi dữ liệu tệp <b>client_secret.json</b>');
+        echo '<center><font color=red><h4>Lỗi cấu trúc khi đọc và chuyển đổi dữ liệu tệp <b>client_secret.json</b></h4></font><br/>';
+		die ("<a href='$PHP_SELF'><button class='btn btn-primary'>Làm Mới</button></a></center>");
+		
 		
     }
     $tokenFilePath = $DuognDanUI_HTML.'/GoogleDrive/token.json';
@@ -102,12 +104,12 @@ if (file_exists($tokenFilePath)) {
             saveTokenToFile($newAccessToken, $tokenFilePath);
             chmod($tokenFilePath, 0777);
 
-            echo '<center><font color=green><h4>Token đã được tự động làm mới thành công!</h4></font></center>';
+            echo '<center><font color=green><h4>Token đã được tự động làm mới thành công!</h4></font>';
 			echo "<br/><a href='$PHP_SELF'><button class='btn btn-primary'>Về Trang Chủ</button></a></center>";
         } catch (Exception $e) {
             error_log('Lỗi khi làm mới token: ' . $e->getMessage());
             echo '<br/><center><font color=red><h4>Lỗi khi làm mới token: ' . $e->getMessage().'</h4></font></center>';
-			echo "<br/><a href='$PHP_SELF'><button class='btn btn-primary'>Về Trang Chủ</button></a></center>";
+			echo "<br/><a href='$PHP_SELF'><button class='btn btn-primary'>Về Trang Chủ</button></a>";
         }
     } else {
 		echo '<form method="POST" id="my-form" action="">';
