@@ -137,6 +137,7 @@ if (file_exists($tokenFilePath)) {
 			<input type="text" name="code_token" class="form-control" placeholder="Nhập mã ủy quyền vào đây" aria-describedby="basic-addon2" required>
 			<div class="input-group-append"><input class="btn btn-primary" type="submit" value="Xác thực"></div></div></form>';
 			echo "</div></div>";
+					echo "<br/><center><a href='$PHP_SELF'><button class='btn btn-danger'>Làm Mới</button></a></center>";
             die();
         } else {
 			if (empty($_POST['code_token'])) {
