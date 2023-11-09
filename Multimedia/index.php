@@ -95,13 +95,14 @@ include "../Configuration.php";
             transform-origin: center;
             /* Đặt điểm xoay ở giữa hình ảnh */
         }
-        
+        /*
         @keyframes rotateImage {
             to {
                 transform: rotate(360deg);
                 /* Xoay ảnh 360 độ */
             }
         }
+		*/
 	
     </style>
 </head>

@@ -1,7 +1,10 @@
-<!--
-Code By: Vũ Tuyển
-Facebook: https://www.facebook.com/TWFyaW9uMDAx
--->
+<?php
+// Code By: Vũ Tuyển
+// Facebook: https://www.facebook.com/TWFyaW9uMDAx
+//error_reporting(E_ALL);
+?>
+
+
 <?php
 	$FileConfigJson = "$DuognDanThuMucJson"."/config.json";
 	$FileVolumeJson = "$DuognDanThuMucJson"."/state.json";
@@ -77,6 +80,14 @@ foreach ($keywordsSTT as $keywordSTT => $replacementSTT) {
     } else {$jsonDataGcloudSTT = '';
 	//echo "<h3><center color='red'>Lỗi! File: <b>/home/pi/vietbot_offline/src/google.json</b> Không Tồn Tại</center></h3><hr/>";
     }
+	
+	$jsonFileGDriveBackup = "$DuognDanUI_HTML/GoogleDrive/client_secret.json";
+    if (file_exists($jsonFileGDriveBackup)) {
+		$jsonDataGDriveBackup = file_get_contents($jsonFileGDriveBackup);
+    } else {$jsonDataGDriveBackup = '';
+	//echo "<h3><center color='red'>Lỗi! File: <b>/home/pi/vietbot_offline/src/google.json</b> Không Tồn Tại</center></h3><hr/>";
+    }
+	
 	///
 	//Lấy Giá Trị TTS
 	$GET_TTS_Type = $data_config['smart_answer']['tts']['type'];
@@ -153,6 +164,7 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	$block_updates_web_ui = $data_config['smart_config']['block_updates']['web_ui'];
 	$web_ui_login = $data_config['smart_config']['block_updates']['web_ui_login'];
 	$api_web_ui = $data_config['smart_config']['block_updates']['enable_api'];
+	$google_drive_backup = $data_config['smart_config']['block_updates']['google_drive_backup'];
 	
 	//Led
 	$LED_TYPE = $data_config['smart_config']['led']['type'];
@@ -235,6 +247,7 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 		//end lưu google.json
 		//Lưu google.json TTS
         $editedData = $_POST['edited_data_textarea_tts_gcloud'];
+
         // Kiểm tra nếu không có dữ liệu JSON
         if (empty($editedData)) {
             $editedData = '{}'; // Gán giá trị mặc định là JSON rỗng
@@ -250,6 +263,30 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
           //  echo "<script>Swal.fire('Thành công', 'Lưu thành công!', 'success');</script>";
         }
 		//end lưu google.json
+		
+		//Lưu Google Drive Backup Json
+        $json_Google_Drive_Backup = $_POST['json_Google_Drive_Backup'];
+      //  if (empty($json_Google_Drive_Backup)) {
+       //     $editedDataGoogle_Drive = '{}'; // Gán giá trị mặc định là JSON rỗng
+       // }
+        // Kiểm tra lỗi cú pháp JSON
+       // if (json_decode($editedData) === null && json_last_error() !== JSON_ERROR_NONE) {
+      //  if (json_decode($editedDataGoogle_Drive) === null) {
+      //  echo "<br/><br/><br/><br/><br/><br/><br/><center><h1>Lỗi Ghi Dữ Liệu, Cấu Trúc json Google Drive Backup bạn nhập không hợp lệ<br/></h1><a href='$PHP_SELF'><h3>Nhấn Vào Đây Để Quay Lại</h3></a></center> ";
+      //  exit();
+		//} else {
+            // Lưu dữ liệu JSON vào tệp
+            file_put_contents("$jsonFileGDriveBackup", $json_Google_Drive_Backup);
+			chmod($jsonFileGDriveBackup, 0777);
+          //  echo "<script>Swal.fire('Thành công', 'Lưu thành công!', 'success');</script>";
+       // }
+		
+		
+		
+		
+		
+		
+		
 	//Backup Config
 	$backupDir = __DIR__ . '/Backup_Config/';
 	if (!is_dir($backupDir)) {
@@ -308,6 +345,7 @@ chmod($backupFile, 0777);
 	 $data_config['smart_config']['block_updates']['web_ui'] = ($_POST['block_updates_web_ui'] === 'true');
 	 $data_config['smart_config']['block_updates']['web_ui_login'] = ($_POST['web_ui_login'] === 'true');
 	 $data_config['smart_config']['block_updates']['enable_api'] = ($_POST['api_web_ui'] === 'true');
+	 $data_config['smart_config']['block_updates']['google_drive_backup'] = ($_POST['google_drive_backup'] === 'true');
 	 	//end hỏi liên tục
 		
 	//Đọc trạng thái sau khi khởi động
@@ -615,8 +653,8 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
  <link rel="stylesheet" href="../assets/css/4.5.2_css_bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/loading.css">
     <link rel="stylesheet" href="../assets/css/11.3.1_styles_monokai-sublime.min.css">
-<script src="../assets/js/11.3.1_highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad()</script>
+<!-- <script src="../assets/js/11.3.1_highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script> -->
 <style>
     body, html {
         background-color: #dbe0c9;
@@ -1290,7 +1328,28 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
 <hr/>
 <!--END HOT WORK --> 
 
-<!-- <h5>Ưu Tiên Trợ Lý Ảo/AI:</h5> <hr/>-->
+<h5>Google Drive Auto Backup:</h5> 
+
+<div class="row g-3 d-flex justify-content-center">
+<div class="col-auto">
+			<div class="custom-control custom-switch mt-3" title="Bật để hỏi tiếp sau khi bot trả lời hoặc thực hiện xong 1 hành động nào đó và ngược lại">
+                <input type="hidden" name="google_drive_backup" id="" value="false">
+                <input type="checkbox" name="google_drive_backup" class="custom-control-input" id="google-drive-backup" value="true" <?php echo ($google_drive_backup) ? 'checked' : ''; ?>>
+                <label class="custom-control-label" for="google-drive-backup"></label><br/>
+				</div>
+				</div></div>
+				<div class="row g-3 d-flex justify-content-center"><div class="col-auto"><br/>
+				<a href="../#Google_Drive_Auto_Backup" target="_bank"><button type="button" class="btn btn-success">Cấu Hình</button></a><a href="../Help_Support/HuongDanGDriveBackup.html" target="_bank"><button type="button" class="btn btn-primary">Hướng Dẫn</button></a>
+			</div></div>	<div id="otherDivGoogleDrive" style="display: none;">
+				<br/><div class="row g-3 d-flex justify-content-center"><div class="col-auto">
+				<textarea id="jsonGoogleDriveBackup" class="form-control" name="json_Google_Drive_Backup" rows="10" cols="50"><?php echo $jsonDataGDriveBackup; ?></textarea>
+				
+            
+		   </div>
+		   </div>
+		   </div>
+		   
+		   <hr/>
 
 
 <!-- mục  Chọn Kiểu LED --> 
@@ -1456,6 +1515,7 @@ else {
 <!--Kết Thúc mục  Wake Up Reply --> 	
 
 
+
   <h5>Cài Đặt UI, API, Cập Nhật:</h5>
 
 	
@@ -1489,6 +1549,9 @@ else {
 	
 
 	</tr>
+	
+
+	
 		<tr>
 	<th scope="row"><font color="red" title="tích để Bật/Tắt api của web ui">API WEB UI: <a href="http://<?php echo $serverIP.'/API.php'; ?>" target="_bank">URL API</a></font></th>
 	
@@ -2139,22 +2202,7 @@ else if (radio.value === "tts_gg_free") {
 //End Led Script
 //Kiểm tra các chân gpio không được giống nhau
 function validateInputs() {
-/*
-	    const priority1 = document.getElementById("priority1").value;
-        const priority2 = document.getElementById("priority2").value;
-        const priority3 = document.getElementById("priority3").value;
-        if (priority1 !== '' && priority2 !== '' && priority3 !== '') {
-            if (priority1 === priority2 || priority1 === priority3 || priority2 === priority3) {
-                alert("Lỗi: Các giá trị ưu tiên của Trợ Lý không được phép trùng nhau! \n\n Hệ thống sẽ tự động làm mới lại trang");
-			 event.preventDefault(); // Ngăn việc gửi form
-			  window.location.reload();
-                return false;
-
-            }
-        }
-        return true;
-		*/
-		
+	
     var name1 = document.getElementsByName("button[down][gpio]")[0].value.trim();
     var name2 = document.getElementsByName("button[up][gpio]")[0].value.trim();
     var name3 = document.getElementsByName("button[wakeup][gpio]")[0].value.trim();
@@ -2167,15 +2215,7 @@ function validateInputs() {
     }
     return true;
 }
-/*
-    function showPosition() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(updateInputValues);
-      } else {
-        alert("Trình duyệt của bạn không hỗ trợ Geolocation.");
-      }
-    }
-*/
+
     function updateInputValues(position) {
       var latitude = position.coords.latitude;
       var longitude = position.coords.longitude;
@@ -2545,7 +2585,8 @@ var wards = document.getElementById("ward");
 var Parameter = {
   url: "../assets/json/Data_DiaGioiHanhChinhVN.json", 
   method: "GET", 
-  responseType: "application/json", 
+ // responseType: "application/json", 
+  responseType: "json", 
 };
 var promise = axios(Parameter);
 promise.then(function (result) {
@@ -2636,25 +2677,6 @@ $(document).ready(function() {
         }
     </script>
 	<script>
-    // JavaScript để kiểm tra các giá trị ưu tiên khi người dùng đã chọn đủ cả 3 giá trị
-/*   
-   function checkDuplicate() {
-        const priority1 = document.getElementById("priority1").value;
-        const priority2 = document.getElementById("priority2").value;
-        const priority3 = document.getElementById("priority3").value;
-
-        if (priority1 !== '' && priority2 !== '' && priority3 !== '') {
-            if (priority1 === priority2 || priority1 === priority3 || priority2 === priority3) {
-                alert("Lỗi: Các giá trị ưu tiên không được trùng nhau!");
-                return false;
-            }
-        }
-
-        return true;
-    }
-	*/
-	
-	
 // Disable các giọng đọc của tts khi được chọn 1 trong các tts 
 function disableRadioButtons() {
     // Lấy dữ liệu JSON từ file PHP (điều này cần được thực hiện thông qua AJAX trong ứng dụng thực tế)
@@ -2833,6 +2855,18 @@ $(document).ready(function() {
     function scrollToBottom() {
         window.scrollTo(0, document.body.scrollHeight);
     }
+	
+    //check button ẩn hiện thẻ div HASS
+    $(document).ready(function() {
+        // Khi trạng thái nút bật/tắt thay đổi
+        $('#google-drive-backup').change(function() {
+            if ($(this).is(':checked')) {
+                $('#otherDivGoogleDrive').show();
+            } else {
+                $('#otherDivGoogleDrive').hide();
+            }
+        });
+    });
 </script>
 </body>
 </html>

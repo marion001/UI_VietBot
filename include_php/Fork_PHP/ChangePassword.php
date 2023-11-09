@@ -7,7 +7,7 @@ include "../../Configuration.php";
 <html><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title><?php echo $MYUSERNAME; ?>, Check Log, Services, CMD VietBot</title>
+<title><?php echo $MYUSERNAME; ?>, Change Pass Web UI</title>
     <link rel="shortcut icon" href="../../assets/img/VietBot128.png">
   <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
      <link rel="stylesheet" href="../../assets/css/loading.css">

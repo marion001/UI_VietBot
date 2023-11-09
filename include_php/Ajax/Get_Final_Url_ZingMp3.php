@@ -22,8 +22,15 @@ function getFinalUrl($url) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['url'])) {
     $url = $_GET['url'];
-    $finalUrl = getFinalUrl($url);
-    echo json_encode(['finalUrl' => $finalUrl]);
+
+    // Kiểm tra xem chuỗi đầu vào có chứa 'mp3/' hay không
+    if (strpos($url, 'mp3/') !== false) {
+        echo json_encode(['finalUrl' => $url]);
+    } else {
+        // Tiếp tục thực hiện yêu cầu cURL chỉ khi không có 'mp3/' trong đường dẫn
+        $finalUrl = getFinalUrl($url);
+        echo json_encode(['finalUrl' => $finalUrl]);
+    }
 } else {
     echo json_encode(['error' => 'Invalid request']);
 }

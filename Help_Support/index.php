@@ -1,3 +1,10 @@
+<?php
+// Code By: Vũ Tuyển
+// Facebook: https://www.facebook.com/TWFyaW9uMDAx
+//error_reporting(E_ALL);
+?>
+
+
 <!DOCTYPE html>
 <html lang="vi" class="max-width-d">
 <!--
@@ -273,6 +280,15 @@ B2: Trang chủ sẽ hiện lên các input để ban nhập dữ liệu là: <b
 B3: Tiến hành tải lại trang chủ sẽ hiển thị lên ô nhập mật khẩu để vào web ui quản lý</b><br/>
 - <b>Đổi Mật Khẩu</b> và <b>Đăng Xuất</b> sẽ nằm ở icon <b>Cài Đặt</b> của WEB UI.<br/>
 <i>Lưu ý: (Trong trường hợp bạn quên mật khẩu và mail thì bạn cần xóa file <b>password.json</b> theo đường dẫn: <b>/home/pi/vietbot_offline/html/assets/json/password.json</b></i><br/>
+<hr/>
+<h5><font color=red>Mở giới hạn upload file trên web ui</font></h5>
+- Chạy 2 lệnh sau:<br/>
+$: sudo sed -i 's/upload_max_filesize = .*/upload_max_filesize = 300M/' /etc/php/7.4/apache2/php.ini<br/>
+$: sudo sed -i 's/post_max_size = .*/post_max_size = 350M/' /etc/php/7.4/apache2/php.ini<br/>
+<hr/>
+<h5><font color=red>Hướng dẫn Cài đặt Google Drive Auto Backup</font></h5>
+
+<a href="./HuongDanGDriveBackup.html" target="_bank">Nhấn vào đây để xem hướng dẫn Google Drive Auto Backup</a>
 
 
 <h1>Comback Soon</h1>

@@ -23,8 +23,7 @@ $UI_VietBot = "https://github.com/marion001/UI_VietBot";
 $Vietbot_Version = "https://raw.githubusercontent.com/phanmemkhoinghiep/vietbot_offline/beta/src/version.json";
 $UI_Version = "https://raw.githubusercontent.com/marion001/UI_VietBot/main/version.json";
 
-//Mật Khẩu Đăng Nhập Các Chức Năng Web UI
-//$Pass_Login_UI = "21232f297a57a5a743894a0e4a801fc3"; //Mã hóa md5 = admin
+
 //Mật Khẩu Đăng Nhập Trình Quản Lý File Manager
 $Pass_Login_File_Manager = "admin"; // admin
 
@@ -38,13 +37,19 @@ $Mail_Host = "smtp.gmail.com";  //Giữ Nguyên
 $Mail_Port = 587;  //Giữ Nguyên
 $Mail_SMTPSecure = "tls";  //Giữ Nguyên
 
+//cấu hình MQTT (beta)
+$MQTT_Server = '192.168.14.17';     				// server mqtt của bạn
+$MQTT_Port = "1883";                     			// port mqtt của bạn
+$MQTT_UserName = 'hassio';                   	// tài khoản mqtt
+$MQTT_Password = 'hassio';                   		// mật khẩu mqtt
+$MQTT_Client_ID = 'Vietbot_MQTT_'.$serverIP; 		// đặt danh tính cho client khi kết nối mqtt
 
 //upload MP3 Media Player 
-$Upload_Max_Size = "300"; //MB
+$Upload_Max_Size = "300"; //MB kích thước file .mp3 tải lên tối đa
 //Số lượng tệp tối đa được phép tải lên file mp3, quá 20 cần can thiệp trong file php.ini
 $maxFilesUploadMp3 = "20"; 
-//Key youtube mã hóa base64
-$apiKeyYoutube = "QUl6YVN5RFBva1R2eUI3WEdhQ3JwQnB0U25xd0RET3JaOW9WNnJR"; // Thay YOUR_YOUTUBE_API_KEY bằng khóa API YouTube của bạn
+//Key youtube tìm kiếm nhạc mp3 mã hóa base64
+$apiKeyYoutube = "QUl6YVN5QXVXZVZueU0zaWphbzVYUEQ2MnpyTVh1QmowSmdMWUF3"; // Thay YOUR_YOUTUBE_API_KEY bằng khóa API YouTube của bạn
 
 //ĐƯờng Dẫn VietBot Chính
 $Path_Vietbot_src = "/home/pi/vietbot_offline";
@@ -70,6 +75,9 @@ $maxBackupFiles = "10";
 
 //Giới hạn file backup UI  Vietbot tar.gz (Khi Cập Nhật Firmware)
 $maxBackupFilesUI = "5";
+
+//giới hạn tệp backup Google Dirver
+$maxBackupGoogleDrive = "10";
 
 //Giới hạn ngày kỷ niệm: 10 giá trị
 $Limit_NgayKyNiem = "15"; 
@@ -133,6 +141,7 @@ $PORT_CHATBOT = $dataVTGET->smart_config->web_interface->port;
 $MYUSERNAME = $dataVTGET->smart_config->user_info->name;
 $Web_UI_Login = $dataVTGET->smart_config->block_updates->web_ui_login;
 $Web_UI_Enable_Api = $dataVTGET->smart_config->block_updates->enable_api;
+$Web_UI_Enable_GDrive_Backup = $dataVTGET->smart_config->block_updates->google_drive_backup;
 
 //Vị Trí, Địa Chỉ
 $wards_Lang = $dataVTGET->smart_config->user_info->address->wards; 

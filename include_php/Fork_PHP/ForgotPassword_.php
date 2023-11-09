@@ -1,3 +1,9 @@
+<?php
+// Code By: Vũ Tuyển
+// Facebook: https://www.facebook.com/TWFyaW9uMDAx
+//error_reporting(E_ALL);
+?>
+
 
 <body>
  <script src="../../assets/js/jquery-3.6.1.min.js"></script>

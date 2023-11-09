@@ -2,6 +2,7 @@
 // Code By: Vũ Tuyển
 // Facebook: https://www.facebook.com/TWFyaW9uMDAx
 //error_reporting(E_ALL);
+require_once '../assets/lib_php/getid3/getid3.php';
 ?>
 
 
@@ -42,10 +43,15 @@
                                     <input type="text" id="tenbaihatInput" class="form-control" name="tenbaihat" required placeholder="Nhập Tên Bài Hát, link.mp3" aria-label="Recipient's username" aria-describedby="basic-addon2" oninput="handleInputHTTP()">
                                     <div style="text-align: center;" class="input-group-append">
                                         <button class="btn btn-primary" id="TimKiem" type="submit">Tìm Kiếm</button>
+                                       
                                     </div>
                                     <div class="input-group-append">
 
-                                        <button type="button" id="submitButton" class="ajax-button btn btn-success" data-song-artist="Không có dữ liệu" data-song-images="../assets/img/VietBotlogoWhite.png" data-song-name="Không có dữ liệu" data-song-id="" value="" hidden>Play .Mp3</button>
+                                        <button type="button" id="submitButton" class="ajax-button btn btn-success" data-song-link_type="direct" data-song-artist="Không có dữ liệu" data-song-images="../assets/img/NotNhac.png" data-song-name="Không có dữ liệu" data-song-id="" value="" hidden>Play .Mp3</button>
+                                    </div>
+									                         <div class="input-group-append">
+
+                                        <a class="btn btn-danger" href="<?php echo $PHP_SELF; ?>" role="button">Làm Mới</a>
                                     </div>
                                 </div>
                             </td>
@@ -134,6 +140,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     // Lặp qua mỗi file đã tải lên
     foreach ($_FILES["mp3Files"]["name"] as $key => $name) {
         $name_file_mp3 = basename($name);
+		// Đổi tên file từ chữ in hoa thành chữ thường
+		$name_file_mp3 = strtolower($name_file_mp3);
         $targetFile = $targetDirectory . $name_file_mp3;
         $uploadOk = 1;
         $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
@@ -157,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         }
 
         // Kiểm tra kích thước file (giả sử giới hạn là 300MB)
-        if ($_FILES["mp3Files"]["size"][$key] > 300 * 1024 * 1024) {
+        if ($_FILES["mp3Files"]["size"][$key] > $Upload_Max_Size * 1024 * 1024) {
             echo "<script>";
             echo "var messageElement = document.getElementById('messagee');";
             echo "messageElement.innerHTML = '<font color=red>File quá lớn, vui lòng chọn file dưới 300MB</font>';";
@@ -199,34 +207,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'Local') {
-$directory = $DuognDanThuMucJson.'/mp3';
-$pattern = '*.mp3';
-$mp3Files = glob($directory . DIRECTORY_SEPARATOR . $pattern);
-$fileCount = count($mp3Files);
-if ($fileCount > 0) {
-    echo "<center>Danh sách file MP3:</center><br/>";
-    foreach ($mp3Files as $mp3File) {
-		    echo " <div class='image-container'>";
-            echo "<img src='http://$serverIP/assets/img/icon_music1.png' class='imagesize' alt='' /> <div class='caption'>";
+    $directory = $DuognDanThuMucJson.'/mp3';
+    $pattern = '*.mp3';
+    $mp3Files = glob($directory . DIRECTORY_SEPARATOR . $pattern);
+    $fileCount = count($mp3Files);
+
+    if ($fileCount > 0) {
+        echo "<center>Danh sách file MP3:</center><br/>";
+
+        foreach ($mp3Files as $mp3File) {
+           $getID3 = new getID3();
+$fileInfo = $getID3->analyze($mp3File);
+
+$duration = isset($fileInfo['playtime_seconds']) ? round($fileInfo['playtime_seconds']) : 'N/A';
+
+            $fileSizeMB = round(filesize($mp3File) / (1024 * 1024), 2);
+
+            echo " <div class='image-container'>";
+            echo "<img src='../assets/img/NotNhac.png' class='imagesize' alt='' /> <div class='caption'>";
             echo '<b>Tên bài hát:</b> ' . basename($mp3File) . '<br/>';
-            echo '<b>path:</b> ' . $mp3File . ' <br/>';
-            echo '<button class="ajax-button btn btn-success" data-song-id="' . $mp3File . '" disabled>Phát Nhạc/Comback Soon</button>';
+            echo '<b>Thời lượng:</b> ' . formatTime($duration) . '<br/>';
+            echo '<b>Kích thước:</b> ' . $fileSizeMB . ' MB<br/>';
+            echo '<button class="ajax-button btn btn-success" data-song-kichthuoc="' . $fileSizeMB . ' MB" data-song-thoiluong="' . formatTime($duration) . '" data-song-artist=" ---" data-song-images="../assets/img/NotNhac.png" data-song-name="' . basename($mp3File) . '" data-song-link_type="local" data-song-id="mp3/' . basename($mp3File) . '">Phát Nhạc</button>';
             echo '<button class="deleteBtn btn btn-danger" data-file="' . basename($mp3File) . '">Xóa File</button>';
-			echo "</div></div><br/>";
+            echo "</div></div><br/>";
+        }
+
+        echo "<script>";
+        echo "var messageElementtt = document.getElementById('messagee2');";
+        echo "messageElementtt.innerHTML = '<font color=green>Tổng số file MP3: <b>".$fileCount."</b> file</font>';";
+        echo "</script>";
+    } else {
+        echo "<script>";
+        echo "var messageElement = document.getElementById('messagee');";
+        echo "messageElement.innerHTML = '<font color=red><b>Không tìm thấy file MP3 nào trong thư mục</b></font>';";
+        echo "</script>";
     }
-	
-echo "<script>";
-echo "var messageElementtt = document.getElementById('messagee2');";
-echo "messageElementtt.innerHTML = '<font color=green>Tổng số file MP3: <b>".$fileCount."</b> file</font>';";
-echo "</script>";
-} else {
-echo "<script>";
-echo "var messageElement = document.getElementById('messagee');";
-echo "messageElement.innerHTML = '<font color=red><b>Không tìm thấy file MP3 nào trong thư mục</b></font>';";
-echo "</script>";
 }
 
-}
 
 
 
@@ -262,13 +280,27 @@ curl_close($curlYoutube);
 //echo $responseYoutube;
 
 if ($responseYoutube === false) {
-    echo json_encode(['error' => 'Yêu cầu cURL không thành công.']);
+//    echo json_encode(['error' => 'Yêu cầu cURL không thành công.']);
+	
+		echo "<script>";
+		echo "var messageElement = document.getElementById('messagee');";
+		echo "messageElement.innerHTML = '<font color=red><b>Yêu cầu cURL tìm kiếm youtube không thành công.</b></font>';";
+		echo "</script>";
+	
 } else {
     $dataYoutube = json_decode($responseYoutube, true);
 
     // Kiểm tra xem có dữ liệu hay không
     if (empty($dataYoutube) || empty($dataYoutube['items'])) {
-        echo "Không có dữ liệu.";
+		//echo "$responseYoutube";
+		//echo "Không có dữ liệu: ".$dataYoutube['error']['message'];
+		
+		echo "<script>";
+		echo "var messageElement = document.getElementById('messagee');";
+		echo "messageElement.innerHTML = '<font color=red><b>Không có dữ liệu trả về: " .$dataYoutube['error']['message']."</b></font>';";
+		echo "</script>";
+		
+        
     } else {
         echo "<br/>Tên Bài Hát Đang Tìm Kiếm: <b><font color=red>" . $_POST['tenbaihat'] . "</font></b> | Nguồn Nhạc: <font color=red><b>" . $NguonNhac . "</b></font><hr/>";
 
@@ -318,14 +350,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     curl_close($curl);
 //echo $response;
 if ($response === false) {
-    echo json_encode(['error' => 'Yêu cầu cURL không thành công.']);
+  //  echo json_encode(['error' => 'Yêu cầu cURL không thành công.']);
+		echo "<script>";
+		echo "var messageElement = document.getElementById('messagee');";
+		echo "messageElement.innerHTML = '<font color=red><b>Yêu cầu cURL tìm kiếm ZingMp3 không thành công.</b></font>';";
+		echo "</script>";
 } else {
     $data = json_decode($response, true);
     // Kiểm tra xem có dữ liệu hay không
     if (empty($data)) {
-        echo "Không có dữ liệu trên ZingMp3.";
+        //echo "Không có dữ liệu trên ZingMp3.";
+		echo "<script>";
+		echo "var messageElement = document.getElementById('messagee');";
+		echo "messageElement.innerHTML = '<font color=red><b>Không có dữ liệu trả về trên ZingMp3.</b></font>';";
+		echo "</script>";
     } else {
-        echo "Tên Bài Hát Đang Tìm Kiếm: <b><font color=red>" . $_POST['tenbaihat'] . "</font></b> | Nguồn Nhạc: <font color=red><b>" . $NguonNhac . "</b></font><hr/>";
+        echo "Tên Bài Hát Đang Tìm Kiếm: <b><font color=red>" . $_POST['tenbaihat'] . "</font></b><br/>Nguồn Nhạc: <font color=red><b>" . $NguonNhac . "</b></font><hr/>";
 
         if ($data['result'] === true && isset($data['data'][0]['song'])) {
             foreach ($data['data'][0]['song'] as $song) {
@@ -336,7 +376,7 @@ if ($response === false) {
                 echo "<img src='$img_images' class='imagesize' alt='' /> <div class='caption'>";
                 echo '<b>Tên bài hát:</b> ' . $song['name'] . '<br/><b>Nghệ sĩ:</b> ' . $song['artist'] . '<br/>';
                 //echo 'ID bài hát: ' . $song['id'] . ' <br/>';
-                echo '<button class="ajax-button btn btn-success" data-song-artist="' . $song['artist'] . '" data-song-name="' . $song['name'] . '" data-song-images="' . $img_images . '" data-song-id="' . $originalUrl . '">Phát Nhạc</button>';
+                echo '<button class="ajax-button btn btn-success" data-song-kichthuoc="---" data-song-thoiluong="---" data-song-link_type="zingmp3" data-song-artist="' . $song['artist'] . '" data-song-name="' . $song['name'] . '" data-song-images="' . $img_images . '" data-song-id="' . $originalUrl . '">Phát Nhạc</button>';
                 //echo "Original URL: $originalUrl<br>";
                 // echo "MP3 128 URL: $finalUrl<br/><br/>";
                 echo "</div></div><br/>";
@@ -360,7 +400,10 @@ if ($response === false) {
         // Xử lý sự kiện khi nút Ajax được nhấn
         $('.ajax-button').on('click', function() {
             var songId = $(this).data('song-id');
+            var link_type = $(this).data('song-link_type');
             var songImages = $(this).data('song-images');
+            var songKichThuoc = $(this).data('song-kichthuoc');
+            var songThoiLuong = $(this).data('song-thoiluong');
             var songArtist = $(this).data('song-artist');
             var songName = $(this).data('song-name');
             var startTime = new Date(); // Lấy thời gian bắt đầu yêu cầu
@@ -370,7 +413,7 @@ if ($response === false) {
                 return; // Dừng thực thi nếu không có dữ liệu đầu vào
             }
 
-            // console.log('song id:', songId);
+             console.log('song id:', songId);
             $.ajax({
                 url: '../include_php/Ajax/Get_Final_Url_ZingMp3.php?url=' + encodeURIComponent(songId),
                 method: 'GET',
@@ -378,7 +421,7 @@ if ($response === false) {
                 success: function(response) {
                     if (response.finalUrl) {
                         var finalUrl = response.finalUrl;
-                        //    console.log('Final URL:', finalUrl);
+                            console.log('Final URL:', finalUrl);
                         // Phần còn lại của đoạn mã xử lý Ajax
                         var settings = {
                             "url": "http://<?php echo $serverIP; ?>:5000",
@@ -390,6 +433,7 @@ if ($response === false) {
                             "data": JSON.stringify({
                                 "type": 3,
                                 "data": "<?php echo $object_json->music[0]->value; ?>",
+                                "link_type": link_type,
                                 "link": finalUrl
                             }),
                         };
@@ -403,7 +447,7 @@ if ($response === false) {
                                 var endTime = new Date(); // Lấy thời gian kết thúc yêu cầu
                                 var elapsedTime = endTime - startTime; // Tính thời gian thực hiện yêu cầu
                                 messageElement.innerHTML = '<div style="color: green;"><b>' + getTime + ' - ' + modifiedStringSuccess + ' | ' + elapsedTime + 'ms</b></div>';
-                                messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + songImages + ' alt="" /></div><div class="caption"><b>Tên bài hát: </b> ' + songName + '<br/><b>Nghệ sĩ:</b> ' + songArtist + '</div></div>';
+                                messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + songImages + ' alt="" /></div><div class="caption"><b>Tên bài hát: </b> ' + songName + '<br/><b>Nghệ sĩ: </b> ' + songArtist + '<br/><b>Thời lượng: </b> ' + songThoiLuong + '<br/><b>Kích thước: </b> ' + songKichThuoc + '</div></div>';
                             })
                             .fail(function(jqXHR, textStatus, errorThrown) {
                                 var messageElement = document.getElementById("messagee");
@@ -612,37 +656,55 @@ if ($response === false) {
     }
 </script>
  <script>
- //xóa file
-        $(document).ready(function() {
-			
-			var messageElement = document.getElementById("messagee");
-			
-            // Khi nút "Xóa File" được nhấn
-            $('.deleteBtn').on('click', function() {
-                var fileToDelete = $(this).data('file');
-			console.log(fileToDelete)
-                // Thêm tham số ngẫu nhiên hoặc timestamp vào URL
-                var timestamp = new Date().getTime();
-                var url = '../include_php/Ajax/Mp3_Del.php?fileToDelete=' + fileToDelete;
-
+    //xóa file
+    $(document).ready(function() {
+        var messageElement = document.getElementById("messagee");
+        // Khi nút "Xóa File" được nhấn
+        $('.deleteBtn').on('click', function() {
+            var fileToDelete = $(this).data('file');
+            //console.log(fileToDelete)
+            // Thêm tham số ngẫu nhiên hoặc timestamp vào URL
+            var timestamp = new Date().getTime();
+            var url = '../include_php/Ajax/Mp3_Del.php?fileToDelete=' + fileToDelete;
+            var xacNhan = confirm("Bạn có chắc chắn muốn xóa file: " + fileToDelete);
+            if (xacNhan) {
                 // Gửi yêu cầu AJAX
                 $.ajax({
                     type: 'GET',
                     url: url,
                     success: function(response) {
-                        
-                        messageElement.innerHTML = '<div style="color: red;"><b>' + response + '</b></div>';
-						alert(response);
+                        messageElement.innerHTML = '<div style="color: red;">' + response + '</div>';
+                        //alert(response);
                     },
                     error: function() {
-                        alert('Có lỗi xảy ra khi gửi yêu cầu.');
+                        alert('Có lỗi xảy ra của ajax khi gửi yêu cầu xóa file');
                     }
                 });
-            });
+                // Người dùng đã nhấn nút "OK"
+                // alert("Hành động đã được thực hiện!");
+            } else {
+                // Người dùng đã nhấn nút "Cancel" hoặc đóng hộp thoại
+                // alert("Hành động đã bị hủy bỏ!");
+                messageElement.innerHTML = '<div style="color: red;">Thao tác xóa file <b>' + fileToDelete + '</b> đã bị hủy bỏ</div>';
+            }
         });
-    </script>
+    });
+</script>
 
 <script src="../assets/js/bootstrap.min.js"></script>
 <script src="../assets/js/bootstrap.js"></script>
 </body>
 </html>
+<?php
+
+function formatTime($seconds)
+{
+    $hours = floor($seconds / 3600);
+    $minutes = floor(($seconds % 3600) / 60);
+    $seconds = $seconds % 60;
+
+    return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+}
+
+
+?>

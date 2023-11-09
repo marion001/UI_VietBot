@@ -618,7 +618,13 @@ if (!isset($_SESSION['root_id'])) {
     <iframe src="./include_php/ChatBot.php" width="100%" height="570px"></iframe>
 </section>
 
-
+<section id="Google_Drive_Auto_Backup" class="section blog bg-gray-400 text-white">
+    <div class="container">
+        <h3 class="subtitle">Google Drive Auto Backup</h3>
+			<div class="rounded-iframe">
+     <iframe src="./GoogleDrive/index.php" width="100%" height="570px"></iframe>
+		</div>
+</section>
 
 <section id="MediaPlayer" class="section blog bg-gray-400 text-white">
     <div class="container">

@@ -1,3 +1,9 @@
+<?php
+// Code By: Vũ Tuyển
+// Facebook: https://www.facebook.com/TWFyaW9uMDAx
+//error_reporting(E_ALL);
+?>
+
 	   <center><h1>Xin chào, <?php echo $MYUSERNAME; ?>!</h1></center>
 				<p><b>Chào mừng bạn đến với trang quản trị VietBot</b><br/><br/><i>- Nền tảng loa thông minh tương tác hàng đầu!<br/>
 				- Tận hưởng trí tuệ nhân tạo tiên tiến và trải nghiệm âm thanh vượt trội với VietBot, 

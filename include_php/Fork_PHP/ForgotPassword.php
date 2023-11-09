@@ -7,7 +7,7 @@ include "../../Configuration.php";
 <!DOCTYPE html>
 <html>
 <head>
-  <title><?php echo $MYUSERNAME; ?> Lấy Lại Mật Khẩu</title>
+  <title><?php echo $MYUSERNAME; ?> Lấy Lại Mật Khẩu WEB UI</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">

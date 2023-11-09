@@ -20,12 +20,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         ) {
             // Đảm bảo rằng file nằm trong thư mục cho phép, có đuôi là .mp3 và tồn tại trước khi xóa
             unlink($fullPathToDelete);
-            echo "File " . basename($fullPathToDelete) . " đã được xóa thành công.";
+            echo "File: <b>" . basename($fullPathToDelete) . "</b> đã được xóa thành công.";
         } else {
-            echo "File không tồn tại hoặc đã bị xóa";
+            echo "File: <b>" . basename($fullPathToDelete) . "</b> không tồn tại hoặc đã bị xóa";
         }
     } else {
-        echo "Tham số 'fileToDelete' không hợp lệ.";
+        echo "Tham số truyền vào không hợp lệ."; //fileToDelete
     }
 }
 ?>

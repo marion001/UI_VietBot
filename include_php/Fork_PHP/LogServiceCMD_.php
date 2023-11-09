@@ -1,3 +1,9 @@
+<?php
+// Code By: Vũ Tuyển
+// Facebook: https://www.facebook.com/TWFyaW9uMDAx
+//error_reporting(E_ALL);
+?>
+
 
 
 	<body>
@@ -206,6 +212,28 @@ $output = "$GET_current_USER@$HostName:~$ systemctl --user status vietbot.servic
 $output .=  stream_get_contents($stream_out);
 	
 }
+if (isset($_POST['check_lib_pvporcupine'])) {
+$connection = ssh2_connect($serverIP, $SSH_Port);
+if (!$connection) {die($E_rror_HOST);}
+if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
+$stream = ssh2_exec($connection, 'pip show pvporcupine');
+stream_set_blocking($stream, true);
+$stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
+$output = "$GET_current_USER@$HostName:~$ pip show pvporcupine\n\n";
+$output .=  stream_get_contents($stream_out);
+	
+}
+if (isset($_POST['check_lib_pip'])) {
+$connection = ssh2_connect($serverIP, $SSH_Port);
+if (!$connection) {die($E_rror_HOST);}
+if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
+$stream = ssh2_exec($connection, 'pip list');
+stream_set_blocking($stream, true);
+$stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
+$output = "$GET_current_USER@$HostName:~$ pip list\n\n";
+$output .=  stream_get_contents($stream_out);
+	
+}
 //Chmod
 if (isset($_POST['set_full_quyen'])) {
 $connection = ssh2_connect($serverIP, $SSH_Port);
@@ -371,6 +399,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hash_generator'])) {
  <div class="dropdown-divider"></div>  <button type='submit' name='set_full_quyen' class='btn btn-dark' title='Cấp Quyền Cho Các File Và Thư Mục Cần Thiết'>Cấp Quyền Chmod</button>
  <div class="dropdown-divider"></div>  <button type='submit' name='set_owner' class='btn btn-dark' title='Chuyển các file và thư mục cần thiết về người dùng pi'>Change Owner</button>
  <div class="dropdown-divider"></div>  <button type='submit' name='restart_appache2' class='btn btn-dark' title='Restart Apache2'>Restart Apache2</button>
+  <div class="dropdown-divider"></div>  <button type='submit' name='check_lib_pvporcupine' class='btn btn-dark' title='Kiểm tra thư viện pvporcupine'>Check lib pvporcupine</button>
+  <div class="dropdown-divider"></div>  <button type='submit' name='check_lib_pip' class='btn btn-dark' title='Kiểm tra thư viện pvporcupine'>Check lib pip list</button>
  </center></div></div>
     </form>
     <div id="loading-overlay">
@@ -404,31 +434,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hash_generator'])) {
                 clearInterval(intervalId);
             }
         }
+		
+function fetchData() {
+    if (logType === 'web' || logType === 'both') {
+        $.ajax({
+            type: "GET",
+            url: "http://<?php echo $serverIP; ?>:5000/get_log",
+            //timeout: 7000, // Đặt timeout là 7 giây
+            success: function(data) {
+                const logTextarea = $("#log-textarea");
+                const scrollTop = logTextarea.scrollTop(); 
+                logTextarea.val(''); 
 
-        function fetchData() {
-            if (logType === 'web' || logType === 'both') {
-                $.ajax({
-                    type: "GET",
-                    url: "http://<?php echo $serverIP; ?>:5000/get_log",
-                    success: function(data) {
-                        const logTextarea = $("#log-textarea");
-                        const scrollTop = logTextarea.scrollTop(); 
-                        logTextarea.val(''); 
-
-                        data.forEach(function(item) {
-                            const logEntry = item.message + '\n';
-                            logTextarea.val(logEntry + logTextarea.val()); 
-                        });
-
-                        logTextarea.scrollTop(scrollTop + 2000); 
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error fetching data:', error);
-                    }
+                data.forEach(function(item) {
+                    const logEntry = item.message + '\n';
+                    logTextarea.val(logEntry + logTextarea.val()); 
                 });
-            }
-        }
 
+                logTextarea.scrollTop(scrollTop + 2000); 
+            },
+            error: function(xhr, status, error) {
+				 const logTime = getFormattedTime();
+				const logTextarea = $("#log-textarea");
+                logTextarea.val("pi@get_log:~> "+logTime+" Lỗi không thể kết nối tới api get_log, vui lòng kiểm tra lại");
+            }
+        });
+    }
+}
+		
+	function getFormattedTime() {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+}	
 
     </script>
 
