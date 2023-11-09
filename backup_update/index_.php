@@ -959,10 +959,21 @@ if (file_exists($archivePath)) {
     if (file_exists($extractPath)) {
         //$message .= 'Giải nén thành công: '.$selectedFile.'\n';
     } else {
-        $message .= 'Có lỗi xảy ra khi giải nén: <font color=red>'.$selectedFile.'</font>';
+      //  $message .= 'Có lỗi xảy ra khi giải nén: <font color=red>'.$selectedFile.'</font>';
+		
+			echo "<script>";
+            echo "var message = document.getElementById('message');";
+            echo "message.innerHTML += 'Có lỗi xảy ra khi giải nén file: <font color=red>$selectedFile</font>';";
+            echo "</script>";
+		
     }
 } else {
-    $message .= 'Tệp tin giải nén không tồn tại: <font color=red>'.$selectedFile.'</font>';
+    //$message .= 'Tệp tin giải nén không tồn tại: <font color=red>'.$selectedFile.'</font>';
+	
+				echo "<script>";
+            echo "var message = document.getElementById('message');";
+            echo "message.innerHTML += 'Tệp tin giải nén không tồn tại: <font color=red>$selectedFile</font>';";
+            echo "</script>";
 	
 }
 //End giải nén backup
@@ -971,7 +982,14 @@ $excludedDirectories = array('excluded_file_VUTUYEN'); //Bỏ Qua thư mục kh�
 $copiedItems = array();
 copyFiles($sourceDirectory, $DuognDanThuMucJson, $excludedFiles, $excludedDirectories, $copiedItems);
 copyFiles($sourceDirectoryyy, $PathResources, $excludedFiles, $excludedDirectories, $copiedItems);
- $message .= '<font color=red>Khôi phục bản sao lưu thành công</font>';
+// $message .= '<font color=red>Khôi phục bản sao lưu thành công</font>';
+ 
+ 				echo "<script>";
+            echo "var message = document.getElementById('message');";
+            echo "message.innerHTML += '<font color=green>Khôi phục bản sao lưu thành công</font>';";
+            echo "</script>";
+ 
+ 
 ?>
 <div class="form-check form-switch d-flex justify-content-center"> 
 <div class="container">
@@ -1004,7 +1022,13 @@ foreach ($deletedItems as $deletedItem) {
 }
     } else {
         // Xử lý khi $selectedFile không có giá trị
-        $message .= "<font color=red>Không có tệp tin được chọn để tiến hành khôi phục.</font>";
+      //  $message .= "<font color=red>Không có tệp tin được chọn để tiến hành khôi phục.</font>";
+		
+		 	echo "<script>";
+            echo "var message = document.getElementById('message');";
+            echo "message.innerHTML += '<font color=red>Không có tệp tin được chọn để tiến hành khôi phục.</font>';";
+            echo "</script>";
+		
     }	
 //Chmod 777 khi restor xong backup
 $connection = ssh2_connect($serverIP, $SSH_Port);
