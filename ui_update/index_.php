@@ -27,19 +27,52 @@
         <img id="loading-icon" src="../assets/img/Loading.gif" alt="Loading...">
         <div id="loading-message">Đang tiến hành, vui lòng đợi...</div>
     </div>
-<?php
-/*
-// Kiểm tra xem người dùng đã đăng nhập hay chưa
-if (!isset($_SESSION['root_id'])) {
-    // Nếu chưa đăng nhập, chuyển hướng về trang đăng nhập (index.php)
-    //header("Location: ./index.php");
-	echo "<br/><center><h1>Có Vẻ Như Bạn Chưa Đăng Nhập!<br/><br>
-	- Nếu Bạn Đã Đăng Nhập, Hãy Nhấn Vào Nút Dưới<br/><br/><a href='$PHP_SELF'><button type='button' class='btn btn-danger'>Tải Lại</button></a></h1>
-	</center>";
-    exit();
-}
-*/
-?>
+  <form method="POST" id="my-form" action="">
+  
+   	<div class="my-div">
+    <span class="corner-text"><h5>Cập Nhật:</h5></span><br/><br/>
+	<center> 
+	<div id="messagee"></div><br/></center>
+	<hr/>
+	<center>
+		 <div id="MessageGDriver"></div>
+		 </center>
+	<div class="row justify-content-center"><div class="col-auto">
+	<table class="table table-bordered">
+  <thead> 
+    <tr>
+      <th scope="col" colspan="2"><font color=red>Lựa Chọn Nâng Cao Khi Cập Nhật Hoàn Tất</font></th> 
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Thông Báo Âm Thanh:</th>
+	  <td><input class="form-check-input" type="checkbox" name="audioo_playmp3_success" value="playmp3_success" checked></td>
+    </tr>
+	    <tr>
+      <th title="Bạn cần bật tắt trong tab Config/Cấu Hình">Google Drive Auto Backup:</th>
+	  <td title="Bạn cần bật tắt trong tab Config/Cấu Hình"><input type="checkbox" title="Bạn cần bật tắt trong tab Config/Cấu Hình" class="form-check-input" <?php echo ($Web_UI_Enable_GDrive_Backup ? 'checked' : ''); ?> disabled></td>
+    </tr>
+    <tr>
+      <th><span class="inline-elements" title="Tự Động Tải Lại Trang Khi Cập Nhật Hoàn Tất">Tự Động Làm Mới Lại Trang: <font color=red><span id="countdown"></span></font></span></th>
+	  <td> <input class="form-check-input" type="checkbox" name="startCheckboxReload" id="startCheckbox" title="Tự Động Tải Lại Trang Khi Cập Nhật Hoàn Tất" value="start" checked></td>
+    </tr>
+  </tbody>
+</table>
+	</div></div>
+  <div class="row justify-content-center"><div class="col-auto"><div class="input-group">
+    		<center>  <input type="submit" name="checkforupdates_ui" class="btn btn-success" value="Kiểm tra">
+		   <input type="submit" name="ui_update" class="btn btn-warning" value="Cập Nhật">
+		   <a class="btn btn-primary" href="<?php echo $PHP_SELF; ?>" role="button">Làm Mới</a>
+		   <button class="btn btn-danger" id="reloadButton">Tải Lại Trang</button></center>
+		   </div>
+		   </div>
+		   </div>  <br/></div>
+	<br/>   <div class="my-div">
+    <span class="corner-text"><h5>Sao Lưu/Khôi Phục:</h5></span><br/><br/>
+
+<center><div id="message"></div></center>
+
 <?php
     // Hàm đệ quy để sao chép tất cả các tệp và thư mục
     function copyRecursive($source, $destination) {
@@ -332,47 +365,11 @@ if (isset($_POST['download']) && isset($_POST['tarFile'])) {
     }
 }
 ?>
-  <form method="POST" id="my-form" action="">
-  
-   	<div class="my-div">
-    <span class="corner-text"><h5>Cập Nhật:</h5></span><br/><br/>
-	<center> 
-	<div id="messagee"></div><br/></center>
-	<hr/>
-	<center>
-		 <div id="MessageGDriver"></div>
-		 </center>
-	<div class="row justify-content-center"><div class="col-auto">
-	<table class="table table-bordered">
-  <thead> 
-    <tr>
-      <th scope="col" colspan="2"><font color=red>Lựa Chọn Nâng Cao Khi Cập Nhật Hoàn Tất</font></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Thông Báo Âm Thanh:</th>
-	  <td><input type="checkbox" name="audioo_playmp3_success" value="playmp3_success" checked></td>
-    </tr>
-    <tr>
-      <th><span class="inline-elements" title="Tự Động Tải Lại Trang Khi Cập Nhật Hoàn Tất">Tự Động Làm Mới Lại Trang: <font color=red><span id="countdown"></span></font></span></th>
-	  <td> <input type="checkbox" name="startCheckboxReload" id="startCheckbox" title="Tự Động Tải Lại Trang Khi Cập Nhật Hoàn Tất" value="start" checked></td>
-    </tr>
-  </tbody>
-</table>
-	</div></div>
-  <div class="row justify-content-center"><div class="col-auto"><div class="input-group">
-    		<center>  <input type="submit" name="checkforupdates_ui" class="btn btn-success" value="Kiểm tra">
-		   <input type="submit" name="ui_update" class="btn btn-warning" value="Cập Nhật">
-		   <a class="btn btn-primary" href="<?php echo $PHP_SELF; ?>" role="button">Làm Mới</a>
-		   <button class="btn btn-danger" id="reloadButton">Tải Lại Trang</button></center>
-		   </div>
-		   </div>
-		   </div>  <br/></div>
-	<br/>   <div class="my-div">
-    <span class="corner-text"><h5>Sao Lưu/Khôi Phục:</h5></span><br/><br/>
 
-<center><div id="message"></div></center>
+
+
+
+
 
 	   <div class="row justify-content-center"><div class="col-auto"><div class="input-group">
 <?php
