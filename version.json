@@ -1,7 +1,7 @@
 {
   "ui_version": {
-    "latest": "beta 09-11-2023 3",
-    "current": "beta 09-11-2023 3",
-    "notification": "Cập Nhật Media Play, chức năng sao lưu dữ liệu Vietbot lên Google Drive, Cần Cài Đặt thư viện theo hướng dẫn"
+    "latest": "beta 10-11-2023",
+    "current": "beta 10-11-2023",
+    "notification": "fix lỗi trắng tab, Tự động cài các thư viện nếu thiếu"
   }
 }
