@@ -444,7 +444,7 @@ if ($response === false) {
                             .done(function(response) {
                                 var messageElement = document.getElementById("messagee");
                                 var messageinfomusicplayer = document.getElementById("infomusicplayer");
-                                let modifiedStringSuccess = response.state.replace("Success", "Truyền Dữ Liệu Thành Công");
+                                let modifiedStringSuccess = response.state.replace("Success", "Thành Công");
                                 var endTime = new Date(); // Lấy thời gian kết thúc yêu cầu
                                 var elapsedTime = endTime - startTime; // Tính thời gian thực hiện yêu cầu
                                 messageElement.innerHTML = '<div style="color: green;"><b>' + getTime + ' - ' + modifiedStringSuccess + ' | ' + elapsedTime + 'ms</b></div>';
