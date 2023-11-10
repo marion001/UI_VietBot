@@ -2,13 +2,10 @@
 //Code By: Vũ Tuyển
 //Facebook: https://www.facebook.com/TWFyaW9uMDAx
 //include "../Configuration.php";
-require '/home/pi/vendor/autoload.php';
 ?>
 
 
 <body>
-    <br/>
-    </center>
     <script src="../assets/js/jquery.min.js"></script>
     <script src="../assets/js/popper.min.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
@@ -28,6 +25,134 @@ require '/home/pi/vendor/autoload.php';
         <img id="loading-icon" src="../assets/img/Loading.gif" alt="Loading...">
         <div id="loading-message">Đang tiến hành, vui lòng đợi...</div>
     </div>
+	
+	
+	
+<?php
+echo '<center><div id="messageee"></div></center>';
+if (isset($_POST['install_lib_gdrive'])) {
+$compressedFilePath = $DuognDanUI_HTML.'/assets/lib_php/lib_Google_APIs_Client_php.tar.gz';
+$extractedFolderPath = $DuognDanUI_HTML.'/assets/lib_php/';
+try {
+    // Tải xuống tệp từ URL
+    $fileContents = file_get_contents($url_lib_GDrive);
+    if ($fileContents === false) {
+        //throw new Exception("Lỗi: Không thể tải xuống tệp từ URL.");
+			echo "<script>";
+            echo "var messageee = document.getElementById('messageee');";
+            echo "messageee.innerHTML += '<font color=red>Lỗi: Không thể tải xuống thư viện từ URL</font><br/>';";
+            echo "</script>";
+    }
+    // Lưu nội dung vào tệp cục bộ
+    $result = file_put_contents($compressedFilePath, $fileContents);
+    if ($result === false) {
+       // throw new Exception("Lỗi: Không thể lưu trữ tệp tải xuống.");
+			echo "<script>";
+            echo "var messageee = document.getElementById('messageee');";
+            echo "messageee.innerHTML += '<font color=red>Lỗi: Không thể lưu trữ tệp tải xuống.</font><br/>';";
+            echo "</script>";
+    }
+			//echo "<script>";
+            //echo "var messageee = document.getElementById('messageee');";
+            //echo "messageee.innerHTML += '<font color=red>Thư viện được cài đặt thành công.</font><br/>';";
+            //echo "</script>";
+			chmod("$DuognDanUI_HTML/assets/lib_php/lib_Google_APIs_Client_php.tar.gz", 0777);
+			// Giải nén tệp .tar.gz
+			$phar = new PharData($compressedFilePath);
+			$phar->extractTo($extractedFolderPath);
+			//  echo "Tệp đã được giải nén vào $extractedFolderPath<br/>";
+			chmod("$DuognDanUI_HTML/assets/lib_php/vendor", 0777);
+	// Kiểm tra xem tệp tin tồn tại trước khi xóa
+if (file_exists($compressedFilePath)) {
+    // Thực hiện lệnh xóa bằng system
+    $command = "rm $compressedFilePath";
+    $output = system($command, $returnValue);
+    // Kiểm tra giá trị trả về để xem lệnh có thành công không
+    if ($returnValue === 0) {
+    } else {
+			echo "<script>";
+            echo "var messageee = document.getElementById('messageee');";
+            echo "messageee.innerHTML += '<font color=red>Xóa tệp tin <b>lib_Google_APIs_Client_php.tar.gz</b> Thất Bại</font><br/>';";
+            echo "</script>";
+    }
+} else {
+			echo "<script>";
+            echo "var messageee = document.getElementById('messageee');";
+            echo "messageee.innerHTML += '<font color=red>Tệp tin <b>lib_Google_APIs_Client_php.tar.gz</b> không tồn tại</font><br/>';";
+            echo "</script>";
+}
+$connection = ssh2_connect($serverIP, $SSH_Port);
+if (!$connection) {
+    die($E_rror_HOST);
+}
+if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {
+    die($E_rror);
+}
+$stream = ssh2_exec($connection, 'sudo mv '.$DuognDanUI_HTML.'/assets/lib_php/vendor /home/pi/vendor');
+stream_set_blocking($stream, true);
+$stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
+stream_get_contents($stream_out);
+
+} catch (Exception $e) {
+    $LoiKhongXD =  $e->getMessage();
+			echo "<script>";
+            echo "var messageee = document.getElementById('messageee');";
+            echo "messageee.innerHTML += '<font color=red>Lỗi không xác định: $LoiKhongXD</font><br/>';";
+            echo "</script>";
+	
+}
+}
+
+$autoloadPath = '/home/pi/vendor/autoload.php';
+// Kiểm tra xem tệp autoload.php tồn tại hay không
+if (file_exists($autoloadPath) && is_file($autoloadPath)) {
+    // Nếu tồn tại, thực hiện require để autoload các classes
+    require_once $autoloadPath;
+
+    // Kiểm tra xem lớp Google_Client (hoặc các lớp khác) có tồn tại hay không
+    if (class_exists('Google_Client')) {
+     //   echo "Thư viện Google APIs Client Library for PHP đã được cài đặt.";
+        
+        // Kiểm tra phiên bản của thư viện (nếu cần)
+        if (defined('Google_Client::LIBVER')) {
+            $libraryVersion = Google_Client::LIBVER;
+           // echo " Phiên bản: $libraryVersion";
+            $messageeee .= "<font color=red>Phiên Bản Google APIs Client: <b>$libraryVersion</b></font>";
+            
+        }
+    } else {
+       // echo "Lớp Google_Client không tồn tại, có thể thư viện chưa được cài đặt đúng cách.";
+			echo "<script>";
+            echo "var messageee = document.getElementById('messageee');";
+            echo "messageee.innerHTML += '<font color=red>Thư viện Google APIs Client Library for PHP chưa được cài đặt</font><br/>';";
+            echo "messageee.innerHTML += '<font color=red>Google Drive Auto Backup sẽ không dùng được trong tình huống này</font><br/>';";
+            echo "</script>";
+			
+		echo '<center><form method="POST" id="my-form" action="">';
+		echo "<button name='install_lib_gdrive' class='btn btn-success'>Cài Thư Viện</button>";
+		echo "<a href='$PHP_SELF'><button class='btn btn-primary'>Làm Mới</button></a></center>";
+		echo "</form></center>";
+		
+    }
+} else {
+    //echo "Tệp autoload.php không tồn tại, có thể Composer chưa được sử dụng để cài đặt thư viện.";
+	
+			echo "<script>";
+            echo "var messageee = document.getElementById('messageee');";
+            echo "messageee.innerHTML += '<font color=red><h4><br/>Một số cấu hình chưa được cài đặt, hãy nhấn vào nút bên dưới để cài tự động</h4></font><br/>';";
+            echo "</script>";
+			
+		echo '<center><form method="POST" id="my-form" action="">';
+		echo "<button name='install_lib_gdrive' class='btn btn-success'>Auto Cài Đặt</button>";
+		echo "<a href='$PHP_SELF'><button class='btn btn-primary'>Làm Mới</button></a></center>";
+		echo "</form></center>";
+	exit();
+}
+
+
+?>
+	
+	
   <form method="POST" id="my-form" action="">
   
    	<div class="my-div">
@@ -73,6 +198,8 @@ require '/home/pi/vendor/autoload.php';
     <span class="corner-text"><h5>Sao Lưu/Khôi Phục:</h5></span><br/><br/>
 
 <center><div id="message"></div></center>
+
+
 
 <?php
     // Hàm đệ quy để sao chép tất cả các tệp và thư mục

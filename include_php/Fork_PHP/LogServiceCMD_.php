@@ -22,7 +22,7 @@ $(document).ready(function() {
 
 
 <?php
-include('Net/SSH2.php');
+
 // Khởi tạo biến để lưu output
 $output = '';
 

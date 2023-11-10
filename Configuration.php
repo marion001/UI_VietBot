@@ -23,6 +23,9 @@ $UI_VietBot = "https://github.com/marion001/UI_VietBot";
 $Vietbot_Version = "https://raw.githubusercontent.com/phanmemkhoinghiep/vietbot_offline/beta/src/version.json";
 $UI_Version = "https://raw.githubusercontent.com/marion001/UI_VietBot/main/version.json";
 
+//list Url Dowload thư viện
+//lib Google APIs Client PHP
+$url_lib_GDrive = 'https://raw.githubusercontent.com/marion001/Google-APIs-Client-Library-PHP/main/lib_Google_APIs_Client_php.tar.gz';
 
 //Mật Khẩu Đăng Nhập Trình Quản Lý File Manager
 $Pass_Login_File_Manager = "admin"; // admin

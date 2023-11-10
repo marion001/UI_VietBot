@@ -4,7 +4,7 @@
 //error_reporting(E_ALL);
 //ini_set('display_errors', 1);
 include "../Configuration.php";
-require '/home/pi/vendor/autoload.php';
+include("../assets/lib_php/Net/SSH2.php");
 ?>
 <!DOCTYPE html>
 <html><head>
@@ -23,6 +23,12 @@ require '/home/pi/vendor/autoload.php';
 		/* overflow-x: hidden; */
 		max-width: 100%;
     }
+	
+        .right-align {
+            text-align: right;
+			margin-right: 30px;
+        }
+    
 	</style>
   </head>
 <?php	

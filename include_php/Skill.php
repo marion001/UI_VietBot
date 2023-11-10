@@ -2,6 +2,7 @@
 // Code By: Vũ Tuyển
 // Facebook: https://www.facebook.com/TWFyaW9uMDAx
 include "../Configuration.php";
+include("../assets/lib_php/Net/SSH2.php");
 $FileSkillJson = "$DuognDanThuMucJson"."/skill.json";
 $skillData = file_get_contents($FileSkillJson);
 $skillArray = json_decode($skillData, true);
