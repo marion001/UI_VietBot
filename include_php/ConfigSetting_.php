@@ -36,6 +36,8 @@
     	$hotwords_get_lang = 'Tiếng Anh';
 	} elseif ($hotwords_get_langgg === 'vi') {
     	$hotwords_get_lang = 'Tiếng Việt';
+	}elseif ($hotwords_get_langgg === 'default') {
+    	$hotwords_get_lang = 'Mặc Định';
 	}
 	//Lấy giá trị value trong file json
 	$value_volume = $data_volume->volume;
@@ -185,9 +187,93 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	$startup_state_speaking = $data_config['smart_answer']['startup_state_speaking'];
 	$Pre_Answer_Timeout = $data_config['smart_answer']['pre_answer_timeout'];
 	$numberCharactersToSwitchMode = $data_config["smart_answer"]["number_characters_to_switch_mode"];
+	/////////////////////////////////////////////////////////////////////////////
+	
+	
+	
+	
+	
+	
+	
 	//Thay ĐỔi Ngôn Ngữ hotword
 	if (isset($_POST['language_hotword_submit'])) {
     $selectedLanguage = $_POST['language_hotword'];
+	if ($selectedLanguage === "vi") {
+	$hotword_lib_language = "porcupine_params_vn.pv";
+	} 
+	elseif ($selectedLanguage === "eng") {
+	$hotword_lib_language = "porcupine_params.pv";
+	}	
+	elseif ($selectedLanguage === "default") {
+	
+	$destinationDirectory = "$DuognDanThuMucJson/hotword/default";
+
+// Kiểm tra xem thư mục có tồn tại hay không
+if (!is_dir($destinationDirectory)) {
+    mkdir($destinationDirectory, 0777, true);
+    if (is_dir($destinationDirectory)) {
+     //   echo "Thư mục đã được tạo thành công.\n";
+        chmod($destinationDirectory, 0777);
+    } else {
+     //   echo "Không thể tạo thư mục.\n";
+    }
+	} else {
+  //  echo "Thư mục đã tồn tại.\n";
+  //xóa các file trong thư mục default
+	$deleteCommand = "rm -f $destinationDirectory/*";
+	shell_exec($deleteCommand);
+	}
+	
+// URL của file cần tải
+$fileUrlttt = 'https://raw.githubusercontent.com/Picovoice/porcupine/master/lib/common/porcupine_params.pv';
+// Đường dẫn đến thư mục đích
+$destinationDirectoryttt = "$Lib_Hotword/default/";
+// Tên file đích
+$destinationFilettt = $destinationDirectoryttt . 'porcupine_params.pv';
+// Kiểm tra xem file đã tồn tại trong thư mục đích hay chưa
+if (!file_exists($destinationFilettt)) {
+    // Kiểm tra xem thư mục đích có tồn tại hay không
+    if (!is_dir($destinationDirectoryttt)) {
+        mkdir($destinationDirectoryttt, 0777, true);
+    }
+    // Tải file từ URL và lưu vào thư mục đích
+    if (copy($fileUrlttt, $destinationFilettt)) {
+     //   echo 'File đã được tải xuống thành công.';
+		chmod($destinationFilettt, 0777);
+    } else {
+      //  echo 'Không thể tải file xuống.';
+	$connectionhh = ssh2_connect($serverIP, $SSH_Port);
+	if (!$connectionhh) {die($E_rror_HOST);}
+	if (!ssh2_auth_password($connectionhh, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
+	$streamhh = ssh2_exec($connectionhh, "cp /home/pi/.local/lib/python3.9/site-packages/pvporcupine/lib/common/porcupine_params.pv $Lib_Hotword/default/");
+	stream_set_blocking($streamhh, true);
+	$stream_outhh = ssh2_fetch_stream($streamhh, SSH2_STREAM_STDIO);
+	stream_get_contents($stream_outhh);
+    }
+} else {
+   // echo 'File đã tồn tại, không cần tải lại.';
+	chmod($destinationFilettt, 0777);
+}
+	$connection = ssh2_connect($serverIP, $SSH_Port);
+	if (!$connection) {die($E_rror_HOST);}
+	if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
+	$stream2 = ssh2_exec($connection, "cp -r /home/pi/.local/lib/python3.9/site-packages/pvporcupine/resources/keyword_files/raspberry-pi/*.ppn $DuognDanThuMucJson/hotword/default/");
+	//$stream4 = ssh2_exec($connection, "cp /home/pi/.local/lib/python3.9/site-packages/pvporcupine/lib/common/porcupine_params.pv $Lib_Hotword/default/");
+	$stream3 = ssh2_exec($connection, "sudo chmod -R 0777 /home/pi/vietbot_offline");
+	stream_set_blocking($stream2, true);
+	//stream_set_blocking($stream4, true);
+	stream_set_blocking($stream3, true);
+	$stream_out2 = ssh2_fetch_stream($stream2, SSH2_STREAM_STDIO);
+	//$stream_out4 = ssh2_fetch_stream($stream4, SSH2_STREAM_STDIO);
+	$stream_out3 = ssh2_fetch_stream($stream3, SSH2_STREAM_STDIO);
+	stream_get_contents($stream_out2);
+	//stream_get_contents($stream_out4);
+	stream_get_contents($stream_out3);
+	$hotword_lib_language = "default/porcupine_params.pv";
+	}
+	
+	
+	
 	$jsonContent = file_get_contents($FileConfigJson);
     $jsonData = json_decode($jsonContent, true);
     // Xóa tất cả hotword hiện tại
@@ -196,6 +282,7 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
     $folderPath = '/'.$DuognDanThuMucJson.'/hotword/' . $selectedLanguage . '/';
 	 $fileList = glob($folderPath . '*.ppn');
     $fileList = array_diff($fileList, array('.', '..')); // Loại bỏ các tệp . và ..
+	
     // Thêm hotword mới từ danh sách tên tệp
     foreach ($fileList as $filePath) {
 		$fileName = pathinfo($filePath, PATHINFO_FILENAME);
@@ -213,21 +300,19 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
     }
     // Lưu lại các thay đổi vào tệp json.php
     file_put_contents($FileConfigJson, json_encode($jsonData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-	if ($selectedLanguage === "vi") {
-	$hotword_lib_language = "porcupine_params_vn.pv";
-	} elseif ($selectedLanguage === "eng") {
-	$hotword_lib_language = "porcupine_params.pv";
-	}
+	
 	$connection = ssh2_connect($serverIP, $SSH_Port);
 	if (!$connection) {die($E_rror_HOST);}
 	if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
-	//$stream2 = ssh2_exec($connection, "sudo cp /home/pi/$hotword_lib_language /home/pi/.local/lib/python3.9/site-packages/pvporcupine/lib/common/porcupine_params.pv");
 	$stream2 = ssh2_exec($connection, "sudo cp $Lib_Hotword/$hotword_lib_language /home/pi/.local/lib/python3.9/site-packages/pvporcupine/lib/common/porcupine_params.pv");
 	stream_set_blocking($stream2, true);
 	$stream_out2 = ssh2_fetch_stream($stream2, SSH2_STREAM_STDIO);
 	stream_get_contents($stream_out2);
 	header("Location: $PHP_SELF");
+
 	}
+	
+	
 	if(isset($_POST['config_setting'])) {
 		//Lưu google.json STT
         $editedData = $_POST['edited_data_textarea'];
@@ -1231,7 +1316,7 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
 <div class="col-auto">
 <!-- <table style="border-color:black;" class="table table-responsive table-bordered align-middle"> -->
 <table class="table table-responsive table-bordered align-middle">
-<thead><tr> <th scope="col" colspan="2"><center class="text-success"><font color=red>Cài Đặt Hotword</font></center></th> 
+<thead><tr> <th scope="col" colspan="2"><center class="text-success"><font color=red>Cài Đặt Hotword: <?php echo $hotwords_get_lang; ?></font></center></th> 
 </tr>
  <tbody>
     <tr>
@@ -1513,11 +1598,7 @@ else {
 </div><hr/>
 <!-- </div> -->
 <!--Kết Thúc mục  Wake Up Reply --> 	
-
-
-
   <h5>Cài Đặt UI, API, Cập Nhật:</h5>
-
 	
 <div class="form-check form-switch d-flex justify-content-center"> 
 <div id="toggleIcon" onclick="toggleDivblockupdates()"><font color=red>
@@ -1591,14 +1672,16 @@ else {
 <div class="col-auto">
 <table class="table table-sm table-bordered table-responsive align-middle">
 <thead><tr>
-<th colspan="2"><center class="text-success">Thay Đổi Ngôn Ngữ Hotword <i class="bi bi-info-circle-fill" onclick="togglePopuphwlang()" title="Nhấn Để Tìm Hiểu Thêm"></i></center></th>
+<th colspan="3"><center class="text-success">Thay Đổi Ngôn Ngữ Hotword <i class="bi bi-info-circle-fill" onclick="togglePopuphwlang()" title="Nhấn Để Tìm Hiểu Thêm"></i></center></th>
 </tr></thead><tbody><tr> 
-<td  scope="col" colspan="2"><center><font color="red">Bạn Đang Dùng: <b><?php echo $hotwords_get_lang; ?></b></font></center></td>
-<tr><tr><td><center><b>Tiếng Việt</b></center></td><td><center><b>Tiếng Anh</b></center></td>
-</tr><tr><td> <center><input type="radio" name="language_hotword" id="language_hotwordddd" value="vi"></center></td>
-<td><center><input type="radio" name="language_hotword" id="language_hotwordddd1" value="eng"></center></td>
-</tr><tr><th><center><button type="submit" name="language_hotword_submit" class="btn btn-success">Lưu Cài Đặt</button></th> 
-<th><p onclick="uncheckRadiolanguage_hotwordddd()" class="btn btn-danger">Bỏ Chọn</p></th></center></th></tr></tbody></table></div></div></form><hr/>    
+<td  scope="col" colspan="3"><center><font color="red">Bạn Đang Dùng: <b><?php echo $hotwords_get_lang; ?></b></font></center></td>
+
+<tr><tr><td><center><b>Mặc Định</b></center></td><td><center><b>Tiếng Việt</b></center></td><td><center><b>Tiếng Anh</b></center></td>
+</tr><tr><td> <center><input type="radio" name="language_hotword" id="language_hotwor_default" value="default" <?php if ($hotwords_get_langgg === 'default') echo 'checked'; ?>></center></td>
+<td> <center><input type="radio" name="language_hotword" id="language_hotwordddd" value="vi"  <?php if ($hotwords_get_langgg === 'vi') echo 'checked'; ?>></center></td>
+<td><center><input type="radio" name="language_hotword" id="language_hotwordddd1" value="eng" <?php if ($hotwords_get_langgg === 'eng') echo 'checked'; ?>></center></td>
+</tr><tr><th colspan="3"><center><button type="submit" name="language_hotword_submit" class="btn btn-success">Lưu Cài Đặt</button>
+<button type="button" onclick="uncheckRadiolanguage_hotwordddd()" class="btn btn-danger">Bỏ Chọn</button></th></center></th></tr></tbody></table></div></div></form><hr/>    
 <center><h5><font color=red>Khôi Phục File config.json: <i class="bi bi-info-circle-fill" onclick="togglePopupConfigRecovery()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5></font></center>
 <div class="form-check form-switch d-flex justify-content-center"> 
 <div id="toggleIcon" onclick="toggleDivConfigRecovery()"><font color=red>
@@ -2549,6 +2632,8 @@ else if (radio.value === "stt_hpda") {
   radio.checked = false;
     var radio1 = document.getElementById("language_hotwordddd1");
   radio1.checked = false;
+      var radio2 = document.getElementById("language_hotwor_default");
+  radio2.checked = false;
 }
 
     // Lắng nghe sự kiện thay đổi của checkbox Welcome
