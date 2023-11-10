@@ -231,7 +231,7 @@ $stream_out1 = ssh2_fetch_stream($stream1, SSH2_STREAM_STDIO);
 $stream_out2 = ssh2_fetch_stream($stream2, SSH2_STREAM_STDIO); 
 stream_get_contents($stream_out1); 
 stream_get_contents($stream_out2); 
-header("Location: $PHP_SELF"); exit;
+header("Location: $PHP_SELF");
 }
 // Đường dẫn đến thư mục "Backup_Config"
 $backupDirz = "Backup_Skill/";
