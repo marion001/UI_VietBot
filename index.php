@@ -23,7 +23,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     <link rel="stylesheet" href="assets/css/bootstrap-icons.css">
     <link rel="stylesheet" href="assets/css/all.min.css">
     <link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.css">
-  <!--  <link rel="stylesheet" href="assets/css/animate.min.css"> -->
+   <link rel="stylesheet" href="assets/css/animate.min.css"> 
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="assets/css/magnific-popup.css">
     <link rel="stylesheet" href="assets/css/style.css">
