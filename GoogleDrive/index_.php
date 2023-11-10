@@ -296,5 +296,5 @@ if (file_exists($tokenFilePath)) {
 				<script>
             var messageeee = document.getElementById('messageeee');
             messageeee.innerHTML += '<?php echo $messageeee; ?>';
-             </script>";
+             </script>
 </body></html>
