@@ -59,7 +59,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         height: auto;
         background-color: #d2d8bb;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        transition: right 0.3s ease;
+        transition: right 0.1s ease;
         z-index: 1;
     }
     
