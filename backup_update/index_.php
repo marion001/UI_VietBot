@@ -286,11 +286,9 @@ if (!is_dir($DuognDanThuMucJson)) {
                     </tr>
 
                     <tr>
-                        <th colspan="2">
-                            <center class="text-danger">Chọn File Cần Giữ Lại</center>
-                        </th>
-                        <th colspan="2">
-                            <center class="text-danger">Chọn Thư Mục Cần Giữ Lại</center>
+ 
+                        <th colspan="4">
+                            <center class="text-danger">Chọn File/Thư Mục Cần Giữ Lại Khi Cập nhật</center>
                         </th>
                     </tr>
                     <tr>
@@ -349,31 +347,28 @@ if (!is_dir($DuognDanThuMucJson)) {
                         <td>
                             <input type="checkbox" class="form-check-input" name="exclude[]" value="device_config.json" checked>
                         </td>
-                        <th scope="row">-</th>
-                        <td>-</td>
+                        <th scope="row">action.json</th>
+                        <td><input type="checkbox" class="form-check-input" name="exclude[]" value="action.json"></td>
 
                     </tr>
 					                    <tr>
                         <th scope="row">custom_skill.py</th>
                         <td>
-                            <input type="checkbox" class="form-check-input" name="exclude[]" value="device_config.json" checked>
+                            <input type="checkbox" class="form-check-input" name="exclude[]" value="custom_skill.py" checked>
                         </td>
-                        <th scope="row">-</th>
-                        <td>-</td>
+                        <th scope="row">object.json</th>
+                        <td><input type="checkbox" class="form-check-input" name="exclude[]" value="object.json"></td>
 
                     </tr>
 					                                    <tr>
                         <th colspan="4">
-                            <center class="text-danger">Loại Trừ File/Thư Mục Không Cho Sao Lưu</center>
+                            <center class="text-danger">Sao Lưu</center>
                         </th>
                     </tr>
 
                     <tr>
-                        <th colspan="2">
-                            <center class="text-danger">File</center>
-                        </th>
-                        <th colspan="2">
-                            <center class="text-danger">Thư Mục</center>
+                        <th colspan="4">
+                            <center class="text-danger">Loại Trừ File/Thư Mục Không Sao Lưu</center>
                         </th>
                     </tr>
                     <tr>
