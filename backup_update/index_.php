@@ -353,6 +353,15 @@ if (!is_dir($DuognDanThuMucJson)) {
                         <td>-</td>
 
                     </tr>
+					                    <tr>
+                        <th scope="row">custom_skill.py</th>
+                        <td>
+                            <input type="checkbox" class="form-check-input" name="exclude[]" value="device_config.json" checked>
+                        </td>
+                        <th scope="row">-</th>
+                        <td>-</td>
+
+                    </tr>
 					                                    <tr>
                         <th colspan="4">
                             <center class="text-danger">Loại Trừ File/Thư Mục Không Cho Sao Lưu</center>
