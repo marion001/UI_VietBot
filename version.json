@@ -1,7 +1,7 @@
 {
   "ui_version": {
-    "latest": "beta 10-11-2023",
-    "current": "beta 10-11-2023",
-    "notification": "fix lỗi trắng tab, Tự động cài các thư viện nếu thiếu"
+    "latest": "beta 15-11-2023",
+    "current": "beta 15-11-2023",
+    "notification": "Cập Nhật Phát Youtube từ Media Player"
   }
 }
