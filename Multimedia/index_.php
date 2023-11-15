@@ -228,7 +228,7 @@ $duration = isset($fileInfo['playtime_seconds']) ? round($fileInfo['playtime_sec
             echo '<b>Tên bài hát:</b> ' . basename($mp3File) . '<br/>';
             echo '<b>Thời lượng:</b> ' . formatTime($duration) . '<br/>';
             echo '<b>Kích thước:</b> ' . $fileSizeMB . ' MB<br/>';
-            echo '<button class="ajax-button btn btn-success" data-song-kichthuoc="' . $fileSizeMB . ' MB" data-song-thoiluong="' . formatTime($duration) . '" data-song-artist=" ---" data-song-images="../assets/img/NotNhac.png" data-song-name="' . basename($mp3File) . '" data-song-link_type="local" data-song-id="mp3/' . basename($mp3File) . '">Phát Nhạc</button>';
+            echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-kichthuoc="' . $fileSizeMB . ' MB" data-song-thoiluong="' . formatTime($duration) . '" data-song-artist=" ---" data-song-images="../assets/img/NotNhac.png" data-song-name="' . basename($mp3File) . '" data-song-link_type="local" data-song-id="mp3/' . basename($mp3File) . '">Phát Nhạc</button>';
             echo '<button class="deleteBtn btn btn-danger" data-file="' . basename($mp3File) . '">Xóa File</button>';
             echo "</div></div><br/>";
         }
@@ -317,7 +317,7 @@ if ($responseYoutube === false) {
             echo '<b>Tên bài hát:</b> ' . $Youtube_title . '<br/><b>Tên Kênh:</b> ' . $Youtube_channelTitle . '<br/>';
             //echo '<b>Mô tả:</b> ' . $Youtube_description . ' <br/>';
             //echo '<b>Link:</b> ' . $Youtube_videoLink . ' <br/>';
-            echo '<button class="ajax-button btn btn-success" data-song-link_type="direct" data-song-artist="' . $Youtube_channelTitle . '" data-song-images="' .$Youtube_images.'" data-song-name="'  . $Youtube_title . '" data-song-kichthuoc=" ---" data-song-thoiluong=" ---" data-song-id="' . $Youtube_videoLink . '" >Phát Nhạc</button>';
+            echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Tên Kênh" data-song-link_type="direct" data-song-artist="' . $Youtube_channelTitle . '" data-song-images="' .$Youtube_images.'" data-song-name="'  . $Youtube_title . '" data-song-kichthuoc=" ---" data-song-thoiluong=" ---" data-song-id="' . $Youtube_videoLink . '" >Phát Nhạc</button>';
             echo "</div></div><br/>";
         }
     }
@@ -376,7 +376,7 @@ if ($response === false) {
                 echo "<img src='$img_images' class='imagesize' alt='' /> <div class='caption'>";
                 echo '<b>Tên bài hát:</b> ' . $song['name'] . '<br/><b>Nghệ sĩ:</b> ' . $song['artist'] . '<br/>';
                 //echo 'ID bài hát: ' . $song['id'] . ' <br/>';
-                echo '<button class="ajax-button btn btn-success" data-song-kichthuoc="---" data-song-thoiluong="---" data-song-link_type="zingmp3" data-song-artist="' . $song['artist'] . '" data-song-name="' . $song['name'] . '" data-song-images="' . $img_images . '" data-song-id="' . $originalUrl . '">Phát Nhạc</button>';
+                echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-kichthuoc="---" data-song-thoiluong="---" data-song-link_type="zingmp3" data-song-artist="' . $song['artist'] . '" data-song-name="' . $song['name'] . '" data-song-images="' . $img_images . '" data-song-id="' . $originalUrl . '">Phát Nhạc</button>';
                 //echo "Original URL: $originalUrl<br>";
                 // echo "MP3 128 URL: $finalUrl<br/><br/>";
                 echo "</div></div><br/>";
@@ -404,6 +404,7 @@ if ($response === false) {
             var songId = $(this).data('song-id');
             var link_type = $(this).data('song-link_type');
             var songImages = $(this).data('song-images');
+            var songTenKenhNgheSi = $(this).data('song-tenkenhnghesi');
             var songKichThuoc = $(this).data('song-kichthuoc');
             var songThoiLuong = $(this).data('song-thoiluong');
             var songArtist = $(this).data('song-artist');
@@ -456,7 +457,7 @@ if ($response === false) {
                                 var endTime = new Date(); // Lấy thời gian kết thúc yêu cầu
                                 var elapsedTime = endTime - startTime; // Tính thời gian thực hiện yêu cầu
                                 messageElement.innerHTML = '<div style="color: green;"><b>' + getTime + ' - ' + modifiedStringSuccess + ' | ' + elapsedTime + 'ms</b></div>';
-                                messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + songImages + ' alt="" /></div><div class="caption"><b>Tên bài hát: </b> ' + songName + '<br/><b>Nghệ sĩ: </b> ' + songArtist + '<br/><b>Thời lượng: </b> ' + songThoiLuong + '<br/><b>Kích thước: </b> ' + songKichThuoc + '</div></div>';
+                                messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + songImages + ' alt="" /></div><div class="caption"><b>Tên bài hát: </b> ' + songName + '<br/><b>'+songTenKenhNgheSi+': </b> ' + songArtist + '<br/><b>Thời lượng: </b> ' + songThoiLuong + '<br/><b>Kích thước: </b> ' + songKichThuoc + '</div></div>';
                             })
                             .fail(function(jqXHR, textStatus, errorThrown) {
                                 //var messageElement = document.getElementById("messagee");
