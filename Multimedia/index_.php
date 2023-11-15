@@ -316,8 +316,8 @@ if ($responseYoutube === false) {
             echo "<img src='$Youtube_images' class='imagesize' alt='' /> <div class='caption'>";
             echo '<b>Tên bài hát:</b> ' . $Youtube_title . '<br/><b>Tên Kênh:</b> ' . $Youtube_channelTitle . '<br/>';
             //echo '<b>Mô tả:</b> ' . $Youtube_description . ' <br/>';
-            echo '<b>Link:</b> ' . $Youtube_videoLink . ' <br/>';
-            echo '<button class="ajax-button btn btn-success" data-song-id="' . $Youtube_videoLink . '" disabled>Phát Nhạc/Comback Soon</button>';
+            //echo '<b>Link:</b> ' . $Youtube_videoLink . ' <br/>';
+            echo '<button class="ajax-button btn btn-success" data-song-link_type="direct" data-song-artist="' . $Youtube_channelTitle . '" data-song-images="' .$Youtube_images.'" data-song-name="'  . $Youtube_title . '" data-song-kichthuoc=" ---" data-song-thoiluong=" ---" data-song-id="' . $Youtube_videoLink . '" >Phát Nhạc</button>';
             echo "</div></div><br/>";
         }
     }
@@ -399,7 +399,8 @@ if ($response === false) {
     $(document).ready(function() {
         // Xử lý sự kiện khi nút Ajax được nhấn
         $('.ajax-button').on('click', function() {
-			
+			$('#loading-overlay').show();
+			var messageElement = document.getElementById("messagee");
             var songId = $(this).data('song-id');
             var link_type = $(this).data('song-link_type');
             var songImages = $(this).data('song-images');
@@ -409,20 +410,27 @@ if ($response === false) {
             var songName = $(this).data('song-name');
             var startTime = new Date(); // Lấy thời gian bắt đầu yêu cầu
             var getTime = formatTime(startTime.getHours()) + ':' + formatTime(startTime.getMinutes()) + ':' + formatTime(startTime.getSeconds());
+			
+			
+			messageElement.innerHTML = '<font color=red>Đang Chuyển Đổi Dữ Liệu...</font>';
             if (!songId) {
                 //alert('Không có dữ liệu cho songId');
                 return; // Dừng thực thi nếu không có dữ liệu đầu vào
+				messageElement.innerHTML = '<font color=red>Không Có Dữ Liệu Bài Hát songId...</font>';
             }
-
-           //  console.log('song id:', songId);
+			
+             //console.log('song id:', songId);
             $.ajax({
                 url: '../include_php/Ajax/Get_Final_Url_ZingMp3.php?url=' + encodeURIComponent(songId),
                 method: 'GET',
                 dataType: 'json',
                 success: function(response) {
+					
                     if (response.finalUrl) {
+						
                         var finalUrl = response.finalUrl;
-                        //    console.log('Final URL:', finalUrl);
+                            //console.log('Final URL:', finalUrl);
+							
                         // Phần còn lại của đoạn mã xử lý Ajax
                         var settings = {
                             "url": "http://<?php echo $serverIP; ?>:5000",
@@ -438,11 +446,11 @@ if ($response === false) {
                                 "link": finalUrl
                             }),
                         };
-
+						messageElement.innerHTML = '<font color=red>Thực Thi Dữ Liệu Đã Chuyển Đổi...</font>';
                         // Gửi yêu cầu Ajax
                         $.ajax(settings)
                             .done(function(response) {
-                                var messageElement = document.getElementById("messagee");
+                                //var messageElement = document.getElementById("messagee");
                                 var messageinfomusicplayer = document.getElementById("infomusicplayer");
                                 let modifiedStringSuccess = response.state.replace("Success", "Thành Công");
                                 var endTime = new Date(); // Lấy thời gian kết thúc yêu cầu
@@ -451,7 +459,7 @@ if ($response === false) {
                                 messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + songImages + ' alt="" /></div><div class="caption"><b>Tên bài hát: </b> ' + songName + '<br/><b>Nghệ sĩ: </b> ' + songArtist + '<br/><b>Thời lượng: </b> ' + songThoiLuong + '<br/><b>Kích thước: </b> ' + songKichThuoc + '</div></div>';
                             })
                             .fail(function(jqXHR, textStatus, errorThrown) {
-                                var messageElement = document.getElementById("messagee");
+                                //var messageElement = document.getElementById("messagee");
                                 var endTime = new Date(); // Lấy thời gian kết thúc yêu cầu
                                 var elapsedTime = endTime - startTime; // Tính thời gian thực hiện yêu cầu
                                 if (textStatus === "timeout") {
@@ -462,15 +470,20 @@ if ($response === false) {
                                 }
                             });
                     } else {
-                        // console.error('Lỗi:', response.error || 'Không xác định');
+                        //console.error('Lỗi:', response.error || 'Không xác định');
                         messageElement.innerHTML = '<div style="color: red;"><b>' + getTime + ' - Lỗi: ' + response.error + ' Không xác định || ' + elapsedTime + 'ms</b></div>';
                     }
+					$('#loading-overlay').hide();
+					
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
+					$('#loading-overlay').hide();
                     //console.error('Lỗi AJAX:', textStatus, errorThrown);
                     messageElement.innerHTML = '<div style="color: red;"><b>' + getTime + ' - Lỗi AJAX: ' + textStatus + ' || ' + errorThrown + ' || ' + elapsedTime + 'ms</b></div>';
                 }
+				
             });
+			
 
         });
     });
