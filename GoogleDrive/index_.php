@@ -215,10 +215,18 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     {
         return json_decode(file_get_contents($filePath), true);
     }
-
-
+// Kiểm tra xem tệp tồn tại không
 if (file_exists($tokenFilePath)) {
-    $accessToken = readTokenFromFile($tokenFilePath);
+$tokenDatajjj = json_decode(file_get_contents($tokenFilePath), true);
+    if (
+        isset($tokenDatajjj['access_token']) &&
+        isset($tokenDatajjj['expires_in']) &&
+        isset($tokenDatajjj['refresh_token']) &&
+        isset($tokenDatajjj['scope']) &&
+        isset($tokenDatajjj['token_type']) &&
+        isset($tokenDatajjj['created'])
+    ) {
+            $accessToken = readTokenFromFile($tokenFilePath);
     $client->setAccessToken($accessToken);
 
     // Kiểm tra xem token có hợp lệ và chưa hết hạn không
@@ -242,6 +250,14 @@ if (file_exists($tokenFilePath)) {
 		echo "<button name='reset_token' class='btn btn-danger'>Reset Token</button>";
 		echo "<a href='$PHP_SELF'><button class='btn btn-primary'>Làm Mới</button></a></center>";
 		echo "</form>";
+    }
+	
+    } else {
+    	echo '<form method="POST" id="my-form" action="">';
+        echo '<center><h4><font color=red>Chuỗi Định Dạng Token Không Hợp Lệ, Cần Cấu Hình Lại Trình Xác Thực</font></h4><br/>';
+		echo "<button name='reset_token' class='btn btn-danger'>Cấu Hình Lại</button>";
+		echo "<a href='$PHP_SELF'><button class='btn btn-primary'>Làm Mới</button></a></center>";
+		echo "</form><hr/>";
     }
 } else {
         if (!isset($_POST['code_token'])) {
@@ -285,13 +301,12 @@ if (file_exists($tokenFilePath)) {
     }
 }
     }
-} else {
+} 
+else {
     echo "<font color=red><h4><center>Cần phải được bật <b>Google Drive Auto Backup</b> trong tab <b>Config/Cấu Hình</b> để xem và thiết lập</center></h4></font><br/>";
 	echo "<center><a href='$PHP_SELF'><button class='btn btn-primary'>Tải lại</button></a></center>";
 }
 ?>
-
- 
 	<br/><div class="right-align" id="messageeee"></div>
 				<script>
             var messageeee = document.getElementById('messageeee');
