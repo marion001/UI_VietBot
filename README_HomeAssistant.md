@@ -94,6 +94,10 @@ Giao Diện Love Lace:
 
           <hr> Thông Tin Hệ Thống:<br/>
 
+
+          - Nhiệt Độ CPU: <font
+          color=gree>{{state_attr('sensor.vietbot_api_info','info_os').temperature_cpu}}</font>
+
       
           - Bộ Nhớ:<br/> - Tổng Dung Lượng: <font
           color=gree>{{state_attr('sensor.vietbot_api_info','info_os').disk.disk_total}}</font><br/>
