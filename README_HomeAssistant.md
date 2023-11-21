@@ -141,7 +141,7 @@ input_number.yaml:
 
     vietbot_volume_slider:
       name: Vietbot Volume Slider
-      icon: mdi:timer
+      icon: mdi:volume-high
       #initial: 75
       min: 0
       max: 100
