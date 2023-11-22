@@ -524,7 +524,18 @@ if (isset($Web_UI_Enable_GDrive_Backup) && $Web_UI_Enable_GDrive_Backup === true
         } while ($pageToken);
         return $result;
     }
-    if (file_exists($tokenFilePath)) {
+	if (file_exists($tokenFilePath)) {
+    // Tệp tồn tại, tiến hành đọc nội dung và kiểm tra các trường
+    $tokenDatasss = json_decode(file_get_contents($tokenFilePath), true);
+
+    if (
+        isset($tokenDatasss['access_token']) &&
+        isset($tokenDatasss['expires_in']) &&
+        isset($tokenDatasss['refresh_token']) &&
+        isset($tokenDatasss['scope']) &&
+        isset($tokenDatasss['token_type']) &&
+        isset($tokenDatasss['created'])
+    ) {
         $accessToken = readTokenFromFile($tokenFilePath);
         $client->setAccessToken($accessToken);
         if ($client->isAccessTokenExpired()) {
@@ -539,8 +550,17 @@ if (isset($Web_UI_Enable_GDrive_Backup) && $Web_UI_Enable_GDrive_Backup === true
             echo "MessageGDriverrr.innerHTML += '<br/><font color=red>Lỗi khi làm mới token: $get_loi_e_Messager</font>';";
             echo "</script>";
             }
-        } 
-    }  else {
+        }
+    } else {
+       		echo "<script>";
+            echo "var MessageGDriverrr = document.getElementById('MessageGDriver');";
+            echo "MessageGDriverrr.innerHTML += '<font color=red><b>Google Drive Auto Backup</b> Tệp token.json Lỗi, Cần Cấu Hình Xác Thực Lại.<br/></font>';";
+            echo "MessageGDriverrr.innerHTML += '<font color=red><b>Sẽ không có file backup nào được tải lên<br/></font>';";
+            echo "MessageGDriverrr.innerHTML += '<font color=red><a href=../#Google_Drive_Auto_Backup target=_bank>Nhấn vào đây để tới trang Cấu Hình Xác Thực</a><br></font>';";
+            echo "MessageGDriverrr.innerHTML += '<font color=red>Xác thực xong bạn cần quay lại đây để <b>Cập Nhật</b> lại.<br/><br></font>';";
+            echo "</script>";
+    }
+}  else {
 		    echo "<script>";
             echo "var MessageGDriverrr = document.getElementById('MessageGDriver');";
             echo "MessageGDriverrr.innerHTML += '<font color=red><b>Google Drive Auto Backup</b> chưa được xác thực với <b>Vietbot</b>.<br/></font>';";
