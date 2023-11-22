@@ -17,10 +17,14 @@ $message = "Tuyển Test MQTT";
 ?>
 <?php
 //MQTT sensor:
-//  - name: "VietBot MQTT TESTER"
-//    state_topic: "phpMQTT/Vietbot/Messenger"
- 
-
+/*
+  - name: "VietBot MQTT Messenger"
+    state_topic: "phpMQTT/Vietbot/Messenger"
+  - name: "VietBot MQTT Temperature"
+    state_topic: "phpMQTT/Vietbot/Temperature"
+    unit_of_measurement: "°C"
+    
+*/
 
 $Mes_Successfully = json_encode(array(
             'message' => 'Đẩy dữ liệu lên MQTT thành công',
