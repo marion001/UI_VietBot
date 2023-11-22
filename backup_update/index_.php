@@ -846,10 +846,6 @@ exec("rm $DuognDanUI_HTML/backup_update/backup/config_.json");
 exec("rm $DuognDanUI_HTML/backup_update/backup/skill_.json");
 exec("rm $DuognDanUI_HTML/backup_update/backup/state_.json");
 
-
-
-
-
 if (isset($Web_UI_Enable_GDrive_Backup) && $Web_UI_Enable_GDrive_Backup === true) {
     $jsonFilePath = $DuognDanUI_HTML.'/GoogleDrive/client_secret.json';
     $jsonData = file_get_contents($jsonFilePath);
@@ -903,7 +899,19 @@ if (isset($Web_UI_Enable_GDrive_Backup) && $Web_UI_Enable_GDrive_Backup === true
         } while ($pageToken);
         return $result;
     }
-    if (file_exists($tokenFilePath)) {
+
+	if (file_exists($tokenFilePath)) {
+    // Tệp tồn tại, tiến hành đọc nội dung và kiểm tra các trường
+    $tokenDatasss = json_decode(file_get_contents($tokenFilePath), true);
+
+    if (
+        isset($tokenDatasss['access_token']) &&
+        isset($tokenDatasss['expires_in']) &&
+        isset($tokenDatasss['refresh_token']) &&
+        isset($tokenDatasss['scope']) &&
+        isset($tokenDatasss['token_type']) &&
+        isset($tokenDatasss['created'])
+    ) {
         $accessToken = readTokenFromFile($tokenFilePath);
         $client->setAccessToken($accessToken);
         if ($client->isAccessTokenExpired()) {
@@ -919,15 +927,25 @@ if (isset($Web_UI_Enable_GDrive_Backup) && $Web_UI_Enable_GDrive_Backup === true
             echo "</script>";
             }
         }
-    }  else {
-		    echo "<script>";
+    } else {
+       		echo "<script>";
             echo "var MessageGDriverrr = document.getElementById('MessageGDriver');";
-            echo "MessageGDriverrr.innerHTML += '<font color=red><b>Google Drive Auto Backup</b> chưa được xác thực với <b>Vietbot</b>.<br/></font>';";
+            echo "MessageGDriverrr.innerHTML += '<font color=red><b>Google Drive Auto Backup</b> Tệp token.json Lỗi, Cần Cấu Hình Xác Thực Lại.<br/></font>';";
             echo "MessageGDriverrr.innerHTML += '<font color=red><b>Sẽ không có file backup nào được tải lên<br/></font>';";
             echo "MessageGDriverrr.innerHTML += '<font color=red><a href=../#Google_Drive_Auto_Backup target=_bank>Nhấn vào đây để tới trang Cấu Hình Xác Thực</a><br></font>';";
             echo "MessageGDriverrr.innerHTML += '<font color=red>Xác thực xong bạn cần quay lại đây để <b>Cập Nhật</b> lại.<br/><br></font>';";
             echo "</script>";
     }
+} else {
+		    echo "<script>";
+            echo "var MessageGDriverrr = document.getElementById('MessageGDriver');";
+            echo "MessageGDriverrr.innerHTML += '<font color=red><b>Google Drive Auto Backup:</b> chưa được xác thực với <b>Vietbot</b>.<br/></font>';";
+            echo "MessageGDriverrr.innerHTML += '<font color=red><b>Sẽ không có file backup nào được tải lên<br/></font>';";
+            echo "MessageGDriverrr.innerHTML += '<font color=red><a href=../#Google_Drive_Auto_Backup target=_bank>Nhấn vào đây để tới trang Cấu Hình Xác Thực</a><br></font>';";
+            echo "MessageGDriverrr.innerHTML += '<font color=red>Xác thực xong bạn cần quay lại đây để <b>Cập Nhật</b> lại.<br/><br></font>';";
+            echo "</script>";
+}
+	
     $driveService = new Google_Service_Drive($client);
     $parentFolders = $driveService->files->listFiles(array(
         'q' => "mimeType='application/vnd.google-apps.folder' and name='$parentFolderName'",
@@ -1027,19 +1045,15 @@ if (isset($Web_UI_Enable_GDrive_Backup) && $Web_UI_Enable_GDrive_Backup === true
             echo "</script>";
      //   die();
     }
-} else {
+} 
+
+else {
 			echo "<script>";
             echo "var MessageGDriverrr = document.getElementById('MessageGDriver');";
             echo 'MessageGDriverrr.innerHTML += "<br/><font color=red>Google Drive Auto Backup chưa được bật trong Config/Cấu Hình</font>";';
             echo 'MessageGDriverrr.innerHTML += "<br/><font color=red>Sẽ không có file backup nào được tải lên!</font>";';
             echo "</script>";
 }
-
-
-
-
-
-  
 
 //Play Mp3 khi cập nhật hoàn tất
 if (@$_POST['audioo_playmp3_success'] === "playmp3_success") {
