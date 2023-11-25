@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 #-*-coding:gb2312-*-
 
+import libs
+
 #Gọi Các thư viện của vietbot dùng cho Custom Skill
 from datetime import datetime, timedelta, date
 from tts_process import tts_process
