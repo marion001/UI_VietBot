@@ -1,7 +1,7 @@
 {
   "ui_version": {
-    "latest": "beta 15-11-2023",
-    "current": "beta 15-11-2023",
-    "notification": "Cập Nhật Phát Youtube từ Media Player"
+    "latest": "beta 26-11-2023",
+    "current": "beta 26-11-2023",
+    "notification": "fix bug Web UI"
   }
 }
