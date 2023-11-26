@@ -1478,10 +1478,10 @@ None (Không Dùng)</label></center>
 <tr><th scope="row">Hiệu ứng khi nói:</th>
 <td colspan="2"><input type="text"   value="<?php echo $LED_SPEAK_EFFECT; ?>" id="speak_effect_mode_input" name="speak_effect" class="disabled-input form-control"></td></tr>
 <tr><th scope="row">Màu khi được đánh thức:</th>
-<td><input type="text"  id="wakeup_color_mode_input" title="Nhập Mã Màu" placeholder="03254b" value="<?php echo $LED_WAKEUP_COLOR; ?>"  name="wakeup_color" maxlength="6" class="disabled-input form-control"></td>
+<td><input type="text"  id="wakeup_color_mode_input" title="Nhập Mã Màu" placeholder="03254b" value="<?php echo $LED_WAKEUP_COLOR; ?>"  name="wakeup_color" maxlength="6" class="disabled-input form-control" oninput="updateColorPicker()"></td>
 <td><input type="color" id="color_pickerwakeup_color" title="Nhấn Để Hiển Thị Bảng Mã Màu" class="disabled-input form-control-color" onchange="updateColorValueWakeUp_Color()"></td></tr>
 <tr><th scope="row">Màu khi tắt tiếng:</th>
-<td><input type="text"  value="<?php echo $LED_MUTED_COLOR; ?>" title="Nhập Mã Màu" placeholder="FF3333"  id="muted_color_mode_input" name="muted_color" maxlength="6" class="disabled-input form-control"></td>
+<td><input type="text"  value="<?php echo $LED_MUTED_COLOR; ?>" title="Nhập Mã Màu" placeholder="FF3333"  id="muted_color_mode_input" name="muted_color" maxlength="6" class="disabled-input form-control" oninput="updateColorPickerMuted()"></td>
 <td><input type="color" title="Nhấn Để Hiển Thị Bảng Mã Màu" id="color_pickermuted_color" class="disabled-input form-control-color hidden-inputLED" onchange="updateColorValueMuted_Color()"></td></tr>
 </table></div></div></div><hr/>
   <!-- end chọn kiểu led -->
@@ -1807,36 +1807,12 @@ if (count($fileLists) > 0) {
         $('.hidden-input').toggle();
       });
     });
-	/*
-	//ẩn hiện thẻ div mục Wake Up
-	    function toggleInput() {
-      var inputContainer = document.getElementById("inputContainer");
-      inputContainer.style.display = (inputContainer.style.display === "none") ? "block" : "none";
-    }
-	*/
-	//ẩn hiện cấu hình nút nhấn
-	/*
-    function toggleInputVisibilityy() {
-      var inputDivv = document.getElementById("input-divv");
-      var switchStatee = document.getElementById("switchh").checked;
-      inputDivv.style.display = switchStatee ? "block" : "none";
-    }	
-	*/
 	//Ẩn hiện thẻ input LED
     function toggleInputVisibility() {
       var inputDiv = document.getElementById("input-div");
       var switchState = document.getElementById("switch").checked;
       inputDiv.style.display = switchState ? "block" : "none";
     }
-	
-	/*
-	//ẩn hiện cấu hình hotword_engine
-    function toggleInputVisibilityyy() {
-      var inputDivvv = document.getElementById("input-divvv");
-      var switchStateee = document.getElementById("switchhh").checked;
-      inputDivvv.style.display = switchStateee ? "block" : "none";
-    }	
-	*/
 	//nút radio và xử lý sự kiện để vô hiệu hóa các nút radio khác khi một nút radio được chọn:
     const ttsCompanyRadios = document.querySelectorAll('input[name="tts_company"]');
     const ttsVoiceRadios = document.querySelectorAll('input[name="tts_voice"]');
@@ -1930,11 +1906,9 @@ if (count($fileLists) > 0) {
 function showTokenInputTTS(radio) {
   var tokenInputContainerTTS = document.getElementById("tokenInputContainerTTS");
   var tokenInputContainerTTSGGCLOUD = document.getElementById("tokenInputContainerTTSGGCLOUD");
- // var otherDivgcloudTTS = document.getElementById("otherDivgcloudTTS");
   if (radio.value === "tts_zalo" || radio.value === "tts_viettel" || radio.value === "tts_fpt") {
     tokenInputContainerTTS.style.display = "block";
     tokenInputContainerTTSGGCLOUD.style.display = "none";
-  //  otherDivgcloudTTS.style.display = "none";
   } else if (radio.value === "tts_gg_cloud") {
     tokenInputContainerTTS.style.display = "none";
     tokenInputContainerTTSGGCLOUD.style.display = "block";
@@ -1974,27 +1948,6 @@ else if (radio.value === "tts_gg_free") {
             document.getElementById('slider-tts').innerHTML = value + 'ms';
         }
 		
-		/*
-		//Ghi giá trị vào input host name khi nhấn button
-        function ghiGiaTriHostName() {
-            document.getElementById("hostname_input_element").value = "<?php echo $HostName; ?>";
-        }
-		*/
-//Script LED
-	//Bảng Mã màu check wakeup_color
-    function updateColorValueWakeUp_Color() {
-      var colorInput = document.getElementById("wakeup_color_mode_input");
-      var colorPicker = document.getElementById("color_pickerwakeup_color");
-      var selectedColor = colorPicker.value;
-      colorInput.value = selectedColor.replace("#", "");
-    }
-	//Bảng Mã màu check muted_color
-	    function updateColorValueMuted_Color() {
-      var colorInput = document.getElementById("muted_color_mode_input");
-      var colorPicker = document.getElementById("color_pickermuted_color");
-      var selectedColor = colorPicker.value;
-      colorInput.value = selectedColor.replace("#", "");
-    }
 	//End
 	// Xử lý các thay đổi loại đèn LED cụ thể
         function handleLedChange() {
@@ -2038,56 +1991,24 @@ else if (radio.value === "tts_gg_free") {
 			else if (selectedLed === "ReSpeaker 4-Mics Pi HAT") {
 				disabledInputs["effect_mode_input"].disabled = false;
 				disabledInputs["effect_mode_input"].required = true;
-                //NumberModeLed.type = "text";
                 NumberModeLed.value = "";
 				EffectModeInput.type = "number";
 				EffectModeInput.value = "<?php echo $LED_EFFECT_MODE; ?>";
 				EffectModeInput.min = "1";
 				EffectModeInput.max = "2";
 				EffectModeInput.placeholder = "1->2"
-				//BrightnessModeInput.type = "text";
 				BrightnessModeInput.value = "";
-				//WakeupColorModeInput.type = "text";
 				WakeupColorModeInput.value = "";
-				//MutedColorModeInput.type = "text";
 				MutedColorModeInput.value = "";
-				//ListenEffectModeInput.type = "text";
 				ListenEffectModeInput.value = "";
 				ListenEffectModeInput.placeholder = "";
-				//ThinkEffectModeInput.type = "text";
 				ThinkEffectModeInput.value = "";
 				ThinkEffectModeInput.placeholder = "";
-				//SpeakEffectModeInput.type = "text";
 				SpeakEffectModeInput.value = "";
 				SpeakEffectModeInput.placeholder = "";
 			} 
 			//APA102
 			else if (selectedLed === "APA102") {
-		/*		disabledInputs["effect_mode_input"].disabled = false;
-				disabledInputs["effect_mode_input"].required = true;
-                //NumberModeLed.type = "text";
-                NumberModeLed.value = "";
-				EffectModeInput.type = "number";
-				EffectModeInput.value = "<?php echo $LED_EFFECT_MODE; ?>";
-				EffectModeInput.min = "1";
-				EffectModeInput.max = "5";
-				EffectModeInput.placeholder = "1->5"
-				//BrightnessModeInput.type = "text";
-				BrightnessModeInput.value = "";
-				//WakeupColorModeInput.type = "text";
-				WakeupColorModeInput.value = "";
-				//MutedColorModeInput.type = "text";
-				MutedColorModeInput.value = "";
-				//ListenEffectModeInput.type = "text";
-				ListenEffectModeInput.value = "";
-				ListenEffectModeInput.placeholder = "";
-				//ThinkEffectModeInput.type = "text";
-				ThinkEffectModeInput.value = "";
-				ThinkEffectModeInput.placeholder = "";
-				//SpeakEffectModeInput.type = "text";
-				SpeakEffectModeInput.value = "";
-				SpeakEffectModeInput.placeholder = "";
-				*/
 				for (var i = 0; i < disabledInputs.length; i++) {
 				disabledInputs[i].disabled = false;
 					}
@@ -2129,6 +2050,8 @@ else if (radio.value === "tts_gg_free") {
 				SpeakEffectModeInput.min = "1";
 				SpeakEffectModeInput.max = "3";
 				SpeakEffectModeInput.placeholder = "1->3";
+				updateColorPicker();
+				updateColorPickerMuted();
 			}
 			//ReSpeaker Mic Array v2.0 | ReSpeaker USB
 			else if (selectedLed === "ReSpeaker Mic Array v2.0") {
@@ -2159,6 +2082,8 @@ else if (radio.value === "tts_gg_free") {
 				ThinkEffectModeInput.placeholder = "";
 				SpeakEffectModeInput.value = "";
 				SpeakEffectModeInput.placeholder = "";
+				updateColorPicker();
+				updateColorPickerMuted();
 			}
 			//WS2812
 			else if (selectedLed === "WS2812") {
@@ -2203,6 +2128,8 @@ else if (radio.value === "tts_gg_free") {
 				SpeakEffectModeInput.min = "1";
 				SpeakEffectModeInput.max = "3";
 				SpeakEffectModeInput.placeholder = "1->3";
+				updateColorPicker();
+				updateColorPickerMuted();
 			}
 			//None
 			else if (selectedLed === "None") {
@@ -2280,6 +2207,8 @@ else if (radio.value === "tts_gg_free") {
 				SpeakEffectModeInput.min = "1";
 				SpeakEffectModeInput.max = "10";
 				SpeakEffectModeInput.placeholder = "1->10";
+				updateColorPicker();
+				updateColorPickerMuted();
 			}
 			}
 //End Led Script
@@ -2724,16 +2653,6 @@ function renderCity(data) {
 		        function clearTextareajsgCLOUD() {
             document.getElementById('jsonTextareaGoogleCloudTTS').value = '';
         }
-/*
-//Đọc IP Ra Thông Báo
-        function updateTextip() {
-            var checkbox = document.getElementById("myCheckboxip");
-            var docIp = "<?php echo $serverIP; ?>";
-            var text = "" + (checkbox.checked ? docIp : "");
-            document.getElementById("myTextip").textContent = text;
-        }
-		*/
-
 	//icon Loading
 $(document).ready(function() {
     $('#my-form').on('submit', function() {
@@ -2761,47 +2680,102 @@ $(document).ready(function() {
             chatboxContent.classList.toggle('open');
         }
     </script>
-	<script>
-// Disable các giọng đọc của tts khi được chọn 1 trong các tts 
-function disableRadioButtons() {
-    // Lấy dữ liệu JSON từ file PHP (điều này cần được thực hiện thông qua AJAX trong ứng dụng thực tế)
-    // Để đơn giản, ta chỉ sử dụng biến jsonData để lưu dữ liệu JSON trong ví dụ này.
-    var jsonData = "<?php echo $GET_TTS_Type; ?>";
-    // Kiểm tra nếu giá trị trong JSON là "tts_edge" thì disable các radio button có id tương ứng
-    if (jsonData === "tts_edge") {
-        document.getElementById("myRadio1").disabled = true;
-        document.getElementById("myRadio2").disabled = true;
-        document.getElementById("myRadio3").disabled = true;
-        document.getElementById("myRadio4").disabled = true;
-        document.getElementById("myRadio7").disabled = true;
-    }else if (jsonData === "tts_gg_cloud") {
-        document.getElementById("myRadio3").disabled = true;
-        document.getElementById("myRadio4").disabled = true;
-        document.getElementById("myRadio5").disabled = true;
-        document.getElementById("myRadio6").disabled = true;
-        document.getElementById("myRadio7").disabled = true;
-    }else if (jsonData === "tts_gg_free") {
-        document.getElementById("myRadio1").disabled = true;
-        document.getElementById("myRadio2").disabled = true;
-        document.getElementById("myRadio3").disabled = true;
-        document.getElementById("myRadio4").disabled = true;
-        document.getElementById("myRadio5").disabled = true;
-        document.getElementById("myRadio6").disabled = true;
-    } 	else {
-        // Trường hợp còn lại (không phải), sẽ enable lại các radio button
-        document.getElementById("myRadio1").disabled = false;
-        document.getElementById("myRadio2").disabled = false;
-        document.getElementById("myRadio3").disabled = false;
-        document.getElementById("myRadio4").disabled = false;
-        document.getElementById("myRadio5").disabled = false;
-        document.getElementById("myRadio6").disabled = false;
-        document.getElementById("myRadio7").disabled = false;
-    }
-}
-// Gọi hàm để disable radio buttons khi trang được load
-disableRadioButtons();
-	
+<script>
+    // Disable các giọng đọc của tts khi được chọn 1 trong các tts 
+    function disableRadioButtons() {
+            // Lấy dữ liệu JSON từ file PHP (điều này cần được thực hiện thông qua AJAX trong ứng dụng thực tế)
+            // Để đơn giản, ta chỉ sử dụng biến jsonData để lưu dữ liệu JSON trong ví dụ này.
+            var jsonData = "<?php echo $GET_TTS_Type; ?>";
+            // Kiểm tra nếu giá trị trong JSON là "tts_edge" thì disable các radio button có id tương ứng
+            if (jsonData === "tts_edge") {
+                document.getElementById("myRadio1").disabled = true;
+                document.getElementById("myRadio2").disabled = true;
+                document.getElementById("myRadio3").disabled = true;
+                document.getElementById("myRadio4").disabled = true;
+                document.getElementById("myRadio7").disabled = true;
+            } else if (jsonData === "tts_gg_cloud") {
+                document.getElementById("myRadio3").disabled = true;
+                document.getElementById("myRadio4").disabled = true;
+                document.getElementById("myRadio5").disabled = true;
+                document.getElementById("myRadio6").disabled = true;
+                document.getElementById("myRadio7").disabled = true;
+            } else if (jsonData === "tts_gg_free") {
+                document.getElementById("myRadio1").disabled = true;
+                document.getElementById("myRadio2").disabled = true;
+                document.getElementById("myRadio3").disabled = true;
+                document.getElementById("myRadio4").disabled = true;
+                document.getElementById("myRadio5").disabled = true;
+                document.getElementById("myRadio6").disabled = true;
+            } else {
+                // Trường hợp còn lại (không phải), sẽ enable lại các radio button
+                document.getElementById("myRadio1").disabled = false;
+                document.getElementById("myRadio2").disabled = false;
+                document.getElementById("myRadio3").disabled = false;
+                document.getElementById("myRadio4").disabled = false;
+                document.getElementById("myRadio5").disabled = false;
+                document.getElementById("myRadio6").disabled = false;
+                document.getElementById("myRadio7").disabled = false;
+            }
+        }
+        // Gọi hàm để disable radio buttons khi trang được load
+    disableRadioButtons();
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        updateColorPicker();
+    });
+
+    function updateColorPicker() {
+        var colorInputValue = document.getElementById('wakeup_color_mode_input').value;
+        var colorPicker = document.getElementById('color_pickerwakeup_color');
+        colorPicker.value = '#' + colorInputValue;
+        updateColorValueWakeUp_Color();
+    }
+
+    function updateInputColorValue() {
+        var colorPicker = document.getElementById('color_pickerwakeup_color');
+        var inputColor = document.getElementById('wakeup_color_mode_input');
+        var selectedColor = colorPicker.value.substring(1); // Bỏ dấu # từ giá trị màu
+        inputColor.value = selectedColor;
+        updateColorValueWakeUp_Color();
+    }
+
+    function updateColorValueWakeUp_Color() {
+        var colorInput = document.getElementById("wakeup_color_mode_input");
+        var colorPicker = document.getElementById("color_pickerwakeup_color");
+        var selectedColor = colorPicker.value;
+        colorInput.value = selectedColor.substring(1); // Bỏ dấu # từ giá trị màu
+    }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        updateColorPickerMuted();
+    });
+
+    function updateColorPickerMuted() {
+        var colorInputValue = document.getElementById('muted_color_mode_input').value;
+        var colorPicker = document.getElementById('color_pickermuted_color');
+        colorPicker.value = '#' + colorInputValue;
+        updateColorValueMuted_Color();
+    }
+
+    function updateInputColorValueMuted() {
+        var colorPicker = document.getElementById('color_pickermuted_color');
+        var inputColor = document.getElementById('muted_color_mode_input');
+        var selectedColor = colorPicker.value.substring(1); // Bỏ dấu # từ giá trị màu
+        inputColor.value = selectedColor;
+        updateColorValueMuted_Color();
+    }
+
+    function updateColorValueMuted_Color() {
+        var colorInput = document.getElementById("muted_color_mode_input");
+        var colorPicker = document.getElementById("color_pickermuted_color");
+        var selectedColor = colorPicker.value;
+        colorInput.value = selectedColor.substring(1); // Bỏ dấu # từ giá trị màu
+    }
+</script>
+
+
 <script>
     const audio = document.getElementById('audioPlayer');
     const audioSource = document.getElementById('audioSource');
@@ -2886,50 +2860,50 @@ disableRadioButtons();
 
     });
 </script>
-    <script>
-        const viewButton = document.getElementById('view-button');
-        const popup = document.getElementById('popup');
-        const closeButton = document.getElementById('close-button');
-
-        viewButton.addEventListener('click', () => {
-            popup.style.display = 'flex';
-        });
-
-        closeButton.addEventListener('click', () => {
-            popup.style.display = 'none';
-        });
-    </script>
 <script>
-$(document).ready(function() {
-    var slider = document.getElementById("slider_tts");
-    var sliderValue = document.getElementById("slider-tts");
+    const viewButton = document.getElementById('view-button');
+    const popup = document.getElementById('popup');
+    const closeButton = document.getElementById('close-button');
 
-    slider.addEventListener("input", function() {
-        var value = parseFloat(slider.value);
-        
-        if (value === 0) {
-            sliderValue.innerHTML = "Mặc định"; // Hiển thị "mặc định" khi giá trị là 0
-        } else if (value >= 0.1 && value <= 0.4) {
-            slider.value = 0.5; // Bỏ qua khoảng giá trị từ 0.1 đến 0.4
-            value = 0.5;
-            sliderValue.innerHTML = value;
-        } else {
-            sliderValue.innerHTML = value;
-        }
+    viewButton.addEventListener('click', () => {
+        popup.style.display = 'flex';
     });
-});
-</script>
-    <script>
-        // JavaScript for slider functionality
-        const slider_bot_mode = document.getElementById("slider_bot_mode");
-        const currentLevelTextbot_mode = document.getElementById("currentLevel_bot_mode");
-        const levels_bot_mode = ["Tối Ưu Tốc Độ", "Cân Bằng", "Đầy Đủ Tính Năng"];
 
-        slider_bot_mode.addEventListener("input", () => {
-            const selectedLevelbot_mode = levels_bot_mode[slider_bot_mode.value - 1];
-            currentLevelTextbot_mode.textContent = selectedLevelbot_mode;
+    closeButton.addEventListener('click', () => {
+        popup.style.display = 'none';
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        var slider = document.getElementById("slider_tts");
+        var sliderValue = document.getElementById("slider-tts");
+
+        slider.addEventListener("input", function() {
+            var value = parseFloat(slider.value);
+
+            if (value === 0) {
+                sliderValue.innerHTML = "Mặc định"; // Hiển thị "mặc định" khi giá trị là 0
+            } else if (value >= 0.1 && value <= 0.4) {
+                slider.value = 0.5; // Bỏ qua khoảng giá trị từ 0.1 đến 0.4
+                value = 0.5;
+                sliderValue.innerHTML = value;
+            } else {
+                sliderValue.innerHTML = value;
+            }
         });
-    </script>
+    });
+</script>
+<script>
+    // JavaScript for slider functionality
+    const slider_bot_mode = document.getElementById("slider_bot_mode");
+    const currentLevelTextbot_mode = document.getElementById("currentLevel_bot_mode");
+    const levels_bot_mode = ["Tối Ưu Tốc Độ", "Cân Bằng", "Đầy Đủ Tính Năng"];
+
+    slider_bot_mode.addEventListener("input", () => {
+        const selectedLevelbot_mode = levels_bot_mode[slider_bot_mode.value - 1];
+        currentLevelTextbot_mode.textContent = selectedLevelbot_mode;
+    });
+</script>
 <script>
     // Hàm để cuộn lên đầu trang
     function scrollToTop() {
@@ -2940,7 +2914,7 @@ $(document).ready(function() {
     function scrollToBottom() {
         window.scrollTo(0, document.body.scrollHeight);
     }
-	
+
     //check button ẩn hiện thẻ div HASS
     $(document).ready(function() {
         // Khi trạng thái nút bật/tắt thay đổi
@@ -2954,4 +2928,5 @@ $(document).ready(function() {
     });
 </script>
 </body>
+
 </html>
