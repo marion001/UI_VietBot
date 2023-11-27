@@ -439,7 +439,7 @@ function fetchData() {
     if (logType === 'web' || logType === 'both') {
         $.ajax({
             type: "GET",
-            url: "http://<?php echo $serverIP; ?>:5000/get_log",
+            url: "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>/get_log",
             //timeout: 7000, // Đặt timeout là 7 giây
             success: function(data) {
                 const logTextarea = $("#log-textarea");
