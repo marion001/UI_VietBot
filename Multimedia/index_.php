@@ -434,7 +434,7 @@ if ($response === false) {
 							
                         // Phần còn lại của đoạn mã xử lý Ajax
                         var settings = {
-                            "url": "http://<?php echo $serverIP; ?>:5000",
+                            "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
                             "method": "POST",
                             "timeout": <?php echo $Time_Out_MediaPlayer_API; ?> ,
                             "headers": {
@@ -541,7 +541,7 @@ if ($response === false) {
 
         function sendAudioControlCommand(action) {
             var settings = {
-                "url": "http://<?php echo $serverIP; ?>:5000",
+                "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
                 "method": "POST",
                 "timeout": <?php echo $Time_Out_MediaPlayer_API; ?> ,
                 "headers": {
