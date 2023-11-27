@@ -157,5 +157,8 @@ $block_updates_web_ui = $dataVTGET->smart_config->block_updates->web_ui;
 //lấy dữ liệu config kiểm tra trạng thái hiển thị log hiện tại
 $check_current_log_status = $dataVTGET->smart_config->logging_type;
 
+//Port Vietbot
+$Port_Vietbot = $dataVTGET->smart_config->web_interface->port;
+
 $apiKeyWeather = $Data_Json_Skill->weather->openweathermap_key;
 ?>
