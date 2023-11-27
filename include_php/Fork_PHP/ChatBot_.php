@@ -91,7 +91,7 @@ function getTimestamp() {
 	
     // Kiểm tra kết nối tới API trước khi gửi yêu cầu để đưa ra thông báo
     try {
-      const response = await axios.get('http://<?php echo $serverIP; ?>:5000');
+      const response = await axios.get('http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>');
       if (response.status === 200) {
         // Kết nối thành công, tiến hành gửi yêu cầu và xử lý câu trả lời
         displayMessage(userMessage, true);
@@ -105,15 +105,15 @@ function getTimestamp() {
       return;
     }
 ///////////////////////////
-    const url = 'http://<?php echo $serverIP; ?>:5000/';
+    const url = 'http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>/';
     const headers = {
       Accept: '*/*',
       'Accept-Language': 'vi',
       Connection: 'keep-alive',
       'Content-Type': 'application/json',
       DNT: '1',
-      Origin: 'http://<?php echo $serverIP; ?>:5000',
-      Referer: 'http://<?php echo $serverIP; ?>:5000/',
+      Origin: 'http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>',
+      Referer: 'http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>/',
       'User-Agent':
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
     };
