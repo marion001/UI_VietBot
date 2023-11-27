@@ -241,12 +241,6 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
               <span>Skill</span>
             </a>
           </li>
-		        <!--    <li class="list-group-item">
-            <a href="#ChatBot">
-              <i class="bi bi-chat-dots" title="Chat Bot"></i>
-              <span>ChatBot</span>
-            </a>
-          </li> -->
           <li class="list-group-item">
             <a href="#File_Shell">
               <i class="bi bi-file-earmark-code" title="Quản Lý File"></i>
@@ -318,10 +312,6 @@ if (!file_exists($jsonFilePath)) {
 $jsonData = file_get_contents($jsonFilePath);
 // Chuyển dữ liệu JSON thành mảng PHP
 $data = json_decode($jsonData, true);
-
-
-
-
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	
@@ -442,11 +432,7 @@ if (!isset($_SESSION['root_id'])) {
       <section id="about" class="section about bg-gray-400 text-black">
         <div class="container">
 		
-<!--
-				  <div class="count-icon">🖥️</div>
-                <span><a href="http://<?php echo gethostname(); ?>" target="_bank"><?php echo gethostname(); ?></a></span>
-                <p class="mb-0">Host Name</p>
-			-->
+
           <!--  Count up  -->
           <div id="count-up" class="count-up text-center box-border">
 
@@ -676,21 +662,7 @@ if (!isset($_SESSION['root_id'])) {
 <!--  Contact End  -->
 
 </main>
-<!--  Main End  -->
 
-<!--  Mobile Next and Prev Button Start -->
-<!--
-    <div class="next-prev-page d-block d-lg-none">
-	
-   <div class="btn-group">   <button type="button" class="prev-page bg-base-color hstack">      
-        <i class="bi bi-chevron-compact-left mx-auto"></i>
-      </button></div><div class="btn-group">
-      <button type="button" class="next-page bg-base-color mt-1 mt-lg-3 hstack">
-        <i class="bi bi-chevron-compact-right mx-auto"></i>
-      </button></div>
-    </div>
-	-->
-<!--  Mobile Next and Prev Button End -->
 <!--  Navbar Button Mobile Start -->
 <div class="menu-toggle">
     <span></span>
@@ -736,8 +708,6 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
 
     <div class="contentt">
         <!-- Content of your website goes here -->
-      
-
         <!-- Add background overlay element -->
         <div class="background-overlay" onclick="closeSidebar()"></div>
 
@@ -762,7 +732,7 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
   <?php
 $curl = curl_init();
 curl_setopt_array($curl, array(
-  CURLOPT_URL => 'http://'.$serverIP.':5000',
+  CURLOPT_URL => 'http://'.$serverIP.':'.$Port_Vietbot,
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_ENCODING => '',
   CURLOPT_MAXREDIRS => 10,
@@ -803,7 +773,6 @@ $latestVersion = $gitData['vietbot_version']['latest'];
 if ($currentresult === $latestVersion) {
   //echo "Bạn đang sử dụng phiên bản mới nhất: " . $currentresult;
 } else {
-  //$messagee .= "Có phiên bản mới: " . $latestVersion.'\n';
   echo '<div class="blinking-container"><p class="ptexxt"><font color="red"><b>Có phiên bản Vietbot mới: '.$latestVersion.' </font><a href="#vietbot_update"> Kiểm Tra</b></a></p></div>';
 }
 //UI
@@ -820,9 +789,7 @@ $localValue = $localDataa['ui_version']['current'];
 // So sánh giá trị
 if ($remoteValue !== $localValue) {
    echo '<div class="blinking-container"><p class="ptexxt"><font color="red"><b>Có phiên bản giao diện mới: '.$remoteValue.' </font><a href="#UI_update"> Kiểm Tra</b></a></p></div>';
-    //$messagee .= 'Phiên bản hiện tại của bạn: '.$localValue.' Vui lòng cập nhật.';
 } else {
-    //$messagee .= 'Bạn đang sử dụng phiên bản mới nhất: '.$localValue;
 }
 
   ?>
@@ -1033,9 +1000,6 @@ window.addEventListener('message', function(event) {
         });
 		
 }
-
-
-
     </script>
 	
     <script>
