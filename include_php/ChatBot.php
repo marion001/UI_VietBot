@@ -3,7 +3,6 @@
 // Facebook: https://www.facebook.com/TWFyaW9uMDAx
 include "../Configuration.php";
 ?>
-<!DOCTYPE html>
 <html>
 <head>
   <title><?php echo $MYUSERNAME; ?> ChatBot</title>
