@@ -776,7 +776,7 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
       if (remoteValue === localValue) {
 		//Phiên bản mới nhất
       } else {
-        console.log('Có phiên bản giao diện mới: ' + remoteValue);
+        //console.log('Có phiên bản giao diện mới: ' + remoteValue);
         var message = '<font color="red"><b>Có phiên bản giao diện mới: ' + remoteValue + ' </font><a href="#UI_update"> Kiểm Tra</b></a>';
         updateMessageElement.innerHTML = message;
       }
@@ -805,7 +805,7 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
       if (remoteValuea === localValuea) {
 		//Phiên bản mới nhất
       } else {
-        console.log('Có phiên bản giao diện mới: ' + remoteValuea);
+        //console.log('Có phiên bản giao diện mới: ' + remoteValuea);
         var message = '<font color="red"><b>Có phiên bản Vietbot mới: ' + remoteValuea + ' </font><a href="#vietbot_update"> Kiểm Tra</b></a>';
         updateMessageElement.innerHTML = message;
       }
