@@ -8,8 +8,9 @@
 <body>
   <!--  <script src="../assets/js/jquery.min.js"></script> -->
     <script src="../assets/js/popper.min.js"></script>
+	<script src="../assets/js/jquery-3.6.1.min.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/jquery-3.6.1.min.js"></script>
+    
     <script>
         $(document).ready(function() {
             $('#my-form').on('submit', function() {
