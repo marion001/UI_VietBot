@@ -3,7 +3,7 @@
 // Facebook: https://www.facebook.com/TWFyaW9uMDAx
 include "../Configuration.php";
 ?>
-<html><head>
+<!DOCTYPE html><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title><?php echo $MYUSERNAME; ?>, Check Log, Services, CMD VietBot</title>
