@@ -1714,10 +1714,11 @@ if (count($fileLists) > 0) {
     echo "Không tìm thấy file backup config trong thư mục.";
 }
 ?></div></div>
+<script src="../assets/js/jquery-3.6.1.min.js"></script>
 	<script src="../assets/js/bootstrap.js"></script>
 	<!-- <script src="../assets/js/jquery.min.js"></script> -->
 	<script src="../assets/js/axios_0.21.1.min.js"></script>
-	   <script src="../assets/js/jquery-3.6.1.min.js"></script>
+	   
     <script src="../assets/js/bootstrap.min.js"></script>
   <script>
        function showSensitiveInput(file_name) {
