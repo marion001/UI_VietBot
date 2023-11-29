@@ -3538,8 +3538,7 @@ header("Pragma: no-cache");
 
 global $lang, $root_url, $favicon_path;
 ?>
-<!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -3611,7 +3610,6 @@ header("Pragma: no-cache");
 global $lang, $root_url, $sticky_navbar, $favicon_path;
 $isStickyNavBar = $sticky_navbar ? 'navbar-fixed' : 'navbar-normal';
 ?>
-<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
