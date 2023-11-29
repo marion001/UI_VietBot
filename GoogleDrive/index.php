@@ -14,9 +14,9 @@ include("../assets/lib_php/Net/SSH2.php");
     <link rel="shortcut icon" href="../assets/img/VietBot128.png">
   <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
      <link rel="stylesheet" href="../assets/css/loading.css">
-  <script src="../assets/js/jquery.min.js"></script>
+<!--  <script src="../assets/js/jquery.min.js"></script>
   <script src="../assets/js/popper.min.js"></script>
-  <script src="../assets/js/bootstrap.min.js"></script>
+  <script src="../assets/js/bootstrap.min.js"></script> -->
   	<style>
 		body, html {
         background-color: #d2d8bb;
