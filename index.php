@@ -735,8 +735,8 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
     <!-- Mouase Magic Cursor End -->
 
     <!--  JavaScripts  -->
-    <!--  Jquery 3.4.1  -->
-    <script src="assets/js/jquery-3.6.1.min.js"></script>
+    <!--  Jquery 3.4.1  
+    <script src="assets/js/jquery-3.6.1.min.js"></script>-->
     <!--  Bootstrap Js  -->
     <script src="assets/js/bootstrap.js"></script>
     <!--  Malihu ScrollBar Js  -->
