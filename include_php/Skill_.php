@@ -1531,7 +1531,7 @@ if (count($fileLists) > 0) {
     }
 </script>
 	<script src="../assets/js/bootstrap.js"></script>
-	<script src="../assets/js/jquery.min.js"></script>
+	<!-- <script src="../assets/js/jquery.min.js"></script> -->
 	<script src="../assets/js/axios_0.21.1.min.js"></script>
 	
 	</body>
