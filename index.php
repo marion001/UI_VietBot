@@ -723,77 +723,11 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
         </div>
     </div>
 
-	<!--
-	  <div class="footer-text">
-     <?php echo "Phiên bản UI: ".$dataVersion->ui_version->current; ?>
-    </div>
-	  -->
-    <!-- Văn bản nằm ở cuối trang -->
-  <?php
-$curl = curl_init();
-curl_setopt_array($curl, array(
-  CURLOPT_URL => 'http://'.$serverIP.':'.$Port_Vietbot,
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_ENCODING => '',
-  CURLOPT_MAXREDIRS => 10,
-  CURLOPT_TIMEOUT => 0,
-  CURLOPT_FOLLOWLOCATION => true,
-  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-  CURLOPT_CUSTOMREQUEST => 'POST',
-  CURLOPT_POSTFIELDS =>'{"type": 3,"data": "vietbot_version"}',
-  CURLOPT_HTTPHEADER => array(
-    'Accept: */*',
-    'Accept-Language: vi',
-    'Connection: keep-alive',
-    'Content-Type: application/json',
-    'DNT: 3',
-    'Origin: http://'.$serverIP,
-    'Referer: http://'.$serverIP.'/',
-    'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'
-  ),
-));
-$response = curl_exec($curl);
-curl_close($curl);
-$data = json_decode($response, true);
-// Kiểm tra kết quả từ yêu cầu cURL
-if (!empty($data) && isset($data['result'])) {
-  $currentresult = $data['result'];
-} else {
-  // Lấy dữ liệu "latest" từ tệp tin version.json cục bộ
-  $localJson = file_get_contents($DuognDanThuMucJson.'/version.json');
-  $localData = json_decode($localJson, true);
-  $currentresult = $localData['vietbot_version']['latest'];
-}
-// Lấy dữ liệu "latest" từ tệp tin version.json trên GitHub
-//$gitJson = file_get_contents('https://raw.githubusercontent.com/phanmemkhoinghiep/vietbot_offline/beta/src/version.json');
-$gitJson = file_get_contents($Vietbot_Version);
-$gitData = json_decode($gitJson, true);
-$latestVersion = $gitData['vietbot_version']['latest'];
-// So sánh giá trị "vietbot_version" từ cURL và từ GitHub
-if ($currentresult === $latestVersion) {
-  //echo "Bạn đang sử dụng phiên bản mới nhất: " . $currentresult;
-} else {
-  echo '<div class="blinking-container"><p class="ptexxt"><font color="red"><b>Có phiên bản Vietbot mới: '.$latestVersion.' </font><a href="#vietbot_update"> Kiểm Tra</b></a></p></div>';
-}
-//UI
-$localFile = $DuognDanUI_HTML.'/version.json';
-// Lấy nội dung JSON từ URL
-$remoteJsonData = file_get_contents($UI_Version);
-$remoteData = json_decode($remoteJsonData, true);
-// Đọc nội dung JSON từ tệp tin cục bộ
-$localJsonData = file_get_contents($localFile);
-$localDataa = json_decode($localJsonData, true);
-// Lấy giá trị 'value' từ cả hai nguồn dữ liệu
-$remoteValue = $remoteData['ui_version']['latest'];
-$localValue = $localDataa['ui_version']['current'];
-// So sánh giá trị
-if ($remoteValue !== $localValue) {
-   echo '<div class="blinking-container"><p class="ptexxt"><font color="red"><b>Có phiên bản giao diện mới: '.$remoteValue.' </font><a href="#UI_update"> Kiểm Tra</b></a></p></div>';
-} else {
-}
 
-  ?>
- 
+
+<div class="blinking-container" id="updateMessage"></div>
+
+
 
     <!-- Mouase Magic Cursor Start -->
     <div class="m-magic-cursor mmc-outer"></div>
@@ -820,6 +754,64 @@ if ($remoteValue !== $localValue) {
 
 
 
+
+<script>
+  $(document).ready(function() {
+    // AJAX request for UI version
+    $.ajax({
+      url: '<?php echo $UI_Version; ?>',
+      type: 'GET',
+      dataType: 'json',
+      success: function(remoteData) {
+        var localJsonData = <?php echo json_encode(file_get_contents($DuognDanUI_HTML.'/version.json')); ?>;
+        var localData = JSON.parse(localJsonData);
+        var remoteValue = remoteData['ui_version']['latest'];
+        var localValue = localData['ui_version']['current'];
+        handleUIVersion(remoteValue, localValue);
+      }
+    });
+
+    function handleUIVersion(remoteValue, localValue) {
+	var updateMessageElement = document.getElementById('updateMessage');
+      if (remoteValue === localValue) {
+		//Phiên bản mới nhất
+      } else {
+        console.log('Có phiên bản giao diện mới: ' + remoteValue);
+        var message = '<font color="red"><b>Có phiên bản giao diện mới: ' + remoteValue + ' </font><a href="#UI_update"> Kiểm Tra</b></a>';
+        updateMessageElement.innerHTML = message;
+      }
+    }
+  });
+</script>
+
+<script>
+  $(document).ready(function() {
+    // AJAX request for vietbot version
+    $.ajax({
+      url: '<?php echo $Vietbot_Version; ?>',
+      type: 'GET',
+      dataType: 'json',
+      success: function(remoteDataa) {
+        var localJsonDataa = <?php echo json_encode(file_get_contents($DuognDanThuMucJson.'/version.json')); ?>;
+        var localDataa = JSON.parse(localJsonDataa);
+        var remoteValuea = remoteDataa['vietbot_version']['latest'];
+        var localValuea = localDataa['vietbot_version']['latest'];
+        handleUIVersion(remoteValuea, localValuea);
+      }
+    });
+
+    function handleUIVersion(remoteValuea, localValuea) {
+	var updateMessageElement = document.getElementById('updateMessage');
+      if (remoteValuea === localValuea) {
+		//Phiên bản mới nhất
+      } else {
+        console.log('Có phiên bản giao diện mới: ' + remoteValuea);
+        var message = '<font color="red"><b>Có phiên bản Vietbot mới: ' + remoteValuea + ' </font><a href="#vietbot_update"> Kiểm Tra</b></a>';
+        updateMessageElement.innerHTML = message;
+      }
+    }
+  });
+</script>
 
 <script type="text/javascript">
     function time() {
