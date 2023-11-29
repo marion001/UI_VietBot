@@ -5,7 +5,6 @@ include "../Configuration.php";
 include("../assets/lib_php/Net/SSH2.php");
 ?>
 
-<!DOCTYPE html>
 <?php	
 if (isset($Web_UI_Login) && $Web_UI_Login === true) {
 	if (!isset($_SESSION['root_id'])) {
