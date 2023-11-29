@@ -178,7 +178,7 @@ if (file_exists($autoloadPath) && is_file($autoloadPath)) {
     </tr>
 	    <tr>
       <th title="Bạn cần bật tắt trong tab Config/Cấu Hình">Google Drive Auto Backup:</th>
-	  <td title="Bạn cần bật tắt trong tab Config/Cấu Hình"><input type="checkbox" title="Bạn cần bật tắt trong tab Config/Cấu Hình" class="form-check-input" <?php echo ($Web_UI_Enable_GDrive_Backup ? 'checked' : ''); ?> disabled></td>
+	  <td title="Bạn cần bật tắt trong tab Config/Cấu Hình"><input type="checkbox" name="HienThiChechBoxGDrive" title="Bạn cần bật tắt trong tab Config/Cấu Hình" class="form-check-input" <?php echo ($Web_UI_Enable_GDrive_Backup ? 'checked' : ''); ?> disabled></td>
     </tr>
     <tr>
       <th><span class="inline-elements" title="Tự Động Tải Lại Trang Khi Cập Nhật Hoàn Tất">Tự Động Làm Mới Lại Trang: <font color=red><span id="countdown"></span></font></span></th>
