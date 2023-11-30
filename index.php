@@ -121,6 +121,10 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
 </style>
 </head>
 <body>
+	    <!-- Preloader -->
+    <div id="line-loader">
+      <div class="middle-line"></div>
+    </div>
 	    <div id="loading-overlay">
           <img id="loading-icon" src="../assets/img/Loading.gif" alt="Loading...">
 		  <div id="loading-message">Đang Thực Thi...</div>
