@@ -549,15 +549,15 @@ $latestVersion = $gitData['vietbot_version']['latest'];
 if ($currentresult === $latestVersion) {
   			echo "<script>";
             echo "var messagee = document.getElementById('messagee');";
-            echo "messagee.innerHTML += '<font color=green>Bạn đang sử dụng phiên bản mới nhất: $currentresult</font>';";
+            echo "messagee.innerHTML += '<font color=green>Bạn đang sử dụng phiên bản mới nhất: $currentresult</font><br/>';";
             echo "</script>";
   
 } else {
 
     		echo "<script>";
             echo "var messagee = document.getElementById('messagee');";
-            echo "messagee.innerHTML += '<font color=green>Có phiên bản mới: $latestVersion</font>';";
-            echo "messagee.innerHTML += '<font color=green>Phiên bản hiện tại: $currentresult</font>';";
+            echo "messagee.innerHTML += '<font color=green>Có phiên bản mới: <b>$latestVersion</b></font><br/>';";
+            echo "messagee.innerHTML += '<font color=Blue>Phiên bản hiện tại: <b>$currentresult</b></font><br/>';";
             echo "</script>";
   
 	if (empty($gitData['new_features'])) {
@@ -566,7 +566,7 @@ if ($currentresult === $latestVersion) {
     $TinhNangMoi = $gitData['new_features'];
 	  		echo "<script>";
             echo "var messagee = document.getElementById('messagee');";
-            echo "messagee.innerHTML += 'Tính năng mới: <font color=green>$TinhNangMoi</font>';";
+            echo "messagee.innerHTML += 'Tính năng mới: <font color=green>$TinhNangMoi</font><br/>';";
             echo "</script>";
 	}
 	
@@ -576,7 +576,7 @@ if ($currentresult === $latestVersion) {
     $SuaLoi = $gitData['bug_fixed'];
 	  		echo "<script>";
             echo "var messagee = document.getElementById('messagee');";
-            echo "messagee.innerHTML += 'Sửa lỗi: <font color=green>$SuaLoi</font>';";
+            echo "messagee.innerHTML += 'Sửa lỗi: <font color=red>$SuaLoi</font><br/>';";
             echo "</script>";
 	}
 	
@@ -586,7 +586,7 @@ if ($currentresult === $latestVersion) {
     $CaiThien = $gitData['improvements'];
 	  		echo "<script>";
             echo "var messagee = document.getElementById('messagee');";
-            echo "messagee.innerHTML += 'Cải thiện: <font color=green>$CaiThien</font>';";
+            echo "messagee.innerHTML += 'Cải thiện: <font color=green>$CaiThien</font><br/>';";
             echo "</script>";
 	}
 	
@@ -597,7 +597,7 @@ if ($currentresult === $latestVersion) {
     $LenhCanBoSung = $gitData['update_command'];
 	  		echo "<script>";
             echo "var messagee = document.getElementById('messagee');";
-            echo "messagee.innerHTML += 'Lệnh Cần Bổ Sung $~:> <font color=green>$LenhCanBoSung</font>';";
+            echo "messagee.innerHTML += 'Lệnh Cần Bổ Sung $~:> <font color=green>$LenhCanBoSung</font><br/>';";
             echo "</script>";
 	}
 }
@@ -609,7 +609,7 @@ if (isset($_POST['backup_update'])) {
 	if (isset($block_updates_vietbot_program) && $block_updates_vietbot_program === true) {
 			echo "<script>";
             echo "var messagee = document.getElementById('messagee');";
-            echo "messagee.innerHTML += '<font color=red>Cập Nhật Phần Mềm Đã Bị Tắt, Cần Đi Tới <b><i>Tab Cấu hình Config</i></b> Để Bỏ Tích</font>';";
+            echo "messagee.innerHTML += '<font color=red>Cập Nhật Phần Mềm Đã Bị Tắt, Cần Đi Tới <b><i>Tab Cấu hình Config</i></b> Để Bỏ Tích</font><br/>';";
             echo "</script>";
 		
     } else {
