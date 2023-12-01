@@ -42,8 +42,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['url'])) {
 		$output = stream_get_contents($stream_out);
 		// Trim trailing newline characters
 		$output = rtrim($output, "\n");
+//-----------------------------------------------
+/*
+  $curl = curl_init();
+  curl_setopt_array($curl, array(
+  CURLOPT_URL => "http://192.168.14.107:1711/link?url=$url",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => '',
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 0,
+  CURLOPT_FOLLOWLOCATION => true,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => 'GET',
+  ));
+$output = curl_exec($curl);
+curl_close($curl);
+*/	
+
 		echo json_encode(['finalUrl' => $output]);
-		
 	}
 	
 	else {
