@@ -29,7 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['url'])) {
         echo json_encode(['finalUrl' => $url]);
     }
 	elseif (strpos($url, "https://www.youtube.com/watch?v=") !== false) {
-		
+/*	
+	
 		//echo $url;
 		$command = "node $DuognDanUI_HTML/include_php/Ajax/Youtube_MP3_Link_Play.js " . escapeshellarg($url);
 		//$command = "python3 $DuognDanUI_HTML/include_php/Ajax/Youtube_MP3_Link_Play.py " . escapeshellarg($url);
@@ -42,11 +43,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['url'])) {
 		$output = stream_get_contents($stream_out);
 		// Trim trailing newline characters
 		$output = rtrim($output, "\n");
+		*/
 //-----------------------------------------------
-/*
+
   $curl = curl_init();
   curl_setopt_array($curl, array(
-  CURLOPT_URL => "http://192.168.14.107:1711/link?url=$url",
+  CURLOPT_URL => "https://youtubemp3nodejs-67a7bc8771a0.herokuapp.com/link?url=$url",
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_ENCODING => '',
   CURLOPT_MAXREDIRS => 10,
@@ -57,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['url'])) {
   ));
 $output = curl_exec($curl);
 curl_close($curl);
-*/	
+
 
 		echo json_encode(['finalUrl' => $output]);
 	}
