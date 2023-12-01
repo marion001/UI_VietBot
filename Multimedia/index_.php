@@ -162,7 +162,8 @@ if (is_dir($directory . '/node_modules')) {
 
  <tr>
 <th colspan="3" scope="col">	<div id="UpLoadFileMp3" hidden>			
-	<form method="post" id="uploadmp3local" action="<?php echo $_SERVER['PHP_SELF']; ?>"  enctype="multipart/form-data">				
+
+<form method="post" id="uploadmp3local" action="<?php echo $_SERVER['PHP_SELF']; ?>"  enctype="multipart/form-data">				
 <div class="input-group" >
 
   <div class="custom-file">
@@ -172,7 +173,7 @@ if (is_dir($directory . '/node_modules')) {
   <div class="input-group-append">
     <button class="btn btn-primary" type="submit">Tải Lên</button>
   </div> 
-</div> </form></div>
+</div> </form><font color=blue>Chọn tối đa: 20 File, Max 300MB/1 File</font></div>
 
   
                                 </th>
