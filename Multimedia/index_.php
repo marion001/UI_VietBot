@@ -314,7 +314,7 @@ if ($responseYoutube === false) {
 
             echo " <div class='image-container'>";
             echo "<img src='$Youtube_images' class='imagesize' alt='' /> <div class='caption'>";
-            echo '<b>Tên bài hát:</b> ' . $Youtube_title . '<br/><b>Tên Kênh:</b> ' . $Youtube_channelTitle . '<br/>';
+            echo '<b>Tên bài hát:</b><a href="'.$Youtube_videoLink.'" target="_bank" style="color: black;" title="Mở trong Youtube"> ' . $Youtube_title . '</a><br/><b>Tên Kênh:</b> ' . $Youtube_channelTitle . '<br/>';
             //echo '<b>Mô tả:</b> ' . $Youtube_description . ' <br/>';
             //echo '<b>Link:</b> ' . $Youtube_videoLink . ' <br/>';
             echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Tên Kênh" data-song-link_type="direct" data-song-artist="' . $Youtube_channelTitle . '" data-song-images="' .$Youtube_images.'" data-song-name="'  . $Youtube_title . '" data-song-kichthuoc=" ---" data-song-thoiluong=" ---" data-song-id="' . $Youtube_videoLink . '" >Phát Nhạc</button>';
