@@ -4,8 +4,107 @@
 //error_reporting(E_ALL);
 require_once '../assets/lib_php/getid3/getid3.php';
 ?>
+<script>
+    //icon Loading
+    $(document).ready(function() {
+        $('#my-form').on('submit', function() {
+            // Hiển thị biểu tượng loading
+            $('#loading-overlay').show();
+            // Vô hiệu hóa nút gửi
+            $('#submit-btn').attr('disabled', true);
+        });
+    });
+	</script>
+<?php
+
+function install_source_node($DuognDanUI_HTML,$serverIP,$SSH_Port,$SSH_TaiKhoan,$SSH_MatKhau,$E_rror_HOST,$E_rror,$PHP_SELF) {
+	
+		$url = 'https://raw.githubusercontent.com/marion001/Google-APIs-Client-Library-PHP/main/node_modules.tar.gz';
+		$destination = $DuognDanUI_HTML.'/assets/lib_php/node_modules.tar.gz';
+		$extractedFolderPath = $DuognDanUI_HTML.'/assets/lib_php/';
+		// Tải file từ URL
+		$fileContent = file_get_contents($url);
+
+		if ($fileContent !== false) {
+		// Lưu nội dung vào file đích
+			$result = file_put_contents($destination, $fileContent);
+
+			if ($result !== false) {
+				echo 'File đã được tải xuống thành công và lưu vào ' . $destination;
+				$phar = new PharData($destination);
+				$phar->extractTo($extractedFolderPath, null, true);  // Tham số thứ ba (true) cho phép ghi đè
+				echo "Tệp đã được giải nén thành công vào $extractedFolderPath<br/>";
+				chmod($extractedFolderPath . 'node_modules', 0777);
+				shell_exec("rm $destination");
+				$connection = ssh2_connect($serverIP, $SSH_Port);
+				if (!$connection) {
+				die($E_rror_HOST);
+				}
+				if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {
+				die($E_rror);
+				}
+				$stream = ssh2_exec($connection, 'sudo mv '.$DuognDanUI_HTML.'/assets/lib_php/node_modules /home/pi/node_modules');
+				stream_set_blocking($stream, true);
+				$stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
+				stream_get_contents($stream_out);
+				} 
+			else {
+        echo 'Lỗi khi lưu nội dung vào ' . $destination;
+			}
+		} else {
+			echo 'Lỗi khi tải file từ ' . $url;
+		}
+	
+}
+
+if (isset($_POST['install_lib_node_js'])) {
+	
+	$connection = ssh2_connect($serverIP, $SSH_Port);
+    if (!$connection) {
+        die($E_rror_HOST);
+    }
+    if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {
+        die($E_rror);
+    }
+    $stream = ssh2_exec($connection, 'sudo apt install nodejs -y');
+    stream_set_blocking($stream, true);
+    $stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
+    stream_get_contents($stream_out);
+install_source_node($DuognDanUI_HTML,$serverIP,$SSH_Port,$SSH_TaiKhoan,$SSH_MatKhau,$E_rror_HOST,$E_rror,$PHP_SELF);
+header("Location: $PHP_SELF");
+exit();
+}
 
 
+// Kiểm tra xem Node.js đã được cài đặt chưa
+$nodeCheck = shell_exec('node -v');
+if (empty($nodeCheck)) {
+    //echo 'Node.js chưa được cài đặt.<br>';
+		echo '<br/><br/><center><form method="POST" id="my-form" action="">';
+		echo "<button name='install_lib_node_js' class='btn btn-success'>Cấu Hình Media</button>";
+		echo "<a href='$PHP_SELF'><button class='btn btn-primary'>Làm Mới</button></a></center>";
+		echo "</form></center>";
+    exit;
+} else {
+    //echo 'Node.js đã được cài đặt. Phiên bản: ' . $nodeCheck . '<br>';
+$directory = '/home/pi';
+// Kiểm tra xem thư mục node_modules tồn tại hay không
+if (is_dir($directory . '/node_modules')) {
+    //echo 'Thư mục node_modules tồn tại.<br>';
+} else {
+    //echo 'Thư mục node_modules không tồn tại.<br>';
+	install_source_node($DuognDanUI_HTML,$serverIP,$SSH_Port,$SSH_TaiKhoan,$SSH_MatKhau,$E_rror_HOST,$E_rror,$PHP_SELF);
+	header("Location: $PHP_SELF");
+	exit();
+	
+}
+
+
+
+	
+	
+}
+?>
 <div class="container">
     <div class="row">
         <div class="col-sm-6">
@@ -496,15 +595,7 @@ if ($response === false) {
         return (time < 10) ? '0' + time : time;
     }
 
-    //icon Loading
-    $(document).ready(function() {
-        $('#my-form').on('submit', function() {
-            // Hiển thị biểu tượng loading
-            $('#loading-overlay').show();
-            // Vô hiệu hóa nút gửi
-            $('#submit-btn').attr('disabled', true);
-        });
-    });
+
     //icon Loading
     $(document).ready(function() {
         $('#uploadmp3local').on('submit', function() {
