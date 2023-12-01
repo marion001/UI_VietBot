@@ -94,6 +94,30 @@ $output = "$GET_current_USER@$HostName:~$ pkill -f start.py\n\n";
 $output .=  stream_get_contents($stream_out);
 }
 
+//sudo_apt_update
+if (isset($_POST['sudo_apt_update'])) {
+$connection = ssh2_connect($serverIP, $SSH_Port);
+if (!$connection) {die($E_rror_HOST);}
+if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
+$stream = ssh2_exec($connection, 'sudo apt update');
+stream_set_blocking($stream, true);
+$stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
+$output = "$GET_current_USER@$HostName:~$ sudo apt update\n\n";
+$output .=  stream_get_contents($stream_out);
+}
+
+//sudo_apt_upgrade
+if (isset($_POST['sudo_apt_upgrade'])) {
+$connection = ssh2_connect($serverIP, $SSH_Port);
+if (!$connection) {die($E_rror_HOST);}
+if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
+$stream = ssh2_exec($connection, 'sudo apt upgrade');
+stream_set_blocking($stream, true);
+$stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
+$output = "$GET_current_USER@$HostName:~$ sudo apt upgrade\n\n";
+$output .=  stream_get_contents($stream_out);
+}
+
 //Kiểm Tra Dung Lượng
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kiem_tra_dung_luong'])) {
 	
@@ -326,11 +350,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hash_generator'])) {
 
 <div class="col-auto"> 
     <button class="btn btn-success" name="commandd" type="submit">Command</button>
+    <a href='<?php echo $PHP_SELF; ?>'><button class='btn btn-danger'>Làm Mới</button></a>
 	
-    <button class="btn btn-success" name="hash_generator" type="submit">Hash Generator</button>
-	
-	
-	
+
 	
  </div>
  <div class="col-auto"> 
@@ -379,7 +401,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hash_generator'])) {
     Chức Năng Khác
   </button>
   <div class="dropdown-menu scrollable-menu">
- <center><button  type="submit" name="kiem_tra_dung_luong" class="btn btn-success">Kiểm Tra Dung Lượng</button>
+ <center>
+ <div class="dropdown-divider"></div>  <button class="btn btn-success" name="hash_generator" type="submit">Hash Generator</button>
+<div class="dropdown-divider"></div>  <button  type="submit" name="kiem_tra_dung_luong" class="btn btn-success">Kiểm Tra Dung Lượng</button>
  <div class="dropdown-divider"></div>  <button type="submit" name="kiem_tra_bo_nho" class="btn btn-success">Kiểm Tra Bộ Nhớ</button>
   <div class="dropdown-divider"></div><button  type="submit" name="check_ifconfig" class="btn btn-success">Kiểm Tra Mạng</button>
  <div class="dropdown-divider"></div><button  type="submit" name="check_thong_tin_cpu" class="btn btn-success">Thông Tin CPU</button>
@@ -401,6 +425,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hash_generator'])) {
  <div class="dropdown-divider"></div>  <button type='submit' name='restart_appache2' class='btn btn-dark' title='Restart Apache2'>Restart Apache2</button>
   <div class="dropdown-divider"></div>  <button type='submit' name='check_lib_pvporcupine' class='btn btn-dark' title='Kiểm tra thư viện pvporcupine'>Check lib pvporcupine</button>
   <div class="dropdown-divider"></div>  <button type='submit' name='check_lib_pip' class='btn btn-dark' title='Kiểm tra thư viện pvporcupine'>Check lib pip list</button>
+  <div class="dropdown-divider"></div>  <button type='submit' name='sudo_apt_update' class='btn btn-dark' title='cập nhật gói và hệ thống update'>sudo apt update</button>
+  <div class="dropdown-divider"></div>  <button type='submit' name='sudo_apt_upgrade' class='btn btn-dark' title='cập nhật gói và hệ thống upgrade'>sudo apt upgrade</button>
  </center></div></div>
     </form>
     <div id="loading-overlay">
