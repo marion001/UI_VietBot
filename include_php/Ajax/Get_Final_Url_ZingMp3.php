@@ -47,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['url'])) {
         if ($output === false) {
             // Thực hiện mã sau khi cURL không thành công
             $command = "node $DuognDanUI_HTML/include_php/Ajax/Youtube_MP3_Link_Play.js " . escapeshellarg($url);
+			//$command = "python3 $DuognDanUI_HTML/include_php/Ajax/Youtube_MP3_Link_Play.py " . escapeshellarg($url);
             $connection = ssh2_connect($serverIP, $SSH_Port);
             if (!$connection) {
                 die($Error_HOST);
@@ -66,6 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['url'])) {
             if (strpos($output, "https://") === false) {
                 // Nếu không có "https://", thực hiện các lệnh khác
                 $command = "node $DuognDanUI_HTML/include_php/Ajax/Youtube_MP3_Link_Play.js " . escapeshellarg($url);
+				//$command = "python3 $DuognDanUI_HTML/include_php/Ajax/Youtube_MP3_Link_Play.py " . escapeshellarg($url);
                 $connection = ssh2_connect($serverIP, $SSH_Port);
                 if (!$connection) {
                     die($Error_HOST);
