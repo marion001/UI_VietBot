@@ -121,27 +121,27 @@ if (is_dir($directory . '/node_modules')) {
                         <tr>
 <td>
                                 <!-- Checkbox với giá trị "keymp3" -->
-                                <input type="radio" id="LocalMp3" name="action" value="Local" onchange="handleRadioChangeLocal()">
-                                <label for="LocalMp3">Local MP3</label>
+                                <input type="radio" id="LocalMp3" name="action" value="Local" title="Tìm kiếm trên thiết bị" onchange="handleRadioChangeLocal()">
+                                <label for="LocalMp3" title="Tìm kiếm trên thiết bị">Local MP3</label>
                             </td>
                             <td>
                                 <!-- Checkbox với giá trị "keymp3" -->
-                                <input type="radio" id="keyzingmp3" name="action" value="ZingMp3" checked onchange="handleRadioChangeLocal()">
-                                <label for="keyzingmp3">Zing MP3</label>
+                                <input type="radio" id="keyzingmp3" name="action" value="ZingMp3" title="Tìm kiếm trên ZingMp3" checked onchange="handleRadioChangeLocal()">
+                                <label for="keyzingmp3" title="Tìm kiếm trên ZingMp3">Zing MP3</label>
                             </td>
 
                             <td>
                                 <!-- Checkbox với giá trị "keyyoutube" -->
-                                <input type="radio" id="keyyoutube" name="action" value="Youtube" onchange="handleRadioChangeLocal()">
-                                <label for="keyyoutube">YouTube</label>
+                                <input type="radio" id="keyyoutube" name="action" value="Youtube"  onchange="handleRadioChangeLocal()">
+                                <label for="keyyoutube" title="Tìm kiếm trên youtube">YouTube</label>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="3">
                                 <div class="input-group mb-3">
-                                    <input type="text" id="tenbaihatInput" class="form-control" name="tenbaihat" required placeholder="Nhập Tên Bài Hát, link.mp3" aria-label="Recipient's username" aria-describedby="basic-addon2" oninput="handleInputHTTP()">
+                                    <input type="text" id="tenbaihatInput" class="form-control" title="Nhập tên bài hát hoặc link: https://zxc.com/1.mp3" name="tenbaihat" required placeholder="Nhập Tên Bài Hát, link.mp3" aria-label="Recipient's username" aria-describedby="basic-addon2" oninput="handleInputHTTP()">
                                     <div style="text-align: center;" class="input-group-append">
-                                        <button class="btn btn-primary" id="TimKiem" type="submit">Tìm Kiếm</button>
+                                        <button class="btn btn-primary" id="TimKiem" type="submit" title="Tìm kiếm bài hát">Tìm Kiếm</button>
                                        
                                     </div>
                                     <div class="input-group-append">
@@ -150,7 +150,7 @@ if (is_dir($directory . '/node_modules')) {
                                     </div>
 									                         <div class="input-group-append">
 
-                                        <a class="btn btn-danger" href="<?php echo $PHP_SELF; ?>" role="button">Làm Mới</a>
+                                        <a class="btn btn-danger" href="<?php echo $PHP_SELF; ?>" role="button" title="Làm mới lại trang">Làm Mới</a>
                                     </div>
                                 </div>
                             </td>
@@ -171,7 +171,7 @@ if (is_dir($directory . '/node_modules')) {
 	<input type="hidden" name="action" value="UploadMp3">
   </div>
   <div class="input-group-append">
-    <button class="btn btn-primary" type="submit">Tải Lên</button>
+    <button class="btn btn-primary" type="submit" title="Tải lên file mp3">Tải Lên</button>
   </div> 
 </div> </form><font color=blue>Chọn tối đa: 20 File, Max 300MB/1 File</font></div>
 
@@ -183,15 +183,15 @@ if (is_dir($directory . '/node_modules')) {
             <tr>
                 <td colspan="3">
                     <center>
-                        <button type="button" id="volumeDown" class="btn btn-info"><i class="bi bi-volume-down"></i>
+                        <button type="button" id="volumeDown" title="Giảm âm lượng" class="btn btn-info"><i class="bi bi-volume-down"></i>
                         </button>
-                        <button type="button" id="playButton" class="btn btn-success"><i class="bi bi-play-circle"></i>
+                        <button type="button" id="playButton" title="Phát nhạc" class="btn btn-success"><i class="bi bi-play-circle"></i>
                         </button>
-                        <button type="button" id="pauseButton" class="btn btn-warning"><i class="bi bi-pause-circle"></i>
+                        <button type="button" id="pauseButton" title="Tạm dừng phát nhạc" class="btn btn-warning"><i class="bi bi-pause-circle"></i>
                         </button>
-                        <button type="button" id="stopButton" class="btn btn-danger"><i class="bi bi-stop-circle"></i>
+                        <button type="button" id="stopButton" title="Dừng phát nhạc" class="btn btn-danger"><i class="bi bi-stop-circle"></i>
                         </button>
-                        <button type="button" id="volumeUp" class="btn btn-info"><i class="bi bi-volume-up"></i>
+                        <button type="button" id="volumeUp" title="Tăng âm lượng" class="btn btn-info"><i class="bi bi-volume-up"></i>
                         </button>
 
                     </center>
