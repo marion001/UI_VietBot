@@ -217,11 +217,11 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	}
 
 // Lấy giá trị của return trong phương thức version trong lớp Picovoice
-$path_picovoice = '/home/pi/.local/lib/python3.9/site-packages/picovoice/_picovoice.py';
+
 $connection = ssh2_connect($serverIP, $SSH_Port);
 if (!$connection) {die($E_rror_HOST);}
 if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
-$stream = ssh2_exec($connection, "cat $path_picovoice");
+$stream = ssh2_exec($connection, "cat $path_picovoice/_picovoice.py");
 stream_set_blocking($stream, true);
 $stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
 $output =  stream_get_contents($stream_out);
@@ -229,9 +229,8 @@ $text_picovoice_version = picovoice_version($output, 'Picovoice', 'version');
 $firstThreeCharspicovoice_version = substr($text_picovoice_version, 0, 3);
 //echo "Phiên bản Picovoice: $firstThreeCharspicovoice_version <br/>";
 
-$apiUrl = "https://api.github.com/repos/Picovoice/porcupine/releases";
 // Sử dụng cURL để gửi yêu cầu GET đến GitHub API
-$ch = curl_init($apiUrl);
+$ch = curl_init($apiUrlporcupine);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'); // Đặt một user-agent hợp lý
 $responseporcupine = curl_exec($ch);
@@ -250,7 +249,15 @@ foreach ($releases as $release) {
 }
 //echo "version_porcupine_OK $version_porcupine_OK<br/>";
 // Đường dẫn lưu trữ file đích
-$destinationPath = '/home/pi/vietbot_offline/resources/picovoice/lib/default';
+$destinationPath = "$PathResources/picovoice/lib/default";
+if (!is_dir($destinationPath)) {
+    mkdir($destinationPath, 0777, true);
+    // Thay đổi quyền truy cập
+    chmod($destinationPath, 0777);
+    //echo 'Thư mục đã được tạo và quyền truy cập đã được thay đổi thành 777.';
+} else {
+    //echo 'Thư mục đã tồn tại.';
+}
 // URL của file cần tải về
 $fileUrl = 'https://github.com/Picovoice/porcupine/archive/refs/tags/v'.$version_porcupine_OK.'.zip';
 // Sử dụng cURL để tải file về
