@@ -1361,7 +1361,7 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
     </td>
 </tr>
 <tr>
-    <th scope="row">Dùng Cho Custom Skill:</th>
+    <th scope="row"><label for="custom_skill">Dùng Cho Custom Skill:</label></th>
     <td>
         <div>
             <center>
@@ -1438,7 +1438,7 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
 
 
 <!-- mục  Chọn Kiểu LED --> 
-<h5>Chọn Kiểu LED: <i class="bi bi-info-circle-fill" onclick="togglePopupLED()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
+<h5><label onclick="toggleDivz()">Chọn Kiểu LED:</label> <i class="bi bi-info-circle-fill" onclick="togglePopupLED()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
 <div class="form-check form-switch d-flex justify-content-center">   <div class="col-auto">
 <font color=red><div id="toggleIcon" onclick="toggleDivz()"><font color=red>
     <i id="upIconz" class="bi bi-arrow-up-circle-fill" title="Nhấn Để Ẩn Cài Đặt LED" style="display: none;"></i>
@@ -1486,7 +1486,7 @@ None (Không Dùng)</label></center>
 </table></div></div></div><hr/>
   <!-- end chọn kiểu led -->
 	<!--Button -->
-<h5>Cấu Hình Nút Nhấn: <i class="bi bi-info-circle-fill" onclick="togglePopupGPIO()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
+<h5><label onclick="toggleDivzx()">Cấu Hình Nút Nhấn:</label> <i class="bi bi-info-circle-fill" onclick="togglePopupGPIO()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
 <div class="form-check form-switch d-flex justify-content-center"><div id="toggleIcon" onclick="toggleDivzx()">
  <font color=red> <i id="upIconzx" title="Nhấn Để Đóng Cấu Hình Cài Đặt Nút Nhấn" class="bi bi-arrow-up-circle-fill" style="display: none;"></i>
     <i id="downIconzx" title="Nhấn Để Mở Cấu Hình Cài Đặt Nút Nhấn" class="bi bi-arrow-down-circle-fill" ></i></font></div></div>
@@ -1519,7 +1519,7 @@ None (Không Dùng)</label></center>
 </table></div></div></div><hr/>
 <!-- END mục  Chọn Kiểu LED --> 
 
-<h5>Thông Báo/Thời Gian Chờ:</h5>
+<h5><label onclick="toggleDivzxcans()">Thông Báo/Thời Gian Chờ:</label></h5>
 <div class="form-check form-switch d-flex justify-content-center"> 
 <div id="toggleIcon" onclick="toggleDivzxcans()"><font color=red>
 <i id="upIconzxcans" title="Nhấn Để Mở Cấu Hình Cài Đặt Wake Up Reply" class="bi bi-arrow-up-circle-fill" style="display: none;"></i>
@@ -1554,7 +1554,7 @@ None (Không Dùng)</label></center>
 </tbody></table></div></div></div><hr/>
 	<!-- mục  Wake Up Reply --> 
 	<!-- <div id="additionalDiv" class="hidden">  -->
-<h5>Phản Hồi Của Bot Khi Đánh Thức: <i class="bi bi-info-circle-fill" onclick="togglePopupWAKEUP()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
+<h5><label onclick="toggleDivzxc()">Phản Hồi Của Bot Khi Đánh Thức:</label> <i class="bi bi-info-circle-fill" onclick="togglePopupWAKEUP()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
 <div class="form-check form-switch d-flex justify-content-center"> 
 <div id="toggleIcon" onclick="toggleDivzxc()"><font color=red>
 <i id="upIconzxc" title="Nhấn Để Mở Cấu Hình Cài Đặt Wake Up Reply" class="bi bi-arrow-up-circle-fill" style="display: none;"></i>
@@ -1598,7 +1598,7 @@ else {
 </div><hr/>
 <!-- </div> -->
 <!--Kết Thúc mục  Wake Up Reply --> 	
-  <h5>Cài Đặt UI, API, Cập Nhật:</h5>
+  <h5><label onclick="toggleDivblockupdates()">Cài Đặt UI, API, Cập Nhật:<label></h5>
 	
 <div class="form-check form-switch d-flex justify-content-center"> 
 <div id="toggleIcon" onclick="toggleDivblockupdates()"><font color=red>
@@ -1611,21 +1611,21 @@ else {
 <table class="table table-bordered">
   <tbody>
     <tr>
-      <th scope="row"><font color=red>Chặn Cập Nhật Phần Mềm Vietbot:</font></th>
-      <td><input type="checkbox" name="block_updates_vietbot_program" value="true" title="Tích vào để kích hoạt" class="form-check-input" <?php echo ($block_updates_vietbot_program) ? 'checked' : ''; ?>></td>
+      <th scope="row"><font color=red><label for="block_updates_vietbot_program">Chặn Cập Nhật Phần Mềm Vietbot:</label></font></th>
+      <td><input type="checkbox" name="block_updates_vietbot_program" id="block_updates_vietbot_program" value="true" title="Tích vào để kích hoạt" class="form-check-input" <?php echo ($block_updates_vietbot_program) ? 'checked' : ''; ?>></td>
     </tr>
 	<tr>
-	<th scope="row"><font color=red>Chặn Cập Nhật Web_UI:</font></th>
+	<th scope="row"><font color=red><label for="block_updates_web_ui">Chặn Cập Nhật Web_UI:</label></font></th>
 	
-	<td><input type="checkbox" name="block_updates_web_ui" title="Tích vào để kích hoạt" value="true" class="form-check-input" <?php echo ($block_updates_web_ui) ? 'checked' : ''; ?>></td>
+	<td><input type="checkbox" name="block_updates_web_ui" id="block_updates_web_ui" title="Tích vào để kích hoạt" value="true" class="form-check-input" <?php echo ($block_updates_web_ui) ? 'checked' : ''; ?>></td>
   
 	
 
 	</tr>
 	<tr>
-	<th scope="row"><font color="red">Đăng Nhập Trên WEB UI:</font></th>
+	<th scope="row"><font color="red"><label for="web_ui_login">Đăng Nhập Trên WEB UI:</label></font></th>
 	
-	<td><input type="checkbox" name="web_ui_login" title="Tích vào để kích hoạt" value="true" class="form-check-input" <?php echo ($web_ui_login) ? 'checked' : ''; ?>></td>
+	<td><input type="checkbox" name="web_ui_login" id="web_ui_login" title="Tích vào để kích hoạt" value="true" class="form-check-input" <?php echo ($web_ui_login) ? 'checked' : ''; ?>></td>
   
 	
 
@@ -1634,9 +1634,9 @@ else {
 
 	
 		<tr>
-	<th scope="row"><font color="red" title="tích để Bật/Tắt api của web ui">API WEB UI: <a href="http://<?php echo $serverIP.'/API.php'; ?>" target="_bank">URL API</a></font></th>
+	<th scope="row"><font color="red" for="api_web_ui" title="tích để Bật/Tắt api của web ui"><label>API WEB UI:</label> <a href="http://<?php echo $serverIP.'/API.php'; ?>" target="_bank">URL API</a></font></th>
 	
-	<td><input type="checkbox" name="api_web_ui" value="true" title="tích để Bật/Tắt api của web ui" class="form-check-input" <?php echo ($api_web_ui) ? 'checked' : ''; ?>></td>
+	<td><input type="checkbox" name="api_web_ui" id="api_web_ui" value="true" title="tích để Bật/Tắt api của web ui" class="form-check-input" <?php echo ($api_web_ui) ? 'checked' : ''; ?>></td>
   
 	
 
@@ -1676,7 +1676,7 @@ else {
 </tr></thead><tbody><tr> 
 <td  scope="col" colspan="3"><center><font color="red">Bạn Đang Dùng: <b><?php echo $hotwords_get_lang; ?></b></font></center></td>
 
-<tr><tr><td><center><b>Mặc Định</b></center></td><td><center><b>Tiếng Việt</b></center></td><td><center><b>Tiếng Anh</b></center></td>
+<tr><tr><td><center><b><label for="language_hotwor_default">Mặc Định</label></b></center></td><td><center><b><label for="language_hotwordddd">Tiếng Việt</label></b></center></td><td><center><b><label for="language_hotwordddd1">Tiếng Anh</label></b></center></td>
 </tr><tr><td> <center><input type="radio" name="language_hotword" id="language_hotwor_default" value="default" <?php if ($hotwords_get_langgg === 'default') echo 'checked'; ?>></center></td>
 <td> <center><input type="radio" name="language_hotword" id="language_hotwordddd" value="vi"  <?php if ($hotwords_get_langgg === 'vi') echo 'checked'; ?>></center></td>
 <td><center><input type="radio" name="language_hotword" id="language_hotwordddd1" value="eng" <?php if ($hotwords_get_langgg === 'eng') echo 'checked'; ?>></center></td>
