@@ -483,7 +483,7 @@ $output .= "Phiên bản Porcupine: $text_porcupine_version";
  <div class="dropdown-divider"></div>  <button type='submit' name='check_version_picovoice_porcupine' class='btn btn-dark' title='Kiểm tra phiên bản Picovoice và Porcupine'>Kiểm tra phiên bản Picovoice/Porcupine</button>
  <div class="dropdown-divider"></div>  <button type='submit' name='restart_appache2' class='btn btn-dark' title='Restart Apache2'>Restart Apache2</button>
   <div class="dropdown-divider"></div>  <button type='submit' name='check_lib_pvporcupine' class='btn btn-dark' title='Kiểm tra thư viện pvporcupine'>Check lib pvporcupine</button>
-  <div class="dropdown-divider"></div>  <button type='submit' name='check_lib_pip' class='btn btn-dark' title='Kiểm tra thư viện pvporcupine'>Check lib pip list</button>
+  <div class="dropdown-divider"></div>  <button type='submit' name='check_lib_pip' class='btn btn-dark' title='Liệt kê các thư viện đã cài bằng pip'>Check lib pip list</button>
   <div class="dropdown-divider"></div>  <button type='submit' name='sudo_apt_update' class='btn btn-dark' title='cập nhật gói và hệ thống update'>sudo apt update</button>
   <div class="dropdown-divider"></div>  <button type='submit' name='sudo_apt_upgrade' class='btn btn-dark' title='cập nhật gói và hệ thống upgrade'>sudo apt upgrade</button>
  </center></div></div>
