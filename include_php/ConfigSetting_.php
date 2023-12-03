@@ -37,7 +37,7 @@
 	} elseif ($hotwords_get_langgg === 'vi') {
     	$hotwords_get_lang = 'Tiếng Việt';
 	}elseif ($hotwords_get_langgg === 'default') {
-    	$hotwords_get_lang = 'Mặc Định';
+    	$hotwords_get_lang = 'Mặc Định, Tiếng Anh';
 	}
 	//Lấy giá trị value trong file json
 	$value_volume = $data_volume->volume;
@@ -909,7 +909,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
     }
     
     .chatbox-container.open {
-        right: 308px;
+        right: 312px;
     }
     
     .chatbox-content.open {
