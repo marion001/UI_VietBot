@@ -188,13 +188,6 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	$Pre_Answer_Timeout = $data_config['smart_answer']['pre_answer_timeout'];
 	$numberCharactersToSwitchMode = $data_config["smart_answer"]["number_characters_to_switch_mode"];
 	/////////////////////////////////////////////////////////////////////////////
-	
-	
-	
-	
-	
-	
-	
 	//Thay ĐỔi Ngôn Ngữ hotword
 	if (isset($_POST['language_hotword_submit'])) {
     $selectedLanguage = $_POST['language_hotword'];
@@ -205,72 +198,138 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	$hotword_lib_language = "porcupine_params.pv";
 	}	
 	elseif ($selectedLanguage === "default") {
-	
+		
 	$destinationDirectory = "$DuognDanThuMucJson/hotword/default";
-
 // Kiểm tra xem thư mục có tồn tại hay không
-if (!is_dir($destinationDirectory)) {
+	if (!is_dir($destinationDirectory)) {
     mkdir($destinationDirectory, 0777, true);
     if (is_dir($destinationDirectory)) {
-     //   echo "Thư mục đã được tạo thành công.\n";
+        //echo "Thư mục đã được tạo thành công.<br/>";
         chmod($destinationDirectory, 0777);
     } else {
-     //   echo "Không thể tạo thư mục.\n";
+        //echo "Không thể tạo thư mục.<br/>";
     }
 	} else {
-  //  echo "Thư mục đã tồn tại.\n";
+    //echo "Thư mục đã tồn tại.<br/>";
   //xóa các file trong thư mục default
 	$deleteCommand = "rm -f $destinationDirectory/*";
 	shell_exec($deleteCommand);
 	}
-	
-// URL của file cần tải
-$fileUrlttt = 'https://raw.githubusercontent.com/Picovoice/porcupine/master/lib/common/porcupine_params.pv';
-// Đường dẫn đến thư mục đích
-$destinationDirectoryttt = "$Lib_Hotword/default/";
-// Tên file đích
-$destinationFilettt = $destinationDirectoryttt . 'porcupine_params.pv';
-// Kiểm tra xem file đã tồn tại trong thư mục đích hay chưa
-if (!file_exists($destinationFilettt)) {
-    // Kiểm tra xem thư mục đích có tồn tại hay không
-    if (!is_dir($destinationDirectoryttt)) {
-        mkdir($destinationDirectoryttt, 0777, true);
+
+// Lấy giá trị của return trong phương thức version trong lớp Picovoice
+$path_picovoice = '/home/pi/.local/lib/python3.9/site-packages/picovoice/_picovoice.py';
+$connection = ssh2_connect($serverIP, $SSH_Port);
+if (!$connection) {die($E_rror_HOST);}
+if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
+$stream = ssh2_exec($connection, "cat $path_picovoice");
+stream_set_blocking($stream, true);
+$stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
+$output =  stream_get_contents($stream_out);
+$text_picovoice_version = picovoice_version($output, 'Picovoice', 'version');
+$firstThreeCharspicovoice_version = substr($text_picovoice_version, 0, 3);
+//echo "Phiên bản Picovoice: $firstThreeCharspicovoice_version <br/>";
+
+$apiUrl = "https://api.github.com/repos/Picovoice/porcupine/releases";
+// Sử dụng cURL để gửi yêu cầu GET đến GitHub API
+$ch = curl_init($apiUrl);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'); // Đặt một user-agent hợp lý
+$responseporcupine = curl_exec($ch);
+curl_close($ch);
+
+$releases = json_decode($responseporcupine, true);
+
+foreach ($releases as $release) {
+    $version = trim($release['tag_name'], 'v');
+    // So sánh phiên bản với biến $text_picovoice_version
+    if ($version === $firstThreeCharspicovoice_version) {
+        //echo "Phiên bản trùng khớp: $version";
+        $version_porcupine_OK = $version;
+        break; //dừng lặp
     }
-    // Tải file từ URL và lưu vào thư mục đích
-    if (copy($fileUrlttt, $destinationFilettt)) {
-     //   echo 'File đã được tải xuống thành công.';
-		chmod($destinationFilettt, 0777);
+}
+//echo "version_porcupine_OK $version_porcupine_OK<br/>";
+// Đường dẫn lưu trữ file đích
+$destinationPath = '/home/pi/vietbot_offline/resources/picovoice/lib/default';
+// URL của file cần tải về
+$fileUrl = 'https://github.com/Picovoice/porcupine/archive/refs/tags/v'.$version_porcupine_OK.'.zip';
+// Sử dụng cURL để tải file về
+$fileContent = file_get_contents($fileUrl);
+// Lấy tên file từ URL
+$filename = basename($fileUrl);
+// Đường dẫn đầy đủ của file đích
+$destinationFile = $destinationPath . '/' . $filename;
+// Ghi nội dung của file vào đường dẫn đích
+file_put_contents($destinationFile, $fileContent);
+//echo $fileUrl."<br/>";
+//echo "File đã được tải về và lưu vào $destinationFile<br/>";
+//chmod file zip
+chmod($destinationFile, 0777);
+$fileNameInZip1 = 'porcupine-'.$version_porcupine_OK.'/lib/common/porcupine_params.pv';
+$fileNameInZip2 = 'porcupine-'.$version_porcupine_OK.'/resources/keyword_files/raspberry-pi/';
+$destinationPath2 = "$DuognDanThuMucJson/hotword/default";
+$zipFilePath = $destinationPath.'/v'.$version_porcupine_OK.'.zip';
+// Tạo một đối tượng ZipArchive
+$zip = new ZipArchive;
+
+if ($zip->open($zipFilePath) === TRUE) {
+    // Kiểm tra xem file cần sao chép có tồn tại trong ZIP không
+    if ($zip->locateName($fileNameInZip1) !== false) {
+        // Đọc nội dung của file từ zip
+        $fileContent1 = $zip->getFromName($fileNameInZip1);
+        // Đường dẫn đến thư mục đích
+        $destinationFile1 = $destinationPath . '/' . basename($fileNameInZip1);
+        // Ghi nội dung của file vào thư mục đích
+        file_put_contents($destinationFile1, $fileContent1);
+        //echo "File $fileNameInZip1 đã được sao chép vào $destinationFile1<br/>";
     } else {
-      //  echo 'Không thể tải file xuống.';
-	$connectionhh = ssh2_connect($serverIP, $SSH_Port);
-	if (!$connectionhh) {die($E_rror_HOST);}
-	if (!ssh2_auth_password($connectionhh, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
-	$streamhh = ssh2_exec($connectionhh, "cp /home/pi/.local/lib/python3.9/site-packages/pvporcupine/lib/common/porcupine_params.pv $Lib_Hotword/default/");
-	stream_set_blocking($streamhh, true);
-	$stream_outhh = ssh2_fetch_stream($streamhh, SSH2_STREAM_STDIO);
-	stream_get_contents($stream_outhh);
+        //echo "File $fileNameInZip1 không tồn tại trong ZIP<br/>";
     }
+    // Lấy danh sách các file .ppn từ thư mục trong ZIP
+    $filesList2 = [];
+    for ($i = 0; $i < $zip->numFiles; $i++) {
+        $filename2 = $zip->getNameIndex($i);
+        if (strpos($filename2, $fileNameInZip2) === 0 && pathinfo($filename2, PATHINFO_EXTENSION) == 'ppn') {
+            $filesList2[] = $filename2;
+        }
+    }
+    // Sao chép từng file .ppn vào thư mục đích
+    foreach ($filesList2 as $filenameInZip2) {
+        // Đọc nội dung của file từ zip
+        $fileContent2 = $zip->getFromName($filenameInZip2);
+        // Đường dẫn đến thư mục đích
+        $destinationFile2 = $destinationPath2 . '/' . basename($filenameInZip2);
+        // Ghi nội dung của file vào thư mục đích
+        file_put_contents($destinationFile2, $fileContent2);
+        //echo "File $filenameInZip2 đã được sao chép vào $destinationFile2<br/>";
+    }
+    $zip->close();
+	shell_exec('rm ' . escapeshellarg($zipFilePath));
 } else {
-   // echo 'File đã tồn tại, không cần tải lại.';
-	chmod($destinationFilettt, 0777);
+    //echo 'Lỗi khi mở file zip';
 }
 	$connection = ssh2_connect($serverIP, $SSH_Port);
 	if (!$connection) {die($E_rror_HOST);}
 	if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
-	$stream2 = ssh2_exec($connection, "cp -r /home/pi/.local/lib/python3.9/site-packages/pvporcupine/resources/keyword_files/raspberry-pi/*.ppn $DuognDanThuMucJson/hotword/default/");
-	//$stream4 = ssh2_exec($connection, "cp /home/pi/.local/lib/python3.9/site-packages/pvporcupine/lib/common/porcupine_params.pv $Lib_Hotword/default/");
+	//$stream2 = ssh2_exec($connection, "cp -r /home/pi/.local/lib/python3.9/site-packages/pvporcupine/resources/keyword_files/raspberry-pi/*.ppn $DuognDanThuMucJson/hotword/default/");
 	$stream3 = ssh2_exec($connection, "sudo chmod -R 0777 /home/pi/vietbot_offline");
-	stream_set_blocking($stream2, true);
-	//stream_set_blocking($stream4, true);
+	//stream_set_blocking($stream2, true);
 	stream_set_blocking($stream3, true);
-	$stream_out2 = ssh2_fetch_stream($stream2, SSH2_STREAM_STDIO);
-	//$stream_out4 = ssh2_fetch_stream($stream4, SSH2_STREAM_STDIO);
+	//$stream_out2 = ssh2_fetch_stream($stream2, SSH2_STREAM_STDIO);
 	$stream_out3 = ssh2_fetch_stream($stream3, SSH2_STREAM_STDIO);
-	stream_get_contents($stream_out2);
-	//stream_get_contents($stream_out4);
+	//stream_get_contents($stream_out2);
 	stream_get_contents($stream_out3);
 	$hotword_lib_language = "default/porcupine_params.pv";
+	
+	
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -292,7 +351,7 @@ if (!file_exists($destinationFilettt)) {
             "value" => null,
             "lang" => $selectedLanguage,
             "file_name" => $fileName.".ppn",
-            "sensitive" => 0.1,
+            "sensitive" => 0.3,
             "say_reply" => false,
             "command" => null,
             "active" => true
@@ -800,6 +859,10 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
         padding: 20px;
         border: 1px solid gray;
         border-radius: 5px;
+		    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     }
     
     a {
@@ -839,7 +902,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
     }
     
     .chatbox-container.open {
-        right: 280px;
+        right: 308px;
     }
     
     .chatbox-content.open {
@@ -1397,19 +1460,7 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
 </div>
 </div>
 <!-- </div> -->
-<div id="popupContainerhwlang" class="popup-container" onclick="hidePopuphwlang()">
-    <div id="popupContent" onclick="preventEventPropagationhwlang(event)">
-        <p>
-            <center><b>Thay Đổi Ngôn Ngữ Gọi Hotword</b>
-            </center>
-            <br/> - <b>1: </b> 2 file thư viện <a href="https://github.com/Picovoice/porcupine/blob/master/lib/common/porcupine_params.pv" target="_bank">tiếng anh</a>
-            <b>"porcupine_params.pv"</b> và <a href="https://github.com/Picovoice/porcupine/blob/master/lib/common/porcupine_params_vn.pv" target="_bank">tiếng việt</a>
-            <b>"porcupine_params_vn.pv"</b>
-            <br/>phải nằm cùng trong đường dẫn sau: "<b><?php echo $Lib_Hotword; ?></b>"
-            <br/> - <b>2: </b>các file thư viện hotword, file hotword, thư viện picovoice phải cùng phiên bản.
-            <br/> - <i>Khi thay đổi ngôn ngữ bạn sẽ cần phải cấu hình lại các Hotword ở mục <b>Cài Đặt Hotword</b></i>
-    </div>
-</div>
+
 <hr/>
 <!--END HOT WORK --> 
 
@@ -1666,7 +1717,28 @@ else {
 			 <center><input type="button"  class="btn btn-info" id="close-button" value="Đóng"></center>
         </div>
     </div>
-	
+	<div id="popupContainerhwlang" class="popup-container" onclick="hidePopuphwlang()">
+    <div id="popupContent" onclick="preventEventPropagationhwlang(event)">
+        
+            <center><b>Thay Đổi Ngôn Ngữ Gọi Hotword</b></center><br/>
+             - <b>1: </b> 2 file thư viện <a href="https://github.com/Picovoice/porcupine/blob/master/lib/common/porcupine_params.pv" target="_bank">tiếng anh</a>
+            <b>"porcupine_params.pv"</b> và <a href="https://github.com/Picovoice/porcupine/blob/master/lib/common/porcupine_params_vn.pv" target="_bank">tiếng việt</a>
+            <b>"porcupine_params_vn.pv"</b>
+            <br/>phải nằm cùng trong đường dẫn sau: "<?php echo $Lib_Hotword; ?>"<br/>
+             - <b>2: </b>các file thư viện hotword, file hotword, thư viện picovoice phải cùng phiên bản.<br/>
+             - <i>Khi thay đổi ngôn ngữ bạn sẽ cần phải cấu hình lại các Hotword ở mục <b>Cài Đặt Hotword</b></i>
+    </div>
+</div>
+	<div id="popupContainerhwlangmd" class="popup-container" onclick="hidePopuphwlangmd()">
+    <div id="popupContent" onclick="preventEventPropagationhwlangmd(event)">
+        
+            <center><b>Mặc Định:</b></center>
+			- Tự động dùng phiên bản tương thích với phiên bản của Picovoice trên hệ thống<br/>
+			- Mặc định sẽ sử dụng <b>tiếng anh</b> để gọi HotWord<br/>
+			- Nếu chọn <b>tiếng anh</b> hoặc <b>tiếng việt</b> bạn sẽ phải cấu hình các file thủ công để tương thích với phiên bản thư viện Picovoice<br/>
+
+    </div></div>
+
      <div class="chatbox-container" onclick="toggleChatbox()" title="Nhấn Để Thay Đổi Ngôn Ngữ Gọi Hotword"><center><b>Ngôn <br/>Ngữ</b></center></div>
     <div id="chatbox-content" class="chatbox-content"><br/>
 <div class="col-auto">
@@ -1676,7 +1748,7 @@ else {
 </tr></thead><tbody><tr> 
 <td  scope="col" colspan="3"><center><font color="red">Bạn Đang Dùng: <b><?php echo $hotwords_get_lang; ?></b></font></center></td>
 
-<tr><tr><td><center><b><label for="language_hotwor_default">Mặc Định</label></b></center></td><td><center><b><label for="language_hotwordddd">Tiếng Việt</label></b></center></td><td><center><b><label for="language_hotwordddd1">Tiếng Anh</label></b></center></td>
+<tr><tr><td><center><b><label for="language_hotwor_default">Mặc Định <i class="bi bi-info-circle-fill" onclick="togglePopuphwlangmd()" title="Nhấn Để Tìm Hiểu Thêm"></i></label></b></center></td><td><center><b><label for="language_hotwordddd">Tiếng Việt</label></b></center></td><td><center><b><label for="language_hotwordddd1">Tiếng Anh</label></b></center></td>
 </tr><tr><td> <center><input type="radio" name="language_hotword" id="language_hotwor_default" value="default" <?php if ($hotwords_get_langgg === 'default') echo 'checked'; ?>></center></td>
 <td> <center><input type="radio" name="language_hotword" id="language_hotwordddd" value="vi"  <?php if ($hotwords_get_langgg === 'vi') echo 'checked'; ?>></center></td>
 <td><center><input type="radio" name="language_hotword" id="language_hotwordddd1" value="eng" <?php if ($hotwords_get_langgg === 'eng') echo 'checked'; ?>></center></td>
@@ -2439,6 +2511,19 @@ else if (radio.value === "stt_hpda") {
     function preventEventPropagationhwlang(event) {
       event.stopPropagation();
     }
+// togglePopuphwlangmd
+    function togglePopuphwlangmd() {
+      var popupContainer = document.getElementById("popupContainerhwlangmd");
+      popupContainer.classList.toggle("show");
+    }
+    function hidePopuphwlangmd() {
+      var popupContainer = document.getElementById("popupContainerhwlangmd");
+      popupContainer.classList.remove("show");
+    }
+    function preventEventPropagationhwlangmd(event) {
+      event.stopPropagation();
+    }
+	
 //ẩn hiện cấu hình nút nhấn
     function toggleDivz() {
       var div = document.getElementById("myDivz");
