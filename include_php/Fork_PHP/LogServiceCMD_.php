@@ -22,6 +22,45 @@ $(document).ready(function() {
 
 
 <?php
+function picovoice_version($noi_dung_tep, $ten_lop, $ten_phuong_thuc) {
+    try {
+        $dong = explode("\n", $noi_dung_tep);
+        $trong_lop = $noi_dung_lop = $trong_phuong_thuc = $noi_dung_phuong_thuc = $gia_tri_return = false;
+        foreach ($dong as $line) {
+            $noi_dung_lop .= $line;
+            if (strpos($line, "class {$ten_lop}(") !== false) {
+                $trong_lop = true;
+            }
+            if ($trong_lop && strpos($line, "def {$ten_phuong_thuc}(") !== false) {
+                $trong_phuong_thuc = true;
+            }
+            if ($trong_phuong_thuc) {
+                $noi_dung_phuong_thuc .= $line;
+                if (strpos($line, 'return ') !== false) {
+                    $gia_tri_return = trim(trim(str_replace("'", "", explode('return ', $line)[1])));
+                    break;
+                }
+            }
+        }
+        return $gia_tri_return;
+    } catch (Exception $e) {
+        return "Lỗi xử lý tệp.";
+    }
+}
+function porcupine_version($file_path, $skip_count = 9) {
+    try {
+        $file = fopen($file_path, 'r');
+        // Đọc và bỏ qua 9 ký tự đầu
+        fread($file, $skip_count);
+        // Đọc 15 ký tự tiếp theo
+        $next_14_characters = fread($file, 5);
+        fclose($file);
+        return $next_14_characters;
+    } catch (Exception $e) {
+        return "File not found.";
+    }
+}
+//
 
 // Khởi tạo biến để lưu output
 $output = '';
@@ -222,7 +261,6 @@ stream_set_blocking($stream, true);
 $stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
 $output = "$GET_current_USER@$HostName:~$ journalctl --user-unit vietbot.service\n\n";
 $output .=  stream_get_contents($stream_out);
-
 }
 //Log dịch vụ chạy tự động
 if (isset($_POST['systemctl_vietbot'])) {
@@ -340,7 +378,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hash_generator'])) {
 		}
 	
 }
-
+//check_version_picovoice_porcupine
+if (isset($_POST['check_version_picovoice_porcupine'])) {
+$path_picovoice = '/home/pi/.local/lib/python3.9/site-packages/picovoice/_picovoice.py';
+$connection = ssh2_connect($serverIP, $SSH_Port);
+if (!$connection) {die($E_rror_HOST);}
+if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
+$stream = ssh2_exec($connection, "cat $path_picovoice");
+stream_set_blocking($stream, true);
+$stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
+$outputt =  stream_get_contents($stream_out);
+//echo $output;
+$text_picovoice_version = picovoice_version($outputt, 'Picovoice', 'version');
+$firstThreeCharspicovoice_version = substr($text_picovoice_version, 0, 3);
+//echo "Phiên bản Picovoice: $text_picovoice_version <br/>";
+$file_path = '/home/pi/vietbot_offline/resources/picovoice/lib/porcupine_params.pv';
+$text_porcupine_version = porcupine_version($file_path);
+//echo "Phiên bản Porcupine: $text_porcupine_version";
+$output .= "$GET_current_USER@$HostName:~ssh$:\n";
+$output .= "Phiên bản Picovoice: $text_picovoice_version\n";
+$output .= "Phiên bản Porcupine: $text_porcupine_version";
+}
 ?>
     <form  id="my-form"  method="post">
 	<div class="row g-3 d-flex justify-content-center">
@@ -422,6 +480,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hash_generator'])) {
 <div class="dropdown-divider"></div>  <button type="submit" name="reboot_power" class="btn btn-dark" title="Khởi Động Lại Toàn Bộ Hệ Thống">Reboot OS</button>
  <div class="dropdown-divider"></div>  <button type='submit' name='set_full_quyen' class='btn btn-dark' title='Cấp Quyền Cho Các File Và Thư Mục Cần Thiết'>Cấp Quyền Chmod</button>
  <div class="dropdown-divider"></div>  <button type='submit' name='set_owner' class='btn btn-dark' title='Chuyển các file và thư mục cần thiết về người dùng pi'>Change Owner</button>
+ <div class="dropdown-divider"></div>  <button type='submit' name='check_version_picovoice_porcupine' class='btn btn-dark' title='Kiểm tra phiên bản Picovoice và Porcupine'>Kiểm tra phiên bản Picovoice/Porcupine</button>
  <div class="dropdown-divider"></div>  <button type='submit' name='restart_appache2' class='btn btn-dark' title='Restart Apache2'>Restart Apache2</button>
   <div class="dropdown-divider"></div>  <button type='submit' name='check_lib_pvporcupine' class='btn btn-dark' title='Kiểm tra thư viện pvporcupine'>Check lib pvporcupine</button>
   <div class="dropdown-divider"></div>  <button type='submit' name='check_lib_pip' class='btn btn-dark' title='Kiểm tra thư viện pvporcupine'>Check lib pip list</button>
