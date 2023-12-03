@@ -5,6 +5,7 @@
 //Mail: vietbotsmartspeaker@gmail.com
 @error_reporting(0);
 @date_default_timezone_set('Asia/Ho_Chi_Minh');
+ini_set('memory_limit', '256M');
 // Khởi động session
 session_start();
 $session_expiration = 86400; //Cài đặt thời gian sống của session cookie thành 1 ngày 1 ngày (1 giờ = 3600 giây)
@@ -26,6 +27,8 @@ $UI_Version = "https://raw.githubusercontent.com/marion001/UI_VietBot/main/versi
 //list Url Dowload thư viện
 //lib Google APIs Client PHP
 $url_lib_GDrive = 'https://raw.githubusercontent.com/marion001/Google-APIs-Client-Library-PHP/main/lib_Google_APIs_Client_php.tar.gz';
+
+$apiUrlporcupine = "https://api.github.com/repos/Picovoice/porcupine/releases";
 
 //Mật Khẩu Đăng Nhập Trình Quản Lý File Manager
 $Pass_Login_File_Manager = "admin"; // admin
@@ -63,6 +66,7 @@ $DuognDanUI_HTML = $Path_Vietbot_src.'/html';
 $PathResources = $Path_Vietbot_src.'/resources';
 $directorySound = $Path_Vietbot_src.'/src/sound/default/';
 $Lib_Hotword = $Path_Vietbot_src.'/resources/picovoice/lib';
+$path_picovoice = '/home/pi/.local/lib/python3.9/site-packages/picovoice';
 
 //SSH Tải Khoản, Mật Khẩu Đăng Nhập SSH (Bắt Buộc Phải Nhập Để Dùng Các Lệnh Hệ Thống)
 $SSH_TaiKhoan = "pi"; //Tài Khoản Đăng Nhập pi SSH Của Bạn
