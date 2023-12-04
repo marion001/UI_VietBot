@@ -5,7 +5,10 @@ include "../Configuration.php";
 ?>
 <!DOCTYPE html>
 <html lang="vi">
-
+<!--
+Code By: Vũ Tuyển
+Facebook: https://www.facebook.com/TWFyaW9uMDAx
+-->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
