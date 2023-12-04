@@ -555,7 +555,7 @@ if ($xml_content) {
         echo '<option value="' . $version . '">Phiên Bản: ' . $version . '</option>';
     }
 } else {
-    echo "<option value="">Phiên bản: -----</option>";
+    echo "<option value=''>Phiên bản: -----</option>";
 }
 ?>
  </select></div> </div><div class="col-auto"> <div class="input-group-append">
