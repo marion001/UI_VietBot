@@ -1,7 +1,8 @@
 <?php
 // Code By: Vũ Tuyển
 // Facebook: https://www.facebook.com/TWFyaW9uMDAx
-//error_reporting(E_ALL);
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 ?>
 
 
@@ -26,6 +27,31 @@ function porcupine_version($file_pathpv, $skip_count = 9) {
         return $next_14_characters;
     } catch (Exception $e) {
         return "-----";
+    }
+}
+function picovoice_version($noi_dung_tep, $ten_lop, $ten_phuong_thuc) {
+    try {
+        $dong = explode("\n", $noi_dung_tep);
+        $trong_lop = $noi_dung_lop = $trong_phuong_thuc = $noi_dung_phuong_thuc = $gia_tri_return = false;
+        foreach ($dong as $line) {
+            $noi_dung_lop .= $line;
+            if (strpos($line, "class {$ten_lop}(") !== false) {
+                $trong_lop = true;
+            }
+            if ($trong_lop && strpos($line, "def {$ten_phuong_thuc}(") !== false) {
+                $trong_phuong_thuc = true;
+            }
+            if ($trong_phuong_thuc) {
+                $noi_dung_phuong_thuc .= $line;
+                if (strpos($line, 'return ') !== false) {
+                    $gia_tri_return = trim(trim(str_replace("'", "", explode('return ', $line)[1])));
+                    break;
+                }
+            }
+        }
+        return $gia_tri_return;
+    } catch (Exception $e) {
+        return "Lỗi xử lý tệp.";
     }
 }
 	
@@ -171,9 +197,7 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 		$Bot_Mode = "3";
 		$Bot_Mode_Text = "Đầy Đủ Tính Năng";
 	}
-	
-	
-	
+
 	//Get Ưu tiên Trợ Lý Ảo/ AI
 	$external_bot_priority_1 = $data_config['smart_answer']['external_bot_priority_1'];
 	$external_bot_priority_2 = $data_config['smart_answer']['external_bot_priority_2'];
@@ -246,8 +270,23 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	shell_exec($deleteCommand);
 	}
 
-// Lấy giá trị của return trong phương thức version trong lớp Picovoice
 
+$remotePath = "/home/pi/.local/lib/python3.9/site-packages/";
+$pattern = '/^pvporcupine-(\d+\.\d+\.\d+)\.dist-info$/m';
+//$pattern = '/^pvporcupine-(\d+\.\d+\.\d+)\.dist-info$/m';
+// Thực hiện lệnh ls để lấy danh sách thư mục
+$connection = ssh2_connect($serverIP, $SSH_Port);
+if (!$connection) {die($E_rror_HOST);}
+if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
+$stream = ssh2_exec($connection, "ls $remotePath");
+stream_set_blocking($stream, true);
+$output = stream_get_contents($stream);
+fclose($stream);
+// Kiểm tra xem có thư mục nào khớp với biểu thức chính quy không
+if (preg_match($pattern, $output, $matches)) {
+    $foundVersion = $matches[1];
+	$firstThreeCharspicovoice_version = substr($foundVersion, 0, 3);
+} else {
 $connection = ssh2_connect($serverIP, $SSH_Port);
 if (!$connection) {die($E_rror_HOST);}
 if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
@@ -255,9 +294,12 @@ $stream = ssh2_exec($connection, "cat $path_picovoice/_picovoice.py");
 stream_set_blocking($stream, true);
 $stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
 $output =  stream_get_contents($stream_out);
+//echo $output;
 $text_picovoice_version = picovoice_version($output, 'Picovoice', 'version');
 $firstThreeCharspicovoice_version = substr($text_picovoice_version, 0, 3);
-//echo "Phiên bản Picovoice: $firstThreeCharspicovoice_version <br/>";
+//echo "Phiên bản Picovoice: $text_picovoice_version <br/>";
+}
+
 
 // Sử dụng cURL để gửi yêu cầu GET đến GitHub API
 $ch = curl_init($apiUrlporcupine);
@@ -357,18 +399,8 @@ if ($zip->open($zipFilePath) === TRUE) {
 	//stream_get_contents($stream_out2);
 	stream_get_contents($stream_out3);
 	$hotword_lib_language = "default/porcupine_params.pv";
-	
-	
+
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	$jsonContent = file_get_contents($FileConfigJson);
     $jsonData = json_decode($jsonContent, true);
