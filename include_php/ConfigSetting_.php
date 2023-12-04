@@ -890,7 +890,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
     }
     
     ::-webkit-scrollbar {
-        width: 5px;
+        width: 13px;
     }
     
     ::-webkit-scrollbar-track {
@@ -940,7 +940,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
     
     .chatbox-container {
         position: fixed;
-        top: 40%;
+        top: 38%;
         right: 0;
         bottom: auto;
         padding: 10px;
@@ -956,8 +956,8 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
     
     .chatbox-content {
         position: fixed;
-        top: 20%;
-        right: -100%;
+        top: 5%;
+        right: -200%;
         bottom: auto;
         width: auto;
         height: auto;
@@ -971,7 +971,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
     }
     
     .chatbox-container.open {
-        right: 312px;
+        right: 420px;
     }
     
     .chatbox-content.open {
@@ -1037,7 +1037,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
          
 		#scrollToTopButtondown {
         position: fixed;
-        top: 57%;
+        top: 53%;
         right: 0;
         bottom: auto;
         padding: 10px;
@@ -1057,6 +1057,13 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
             padding: 0 1px; /* Khoảng cách giữa nút "Low", "Medium", và "High" */
             position: relative;
         }
+		
+		.my-div-ppn {
+    max-height: 150px; /* Giới hạn chiều cao tối đa là 300px */
+    overflow: auto; /* Thêm thanh cuộn nếu nội dung vượt quá chiều cao tối đa */
+    border: 1px solid #ccc; /* Thêm đường viền để thấy rõ chiều cao giới hạn */
+}
+		
     </style>
    <script src="../assets/js/11.0.18_dist_sweetalert2.all.min.js"></script>
   
@@ -1809,9 +1816,10 @@ else {
     </div></div>
 
      <div class="chatbox-container" onclick="toggleChatbox()" title="Nhấn Để Thay Đổi Ngôn Ngữ Gọi Hotword"><center><b>Ngôn <br/>Ngữ</b></center></div>
-    <div id="chatbox-content" class="chatbox-content"><br/>
+    <div id="chatbox-content" class="chatbox-content">
+	<center><i class="bi bi-x-circle-fill" onclick="toggleChatbox()"></i></center>
 <div class="col-auto">
-<table class="table table-sm table-bordered table-responsive align-middle">
+<table class="table table-sm table-bordered align-middle">
 <thead><tr>
 <th colspan="3"><center class="text-success">Thay Đổi Ngôn Ngữ Hotword <i class="bi bi-info-circle-fill" onclick="togglePopuphwlang()" title="Nhấn Để Tìm Hiểu Thêm"></i></center></th>
 </tr></thead><tbody><tr> 
@@ -1821,18 +1829,43 @@ else {
 <td  scope="col" colspan="1"><center><font color="blue"><b>Tự Động:</b></font></center></td>
 <td  scope="col" colspan="2"><center><b>Thủ Công:</b></center></td>
 </tr>
+<form id="uploadForm" action="" method="post" enctype="multipart/form-data">
+
 
 <tr><td><center><b><label for="language_hotwor_default"><font color="blue">Mặc Định </font> <font color="red"><i class="bi bi-question-square-fill" onclick="togglePopuphwlangmd()" title="Nhấn Để Tìm Hiểu Thêm"></font></i></label></b></center></td><td><center><b><label for="language_hotwordddd">Tiếng Việt</label></b></center></td><td><center><b><label for="language_hotwordddd1">Tiếng Anh</label></b></center></td>
 </tr><tr><td> <center><input type="radio" name="language_hotword" id="language_hotwor_default" value="default" <?php if ($hotwords_get_langgg === 'default') echo 'checked'; ?>></center></td>
 <td> <center><input type="radio" name="language_hotword" id="language_hotwordddd" value="vi"  <?php if ($hotwords_get_langgg === 'vi') echo 'checked'; ?>></center></td>
 <td><center><input type="radio" name="language_hotword" id="language_hotwordddd1" value="eng" <?php if ($hotwords_get_langgg === 'eng') echo 'checked'; ?>></center></td>
-</tr><tr><th colspan="3"><center><button type="submit" name="language_hotword_submit" class="btn btn-success">Lưu Cài Đặt</button>
-<button type="button" onclick="uncheckRadiolanguage_hotwordddd()" class="btn btn-danger">Bỏ Chọn</button></th></center></th></tr>
+</tr><tr><th colspan="3"><center><button type="submit" name="language_hotword_submit" class="btn btn-success" title="Lưu cài đặt hotword">Lưu Cài Đặt</button>
+<!-- <button type="button" onclick="uncheckRadiolanguage_hotwordddd()" class="btn btn-danger">Bỏ Chọn</button> -->
+<button type="button" class="btn btn-primary" onclick="showFiles()" title="Hiển thị danh sách các file hotword">List Hotword</button>
+
+</th></center></th></tr>
 </tbody>
 </table>
+
+
+
+ <div class="input-group">
+  <div class="custom-file col-xs-2">
+	<input type="file" class="form-control" name="files[]" id="files" multiple accept=".ppn">
+  </div>
+  <div class="input-group-append">
+   <button type="button" class="btn btn-primary" onclick="uploadFiles()" title="Tải file hotword lên">Tải lên</button>
+  </div> 
+</div>
+    <!-- <input type="submit"  value="Tải lên"> -->
+</form>
+
+<div class="my-div-ppn">
+<div id="fileList">
+</div>
+</div>
+
 <?php
 $text_porcupine_version = porcupine_version($Lib_Hotword.'/'.$hotwords_lang_Porcupine);
-echo "<font color='red'>Phiên bản Porcupine: <b>$text_porcupine_version </b> <a href='https://github.com/Picovoice/porcupine' target='_bank'> <i class='bi bi-github'></i></font>";
+echo "<font color='red'>Phiên bản Porcupine: <b>$text_porcupine_version </b> <a href='https://github.com/Picovoice/porcupine' target='_bank'> <i class='bi bi-github'></i> </font>";
+echo "<a href='https://console.picovoice.ai/' target='_bank'> Train</a>";
 ?>
 
 </div></div></form><hr/>    
@@ -3095,6 +3128,104 @@ $(document).ready(function() {
         });
     });
 </script>
+<script>
+    // Hàm xóa file bằng jQuery Ajax
+    function deleteFileAjax(filePath) {
+        if (confirm("Bạn có chắc chắn muốn xóa file này không?")) {
+            $.ajax({
+                type: "POST",
+                url: "Fork_PHP/hotword_ppn_file.php",
+                data: { 
+                    action: "delete_file",
+                    fileToDelete: filePath,
+                    language: $('input[name="language_hotword"]:checked').val()
+                },
+                success: function(response) {
+                    if (response === "success") {
+                        //alert("File đã được xóa thành công.");
+                        showFiles(); // Cập nhật danh sách file sau khi xóa
+                    } else if (response === "not_found") {
+                        alert("File không tồn tại.");
+                    } else {
+                        alert("Lỗi không thể xóa file.");
+                    }
+                },
+                error: function() {
+                    alert("Lỗi trong quá trình xử lý yêu cầu.");
+                }
+            });
+        }
+    }
+
+    // Hàm hiển thị danh sách file
+    function showFiles() {
+        var fileListDiv = $("#fileList");
+
+        $.ajax({
+            type: "GET",
+            url: "Fork_PHP/hotword_ppn_file.php?action=list_files&language=" + $('input[name="language_hotword"]:checked').val(),
+            success: function(response) {
+                fileListDiv.html(response);
+            },
+            error: function() {
+                alert("Lỗi trong quá trình xử lý yêu cầu.");
+            }
+        });
+    }
+/*
+    // Thêm sự kiện xử lý khi form tải lên được submit
+    $("#uploadForm").submit(function(e) {
+        e.preventDefault(); // Ngăn chặn form submit mặc định
+
+        var formData = new FormData(this); // Lấy dữ liệu từ form
+
+        $.ajax({
+            type: "POST",
+            url: "Fork_PHP/hotword_ppn_upload.php",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                alert(response); // Hiển thị thông báo từ server
+                showFiles(); // Cập nhật danh sách file sau khi tải lên
+            },
+            error: function() {
+                alert("Lỗi trong quá trình xử lý yêu cầu.");
+            }
+        });
+    });
+	*/
+	// Hàm xử lý khi nút "Tải lên" được nhấn
+// Hàm xử lý sự kiện khi nút "Tải lên" được nhấn
+// Hàm xử lý sự kiện khi nút "Tải lên" được nhấn
+    // Hàm xử lý tải lên
+function uploadFiles() {
+    var formData = new FormData($('#uploadForm')[0]); // Lấy dữ liệu từ form
+    var selectedLanguage = $('input[name="language_hotword"]:checked').val();
+    formData.append("language_hotword", selectedLanguage);
+
+    // Thêm dữ liệu file nhị phân
+    var binaryFilesInput = $('#files')[0];
+    for (var i = 0; i < binaryFilesInput.files.length; i++) {
+        formData.append('files[]', binaryFilesInput.files[i]);
+    }
+    $.ajax({
+        type: "POST",
+        url: "Fork_PHP/hotword_ppn_upload.php",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            alert(response); // Hiển thị thông báo từ server
+            showFiles(); // Cập nhật danh sách file sau khi tải lên
+        },
+        error: function() {
+            alert("Lỗi trong quá trình xử lý yêu cầu.");
+        }
+    });
+}
+</script>
+
 </body>
 
 </html>
