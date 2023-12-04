@@ -1,7 +1,7 @@
 {
   "ui_version": {
-    "latest": "beta 04-12-2023",
-    "current": "beta 04-12-2023",
-    "notification": "Cập Nhật: Nâng/Hạ Cấp, kiểm tra phiên bản Picovoice Qua Web UI,Tích hợp tự động chọn phiên bản Porcupine theo  phiên bản Picovoice trên hệ thống"
+    "latest": "beta 04-12-2023-1",
+    "current": "beta 04-12-2023-1",
+    "notification": "Picovoice, Porcupine, Hotword: hỗ trợ tương tác qua web ui"
   }
 }
