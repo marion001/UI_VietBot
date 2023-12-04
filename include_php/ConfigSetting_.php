@@ -14,6 +14,21 @@
 	$data_config = json_decode($json_config_data, true);
 	$ttsCompany = '';
 	$ttsVoice = '';
+	
+function porcupine_version($file_pathpv, $skip_count = 9) {
+    try {
+        $filepv = fopen($file_pathpv, 'r');
+        // Đọc và bỏ qua 9 ký tự đầu
+        fread($filepv, $skip_count);
+        // Đọc 15 ký tự tiếp theo
+        $next_14_characters = fread($filepv, 5);
+        fclose($filepv);
+        return $next_14_characters;
+    } catch (Exception $e) {
+        return "-----";
+    }
+}
+	
 	//Khôi Phục File Config
 	// Đường dẫn đến thư mục "Backup_Config"
 	$backupDirz = "Backup_Config/";
@@ -34,10 +49,13 @@
 	$hotwords_get_langgg = $data_config['smart_wakeup']['hotword'][0]['lang'];
 	if ($hotwords_get_langgg === 'eng') {
     	$hotwords_get_lang = 'Tiếng Anh';
+    	$hotwords_lang_Porcupine = 'porcupine_params.pv';
 	} elseif ($hotwords_get_langgg === 'vi') {
     	$hotwords_get_lang = 'Tiếng Việt';
+		$hotwords_lang_Porcupine = 'porcupine_params_vn.pv';
 	}elseif ($hotwords_get_langgg === 'default') {
     	$hotwords_get_lang = 'Mặc Định, Tiếng Anh';
+		$hotwords_lang_Porcupine = '/default/porcupine_params.pv';
 	}
 	//Lấy giá trị value trong file json
 	$value_volume = $data_volume->volume;
@@ -188,6 +206,15 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	$Pre_Answer_Timeout = $data_config['smart_answer']['pre_answer_timeout'];
 	$numberCharactersToSwitchMode = $data_config["smart_answer"]["number_characters_to_switch_mode"];
 	/////////////////////////////////////////////////////////////////////////////
+	
+	
+	
+
+	
+	
+	
+	
+	
 	//Thay ĐỔi Ngôn Ngữ hotword
 	if (isset($_POST['language_hotword_submit'])) {
     $selectedLanguage = $_POST['language_hotword'];
@@ -1755,12 +1782,20 @@ else {
 </tr></thead><tbody><tr> 
 <td  scope="col" colspan="3"><center><font color="red">Bạn Đang Dùng: <b><?php echo $hotwords_get_lang; ?></b></font></center></td>
 
-<tr><tr><td><center><b><label for="language_hotwor_default">Mặc Định <i class="bi bi-info-circle-fill" onclick="togglePopuphwlangmd()" title="Nhấn Để Tìm Hiểu Thêm"></i></label></b></center></td><td><center><b><label for="language_hotwordddd">Tiếng Việt</label></b></center></td><td><center><b><label for="language_hotwordddd1">Tiếng Anh</label></b></center></td>
+<tr><tr><td><center><b><label for="language_hotwor_default" class="text-primary">Mặc Định <i class="bi bi-info-circle-fill" onclick="togglePopuphwlangmd()" title="Nhấn Để Tìm Hiểu Thêm"></i></label></b></center></td><td><center><b><label for="language_hotwordddd">Tiếng Việt</label></b></center></td><td><center><b><label for="language_hotwordddd1">Tiếng Anh</label></b></center></td>
 </tr><tr><td> <center><input type="radio" name="language_hotword" id="language_hotwor_default" value="default" <?php if ($hotwords_get_langgg === 'default') echo 'checked'; ?>></center></td>
 <td> <center><input type="radio" name="language_hotword" id="language_hotwordddd" value="vi"  <?php if ($hotwords_get_langgg === 'vi') echo 'checked'; ?>></center></td>
 <td><center><input type="radio" name="language_hotword" id="language_hotwordddd1" value="eng" <?php if ($hotwords_get_langgg === 'eng') echo 'checked'; ?>></center></td>
 </tr><tr><th colspan="3"><center><button type="submit" name="language_hotword_submit" class="btn btn-success">Lưu Cài Đặt</button>
-<button type="button" onclick="uncheckRadiolanguage_hotwordddd()" class="btn btn-danger">Bỏ Chọn</button></th></center></th></tr></tbody></table></div></div></form><hr/>    
+<button type="button" onclick="uncheckRadiolanguage_hotwordddd()" class="btn btn-danger">Bỏ Chọn</button></th></center></th></tr>
+</tbody>
+</table>
+<?php
+$text_porcupine_version = porcupine_version($Lib_Hotword.'/'.$hotwords_lang_Porcupine);
+echo "<font color='red'>Phiên bản Porcupine: <b>$text_porcupine_version</b></font>";
+?>
+
+</div></div></form><hr/>    
 <center><h5><font color=red>Khôi Phục File config.json: <i class="bi bi-info-circle-fill" onclick="togglePopupConfigRecovery()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5></font></center>
 <div class="form-check form-switch d-flex justify-content-center"> 
 <div id="toggleIcon" onclick="toggleDivConfigRecovery()"><font color=red>
