@@ -380,6 +380,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hash_generator'])) {
 }
 //check_version_picovoice_porcupine
 if (isset($_POST['check_version_picovoice_porcupine'])) {
+$remotePath = "/home/pi/.local/lib/python3.9/site-packages/";
+$pattern = '/^pvporcupine-(\d+\.\d+\.\d+)\.dist-info$/m';
+// Thực hiện lệnh ls để lấy danh sách thư mục
+$connection = ssh2_connect($serverIP, $SSH_Port);
+if (!$connection) {die($E_rror_HOST);}
+if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
+$stream = ssh2_exec($connection, "ls $remotePath");
+stream_set_blocking($stream, true);
+$outputhh = stream_get_contents($stream);
+fclose($stream);
+$output .= "$GET_current_USER@$HostName:~ssh$:\n";
+// Kiểm tra xem có thư mục nào khớp với biểu thức chính quy không
+if (preg_match($pattern, $outputhh, $matches)) {
+    $foundVersion = $matches[1];
+    $output .= "Phiên bản Picovoice: $foundVersion\n";
+} else {
+    //echo "Không tìm thấy thư mục pvporcupine-X.X.X.dist-info.";
 $path_picovoice = '/home/pi/.local/lib/python3.9/site-packages/picovoice/_picovoice.py';
 $connection = ssh2_connect($serverIP, $SSH_Port);
 if (!$connection) {die($E_rror_HOST);}
@@ -387,18 +404,39 @@ if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror)
 $stream = ssh2_exec($connection, "cat $path_picovoice");
 stream_set_blocking($stream, true);
 $stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
-$outputt =  stream_get_contents($stream_out);
+$output =  stream_get_contents($stream_out);
 //echo $output;
-$text_picovoice_version = picovoice_version($outputt, 'Picovoice', 'version');
+$text_picovoice_version = picovoice_version($output, 'Picovoice', 'version');
 $firstThreeCharspicovoice_version = substr($text_picovoice_version, 0, 3);
-//echo "Phiên bản Picovoice: $text_picovoice_version <br/>";
+$output .= "Phiên bản Picovoice: $text_picovoice_version\n";
+}
+
 $file_path = '/home/pi/vietbot_offline/resources/picovoice/lib/porcupine_params.pv';
 $text_porcupine_version = porcupine_version($file_path);
 //echo "Phiên bản Porcupine: $text_porcupine_version";
-$output .= "$GET_current_USER@$HostName:~ssh$:\n";
-$output .= "Phiên bản Picovoice: $text_picovoice_version\n";
 $output .= "Phiên bản Porcupine: $text_porcupine_version";
 }
+
+
+if (isset($_POST['install_picovoice'])) {
+	
+$versions_picovoice_install = $_POST['versions_picovoice_install'];
+
+if (empty($versions_picovoice_install)) {
+    $output = "Picovoice:> Hãy chọn phiên bản picovoice cần cài đặt\n";
+} else {
+$connection = ssh2_connect($serverIP, $SSH_Port);
+if (!$connection) {die($E_rror_HOST);}
+if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
+$stream1 = ssh2_exec($connection, "pip install picovoice==$versions_picovoice_install");
+stream_set_blocking($stream1, true); 
+$stream_out1 = ssh2_fetch_stream($stream1, SSH2_STREAM_STDIO); 
+$output = "$GET_current_USER@$HostName:~$ pip install picovoice==$versions_picovoice_install\n";
+$output .= stream_get_contents($stream_out1);
+}
+	
+}
+
 ?>
     <form  id="my-form"  method="post">
 	<div class="row g-3 d-flex justify-content-center">
@@ -409,8 +447,6 @@ $output .= "Phiên bản Porcupine: $text_porcupine_version";
 <div class="col-auto"> 
     <button class="btn btn-success" name="commandd" type="submit">Command</button>
     <a href='<?php echo $PHP_SELF; ?>'><button class='btn btn-danger'>Làm Mới</button></a>
-	
-
 	
  </div>
  <div class="col-auto"> 
@@ -479,14 +515,58 @@ $output .= "Phiên bản Porcupine: $text_porcupine_version";
  <center><button type="submit" name="restart_vietbot" class="btn btn-dark" title="Chỉ Khởi Động Lại Trợ Lý Ảo VietBot">Restart VietBot</button>
 <div class="dropdown-divider"></div>  <button type="submit" name="reboot_power" class="btn btn-dark" title="Khởi Động Lại Toàn Bộ Hệ Thống">Reboot OS</button>
  <div class="dropdown-divider"></div>  <button type='submit' name='set_full_quyen' class='btn btn-dark' title='Cấp Quyền Cho Các File Và Thư Mục Cần Thiết'>Cấp Quyền Chmod</button>
- <div class="dropdown-divider"></div>  <button type='submit' name='set_owner' class='btn btn-dark' title='Chuyển các file và thư mục cần thiết về người dùng pi'>Change Owner</button>
- <div class="dropdown-divider"></div>  <button type='submit' name='check_version_picovoice_porcupine' class='btn btn-dark' title='Kiểm tra phiên bản Picovoice và Porcupine'>Kiểm tra phiên bản Picovoice/Porcupine</button>
+ <div class="dropdown-divider"></div>  <button type='submit' name='set_owner' class='btn btn-dark' title='Chuyển các file và thư mục cần thiết về người dùng pi'>Change Owner</button> 
  <div class="dropdown-divider"></div>  <button type='submit' name='restart_appache2' class='btn btn-dark' title='Restart Apache2'>Restart Apache2</button>
   <div class="dropdown-divider"></div>  <button type='submit' name='check_lib_pvporcupine' class='btn btn-dark' title='Kiểm tra thư viện pvporcupine'>Check lib pvporcupine</button>
   <div class="dropdown-divider"></div>  <button type='submit' name='check_lib_pip' class='btn btn-dark' title='Liệt kê các thư viện đã cài bằng pip'>Check lib pip list</button>
   <div class="dropdown-divider"></div>  <button type='submit' name='sudo_apt_update' class='btn btn-dark' title='cập nhật gói và hệ thống update'>sudo apt update</button>
   <div class="dropdown-divider"></div>  <button type='submit' name='sudo_apt_upgrade' class='btn btn-dark' title='cập nhật gói và hệ thống upgrade'>sudo apt upgrade</button>
- </center></div></div>
+ </center></div></div><hr/>
+ 
+   
+	<div class="row g-3 d-flex justify-content-center">
+	<div class="col-auto"><div class="input-group"><span class="input-group-text text-success">Nâng/Hạ Cấp Picovoice</span>
+    <select class="btn btn-success dropdown-toggle" data-toggle="dropdown" id="inputGroupSelect04" name="versions_picovoice_install">
+	<option value="" selected>Chọn Phiên Bản</option>
+ <?php
+$url = 'https://pypi.org/rss/project/picovoice/releases.xml';
+// Lấy nội dung từ RSS feed
+$xml_content = file_get_contents($url);
+// Kiểm tra xem có dữ liệu hay không
+if ($xml_content) {
+    // Tìm vị trí của các thẻ <item>
+    $start_pos = strpos($xml_content, '<item>');
+    $end_pos = strpos($xml_content, '</item>');
+    // Tạo một mảng để lưu trữ các phiên bản
+    $versions = [];
+    // Lặp qua từng mục và thêm thông tin vào mảng
+    while ($start_pos !== false && $end_pos !== false) {
+        $item_xml = substr($xml_content, $start_pos, $end_pos - $start_pos + strlen('</item>'));
+        // Trích xuất thông tin từ mỗi mục
+        preg_match('/<title>(.*?)<\/title>/', $item_xml, $title_match);
+        // Thêm phiên bản vào mảng
+        $versions[] = $title_match[1];
+        // Di chuyển đến mục tiếp theo
+        $start_pos = strpos($xml_content, '<item>', $end_pos);
+        $end_pos = strpos($xml_content, '</item>', $start_pos);
+    }
+    // Hiển thị dropdown list
+    foreach ($versions as $version) {
+        echo '<option value="' . $version . '">Phiên Bản: ' . $version . '</option>';
+    }
+} else {
+    echo "<option value="">Phiên bản: -----</option>";
+}
+?>
+ </select></div> </div><div class="col-auto"> <div class="input-group-append">
+ <button class="btn btn-danger" name="install_picovoice" title="Cài đặt Picovoice" type="submit">Cài Đặt</button>
+ <button type='submit' name='check_version_picovoice_porcupine' class='btn btn-primary' title='Kiểm tra phiên bản Picovoice và Porcupine'>Kiểm tra phiên bản</button>
+ </div> 
+ </div> 
+
+
+ </div>
+ 
     </form>
     <div id="loading-overlay">
           <img id="loading-icon" src="../../assets/img/Loading.gif" alt="Loading...">
