@@ -206,15 +206,7 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	$Pre_Answer_Timeout = $data_config['smart_answer']['pre_answer_timeout'];
 	$numberCharactersToSwitchMode = $data_config["smart_answer"]["number_characters_to_switch_mode"];
 	/////////////////////////////////////////////////////////////////////////////
-	
-	
-	
 
-	
-	
-	
-	
-	
 	//Thay ĐỔi Ngôn Ngữ hotword
 	if (isset($_POST['language_hotword_submit'])) {
     $selectedLanguage = $_POST['language_hotword'];
@@ -223,9 +215,20 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	} 
 	elseif ($selectedLanguage === "eng") {
 	$hotword_lib_language = "porcupine_params.pv";
-	}	
+	}
+	/*
+	elseif (empty($selectedLanguage)) {
+	$selectedLanguag = $hotwords_get_langgg;
+		if ($hotwords_get_langgg === "vi") {
+			$hotword_lib_language = "porcupine_params_vn.pv";
+		} elseif ($hotwords_get_langgg === "eng") {
+			$hotword_lib_language = "porcupine_params.pv";
+		} elseif ($hotwords_get_langgg === "default") {
+			$hotword_lib_language = "default/porcupine_params.pv";
+		}
+	}
+	*/
 	elseif ($selectedLanguage === "default") {
-		
 	$destinationDirectory = "$DuognDanThuMucJson/hotword/default";
 // Kiểm tra xem thư mục có tồn tại hay không
 	if (!is_dir($destinationDirectory)) {
@@ -921,7 +924,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
     
     .chatbox-content {
         position: fixed;
-        top: 40%;
+        top: 20%;
         right: -100%;
         bottom: auto;
         width: auto;
@@ -1767,7 +1770,7 @@ else {
     <div id="popupContent" onclick="preventEventPropagationhwlangmd(event)">
         
             <center><b>Mặc Định:</b></center>
-			- Tự động dùng phiên bản tương thích với phiên bản của Picovoice trên hệ thống<br/>
+			- Tự động dùng phiên bản tương thích với phiên bản của Picovoice hiện tại trên hệ thống<br/>
 			- Mặc định sẽ sử dụng <b>tiếng anh</b> để gọi HotWord<br/>
 			- Nếu chọn <b>tiếng anh</b> hoặc <b>tiếng việt</b> bạn sẽ phải cấu hình các file thủ công để tương thích với phiên bản thư viện Picovoice<br/>
 
@@ -1781,8 +1784,13 @@ else {
 <th colspan="3"><center class="text-success">Thay Đổi Ngôn Ngữ Hotword <i class="bi bi-info-circle-fill" onclick="togglePopuphwlang()" title="Nhấn Để Tìm Hiểu Thêm"></i></center></th>
 </tr></thead><tbody><tr> 
 <td  scope="col" colspan="3"><center><font color="red">Bạn Đang Dùng: <b><?php echo $hotwords_get_lang; ?></b></font></center></td>
+</tr>
+<tr> 
+<td  scope="col" colspan="1"><center><font color="blue"><b>Tự Động:</b></font></center></td>
+<td  scope="col" colspan="2"><center><b>Thủ Công:</b></center></td>
+</tr>
 
-<tr><tr><td><center><b><label for="language_hotwor_default" class="text-primary">Mặc Định <i class="bi bi-info-circle-fill" onclick="togglePopuphwlangmd()" title="Nhấn Để Tìm Hiểu Thêm"></i></label></b></center></td><td><center><b><label for="language_hotwordddd">Tiếng Việt</label></b></center></td><td><center><b><label for="language_hotwordddd1">Tiếng Anh</label></b></center></td>
+<tr><td><center><b><label for="language_hotwor_default"><font color="blue">Mặc Định </font> <font color="red"><i class="bi bi-question-square-fill" onclick="togglePopuphwlangmd()" title="Nhấn Để Tìm Hiểu Thêm"></font></i></label></b></center></td><td><center><b><label for="language_hotwordddd">Tiếng Việt</label></b></center></td><td><center><b><label for="language_hotwordddd1">Tiếng Anh</label></b></center></td>
 </tr><tr><td> <center><input type="radio" name="language_hotword" id="language_hotwor_default" value="default" <?php if ($hotwords_get_langgg === 'default') echo 'checked'; ?>></center></td>
 <td> <center><input type="radio" name="language_hotword" id="language_hotwordddd" value="vi"  <?php if ($hotwords_get_langgg === 'vi') echo 'checked'; ?>></center></td>
 <td><center><input type="radio" name="language_hotword" id="language_hotwordddd1" value="eng" <?php if ($hotwords_get_langgg === 'eng') echo 'checked'; ?>></center></td>
@@ -1792,7 +1800,7 @@ else {
 </table>
 <?php
 $text_porcupine_version = porcupine_version($Lib_Hotword.'/'.$hotwords_lang_Porcupine);
-echo "<font color='red'>Phiên bản Porcupine: <b>$text_porcupine_version</b></font>";
+echo "<font color='red'>Phiên bản Porcupine: <b>$text_porcupine_version </b> <a href='https://github.com/Picovoice/porcupine' target='_bank'> <i class='bi bi-github'></i></font>";
 ?>
 
 </div></div></form><hr/>    
