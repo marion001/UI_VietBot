@@ -495,8 +495,7 @@ $output .= stream_get_contents($stream_out1);
     Chức Năng Khác
   </button>
   <div class="dropdown-menu scrollable-menu">
- <center>
- <div class="dropdown-divider"></div>  <button class="btn btn-success" name="hash_generator" type="submit">Hash Generator</button>
+ <center> <button class="btn btn-success" name="hash_generator" type="submit">Hash Generator</button>
 <div class="dropdown-divider"></div>  <button  type="submit" name="kiem_tra_dung_luong" class="btn btn-success">Kiểm Tra Dung Lượng</button>
  <div class="dropdown-divider"></div>  <button type="submit" name="kiem_tra_bo_nho" class="btn btn-success">Kiểm Tra Bộ Nhớ</button>
   <div class="dropdown-divider"></div><button  type="submit" name="check_ifconfig" class="btn btn-success">Kiểm Tra Mạng</button>
