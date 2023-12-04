@@ -9,6 +9,10 @@ $skillArray = json_decode($skillData, true);
 ?>
 <!DOCTYPE html>
 <html>
+	<!--
+Code By: Vũ Tuyển
+Facebook: https://www.facebook.com/TWFyaW9uMDAx
+-->
 <head>
     <title><?php echo $MYUSERNAME; ?>, Cấu Hình Skill VietBot</title>
 	    <meta charset="UTF-8">
