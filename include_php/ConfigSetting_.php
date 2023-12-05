@@ -1,8 +1,8 @@
 <?php
 // Code By: Vũ Tuyển
 // Facebook: https://www.facebook.com/TWFyaW9uMDAx
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+//ini_set('display_errors', 1);
+//error_reporting(E_ALL);
 ?>
 
 
@@ -197,7 +197,6 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 		$Bot_Mode = "3";
 		$Bot_Mode_Text = "Đầy Đủ Tính Năng";
 	}
-
 	//Get Ưu tiên Trợ Lý Ảo/ AI
 	$external_bot_priority_1 = $data_config['smart_answer']['external_bot_priority_1'];
 	$external_bot_priority_2 = $data_config['smart_answer']['external_bot_priority_2'];
@@ -236,10 +235,58 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
     $selectedLanguage = $_POST['language_hotword'];
 	if ($selectedLanguage === "vi") {
 	$hotword_lib_language = "porcupine_params_vn.pv";
+	$hotword_lib_language_textt = "Tiếng Việt";
+	//So Sánh Trước Khi Gửi Dữ Liệu Tiếng Việt
+	$remotePath = "/home/pi/.local/lib/python3.9/site-packages/";
+	$pattern = '/^pvporcupine-(\d+\.\d+\.\d+)\.dist-info$/m';
+	// Thực hiện lệnh ls để lấy danh sách thư mục
+	$connection = ssh2_connect($serverIP, $SSH_Port);
+	if (!$connection) {die($E_rror_HOST);}
+	if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
+	$stream = ssh2_exec($connection, "ls $remotePath");
+	stream_set_blocking($stream, true);
+	$output = stream_get_contents($stream);
+	fclose($stream);
+	
+	// Kiểm tra xem có thư mục nào khớp với biểu thức chính quy không
+	if (preg_match($pattern, $output, $matches)) {
+		$foundVersion = $matches[1];
+		$firstThreeCharspicovoice_version = substr($foundVersion, 0, 3);
+		//echo "Phiên bản Picovoice: $firstThreeCharspicovoice_version <br/>";
+	} 
+	$file_path = "$Lib_Hotword/$hotword_lib_language";
+	$text_porcupine_version = porcupine_version($file_path);
+	$text_porcupine_version_substr = substr($text_porcupine_version,0,3);
+	//echo "Phiên bản porcupine: $text_porcupine_version_substr <br/>";
 	} 
 	elseif ($selectedLanguage === "eng") {
 	$hotword_lib_language = "porcupine_params.pv";
+	$hotword_lib_language_textt = "Tiếng Anh";
+	//bắt đầu kiểm tra phiên bản để thông báo
+	//So Sánh Trước Khi Gửi Dữ Liệu Tiếng Anh
+	$remotePath = "/home/pi/.local/lib/python3.9/site-packages/";
+	$pattern = '/^pvporcupine-(\d+\.\d+\.\d+)\.dist-info$/m';
+	// Thực hiện lệnh ls để lấy danh sách thư mục
+	$connection = ssh2_connect($serverIP, $SSH_Port);
+	if (!$connection) {die($E_rror_HOST);}
+	if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
+	$stream = ssh2_exec($connection, "ls $remotePath");
+	stream_set_blocking($stream, true);
+	$output = stream_get_contents($stream);
+	fclose($stream);
+	// Kiểm tra xem có thư mục nào khớp với biểu thức chính quy không
+	if (preg_match($pattern, $output, $matches)) {
+		$foundVersion = $matches[1];
+		$firstThreeCharspicovoice_version = substr($foundVersion, 0, 3);
+		//echo "Phiên bản Picovoice: $firstThreeCharspicovoice_version <br/>";
+	} 
+	$file_path = "$Lib_Hotword/$hotword_lib_language";
+	$text_porcupine_version = porcupine_version($file_path);
+	$text_porcupine_version_substr = substr($text_porcupine_version,0,3);
+	//echo "Phiên bản porcupine: $text_porcupine_version_substr <br/>";
 	}
+	//hết kiểm tra phiên bản để thông báo
+	
 	/*
 	elseif (empty($selectedLanguage)) {
 	$selectedLanguag = $hotwords_get_langgg;
@@ -297,6 +344,8 @@ $output =  stream_get_contents($stream_out);
 //echo $output;
 $text_picovoice_version = picovoice_version($output, 'Picovoice', 'version');
 $firstThreeCharspicovoice_version = substr($text_picovoice_version, 0, 3);
+//Mặc định default sẽ cho 2 biến này có giá trị giống nhau để bỏ qua thông báo
+$text_porcupine_version_substr = $firstThreeCharspicovoice_version;
 //echo "Phiên bản Picovoice: $text_picovoice_version <br/>";
 }
 
@@ -436,7 +485,24 @@ if ($zip->open($zipFilePath) === TRUE) {
 	stream_set_blocking($stream2, true);
 	$stream_out2 = ssh2_fetch_stream($stream2, SSH2_STREAM_STDIO);
 	stream_get_contents($stream_out2);
-	header("Location: $PHP_SELF");
+	//header("Location: $PHP_SELF");
+
+	if ($firstThreeCharspicovoice_version !== $text_porcupine_version_substr) {
+    echo "<script>
+            var alertMessage = 'Cảnh Báo!\\n\\n Thư viện Picovoice và Porcupine($hotword_lib_language_textt) không cùng phiên bản, hệ thống Voice Hotword có thể sẽ không hoạt động.\\n\\n - Phiên bản Picovoice của bạn: $foundVersion\\n - Phiên bản Porcupine(Tiếng Anh) của bạn: $text_porcupine_version\\n\\n - Đây Chỉ Là Cảnh Báo, Nội Dung Vẫn Sẽ Được Thực Thi';
+            var userConfirmation = alert(alertMessage);
+            if (userConfirmation) {
+                // Người dùng đồng ý, tự động tải lại trang
+                window.location='ConfigSetting.php';
+            } else {
+              window.location='ConfigSetting.php';
+            }
+          </script>";
+	} 
+	//Nếu trùng phiên bản sẽ tự chuyển hướng không hiện thông báo
+	else {
+		header("Location: $PHP_SELF");
+	}
 
 	}
 	
