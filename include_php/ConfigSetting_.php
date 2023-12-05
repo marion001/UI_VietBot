@@ -3129,6 +3129,7 @@ $(document).ready(function() {
     });
 </script>
 <script>
+//Xử lý hotword và ppn file
     // Hàm xóa file bằng jQuery Ajax
     function deleteFileAjax(filePath) {
         if (confirm("Bạn có chắc chắn muốn xóa file này không?")) {
@@ -3146,6 +3147,8 @@ $(document).ready(function() {
                         showFiles(); // Cập nhật danh sách file sau khi xóa
                     } else if (response === "not_found") {
                         alert("File không tồn tại.");
+                    }else if (response === "not_ppn_file") {
+                        alert("Chỉ cho phép xóa file .ppn.");
                     } else {
                         alert("Lỗi không thể xóa file.");
                     }
@@ -3195,15 +3198,12 @@ $(document).ready(function() {
         });
     });
 	*/
+	
 	// Hàm xử lý khi nút "Tải lên" được nhấn
-// Hàm xử lý sự kiện khi nút "Tải lên" được nhấn
-// Hàm xử lý sự kiện khi nút "Tải lên" được nhấn
-    // Hàm xử lý tải lên
 function uploadFiles() {
     var formData = new FormData($('#uploadForm')[0]); // Lấy dữ liệu từ form
     var selectedLanguage = $('input[name="language_hotword"]:checked').val();
     formData.append("language_hotword", selectedLanguage);
-
     // Thêm dữ liệu file nhị phân
     var binaryFilesInput = $('#files')[0];
     for (var i = 0; i < binaryFilesInput.files.length; i++) {
@@ -3224,6 +3224,38 @@ function uploadFiles() {
         }
     });
 }
+function downloadFileAjax(filePath) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', "Fork_PHP/hotword_ppn_file.php?action=download_file&fileToDownload=" + encodeURIComponent(filePath), true);
+    // Set responseType về "blob" để xử lý dữ liệu nhị phân
+    xhr.responseType = 'blob';
+    // Xử lý sự kiện khi yêu cầu thành công
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            // Tạo một đường dẫn tạm thời cho dữ liệu nhị phân
+            var blob = new Blob([xhr.response], { type: 'application/octet-stream' });
+            // Tạo một URL cho đối tượng Blob
+            var url = window.URL.createObjectURL(blob);
+            // Tạo một phần tử a để kích hoạt việc tải xuống
+            var link = document.createElement('a');
+            link.href = url;
+            link.download = filePath.split('/').pop();
+            link.click();
+            // Giải phóng tài nguyên
+            window.URL.revokeObjectURL(url);
+        } else {
+            // Xử lý lỗi
+            alert('Lỗi trong quá trình tải xuống.');
+        }
+    };
+    // Xử lý sự kiện khi có lỗi
+    xhr.onerror = function () {
+        alert('Lỗi mạng trong quá trình tải xuống.');
+    };
+    // Gửi yêu cầu
+    xhr.send();
+}
+
 </script>
 
 </body>
