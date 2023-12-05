@@ -1607,7 +1607,7 @@ None (Không Dùng)</label></center>
 <tr><th scope="row">Màu khi được đánh thức:</th>
 <td><input type="text"  id="wakeup_color_mode_input" title="Nhập Mã Màu" placeholder="03254b" value="<?php echo $LED_WAKEUP_COLOR; ?>"  name="wakeup_color" maxlength="6" class="disabled-input form-control" oninput="updateColorPicker()"></td>
 <td><input type="color" id="color_pickerwakeup_color" title="Nhấn Để Hiển Thị Bảng Mã Màu" class="disabled-input form-control-color" onchange="updateColorValueWakeUp_Color()"></td></tr>
-<tr><th scope="row">Màu khi tắt tiếng:</th>
+<tr><th scope="row">Màu khi tắt mic:</th>
 <td><input type="text"  value="<?php echo $LED_MUTED_COLOR; ?>" title="Nhập Mã Màu" placeholder="FF3333"  id="muted_color_mode_input" name="muted_color" maxlength="6" class="disabled-input form-control" oninput="updateColorPickerMuted()"></td>
 <td><input type="color" title="Nhấn Để Hiển Thị Bảng Mã Màu" id="color_pickermuted_color" class="disabled-input form-control-color hidden-inputLED" onchange="updateColorValueMuted_Color()"></td></tr>
 </table></div></div></div><hr/>
