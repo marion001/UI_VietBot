@@ -1848,7 +1848,7 @@ else {
 
  <div class="input-group">
   <div class="custom-file col-xs-2">
-	<input type="file" class="form-control" name="files[]" id="files" multiple accept=".ppn">
+	<input type="file" class="form-control" name="files[]" id="files" multiple accept=".ppn, .pv">
   </div>
   <div class="input-group-append">
    <button type="button" class="btn btn-primary" onclick="uploadFiles()" title="Tải file hotword lên">Tải lên</button>
