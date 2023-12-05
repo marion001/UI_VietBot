@@ -1,50 +1,37 @@
 <?php
-$uploadDir = '/home/pi/vietbot_offline/src/hotword/';
+//Code By: Vũ Tuyển
+//Facebook: https://www.facebook.com/TWFyaW9uMDAx
+include "../../Configuration.php";
+?>
+<?php
+$uploadDir = "$DuognDanThuMucJson/hotword/";
 
 function listFiles($uploadDir, $selectedLanguage) {
     if ($selectedLanguage === '') {
         echo "Ngôn ngữ không được xác định.";
         return;
     }
-
     $files = glob($uploadDir . $selectedLanguage . '/*.ppn');
-
 	echo "<p>Tổng số file Hotword: <font color=red>" . count($files) . "</font></p>";
     echo "<ul>";
 	$fileCount = 0;
     foreach ($files as $file) {
 		$fileCount++;
-        //echo "<li>".basename($file). " <font color=\"red\" type=\"button\" class=\"delete-button\" onclick=\"deleteFileAjax('$file')\" title=\"Xóa file: ". basename($file)."\">Xóa</font></li>";
-echo "<li>" . basename($file) . " <font color=\"red\" type=\"button\" class=\"delete-button\" onclick=\"deleteFileAjax('$file')\" title=\"Xóa file: " . basename($file) . "\">Xóa</font>
-	<font color=\"blue\" type=\"button\" class=\"download-button\" onclick=\"downloadFileAjax('".$selectedLanguage."/".basename($file)."')\" title=\"Tải xuống file: " . basename($file) . "\">Tải xuống</font></li>";
+        echo "<li>" . basename($file) . " <font color=\"red\" type=\"button\" class=\"delete-button\" onclick=\"deleteFileAjax('$file')\" title=\"Xóa file: " . basename($file) . "\">Xóa</font>
+		<font color=\"blue\" type=\"button\" class=\"download-button\" onclick=\"downloadFileAjax('".$selectedLanguage."/".basename($file)."')\" title=\"Tải xuống file: " . basename($file) . "\">Tải xuống</font></li>";
 	}
     echo "</ul>";
 }
-/*
-function deleteFile($filePath) {
-    if (file_exists($filePath)) {
-        $output = shell_exec("rm '$filePath'");
-        if ($output === null) {
-            echo "success";
-        } else {
-            echo "error";
-        }
-    } else {
-        echo "not_found";
-    }
-}
-*/
+
 function deleteFile($filePath) {
     // Kiểm tra xem đường dẫn file hợp lệ không
     if (preg_match('/\.ppn$/', $filePath)) {
         // Sử dụng escapeshellarg để tránh các tấn công command injection
         $escapedFilePath = escapeshellarg($filePath);
-
         // Kiểm tra xem file tồn tại không
         if (file_exists($filePath)) {
             // Thực hiện lệnh xóa với lệnh shell
             $output = shell_exec("rm $escapedFilePath");
-
             // Kiểm tra xem lệnh đã thành công không
             if ($output === null) {
                 echo "success";
@@ -60,13 +47,10 @@ function deleteFile($filePath) {
 }
 
 
-
 function downloadFile($fileName, $selectedLanguage) {
     $allowedExtension = 'ppn';
     $filePath = '/home/pi/vietbot_offline/src/hotword/' . $selectedLanguage . '/' . $fileName;  // Đường dẫn đầy đủ
-
     $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
-
     if (file_exists($filePath) && strtolower($fileExtension) === $allowedExtension) {
         header('Content-Type: application/octet-stream');
         header('Content-Disposition: attachment; filename="' . basename($filePath) . '"');
@@ -79,8 +63,6 @@ function downloadFile($fileName, $selectedLanguage) {
         echo "not_found";
     }
 }
-
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete_file') {
     if (isset($_POST['fileToDelete'])) {
