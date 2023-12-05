@@ -47,9 +47,9 @@ function deleteFile($filePath) {
 }
 
 
-function downloadFile($fileName, $selectedLanguage) {
+function downloadFile($fileName, $selectedLanguage,$DuognDanThuMucJson) {
     $allowedExtension = 'ppn';
-    $filePath = '/home/pi/vietbot_offline/src/hotword/' . $selectedLanguage . '/' . $fileName;  // Đường dẫn đầy đủ
+    $filePath = "$DuognDanThuMucJson/hotword/" . $selectedLanguage . '/' . $fileName;  // Đường dẫn đầy đủ
     $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
     if (file_exists($filePath) && strtolower($fileExtension) === $allowedExtension) {
         header('Content-Type: application/octet-stream');
@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         if (isset($_GET['fileToDownload'])) {
             $fileToDownload = $_GET['fileToDownload'];
             $selectedLanguage = isset($_GET['language']) ? $_GET['language'] : '';
-            downloadFile($fileToDownload, $selectedLanguage);
+            downloadFile($fileToDownload, $selectedLanguage,$DuognDanThuMucJson);
         }
     }
 }
