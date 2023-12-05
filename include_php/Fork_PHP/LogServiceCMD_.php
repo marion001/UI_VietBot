@@ -411,7 +411,15 @@ $firstThreeCharspicovoice_version = substr($text_picovoice_version, 0, 3);
 $output .= "Phiên bản Picovoice: $text_picovoice_version\n";
 }
 
-$file_path = '/home/pi/vietbot_offline/resources/picovoice/lib/porcupine_params.pv';
+if ($Get_hotword_Lang == 'default') {
+    $porcupine_check = "default/porcupine_params.pv";
+} elseif ($Get_hotword_Lang == 'eng') {
+    $porcupine_check = "porcupine_params.pv";
+} elseif ($Get_hotword_Lang == 'vi') {
+    $porcupine_check = "porcupine_params_vn.pv";
+}
+
+$file_path = "$Lib_Hotword/$porcupine_check";
 $text_porcupine_version = porcupine_version($file_path);
 //echo "Phiên bản Porcupine: $text_porcupine_version";
 $output .= "Phiên bản Porcupine: $text_porcupine_version";
