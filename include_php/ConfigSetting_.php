@@ -1880,6 +1880,17 @@ else {
 			- Nếu chọn <b>tiếng anh</b> hoặc <b>tiếng việt</b> bạn sẽ phải cấu hình các file thủ công để tương thích với phiên bản thư viện Picovoice<br/>
 
     </div></div>
+	
+	<div id="popupContainerhwlangmdupload" class="popup-container" onclick="hidePopuphwlangmdupload()">
+    <div id="popupContent" onclick="preventEventPropagationhwlangmdupload(event)">
+        
+			<b><center>Upload</center></b>
+			<ul>
+			<li>Chỉ chấp nhận 2 dạng file là .ppn và .pv</li>
+			<li>Nếu tải lên file HotWord .ppn bạn cần lựa chọn vào ngôn ngữ của file bên phía trên là <font color=red>Tiếng Anh</font> hoặc <font color=red>Tiếng Việt</font> để upload vào đúng vị trị ngôn ngữ</li>
+			<li>Nếu tải lên file thư viện Porcupine .pv hệ thống sẽ tự động phân tích đưa file vào đúng vị trí cho dù bạn có chọn <font color=red>Tiếng Anh</font> hoặc <font color=red>Tiếng Việt</font> </li>
+			</ul>
+    </div></div>
 
      <div class="chatbox-container" onclick="toggleChatbox()" title="Nhấn Để Thay Đổi Ngôn Ngữ Gọi Hotword"><center><b>Ngôn <br/>Ngữ</b></center></div>
     <div id="chatbox-content" class="chatbox-content">
@@ -1910,14 +1921,14 @@ else {
 </tbody>
 </table>
 
-
-
+Tải lên file <font color=red>Hotword(.ppn)</font> hoặc tệp tin thư viện <font color=red>.pv </font> <i class="bi bi-question-square-fill" onclick="togglePopuphwlangmdupload()" title="Nhấn Để Tìm Hiểu Thêm"></font></i>
  <div class="input-group">
+ 
   <div class="custom-file col-xs-2">
 	<input type="file" class="form-control" name="files[]" id="files" multiple accept=".ppn, .pv">
   </div>
   <div class="input-group-append">
-   <button type="button" class="btn btn-primary" onclick="uploadFiles()" title="Tải file hotword lên">Tải lên</button>
+   <button type="button" class="btn btn-primary" onclick="uploadFiles()" title="Tải lên file Hotword(.ppn) hoặc tệp tin thư viện .pv">Tải lên</button>
   </div> 
 </div>
     <!-- <input type="submit"  value="Tải lên"> -->
@@ -2704,7 +2715,18 @@ else if (radio.value === "stt_hpda") {
     function preventEventPropagationhwlangmd(event) {
       event.stopPropagation();
     }
-	
+// togglePopuphwlangmdupload
+    function togglePopuphwlangmdupload() {
+      var popupContainer = document.getElementById("popupContainerhwlangmdupload");
+      popupContainer.classList.toggle("show");
+    }
+    function hidePopuphwlangmdupload() {
+      var popupContainer = document.getElementById("popupContainerhwlangmdupload");
+      popupContainer.classList.remove("show");
+    }
+    function preventEventPropagationhwlangmdupload(event) {
+      event.stopPropagation();
+    }
 //ẩn hiện cấu hình nút nhấn
     function toggleDivz() {
       var div = document.getElementById("myDivz");
