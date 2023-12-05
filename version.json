@@ -1,7 +1,7 @@
 {
   "ui_version": {
-    "latest": "beta 05-12-2023",
-    "current": "beta 05-12-2023",
+    "latest": "beta 05-12-2023-1",
+    "current": "beta 05-12-2023-1",
     "notification": "Fix bug, thêm bộ lọc kiểm tra các điều kiện của Porcupine và Picovoice"
   }
 }
