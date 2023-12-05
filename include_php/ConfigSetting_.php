@@ -300,6 +300,7 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	}
 	*/
 	elseif ($selectedLanguage === "default") {
+		$hotword_lib_language_textt = "Mặc Định";
 	$destinationDirectory = "$DuognDanThuMucJson/hotword/default";
 // Kiểm tra xem thư mục có tồn tại hay không
 	if (!is_dir($destinationDirectory)) {
@@ -345,7 +346,7 @@ $output =  stream_get_contents($stream_out);
 $text_picovoice_version = picovoice_version($output, 'Picovoice', 'version');
 $firstThreeCharspicovoice_version = substr($text_picovoice_version, 0, 3);
 //Mặc định default sẽ cho 2 biến này có giá trị giống nhau để bỏ qua thông báo
-$text_porcupine_version_substr = $firstThreeCharspicovoice_version;
+
 //echo "Phiên bản Picovoice: $text_picovoice_version <br/>";
 }
 
@@ -448,7 +449,8 @@ if ($zip->open($zipFilePath) === TRUE) {
 	//stream_get_contents($stream_out2);
 	stream_get_contents($stream_out3);
 	$hotword_lib_language = "default/porcupine_params.pv";
-
+$text_porcupine_version_substr = $firstThreeCharspicovoice_version;
+$text_porcupine_version = $firstThreeCharspicovoice_version;
 	}
 	
 	$jsonContent = file_get_contents($FileConfigJson);
@@ -489,7 +491,7 @@ if ($zip->open($zipFilePath) === TRUE) {
 
 	if ($firstThreeCharspicovoice_version !== $text_porcupine_version_substr) {
     echo "<script>
-            var alertMessage = 'Cảnh Báo!\\n\\n Thư viện Picovoice và Porcupine($hotword_lib_language_textt) không cùng phiên bản, hệ thống Voice Hotword có thể sẽ không hoạt động.\\n\\n - Phiên bản Picovoice của bạn: $foundVersion\\n - Phiên bản Porcupine(Tiếng Anh) của bạn: $text_porcupine_version\\n\\n - Đây Chỉ Là Cảnh Báo, Nội Dung Vẫn Sẽ Được Thực Thi';
+            var alertMessage = 'Cảnh Báo!\\n\\n Thư viện Picovoice và Porcupine($hotword_lib_language_textt) không cùng phiên bản, hệ thống Voice Hotword có thể sẽ không hoạt động.\\n\\n - Phiên bản Picovoice của bạn: $foundVersion\\n - Phiên bản Porcupine($hotword_lib_language_textt) của bạn: $text_porcupine_version\\n\\n - Đây Chỉ Là Cảnh Báo, Nội Dung Vẫn Sẽ Được Thực Thi';
             var userConfirmation = alert(alertMessage);
             if (userConfirmation) {
                 // Người dùng đồng ý, tự động tải lại trang
