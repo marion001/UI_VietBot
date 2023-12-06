@@ -11,8 +11,15 @@ function listFiles($uploadDir, $selectedLanguage) {
         echo "Ngôn ngữ không được xác định.";
         return;
     }
+	if ($selectedLanguage == 'vi') {
+    $selectedLanguageReplace = 'Tiếng Việt';
+	} elseif ($selectedLanguage == 'eng') {
+    $selectedLanguageReplace = 'Tiếng Anh';
+	} elseif ($selectedLanguage == 'default') {
+    $selectedLanguageReplace = 'Mặc Định';
+	}
     $files = glob($uploadDir . $selectedLanguage . '/*.ppn');
-	echo "<p>Tổng số file Hotword: <font color=red>" . count($files) . "</font></p>";
+	echo "<p>Tổng số file Hotword $selectedLanguageReplace: <font color=red>" . count($files) . "</font></p>";
     echo "<ul>";
 	$fileCount = 0;
     foreach ($files as $file) {
