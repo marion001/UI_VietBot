@@ -949,7 +949,7 @@ if (isset($Web_UI_Enable_GDrive_Backup) && $Web_UI_Enable_GDrive_Backup === true
     } else {
        		echo "<script>";
             echo "var MessageGDriverrr = document.getElementById('MessageGDriver');";
-            echo "MessageGDriverrr.innerHTML += '<font color=red><b>Google Drive Auto Backup</b> Tệp token.json Lỗi, Cần Cấu Hình Xác Thực Lại.<br/></font>';";
+            echo "MessageGDriverrr.innerHTML += '<font color=red><b>Google Drive Auto Backup</b> Tệp token.json Lỗi, Token đã hết hạn hoặc bị thu hồi. Cần Cấu Hình Xác Thực Lại.<br/></font>';";
             echo "MessageGDriverrr.innerHTML += '<font color=red><b>Sẽ không có file backup nào được tải lên<br/></font>';";
             echo "MessageGDriverrr.innerHTML += '<font color=red><a href=../#Google_Drive_Auto_Backup target=_bank>Nhấn vào đây để tới trang Cấu Hình Xác Thực</a><br></font>';";
             echo "MessageGDriverrr.innerHTML += '<font color=red>Xác thực xong bạn cần quay lại đây để <b>Cập Nhật</b> lại.<br/><br></font>';";
