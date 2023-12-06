@@ -45,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 move_uploaded_file($fileTmpName, $destination);
 				chmod($destination, 0777);
                 echo "Tải lên thành công: $fileName\n";
+		$fileUploaded = true;
             } else {
                 echo "Chỉ chấp nhận tệp tin có phần mở rộng .ppn và .pv";
             }
