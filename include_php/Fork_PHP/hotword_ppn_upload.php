@@ -48,5 +48,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     }
+	// Hiển thị thông báo nếu không có tệp tin nào được tải lên
+    if (!$fileUploaded) {
+        echo "Không có tệp tin nào được tải lên.";
+    }
 }
 ?>
