@@ -17,23 +17,16 @@ function listFiles($uploadDir, $selectedLanguage) {
 	$fileCount = 0;
     foreach ($files as $file) {
 		$fileCount++;
-        echo "<li>" . basename($file) . " <font color=\"red\" type=\"button\" class=\"delete-button\" onclick=\"deleteFileAjax('$file')\" title=\"Xóa file: " . basename($file) . "\">Xóa</font>
-		<font color=\"blue\" type=\"button\" class=\"download-button\" onclick=\"downloadFileAjax('".$selectedLanguage."/".basename($file)."')\" title=\"Tải xuống file: " . basename($file) . "\">Tải xuống</font></li>";
+        echo "<li>" . end(explode('/', $file)) . " <font color=\"red\" type=\"button\" class=\"delete-button\" onclick=\"deleteFileAjax('$file')\" title=\"Xóa file: " . end(explode('/', $file)) . "\">Xóa</font>
+		<font color=\"blue\" type=\"button\" class=\"download-button\" onclick=\"downloadFileAjax('".$selectedLanguage."/".end(explode('/', $file))."')\" title=\"Tải xuống file: " . end(explode('/', $file)) . "\">Tải xuống</font></li>";
 	}
     echo "</ul>";
 }
-
 function deleteFile($filePath) {
-    // Kiểm tra xem đường dẫn file hợp lệ không
     if (preg_match('/\.ppn$/', $filePath)) {
-        // Sử dụng escapeshellarg để tránh các tấn công command injection
-        $escapedFilePath = escapeshellarg($filePath);
-        // Kiểm tra xem file tồn tại không
-        if (file_exists($filePath)) {
-            // Thực hiện lệnh xóa với lệnh shell
-            $output = shell_exec("rm $escapedFilePath");
-            // Kiểm tra xem lệnh đã thành công không
-            if ($output === null) {
+        $utf8FilePath = mb_convert_encoding($filePath, 'UTF-8', 'auto');
+        if (file_exists($utf8FilePath)) {
+            if (unlink($utf8FilePath)) {
                 echo "success";
             } else {
                 echo "error";
@@ -45,6 +38,7 @@ function deleteFile($filePath) {
         echo "not_ppn_file";
     }
 }
+
 
 
 function downloadFile($fileName, $selectedLanguage,$DuognDanThuMucJson) {
