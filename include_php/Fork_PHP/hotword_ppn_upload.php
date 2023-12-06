@@ -16,6 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	}
     // Thêm ngôn ngữ vào đường dẫn
     $uploadDir .= $selectedLanguage . '/';
+    // Biến để kiểm tra xem có tệp tin được tải lên hay không
+    $fileUploaded = false;
     // Kiểm tra xem có tệp tin được tải lên hay không
     if (isset($_FILES['files'])) {
         $files = $_FILES['files'];
