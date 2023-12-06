@@ -361,6 +361,16 @@ if (!is_dir($DuognDanThuMucJson)) {
                         <td><input type="checkbox" class="form-check-input" name="exclude[]" value="object.json"></td>
 
                     </tr>
+										                    <tr>
+															 <th scope="row">-</th>
+                        <td>-</td>
+                        <th scope="row" title="Nằm trong resources">lib porcupine</th>
+                        <td>
+                            <input type="checkbox" class="form-check-input" name="exclude[]" value="picovoice" checked>
+                        </td>
+                       
+
+                    </tr>
 					                                    <tr>
                         <th colspan="4">
                             <center class="text-danger">Sao Lưu</center>
@@ -666,6 +676,8 @@ exec("chmod 777 $DuognDanUI_HTML/backup_update/backup/state_.json");
 		
     $excludedFiles = [];
     $excludedDirectories = [];
+	$excludedFileLib_Hotword = [];
+	$excludedDirectoriesLib_Hotword = [];
     $deletedItems = [];
     $copiedItems = [];
     if (isset($_POST['exclude'])) {
@@ -674,7 +686,12 @@ exec("chmod 777 $DuognDanUI_HTML/backup_update/backup/state_.json");
                 $excludedFiles[] = $item;
             } elseif (is_dir($DuognDanThuMucJson . '/' . $item)) {
                 $excludedDirectories[] = $item;
+            }elseif (is_file($PathResources . '/' . $item)) {
+                $excludedFileLib_Hotword[] = $item;
+            }elseif (is_dir($PathResources . '/' . $item)) {
+                $excludedDirectoriesLib_Hotword[] = $item;
             }
+			
         }
     }
     deleteFiles($DuognDanThuMucJson, $excludedFiles, $excludedDirectories, $deletedItems);
@@ -689,7 +706,8 @@ exec("chmod 777 $DuognDanUI_HTML/backup_update/backup/state_.json");
             $sourceDirectory = $DuognDanUI_HTML.'/backup_update/extract/vietbot_offline-beta/src';
 			$sourceDirectoryyy = $DuognDanUI_HTML.'/backup_update/extract/vietbot_offline-beta/resources';
             copyFiles($sourceDirectory, $DuognDanThuMucJson, $excludedFiles, $excludedDirectories, $copiedItems);
-			copyFiles($sourceDirectoryyy, $PathResources, $excludedFiles, $excludedDirectories, $copiedItems);
+			//copyFiles($sourceDirectoryyy, $PathResources, $excludedFiles, $excludedDirectories, $copiedItems);
+			copyFiles($sourceDirectoryyy, $PathResources, $excludedFileLib_Hotword, $excludedDirectoriesLib_Hotword, $copiedItems);
 			
 			echo "<script>";
             echo "var messagee = document.getElementById('messagee');";
