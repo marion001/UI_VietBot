@@ -413,7 +413,7 @@ if (!is_dir($DuognDanThuMucJson)) {
 						
 						
 							<tr>
-					<th colspan="3"><span class="inline-elements" title="Bạn cần bật tắt trong tab Config/Cấu Hình">Google Drive Auto Backup: <font color=red><span id="countdown"></span></font></span></th>
+					<th colspan="3"><span class="inline-elements" title="Bạn cần bật tắt trong tab Config/Cấu Hình">Google Drive Auto Backup:</span></th>
 						<td><input type="checkbox" name="HienThiTTGDrice" title="Bạn cần bật tắt trong tab Config/Cấu Hình" class="form-check-input" <?php echo ($Web_UI_Enable_GDrive_Backup ? 'checked' : ''); ?> disabled></td>
 						</tr>		
 						
