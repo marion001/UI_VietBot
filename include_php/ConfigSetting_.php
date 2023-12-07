@@ -462,20 +462,25 @@ $text_porcupine_version = $firstThreeCharspicovoice_version;
 	 $fileList = glob($folderPath . '*.ppn');
     $fileList = array_diff($fileList, array('.', '..')); // Loại bỏ các tệp . và ..
 	
+	//echo $fileList."<br/>";
+	
     // Thêm hotword mới từ danh sách tên tệp
     foreach ($fileList as $filePath) {
-		$fileName = pathinfo($filePath, PATHINFO_FILENAME);
+		//$fileName = pathinfo($filePath, PATHINFO_FILENAME);
+		$fileName = end(explode('/', $filePath));
         $jsonData['smart_wakeup']['hotword'][] = [
             "type" => "porcupine",
 			"custom_skill" => false,
             "value" => null,
             "lang" => $selectedLanguage,
-            "file_name" => $fileName.".ppn",
+           // "file_name" => $fileName.".ppn",
+            "file_name" => $fileName,
             "sensitive" => 0.3,
             "say_reply" => false,
             "command" => null,
             "active" => true
         ];
+		//echo $fileName.".ppn<br/>";
     }
     // Lưu lại các thay đổi vào tệp json.php
     file_put_contents($FileConfigJson, json_encode($jsonData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
