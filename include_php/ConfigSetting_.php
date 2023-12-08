@@ -3227,7 +3227,11 @@ $(document).ready(function() {
     //Xử lý hotword và ppn file
     // Hàm xóa file bằng jQuery Ajax
     function deleteFileAjax(filePath) {
-        if (confirm("Bạn có chắc chắn muốn xóa file này không?")) {
+		
+		var pathSegments = filePath.split('/');
+		var fileNameExplode = pathSegments[pathSegments.length - 1];
+		
+        if (confirm("Bạn có chắc chắn muốn xóa file '"+fileNameExplode+"' không?")) {
             $.ajax({
                 type: "POST",
                 url: "Fork_PHP/hotword_ppn_file.php",
