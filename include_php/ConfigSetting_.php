@@ -3224,14 +3224,14 @@ $(document).ready(function() {
     });
 </script>
 <script>
-//Xử lý hotword và ppn file
+    //Xử lý hotword và ppn file
     // Hàm xóa file bằng jQuery Ajax
     function deleteFileAjax(filePath) {
         if (confirm("Bạn có chắc chắn muốn xóa file này không?")) {
             $.ajax({
                 type: "POST",
                 url: "Fork_PHP/hotword_ppn_file.php",
-                data: { 
+                data: {
                     action: "delete_file",
                     fileToDelete: filePath,
                     language: $('input[name="language_hotword"]:checked').val()
@@ -3242,7 +3242,7 @@ $(document).ready(function() {
                         showFiles(); // Cập nhật danh sách file sau khi xóa
                     } else if (response === "not_found") {
                         alert("File không tồn tại.");
-                    }else if (response === "not_ppn_file") {
+                    } else if (response === "not_ppn_file") {
                         alert("Chỉ cho phép xóa file .ppn.");
                     } else {
                         alert("Lỗi không thể xóa file.");
@@ -3257,100 +3257,120 @@ $(document).ready(function() {
 
     // Hàm hiển thị danh sách file
     function showFiles() {
-        var fileListDiv = $("#fileList");
+            var fileListDiv = $("#fileList");
 
-        $.ajax({
-            type: "GET",
-            url: "Fork_PHP/hotword_ppn_file.php?action=list_files&language=" + $('input[name="language_hotword"]:checked').val(),
-            success: function(response) {
-                fileListDiv.html(response);
-            },
-            error: function() {
-                alert("Lỗi trong quá trình xử lý yêu cầu.");
-            }
-        });
-    }
-/*
-    // Thêm sự kiện xử lý khi form tải lên được submit
-    $("#uploadForm").submit(function(e) {
-        e.preventDefault(); // Ngăn chặn form submit mặc định
+            $.ajax({
+                type: "GET",
+                url: "Fork_PHP/hotword_ppn_file.php?action=list_files&language=" + $('input[name="language_hotword"]:checked').val(),
+                success: function(response) {
+                    fileListDiv.html(response);
+                },
+                error: function() {
+                    alert("Lỗi trong quá trình xử lý yêu cầu.");
+                }
+            });
+        }
+        /*
+            // Thêm sự kiện xử lý khi form tải lên được submit
+            $("#uploadForm").submit(function(e) {
+                e.preventDefault(); // Ngăn chặn form submit mặc định
 
-        var formData = new FormData(this); // Lấy dữ liệu từ form
+                var formData = new FormData(this); // Lấy dữ liệu từ form
 
+                $.ajax({
+                    type: "POST",
+                    url: "Fork_PHP/hotword_ppn_upload.php",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        alert(response); // Hiển thị thông báo từ server
+                        showFiles(); // Cập nhật danh sách file sau khi tải lên
+                    },
+                    error: function() {
+                        alert("Lỗi trong quá trình xử lý yêu cầu.");
+                    }
+                });
+            });
+        	*/
+
+    // Hàm xử lý khi nút "Tải lên" được nhấn
+    function uploadFiles() {
+        var formData = new FormData($('#uploadForm')[0]); // Lấy dữ liệu từ form
+        var selectedLanguage = $('input[name="language_hotword"]:checked').val();
+        formData.append("language_hotword", selectedLanguage);
+        // Thêm dữ liệu file nhị phân
+        var binaryFilesInput = $('#files')[0];
+        for (var i = 0; i < binaryFilesInput.files.length; i++) {
+            formData.append('files[]', binaryFilesInput.files[i]);
+        }
         $.ajax({
             type: "POST",
             url: "Fork_PHP/hotword_ppn_upload.php",
             data: formData,
             contentType: false,
             processData: false,
+
             success: function(response) {
-                alert(response); // Hiển thị thông báo từ server
-                showFiles(); // Cập nhật danh sách file sau khi tải lên
+                if (response === "only_click_accept_vi_eng") {
+                    alert("Chỉ nhấp nhận tải lên khi chọn ngôn ngữ Tiếng Anh hoặc Tiếng Việt");
+                } else if (response === "name_file_eng_vi") {
+                    alert("Chỉ chấp nhận tệp tin .pv có 2 tên là:\n porcupine_params.pv cho tiếng anh và\n porcupine_params_vn.pv cho tiếng việt\n\n");
+                } else if (response === "only_accept_ppn_pv") {
+                    alert("Chỉ chấp nhận tệp tin có phần mở rộng .ppn và .pv");
+                } else if (response === "no_files_uploaded") {
+                    alert("Không có tệp tin nào được tải lên.");
+                } else {
+                    alert(response);
+                    showFiles();
+                }
             },
+
+            /*
+		success: function(response) {
+            alert(response); // Hiển thị thông báo từ server
+            showFiles(); // Cập nhật danh sách file sau khi tải lên
+        },
+		*/
             error: function() {
                 alert("Lỗi trong quá trình xử lý yêu cầu.");
             }
         });
-    });
-	*/
-	
-	// Hàm xử lý khi nút "Tải lên" được nhấn
-function uploadFiles() {
-    var formData = new FormData($('#uploadForm')[0]); // Lấy dữ liệu từ form
-    var selectedLanguage = $('input[name="language_hotword"]:checked').val();
-    formData.append("language_hotword", selectedLanguage);
-    // Thêm dữ liệu file nhị phân
-    var binaryFilesInput = $('#files')[0];
-    for (var i = 0; i < binaryFilesInput.files.length; i++) {
-        formData.append('files[]', binaryFilesInput.files[i]);
     }
-    $.ajax({
-        type: "POST",
-        url: "Fork_PHP/hotword_ppn_upload.php",
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function(response) {
-            alert(response); // Hiển thị thông báo từ server
-            showFiles(); // Cập nhật danh sách file sau khi tải lên
-        },
-        error: function() {
-            alert("Lỗi trong quá trình xử lý yêu cầu.");
-        }
-    });
-}
-function downloadFileAjax(filePath) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', "Fork_PHP/hotword_ppn_file.php?action=download_file&fileToDownload=" + encodeURIComponent(filePath), true);
-    // Set responseType về "blob" để xử lý dữ liệu nhị phân
-    xhr.responseType = 'blob';
-    // Xử lý sự kiện khi yêu cầu thành công
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            // Tạo một đường dẫn tạm thời cho dữ liệu nhị phân
-            var blob = new Blob([xhr.response], { type: 'application/octet-stream' });
-            // Tạo một URL cho đối tượng Blob
-            var url = window.URL.createObjectURL(blob);
-            // Tạo một phần tử a để kích hoạt việc tải xuống
-            var link = document.createElement('a');
-            link.href = url;
-            link.download = filePath.split('/').pop();
-            link.click();
-            // Giải phóng tài nguyên
-            window.URL.revokeObjectURL(url);
-        } else {
-            // Xử lý lỗi
-            alert('Lỗi trong quá trình tải xuống.');
-        }
-    };
-    // Xử lý sự kiện khi có lỗi
-    xhr.onerror = function () {
-        alert('Lỗi mạng trong quá trình tải xuống.');
-    };
-    // Gửi yêu cầu
-    xhr.send();
-}
 
+    function downloadFileAjax(filePath) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', "Fork_PHP/hotword_ppn_file.php?action=download_file&fileToDownload=" + encodeURIComponent(filePath), true);
+        // Set responseType về "blob" để xử lý dữ liệu nhị phân
+        xhr.responseType = 'blob';
+        // Xử lý sự kiện khi yêu cầu thành công
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // Tạo một đường dẫn tạm thời cho dữ liệu nhị phân
+                var blob = new Blob([xhr.response], {
+                    type: 'application/octet-stream'
+                });
+                // Tạo một URL cho đối tượng Blob
+                var url = window.URL.createObjectURL(blob);
+                // Tạo một phần tử a để kích hoạt việc tải xuống
+                var link = document.createElement('a');
+                link.href = url;
+                link.download = filePath.split('/').pop();
+                link.click();
+                // Giải phóng tài nguyên
+                window.URL.revokeObjectURL(url);
+            } else {
+                // Xử lý lỗi
+                alert('Lỗi trong quá trình tải xuống.');
+            }
+        };
+        // Xử lý sự kiện khi có lỗi
+        xhr.onerror = function() {
+            alert('Lỗi mạng trong quá trình tải xuống.');
+        };
+        // Gửi yêu cầu
+        xhr.send();
+    }
 </script>
 
 </body>
