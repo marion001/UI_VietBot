@@ -11,7 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Kiểm tra xem ngôn ngữ có được xác định không
 	if ($selectedLanguage !== 'eng' && $selectedLanguage !== 'vi') {
-    echo "Chỉ nhấp nhận tải lên khi chọn ngôn ngữ Tiếng Anh hoặc Tiếng Việt";
+    //echo "Chỉ nhấp nhận tải lên khi chọn ngôn ngữ Tiếng Anh hoặc Tiếng Việt";
+    echo "only_click_accept_vi_eng";
     return;
 	}
     // Thêm ngôn ngữ vào đường dẫn
@@ -37,7 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if ($fileName === 'porcupine_params.pv' || $fileName === 'porcupine_params_vn.pv') {
                         $destination = $Lib_Hotword.'/'.$fileName;
                     } else {
-                        echo "Chỉ chấp nhận tệp tin .pv có 2 tên là:\n porcupine_params.pv cho tiếng anh và\n porcupine_params_vn.pv cho tiếng việt\n\n";
+                        //echo "Chỉ chấp nhận tệp tin .pv có 2 tên là:\n porcupine_params.pv cho tiếng anh và\n porcupine_params_vn.pv cho tiếng việt\n\n";
+                        echo "name_file_eng_vi";
                         continue; // Bỏ qua file không hợp lệ và tiếp tục vòng lặp tải lên file hợp lệ
                     }
                 }
@@ -47,13 +49,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo "Tải lên thành công: $fileName\n";
 		$fileUploaded = true;
             } else {
-                echo "Chỉ chấp nhận tệp tin có phần mở rộng .ppn và .pv";
+                //echo "Chỉ chấp nhận tệp tin có phần mở rộng .ppn và .pv";
+                echo "only_accept_ppn_pv";
             }
         }
     }
 	// Hiển thị thông báo nếu không có tệp tin nào được tải lên
     if (!$fileUploaded) {
-        echo "Không có tệp tin nào được tải lên.";
+        //echo "Không có tệp tin nào được tải lên.";
+        echo "no_files_uploaded";
+		
     }
 }
 ?>
