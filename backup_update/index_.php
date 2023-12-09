@@ -362,8 +362,8 @@ if (!is_dir($DuognDanThuMucJson)) {
 
                     </tr>
 										                    <tr>
-															 <th scope="row">-</th>
-                        <td>-</td>
+															 <th scope="row">custom_skill.json</th>
+                        <td><input type="checkbox" class="form-check-input" name="exclude[]" value="custom_skill.json" checked></td>
                         <th scope="row" title="Nằm trong resources">lib porcupine</th>
                         <td>
                             <input type="checkbox" class="form-check-input" name="exclude[]" value="picovoice" checked>
