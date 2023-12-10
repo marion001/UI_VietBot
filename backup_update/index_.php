@@ -195,7 +195,11 @@ function copyFiles($sourceDirectory, $destinationDirectory, $excludedFiles, $exc
             
             if (!in_array($dirName, $excludedDirectories)) {
                 $subDestinationDirectory = $destinationDirectory . '/' . $dirName;
-                mkdir($subDestinationDirectory);
+                //mkdir($subDestinationDirectory);
+				if (!file_exists($subDestinationDirectory)) {
+				// Thư mục không tồn tại, vì vậy tạo mới
+					mkdir($subDestinationDirectory, 0777, true);
+				}
                 copyFiles($file, $subDestinationDirectory, $excludedFiles, $excludedDirectories, $copiedItems);
             }
         }
@@ -613,7 +617,7 @@ if ($currentresult === $latestVersion) {
 }
 }
 
-
+$startCheckboxReload = "";
 
 if (isset($_POST['backup_update'])) {
 	if (isset($block_updates_vietbot_program) && $block_updates_vietbot_program === true) {
@@ -1085,8 +1089,11 @@ if (@$_POST['audioo_playmp3_success'] === "playmp3_success") {
     echo 'audio.play();';
 	echo '</script>';
 }
-$startCheckboxReload = $_POST['startCheckboxReload'];
-
+//$startCheckboxReload = $_POST['startCheckboxReload'];
+if (isset($_POST['startCheckboxReload'])) {
+    // Nếu tồn tại, gán giá trị từ $_POST vào biến
+    $startCheckboxReload = $_POST['startCheckboxReload'];
+}
 }
 }
 
