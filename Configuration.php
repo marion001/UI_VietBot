@@ -7,9 +7,10 @@
 @date_default_timezone_set('Asia/Ho_Chi_Minh');
 ini_set('memory_limit', '256M');
 // Khởi động session
-session_start();
+
 $session_expiration = 86400; //Cài đặt thời gian sống của session cookie thành 1 ngày 1 ngày (1 giờ = 3600 giây)
 session_set_cookie_params($session_expiration);
+session_start();
 
 $SESSION_ID_Name = "Marion001"; //để nguyên
 $HostName = gethostname();
