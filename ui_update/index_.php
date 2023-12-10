@@ -116,9 +116,9 @@ if (file_exists($autoloadPath) && is_file($autoloadPath)) {
         
         // Kiểm tra phiên bản của thư viện (nếu cần)
         if (defined('Google_Client::LIBVER')) {
-            $libraryVersion = Google_Client::LIBVER;
+            //$libraryVersion = Google_Client::LIBVER;
            // echo " Phiên bản: $libraryVersion";
-            $messageeee .= "<font color=red>Phiên Bản Google APIs Client: <b>$libraryVersion</b></font>";
+            //$messageeee .= "<font color=red>Phiên Bản Google APIs Client: <b>$libraryVersion</b></font>";
             
         }
     } else {
@@ -360,7 +360,7 @@ if ($remoteValue !== $localValue) {
             echo "</script>";
 }
 }
-
+$startCheckboxReload = "";
 if (isset($_POST['ui_update'])) {
 	if (isset($block_updates_web_ui) && $block_updates_web_ui === true) {
         //echo "Checkbox được tích và không cho cập nhật.";
@@ -371,7 +371,14 @@ if (isset($_POST['ui_update'])) {
     } else {
 $backupDir = $DuognDanUI_HTML.'/ui_update/backup'; // Đường dẫn thư mục sao lưu lại file sao lưu
 $timestamp = date('d_m_Y_His'); 
-$startCheckboxReload = $_POST['startCheckboxReload'];
+
+
+//$startCheckboxReload = $_POST['startCheckboxReload'];
+if (isset($_POST['startCheckboxReload'])) {
+    // Nếu tồn tại, gán giá trị từ $_POST vào biến
+    $startCheckboxReload = $_POST['startCheckboxReload'];
+}
+
 $backupFile = $backupDir . '/ui_backup_' . $timestamp . '.tar.gz';
 $excludeArgs = '--exclude="*.tar.gz" --exclude="backup_update/extract/UI_VietBot-main/*"';
 $tarCommand = 'tar -czvf ' . $backupFile . ' ' . $excludeArgs . ' -C ' . dirname($DuognDanUI_HTML) . ' ' . basename($DuognDanUI_HTML);
