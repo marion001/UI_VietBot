@@ -113,9 +113,9 @@ if (file_exists($autoloadPath) && is_file($autoloadPath)) {
         
         // Kiểm tra phiên bản của thư viện (nếu cần)
         if (defined('Google_Client::LIBVER')) {
-            $libraryVersion = Google_Client::LIBVER;
+           // $libraryVersion = Google_Client::LIBVER;
            // echo " Phiên bản: $libraryVersion";
-            $messageeee .= "<font color=red>Phiên Bản Google APIs Client: <b>$libraryVersion</b></font>";
+          //  $messageeee .= "<font color=red>Phiên Bản Google APIs Client: <b>$libraryVersion</b></font>";
             
         }
     } else {
