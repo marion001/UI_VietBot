@@ -428,15 +428,37 @@ if ($zip) {
         if (!is_dir($dirPath)) {
             mkdir($dirPath, 0777, true);
         }
-        // Mở mục trong tập tin zip
-        if (zip_entry_open($zip, $zipEntry, "r")) {
-            // Đọc nội dung mục trong tập tin zip
-            $entryContent = zip_entry_read($zipEntry, zip_entry_filesize($zipEntry));
-            // Lưu nội dung vào đường dẫn cụ thể
-            file_put_contents($entryPath, $entryContent);
-            // Đóng mục trong tập tin zip
-            zip_entry_close($zipEntry);
+		// Mở mục trong tập tin zip
+		if (zip_entry_open($zip, $zipEntry, "r")) {
+    // Lấy thông tin về mục trong tập tin zip
+    $entryName = zip_entry_name($zipEntry);
+    
+    // Kiểm tra xem mục có phải là thư mục không
+    if (substr($entryName, -1) === "/") {
+        // Đây là một thư mục, hãy tạo thư mục nếu nó không tồn tại
+        if (!is_dir($entryPath)) {
+            mkdir($entryPath, 0777, true);
         }
+    } else {
+        // Đây là một tập tin, hãy đảm bảo thư mục chứa nó tồn tại
+        $entryDirectory = dirname($entryPath);
+        if (!is_dir($entryDirectory)) {
+            mkdir($entryDirectory, 0777, true);
+        }
+
+        // Đọc nội dung mục trong tập tin zip
+        $entryContent = zip_entry_read($zipEntry, zip_entry_filesize($zipEntry));
+
+        // Lưu nội dung vào đường dẫn cụ thể
+        if (file_put_contents($entryPath, $entryContent) === false) {
+            // Xử lý lỗi khi ghi tập tin
+            echo "Lỗi khi ghi tập tin $entryPath";
+        }
+    }
+
+    // Đóng mục trong tập tin zip
+    zip_entry_close($zipEntry);
+		}
     }
     // Đóng tập tin zip
     zip_close($zip);
