@@ -1667,22 +1667,70 @@ None (Không Dùng)</label></center>
 <table class="table table-bordered">
 <tr><th scope="row">Số led:</th>
 <td colspan="2"><input type="text"  value="<?php echo $LED_NUMBER_LED; ?>" id="number_led_mode_input" name="number_led" class="disabled-input form-control"></td></tr>
-<tr><th scope="row">Chế độ hiệu ứng:</th>
-<td colspan="2"><input type="text"  value="<?php echo $LED_EFFECT_MODE; ?>" id="effect_mode_input" name="effect_mode" class="disabled-input form-control"></td></tr>
 <tr><th scope="row">Độ sáng:</th>
 <td colspan="2"><input type="text"  value="<?php echo $LED_BRIGHTNESS; ?>" id="brightness_mode_input" name="brightness" class="disabled-input form-control" ></td></tr>
+
+<tr><th scope="row">Chế độ hiệu ứng:</th>
+<td colspan="1"><input type="text"  value="<?php echo $LED_EFFECT_MODE; ?>" id="effect_mode_input" name="effect_mode" class="disabled-input form-control"></td>
+
+<td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success"  onclick="sendLedSettings('effect_mode_input')">Test LED</button></td>
+
+
+
+</tr>
+
 <tr><th scope="row">Hiệu ứng nghe:</th>
-<td colspan="2"><input type="text"  value="<?php echo $LED_LISTEN_EFFECT; ?>" id="listen_effect_mode_input" name="listen_effect" class="disabled-input form-control"></td></tr>
-<tr><th scope="row">Hiệu ứng chờ trả lời</th>
-<td colspan="2"><input type="text"  value="<?php echo $LED_THINK_EFFECT; ?>" id="think_effect_mode_input" name="think_effect" class="disabled-input form-control"></td></tr>
-<tr><th scope="row">Hiệu ứng khi nói:</th>
-<td colspan="2"><input type="text"   value="<?php echo $LED_SPEAK_EFFECT; ?>" id="speak_effect_mode_input" name="speak_effect" class="disabled-input form-control"></td></tr>
+<td colspan="1"><input type="text"  value="<?php echo $LED_LISTEN_EFFECT; ?>" id="listen_effect_mode_input" name="listen_effect" class="disabled-input form-control"></td>
+
+<td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success" onclick="sendLedSettings('listen_effect_mode_input')">Test LED</button></td>
+
+</tr>
+<tr><th scope="row">Hiệu ứng chờ xử lý</th>
+<td colspan="1"><input type="text"  value="<?php echo $LED_THINK_EFFECT; ?>" id="think_effect_mode_input" name="think_effect" class="disabled-input form-control"></td>
+
+<td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success" onclick="sendLedSettings('think_effect_mode_input')">Test LED</button></td>
+
+</tr>
+<tr><th scope="row">Hiệu ứng khi trả lời:</th>
+<td colspan="1"><input type="text"   value="<?php echo $LED_SPEAK_EFFECT; ?>" id="speak_effect_mode_input" name="speak_effect" class="disabled-input form-control"></td>
+
+<td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success" onclick="sendLedSettings('speak_effect_mode_input')">Test LED</button></td>
+
+</tr>
 <tr><th scope="row">Màu khi được đánh thức:</th>
 <td><input type="text"  id="wakeup_color_mode_input" title="Nhập Mã Màu" placeholder="03254b" value="<?php echo $LED_WAKEUP_COLOR; ?>"  name="wakeup_color" maxlength="6" class="disabled-input form-control" oninput="updateColorPicker()"></td>
 <td><input type="color" id="color_pickerwakeup_color" title="Nhấn Để Hiển Thị Bảng Mã Màu" class="disabled-input form-control-color" onchange="updateColorValueWakeUp_Color()"></td></tr>
 <tr><th scope="row">Màu khi tắt mic:</th>
 <td><input type="text"  value="<?php echo $LED_MUTED_COLOR; ?>" title="Nhập Mã Màu" placeholder="FF3333"  id="muted_color_mode_input" name="muted_color" maxlength="6" class="disabled-input form-control" oninput="updateColorPickerMuted()"></td>
 <td><input type="color" title="Nhấn Để Hiển Thị Bảng Mã Màu" id="color_pickermuted_color" class="disabled-input form-control-color hidden-inputLED" onchange="updateColorValueMuted_Color()"></td></tr>
+
+<tr><center>
+<td colspan="3">
+<div class="row g-3 d-flex justify-content-center">
+<div class="col-auto">
+<center>
+<input type="text" value="LISTEN" id="listen_test_led" class="disabled-input form-control" hidden>
+<button type="button" title="Test hiệu ứng led" class="btn btn-primary" onclick="sendLedSettings('listen_test_led')">LED Listen</button>
+
+
+<input type="text" value="THINK" id="think_test_led" class="disabled-input form-control" hidden>
+<button type="button" title="Test hiệu ứng led" class="btn btn-secondary" onclick="sendLedSettings('think_test_led')">LED Think</button>
+
+
+<input type="text" value="SPEAK" id="speak_test_led" class="disabled-input form-control" hidden>
+<button type="button" title="Test hiệu ứng led" class="btn btn-info" onclick="sendLedSettings('speak_test_led')">LED Speak</button>
+
+
+<input type="text" value="MUTE" id="mute_test_led" class="disabled-input form-control" hidden>
+<button type="button" title="Test hiệu ứng led" class="btn btn-warning" onclick="sendLedSettings('mute_test_led')">LED Mute</button>
+
+<input type="text" value="OFF" id="stop_test_led_off" class="disabled-input form-control" hidden>
+<button type="button" title="Test hiệu ứng led" class="btn btn-danger" onclick="sendLedSettings('stop_test_led_off')">Dừng Test LED</button>
+</center>
+
+</div></div>
+</td>
+</center></tr>
 </table></div></div></div><hr/>
   <!-- end chọn kiểu led -->
 	<!--Button -->
@@ -3376,6 +3424,68 @@ $(document).ready(function() {
         xhr.send();
     }
 </script>
+  <script>
+  //Tets LED
+    function sendLedSettings(inputId) {
+      // Lấy giá trị từ input text dựa trên thuộc tính id
+      var effectModeValue = $("#" + inputId).val();
+		// Kiểm tra xem giá trị là số và nằm trong khoảng từ 1 đến 10
+		if (!isNaN(effectModeValue) && effectModeValue >= 1 && effectModeValue <= 8) {
+		// Chuyển đổi giá trị sang số nếu là số
+		effectModeValue = parseFloat(effectModeValue);
+		} else {
+		  
+		if (!["OFF", "THINK", "LISTEN", "SPEAK", "MUTE"].includes(effectModeValue)) {
+		alert("Giá trị LED chưa được hỗ trợ");
+		console.log("Lỗi: " + effectModeValue)
+		return;
+		}
+      }
+      // Lấy giá trị từ input radio
+      var ledChonkieuValue = $("input[name='led_chonkieu']:checked").val();
+	          console.log(ledChonkieuValue);
+        console.log(effectModeValue);
+      // Kiểm tra giá trị của ledChonkieuValue
+      if (ledChonkieuValue !== "Vietbot AIO Board V2.0" && ledChonkieuValue !== "WS2812") {
+        alert("Kiểu led '"+ledChonkieuValue+"' chưa được hỗ trợ Test.\n Các kiểu led đang được hỗ trợ:\n - Vietbot AIO Board V2.0\n - WS2812 ");
+        return;
+      }
+      var settings = {
+        "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+          "type": 3,
+          "data": "set_led",
+          "led_type": ledChonkieuValue,
+          "led_state": effectModeValue
+        }),
+      };
+
+      $.ajax(settings).done(function (response) {
+        console.log(response);
+
+        // Kiểm tra trạng thái và hiển thị thông báo tương ứng
+        if (response["state"] === "OK") {
+          alert("Thành công, vui lòng xem trạng thái LED trên loa của bạn");
+        } else if (response["state"] === "Failed") {
+          alert("Kiểu LED '"+ledChonkieuValue+"' chưa được hỗ trợ Test");
+        } else {
+          // Xử lý trạng thái khác nếu cần thiết
+          alert("Trạng thái LED không xác định: " + response["state"]);
+        }
+      })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+          // Xử lý lỗi kết nối với API URL
+          alert("Không kết nối được với Vietbot, Lỗi: " + textStatus);
+        });
+    }
+
+
+  </script>
 
 </body>
 
