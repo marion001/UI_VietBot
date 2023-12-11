@@ -1698,8 +1698,11 @@ None (Không Dùng)</label></center>
 
 </tr>
 <tr><th scope="row">Màu khi được đánh thức:</th>
+
 <td><input type="text"  id="wakeup_color_mode_input" title="Nhập Mã Màu" placeholder="03254b" value="<?php echo $LED_WAKEUP_COLOR; ?>"  name="wakeup_color" maxlength="6" class="disabled-input form-control" oninput="updateColorPicker()"></td>
-<td><input type="color" id="color_pickerwakeup_color" title="Nhấn Để Hiển Thị Bảng Mã Màu" class="disabled-input form-control-color" onchange="updateColorValueWakeUp_Color()"></td></tr>
+<td><input type="color" id="color_pickerwakeup_color" title="Nhấn Để Hiển Thị Bảng Mã Màu" class="disabled-input form-control-color" onchange="updateColorValueWakeUp_Color()">
+</td>
+</tr>
 <tr><th scope="row">Màu khi tắt mic:</th>
 <td><input type="text"  value="<?php echo $LED_MUTED_COLOR; ?>" title="Nhập Mã Màu" placeholder="FF3333"  id="muted_color_mode_input" name="muted_color" maxlength="6" class="disabled-input form-control" oninput="updateColorPickerMuted()"></td>
 <td><input type="color" title="Nhấn Để Hiển Thị Bảng Mã Màu" id="color_pickermuted_color" class="disabled-input form-control-color hidden-inputLED" onchange="updateColorValueMuted_Color()"></td></tr>
@@ -2283,6 +2286,12 @@ else if (radio.value === "tts_gg_free") {
             var ListenEffectModeInput = document.getElementById("listen_effect_mode_input");
             var ThinkEffectModeInput = document.getElementById("think_effect_mode_input");
             var SpeakEffectModeInput = document.getElementById("speak_effect_mode_input");
+			
+            var listen_test_led = document.getElementById("listen_test_led");
+            var think_test_led = document.getElementById("think_test_led");
+            var speak_test_led = document.getElementById("speak_test_led");
+            var mute_test_led = document.getElementById("mute_test_led");
+            var stop_test_led_off = document.getElementById("stop_test_led_off");
             // Vô hiệu hóa tất cả các đầu vào ban đầu
             for (var i = 0; i < disabledInputs.length; i++) {
                 disabledInputs[i].disabled = true;
@@ -2306,6 +2315,13 @@ else if (radio.value === "tts_gg_free") {
 				ThinkEffectModeInput.value = "";
 				SpeakEffectModeInput.type = "text";
 				SpeakEffectModeInput.value = "";
+				
+				//Led API TEST
+				listen_test_led.value = "LISTEN";
+				think_test_led.value = "THINK";
+				speak_test_led.value = "SPEAK";
+				mute_test_led.value = "MUTE";
+				stop_test_led_off.value = "OFF";
             } 
 			//ReSpeaker 4-Mics Pi HAT
 			else if (selectedLed === "ReSpeaker 4-Mics Pi HAT") {
@@ -2326,6 +2342,12 @@ else if (radio.value === "tts_gg_free") {
 				ThinkEffectModeInput.placeholder = "";
 				SpeakEffectModeInput.value = "";
 				SpeakEffectModeInput.placeholder = "";
+				//Led API TEST
+				listen_test_led.value = "LISTEN";
+				think_test_led.value = "THINK";
+				speak_test_led.value = "SPEAK";
+				mute_test_led.value = "MUTE";
+				stop_test_led_off.value = "OFF";
 			} 
 			//APA102
 			else if (selectedLed === "APA102") {
@@ -2372,6 +2394,12 @@ else if (radio.value === "tts_gg_free") {
 				SpeakEffectModeInput.placeholder = "1->3";
 				updateColorPicker();
 				updateColorPickerMuted();
+				//Led API TEST
+				listen_test_led.value = "LISTEN";
+				think_test_led.value = "THINK";
+				speak_test_led.value = "SPEAK";
+				mute_test_led.value = "MUTE";
+				stop_test_led_off.value = "OFF";
 			}
 			//ReSpeaker Mic Array v2.0 | ReSpeaker USB
 			else if (selectedLed === "ReSpeaker Mic Array v2.0") {
@@ -2404,6 +2432,12 @@ else if (radio.value === "tts_gg_free") {
 				SpeakEffectModeInput.placeholder = "";
 				updateColorPicker();
 				updateColorPickerMuted();
+				//Led API TEST
+				listen_test_led.value = "LISTEN";
+				think_test_led.value = "THINK";
+				speak_test_led.value = "SPEAK";
+				mute_test_led.value = "MUTE";
+				stop_test_led_off.value = "OFF";
 			}
 			//WS2812
 			else if (selectedLed === "WS2812") {
@@ -2450,6 +2484,12 @@ else if (radio.value === "tts_gg_free") {
 				SpeakEffectModeInput.placeholder = "1->3";
 				updateColorPicker();
 				updateColorPickerMuted();
+				//Led API TEST
+				listen_test_led.value = "LISTEN";
+				think_test_led.value = "THINK";
+				speak_test_led.value = "SPEAK";
+				mute_test_led.value = "MUTE";
+				stop_test_led_off.value = "OFF";
 			}
 			//None
 			else if (selectedLed === "None") {
@@ -2478,6 +2518,12 @@ else if (radio.value === "tts_gg_free") {
 				SpeakEffectModeInput.type = "text";
 				SpeakEffectModeInput.value = "";
 				SpeakEffectModeInput.placeholder = "";
+				//Led API TEST
+				listen_test_led.value = "LISTEN";
+				think_test_led.value = "THINK";
+				speak_test_led.value = "SPEAK";
+				mute_test_led.value = "MUTE";
+				stop_test_led_off.value = "OFF";
 			}
 			//Vietbot AIO Board V2.0
 			else if (selectedLed === "Vietbot AIO Board V2.0") {
@@ -2529,6 +2575,12 @@ else if (radio.value === "tts_gg_free") {
 				SpeakEffectModeInput.placeholder = "1->10";
 				updateColorPicker();
 				updateColorPickerMuted();
+				//Led API TEST
+				listen_test_led.value = "LISTEN";
+				think_test_led.value = "THINK";
+				speak_test_led.value = "SPEAK";
+				mute_test_led.value = "MUTE";
+				stop_test_led_off.value = "OFF";
 			}
 			}
 //End Led Script
