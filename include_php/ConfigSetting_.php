@@ -3489,14 +3489,14 @@ $(document).ready(function() {
 		  
 		if (!["OFF", "THINK", "LISTEN", "SPEAK", "MUTE"].includes(effectModeValue)) {
 		alert("Giá trị LED chưa được hỗ trợ");
-		console.log("Lỗi: " + effectModeValue)
+		//console.log("Lỗi: " + effectModeValue)
 		return;
 		}
       }
       // Lấy giá trị từ input radio
       var ledChonkieuValue = $("input[name='led_chonkieu']:checked").val();
-	          console.log(ledChonkieuValue);
-        console.log(effectModeValue);
+	    //console.log(ledChonkieuValue);
+        //console.log(effectModeValue);
       // Kiểm tra giá trị của ledChonkieuValue
       if (ledChonkieuValue !== "Vietbot AIO Board V2.0" && ledChonkieuValue !== "WS2812") {
         alert("Kiểu led '"+ledChonkieuValue+"' chưa được hỗ trợ Test.\n Các kiểu led đang được hỗ trợ:\n - Vietbot AIO Board V2.0\n - WS2812 ");
@@ -3518,7 +3518,7 @@ $(document).ready(function() {
       };
 
       $.ajax(settings).done(function (response) {
-        console.log(response);
+        //console.log(response);
 
         // Kiểm tra trạng thái và hiển thị thông báo tương ứng
         if (response["state"] === "OK") {
