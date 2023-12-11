@@ -8,15 +8,23 @@ $uploadDir = "$DuognDanThuMucJson/hotword/";
 
 function listFiles($uploadDir, $selectedLanguage) {
     if ($selectedLanguage === '') {
-        echo "Ngôn ngữ không được xác định.";
+        echo "<center><font color=red>Hãy chọn ngôn ngữ Hotword</font></center>";
         return;
     }
 	if ($selectedLanguage == 'vi') {
     $selectedLanguageReplace = 'Tiếng Việt';
-	} elseif ($selectedLanguage == 'eng') {
+	} 
+	elseif ($selectedLanguage == 'eng') {
     $selectedLanguageReplace = 'Tiếng Anh';
-	} elseif ($selectedLanguage == 'default') {
+	}
+	/*
+	elseif ($selectedLanguage == 'default') {
     $selectedLanguageReplace = 'Mặc Định';
+	}
+	*/
+	else{
+		echo "<center><font color=blue>List Hotword không được chấp nhận<br/>Chỉ chấp nhận <b>Tiếng Việt</b> hoặc <b>Tiếng Anh</b></font></center>";
+		return;
 	}
     $files = glob($uploadDir . $selectedLanguage . '/*.ppn');
 	echo "<p>Tổng số file Hotword $selectedLanguageReplace: <font color=red>" . count($files) . "</font></p>";
@@ -24,8 +32,14 @@ function listFiles($uploadDir, $selectedLanguage) {
 	$fileCount = 0;
     foreach ($files as $file) {
 		$fileCount++;
-        echo "<li>" . end(explode('/', $file)) . " <font color=\"red\" type=\"button\" class=\"delete-button\" onclick=\"deleteFileAjax('$file')\" title=\"Xóa file: " . end(explode('/', $file)) . "\">Xóa</font>
-		<font color=\"blue\" type=\"button\" class=\"download-button\" onclick=\"downloadFileAjax('".$selectedLanguage."/".end(explode('/', $file))."')\" title=\"Tải xuống file: " . end(explode('/', $file)) . "\">Tải xuống</font></li>";
+		$explodedPath = explode('/', $file);
+		$lastElement = end($explodedPath);
+		$Name_File = $lastElement;
+		//$Name_File = basename($file);
+		$Dowload_Name_File = $selectedLanguage."/".$Name_File;
+		
+        echo "<li>" . $Name_File. " <font color=\"red\" type=\"button\" class=\"delete-button\" onclick=\"deleteFileAjax('$file')\" title=\"Xóa file: " . $Name_File . "\">Xóa</font>
+		<font color=\"blue\" type=\"button\" class=\"download-button\" onclick=\"downloadFileAjax('".$Dowload_Name_File."')\" title=\"Tải xuống file: " . $Name_File . "\">Tải xuống</font></li>";
 	}
     echo "</ul>";
 }
@@ -72,15 +86,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action'])) {
     if ($_GET['action'] === 'list_files') {
-        $selectedLanguage = $_GET['language'] ?? '';
+       // $selectedLanguage = $_GET['language'] ?? '';
+        $selectedLanguage = $_GET['language'];
         listFiles($uploadDir, $selectedLanguage);
-    } elseif ($_GET['action'] === 'download_file') {
+    }
+		elseif ($_GET['action'] === 'download_file') {
         if (isset($_GET['fileToDownload'])) {
             $fileToDownload = $_GET['fileToDownload'];
             $selectedLanguage = isset($_GET['language']) ? $_GET['language'] : '';
             downloadFile($fileToDownload, $selectedLanguage,$DuognDanThuMucJson);
         }
-    }
+    }else {
+            // Xử lý trường hợp thiếu tham số 'fileToDownload'
+            echo "<center><font color=red>Tham số truyền vào sai cú pháp<font></center>";
+        }
 }
 
 ?>
