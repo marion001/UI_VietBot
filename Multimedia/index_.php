@@ -646,21 +646,11 @@ if ($response === false) {
             };
 
             $.ajax(settings)
-                .done(function(response) {
+				.done(function(response) {
+					var displayText = response.new_volume !== undefined ? 'Âm Lượng: ' + response.new_volume + '%' : response.response;
+					messageElement.innerHTML = '<div style="color: green;"><b>' + displayText + '</b></div>';
+				})
 
-                    messageElement.innerHTML = response.answer || '<div style="color: green;"><b>Âm Lượng: ' + response.new_volume + '%</b></div>';
-                    //console.log('sending audio control command:', response);
-                    // Kiểm tra nếu giá trị trả về  và thay thế
-                    if (response.answer === "All players is paused!") {
-                        messageElement.innerHTML = '<div style="color: green;"><b>Đã tạm dừng Phát Nhạc</b></div>';
-                    } else if (response.answer === "All players is continued!") {
-                        // Kiểm tra nếu giá trị trả về là "All players is continued!"
-                        messageElement.innerHTML = '<div style="color: green;"><b>Đã tiếp tục Phát Nhạc</b></div>';
-                    } else if (response.answer === "All players is stopped!") {
-                        // Kiểm tra nếu giá trị trả về là "All players is stopped!"
-                        messageElement.innerHTML = '<div style="color: green;"><b>Đã dừng Phát Nhạc</b></div>';
-                    }
-                })
                 .fail(function(jqXHR, textStatus, errorThrown) {
                     if (textStatus === "timeout") {
                         messageElement.innerHTML = '<div style="color: red;"><b>Lỗi: Hết thời gian chờ khi kết nối với API.</b></div>';
