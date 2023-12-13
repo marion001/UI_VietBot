@@ -1649,7 +1649,7 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
 <center><b>Cấu Hình Đèn LED</b></center><br/>
 - Chọn phần cứng của bạn và cấu hình các mục chức năng cho phép nhập bên dưới<br/><br/></div></div>
 <div id="myDivz" style="display: none;"><center>
- <label><input type="radio" name="led_chonkieu" value="Vietbot AIO Board V2.0" <?php if ($LED_TYPE === 'Vietbot AIO Board V2.0') echo 'checked'; ?> onclick="handleLedChange()" required>
+ <label><input type="radio" name="led_chonkieu" title="Vietbot AIO Board V2.0 GPIO10" value="Vietbot AIO Board V2.0" <?php if ($LED_TYPE === 'Vietbot AIO Board V2.0') echo 'checked'; ?> onclick="handleLedChange()" required>
 Vietbot AIO Board V2.0</label>
 <label><input type="radio" name="led_chonkieu" value="ReSpeaker 2-Mics Pi HAT" <?php if ($LED_TYPE === 'ReSpeaker 2-Mics Pi HAT') echo 'checked'; ?> onclick="handleLedChange()" required>
 Mic2HAT</label>
