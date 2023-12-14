@@ -161,11 +161,23 @@ function deleteFiles($directory, $excludedFiles, $excludedDirectories, &$deleted
     foreach ($files as $file) {
         if (is_file($file)) {
             $fileName = basename($file);
-            
+           /* 
             if (!in_array($fileName, $excludedFiles)) {
                 unlink($file);
                 $deletedItems[] = $file . '</span>';
             }
+			*/
+			
+			
+			if (!in_array($fileName, $excludedFiles)) {
+                // Kiểm tra xem thư mục chứa tệp có phải là __pycache__ không, bỏ qua thư mục này
+                $containingDirectory = dirname($file);
+                if ($containingDirectory !== '__pycache__') {
+                    unlink($file);
+                    $deletedItems[] = $file;
+                }
+            }
+			
         } elseif (is_dir($file)) {
             $dirName = basename($file);
             
