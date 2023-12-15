@@ -505,6 +505,19 @@ if (isset($Web_UI_Enable_GDrive_Backup) && $Web_UI_Enable_GDrive_Backup === true
     $jsonFilePath = $DuognDanUI_HTML.'/GoogleDrive/client_secret.json';
     $jsonData = file_get_contents($jsonFilePath);
     $DataArrayClient_Secret = json_decode($jsonData, true);
+// Kiểm tra lỗi JSON
+if (json_last_error() !== JSON_ERROR_NONE) {
+    // Có lỗi khi giải mã JSON
+	$json_last_error_msgg = json_last_error_msg();   
+echo "<script>";
+echo "var MessageGDriverrr = document.getElementById('MessageGDriver');";
+echo "MessageGDriverrr.innerHTML += '<br/><font color=red>Sai cấu trúc tệp json /GoogleDrive/client_secret.json, mã lỗi: $json_last_error_msgg</font>';";
+echo "MessageGDriverrr.innerHTML += '<br/><font color=red>Kiểm tra lại dữ liệu nhập vào ở tab <b>Config/Cấu Hình</b></font>';";
+echo "MessageGDriverrr.innerHTML += '<br/><font color=red>Sẽ không có file backup nào được tải lên</font>';";
+echo "</script>";
+	
+
+}
     if ($DataArrayClient_Secret === null) {
        $get_loi_e_Messager = $e->getMessage();
 			echo "<script>";
