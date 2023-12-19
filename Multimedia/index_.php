@@ -210,7 +210,20 @@ if (is_dir($directory . '/node_modules')) {
 
                     </center>
                 </td><td><center>
-<label for="run-checkbox" class="btn btn-warning" title="Bạn có thể cấu hình mặc định trong tab Skill->Media Player">   <input title="Bạn có thể cấu hình mặc định trong tab Skill->Media Player" type="checkbox" disabled id="run-checkbox" <?php echo ($sync_media_player_checkbox) ? 'checked' : ''; ?>> Đồng bộ</label></td>
+<label for="run-checkbox" class="btn btn-warning" title="Bạn có thể cấu hình mặc định trong tab Skill->Media Player">
+
+ <input title="Bạn có thể cấu hình mặc định trong tab Skill->Media Player" type="checkbox" id="run-checkbox" <?php echo ($sync_media_player_checkbox) ? 'checked' : ''; ?>> Đồng bộ</label>
+
+<i class="bi bi-info-circle-fill" onclick="togglePopupSync()" title="Nhấn Để Tìm Hiểu Thêm"></i>
+<div id="popupContainer" class="popup-container" onclick="hidePopupSync()">
+    <div id="popupContent" onclick="preventEventPropagationSync(event)">
+        <p>Đồng bộ Trạng Thái Media Player của Loa với Webui</p>
+		- Cài Đặt: <b>Tab Skill</b> -> <b>Media Player</b> -> <b>Đồng Bộ (Sync)</b> -> tích chọn <b>Đồng Bộ Media Với Web UI</b> -> Lưu cấu hình<br/>
+        <button class="btn btn-info" type="button" onclick="hidePopupSync()">Đóng</button>
+    </div>
+</div>
+
+</td>
             </tr>
             <tr>
                 <td colspan="3">
@@ -956,7 +969,22 @@ if ($response === false) {
         }
     });
 </script>
+<script>
+    // Your JavaScript code here
+    function togglePopupSync() {
+        var popupContainer = document.getElementById("popupContainer");
+        popupContainer.classList.toggle("show");
+    }
 
+    function hidePopupSync() {
+        var popupContainer = document.getElementById("popupContainer");
+        popupContainer.classList.remove("show");
+    }
+
+    function preventEventPropagationSync(event) {
+        event.stopPropagation();
+    }
+</script>
 <script src="../assets/js/bootstrap.min.js"></script>
 <script src="../assets/js/bootstrap.js"></script>
 </body>
