@@ -182,6 +182,7 @@ if (is_dir($directory . '/node_modules')) {
 			
                 <td colspan="3"><center>
 <div id="code-section">
+<b><p id="media1-name"></p></b>
     <span id="selected-time"></span>
     <input type="range" id="time-slider" min="1" max=""> 
 	<span id="media1-duration"></span>
@@ -217,8 +218,8 @@ if (is_dir($directory . '/node_modules')) {
 <i class="bi bi-info-circle-fill" onclick="togglePopupSync()" title="Nhấn Để Tìm Hiểu Thêm"></i>
 <div id="popupContainer" class="popup-container" onclick="hidePopupSync()">
     <div id="popupContent" onclick="preventEventPropagationSync(event)">
-        <p>Đồng bộ Trạng Thái Media Player của Loa với Webui</p>
-		- Cài Đặt: <b>Tab Skill</b> -> <b>Media Player</b> -> <b>Đồng Bộ (Sync)</b> -> tích chọn <b>Đồng Bộ Media Với Web UI</b> -> Lưu cấu hình<br/>
+        <p><b>Đồng bộ Trạng Thái Media Player của Loa với Web UI</b></p>
+		- Cài Đặt: <b>Tab Skill</b> -> <b>Media Player</b> -> <b>Đồng Bộ (Sync)</b> -> tích chọn <b>Đồng Bộ Media Với Web UI</b> -> <b>Lưu cấu hình</b><br/>
         <button class="btn btn-info" type="button" onclick="hidePopupSync()">Đóng</button>
     </div>
 </div>
@@ -834,6 +835,26 @@ if ($response === false) {
     });
 </script>
 <script>
+
+function truncateFileName(fileName, maxLength) {
+    if (fileName.length <= maxLength) {
+        return fileName;
+    }
+
+    // Tìm vị trí khoảng trắng gần giới hạn maxLength
+    const lastSpaceIndex = fileName.lastIndexOf(' ', maxLength);
+
+    // Nếu không có khoảng trắng, cắt tên file
+    if (lastSpaceIndex === -1) {
+        return fileName.substring(0, maxLength) + '...';
+    }
+
+    // Ngắt tên file tại khoảng trắng gần giới hạn maxLength
+    return fileName.substring(0, lastSpaceIndex) + '...';
+}
+
+
+
     // Function to convert seconds to HH:MM:SS format
     function formatTimeajax(seconds) {
         var hours = Math.floor(seconds / 3600);
@@ -885,6 +906,37 @@ if ($response === false) {
                     $("#selected-time").text(formatTimeajax(media1_positionInSeconds));
                 }
 
+if (media1_path.startsWith("file:///home/pi/vietbot_offline/src/mp3/")) {
+    // Giải mã chuỗi URL
+    const decodedString = decodeURIComponent(media1_path);
+
+    // Bỏ phần đường dẫn
+    const fileNameWithoutPath = decodedString.split('/').pop();
+
+    // Bỏ phần mở rộng
+    const fileNameWithoutExtension = fileNameWithoutPath.replace(/\..+$/, '');
+
+    // Giới hạn tên file tối đa 20 ký tự và ngắt tại khoảng trắng
+    const maxLength = 25;
+    const truncatedFileName = truncateFileName(fileNameWithoutExtension, maxLength);
+	$("#media1-name").text(truncatedFileName).attr("title", fileNameWithoutExtension);
+
+    console.log('Tên file sau khi giải mã, loại bỏ đường dẫn và mở rộng:', truncatedFileName);
+} else if (media1_path.startsWith("http://vnno-")) {
+    // Xử lý khi đường dẫn bắt đầu bằng "other_prefix"
+	$("#media1-name").text("ZingMp3");
+    //console.log('Xử lý cho trường hợp khác');
+}else if (media1_path.startsWith("https://rr")) {
+    // Xử lý khi đường dẫn bắt đầu bằng "other_prefix"
+	$("#media1-name").text("Youtube");
+    //console.log('Xử lý cho trường hợp khác');
+} else {
+    // Xử lý cho trường hợp khác
+	$("#media1-name").text("Tên Bài Hát: .....");
+    console.log('Xử lý cho trường hợp mặc định');
+}
+
+
                 // Update the slider values
                 $("#time-slider").attr("max", media1_durationInSeconds);
                 $("#time-slider").val(media1_positionInSeconds);
@@ -921,7 +973,7 @@ if ($response === false) {
             })
             .fail(function (jqXHR, textStatus, errorThrown) {
                 // Handle the failure (e.g., no connection to API)
-                $("#player-state").text("Trạng thái: Không kết nối được tới API");
+                $("#player-state").text("Trạng thái: Không kết nối được tới API get_api_playback");
             });
     }
 
