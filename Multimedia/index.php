@@ -108,6 +108,32 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
 		*/
 	
     </style>
+	    <style>
+        /* Your CSS styles here */
+        .popup-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+        }
+
+        .popup-container.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #popupContent {
+            background-color: white;
+            padding: 20px;
+            border: 1px solid gray;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 
 <body>
