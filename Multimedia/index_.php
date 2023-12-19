@@ -210,7 +210,7 @@ if (is_dir($directory . '/node_modules')) {
 
                     </center>
                 </td><td><center>
-<label for="run-checkbox" class="btn btn-warning" title="Bạn có thể cấu hình mặc định trong tab Skill->Media Player">   <input title="Bạn có thể cấu hình mặc định trong tab Skill->Media Player" type="checkbox" id="run-checkbox" <?php echo ($sync_media_player_checkbox) ? 'checked' : ''; ?>> Đồng bộ</label></td>
+<label for="run-checkbox" class="btn btn-warning" title="Bạn có thể cấu hình mặc định trong tab Skill->Media Player">   <input title="Bạn có thể cấu hình mặc định trong tab Skill->Media Player" type="checkbox" disabled id="run-checkbox" <?php echo ($sync_media_player_checkbox) ? 'checked' : ''; ?>> Đồng bộ</label></td>
             </tr>
             <tr>
                 <td colspan="3">
