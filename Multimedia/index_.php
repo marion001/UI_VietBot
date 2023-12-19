@@ -219,7 +219,9 @@ if (is_dir($directory . '/node_modules')) {
 <div id="popupContainer" class="popup-container" onclick="hidePopupSync()">
     <div id="popupContent" onclick="preventEventPropagationSync(event)">
         <p><b>Đồng bộ Trạng Thái Media Player của Loa với Web UI</b></p>
-		- Cài Đặt: <b>Tab Skill</b> -> <b>Media Player</b> -> <b>Đồng Bộ (Sync)</b> -> tích chọn <b>Đồng Bộ Media Với Web UI</b> -> <b>Lưu cấu hình</b><br/>
+		- <b>Tự Động Sync: </b> Truy cập <b>Tab Skill</b> -> <b>Media Player</b> -> <b>Đồng Bộ (Sync)</b> -> tích chọn <b>Đồng Bộ Media Với Web UI</b> -> <b>Lưu cấu hình</b><br/>
+		- <b>Thủ Công:</b> Bạn có thể nhấn tích vào nút <b>Đồng Bộ</b> để Sync thủ công ngay tại tab <b>Media player</b><br/><br/>
+		<i>Lưu Ý: Có thể ảnh hưởng đến tốc độ của Bot có phần cứng yêu nếu bật <b>Cài Đặt Tự Động Sync</b></i><br/>
         <button class="btn btn-info" type="button" onclick="hidePopupSync()">Đóng</button>
     </div>
 </div>
