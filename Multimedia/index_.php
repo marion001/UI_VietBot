@@ -925,7 +925,7 @@ if ($response === false) {
             if (shouldRunCode()) {
                 fetchData();
             }
-        }, 1000);
+        }, <?php echo $sync_media_player_sync_delay; ?> * 1000);
     }
 
     // Check the initial state of the checkbox and show/hide the code section accordingly
