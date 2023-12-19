@@ -921,7 +921,7 @@ if (media1_path.startsWith("file:///home/pi/vietbot_offline/src/mp3/")) {
     const truncatedFileName = truncateFileName(fileNameWithoutExtension, maxLength);
 	$("#media1-name").text(truncatedFileName).attr("title", fileNameWithoutExtension);
 
-    console.log('Tên file sau khi giải mã, loại bỏ đường dẫn và mở rộng:', truncatedFileName);
+   // console.log('Tên file sau khi giải mã, loại bỏ đường dẫn và mở rộng:', truncatedFileName);
 } else if (media1_path.startsWith("http://vnno-")) {
     // Xử lý khi đường dẫn bắt đầu bằng "other_prefix"
 	$("#media1-name").text("ZingMp3");
@@ -933,7 +933,7 @@ if (media1_path.startsWith("file:///home/pi/vietbot_offline/src/mp3/")) {
 } else {
     // Xử lý cho trường hợp khác
 	$("#media1-name").text("Tên Bài Hát: .....");
-    console.log('Xử lý cho trường hợp mặc định');
+    //console.log('Xử lý cho trường hợp mặc định');
 }
 
 
