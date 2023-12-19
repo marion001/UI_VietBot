@@ -178,10 +178,23 @@ if (is_dir($directory . '/node_modules')) {
   
                                 </th>
                    </tr>
-
-
             <tr>
-                <td colspan="3">
+			
+                <td colspan="3"><center>
+<div id="code-section">
+    <span id="selected-time"></span>
+    <input type="range" id="time-slider" min="1" max=""> 
+	<span id="media1-duration"></span>
+    <p id="player-state">Trạng thái: Đang đồng bộ...</p>
+</div>
+				
+                    </center>
+                </td>
+
+            </tr>
+            <tr>
+			
+                <td colspan="2">
                     <center>
                         <button type="button" id="volumeDown" title="Giảm âm lượng" class="btn btn-info"><i class="bi bi-volume-down"></i>
                         </button>
@@ -193,10 +206,11 @@ if (is_dir($directory . '/node_modules')) {
                         </button>
                         <button type="button" id="volumeUp" title="Tăng âm lượng" class="btn btn-info"><i class="bi bi-volume-up"></i>
                         </button>
+						
 
                     </center>
-                </td>
-
+                </td><td><center>
+<label for="run-checkbox" class="btn btn-warning" title="Bạn có thể cấu hình mặc định trong tab Skill->Media Player">   <input title="Bạn có thể cấu hình mặc định trong tab Skill->Media Player" type="checkbox" id="run-checkbox" <?php echo ($sync_media_player_checkbox) ? 'checked' : ''; ?>> Đồng bộ</label></td>
             </tr>
             <tr>
                 <td colspan="3">
@@ -326,9 +340,9 @@ $duration = isset($fileInfo['playtime_seconds']) ? round($fileInfo['playtime_sec
             echo " <div class='image-container'>";
             echo "<img src='../assets/img/NotNhac.png' class='imagesize' alt='' /> <div class='caption'>";
             echo '<b>Tên bài hát:</b> ' . basename($mp3File) . '<br/>';
-            echo '<b>Thời lượng:</b> ' . formatTime($duration) . '<br/>';
+            echo '<b>Thời lượng:</b> ' . formatTimephp($duration) . '<br/>';
             echo '<b>Kích thước:</b> ' . $fileSizeMB . ' MB<br/>';
-            echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-kichthuoc="' . $fileSizeMB . ' MB" data-song-thoiluong="' . formatTime($duration) . '" data-song-artist=" ---" data-song-images="../assets/img/NotNhac.png" data-song-name="' . basename($mp3File) . '" data-song-link_type="local" data-song-id="mp3/' . basename($mp3File) . '">Phát Nhạc</button>';
+            echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-kichthuoc="' . $fileSizeMB . ' MB" data-song-thoiluong="' . formatTimephp($duration) . '" data-song-artist=" ---" data-song-images="../assets/img/NotNhac.png" data-song-name="' . basename($mp3File) . '" data-song-link_type="local" data-song-id="mp3/' . basename($mp3File) . '">Phát Nhạc</button>';
             echo '<button class="deleteBtn btn btn-danger" data-file="' . basename($mp3File) . '">Xóa File</button>';
             echo "</div></div><br/>";
         }
@@ -510,7 +524,7 @@ if ($response === false) {
             var songArtist = $(this).data('song-artist');
             var songName = $(this).data('song-name');
             var startTime = new Date(); // Lấy thời gian bắt đầu yêu cầu
-            var getTime = formatTime(startTime.getHours()) + ':' + formatTime(startTime.getMinutes()) + ':' + formatTime(startTime.getSeconds());
+            var getTimee = formatTime(startTime.getHours()) + ':' + formatTime(startTime.getMinutes()) + ':' + formatTime(startTime.getSeconds());
 			
 			
 			messageElement.innerHTML = '<font color=red>Đang Chuyển Đổi Dữ Liệu...</font>';
@@ -556,7 +570,7 @@ if ($response === false) {
                                 let modifiedStringSuccess = response.state.replace("Success", "Thành Công");
                                 var endTime = new Date(); // Lấy thời gian kết thúc yêu cầu
                                 var elapsedTime = endTime - startTime; // Tính thời gian thực hiện yêu cầu
-                                messageElement.innerHTML = '<div style="color: green;"><b>' + getTime + ' - ' + modifiedStringSuccess + ' | ' + elapsedTime + 'ms</b></div>';
+                                messageElement.innerHTML = '<div style="color: green;"><b>' + getTimee + ' - ' + modifiedStringSuccess + ' | ' + elapsedTime + 'ms</b></div>';
                                 messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + songImages + ' alt="" /></div><div class="caption"><b>Tên bài hát: </b> ' + songName + '<br/><b>'+songTenKenhNgheSi+': </b> ' + songArtist + '<br/><b>Thời lượng: </b> ' + songThoiLuong + '<br/><b>Kích thước: </b> ' + songKichThuoc + '</div></div>';
                             })
                             .fail(function(jqXHR, textStatus, errorThrown) {
@@ -564,15 +578,15 @@ if ($response === false) {
                                 var endTime = new Date(); // Lấy thời gian kết thúc yêu cầu
                                 var elapsedTime = endTime - startTime; // Tính thời gian thực hiện yêu cầu
                                 if (textStatus === "timeout") {
-                                    messageElement.innerHTML = '<div style="color: red;"><b>' + getTime + ' - Lỗi: Yêu cầu đã vượt quá thời gian chờ. | ' + elapsedTime + 'ms</b></div>';
+                                    messageElement.innerHTML = '<div style="color: red;"><b>' + getTimee + ' - Lỗi: Yêu cầu đã vượt quá thời gian chờ. | ' + elapsedTime + 'ms</b></div>';
 
                                 } else {
-                                    messageElement.innerHTML = '<div style="color: red;"><b>' + getTime + ' - Lỗi: Không thể kết nối đến API. | ' + elapsedTime + 'ms</b></div>';
+                                    messageElement.innerHTML = '<div style="color: red;"><b>' + getTimee + ' - Lỗi: Không thể kết nối đến API. | ' + elapsedTime + 'ms</b></div>';
                                 }
                             });
                     } else {
                         //console.error('Lỗi:', response.error || 'Không xác định');
-                        messageElement.innerHTML = '<div style="color: red;"><b>' + getTime + ' - Lỗi: ' + response.error + ' Không xác định || ' + elapsedTime + 'ms</b></div>';
+                        messageElement.innerHTML = '<div style="color: red;"><b>' + getTimee + ' - Lỗi: ' + response.error + ' Không xác định || ' + elapsedTime + 'ms</b></div>';
                     }
 					$('#loading-overlay').hide();
 					
@@ -580,7 +594,7 @@ if ($response === false) {
                 error: function(jqXHR, textStatus, errorThrown) {
 					$('#loading-overlay').hide();
                     //console.error('Lỗi AJAX:', textStatus, errorThrown);
-                    messageElement.innerHTML = '<div style="color: red;"><b>' + getTime + ' - Lỗi AJAX: ' + textStatus + ' || ' + errorThrown + ' || ' + elapsedTime + 'ms</b></div>';
+                    messageElement.innerHTML = '<div style="color: red;"><b>' + getTimee + ' - Lỗi AJAX: ' + textStatus + ' || ' + errorThrown + ' || ' + elapsedTime + 'ms</b></div>';
                 }
 				
             });
@@ -646,10 +660,29 @@ if ($response === false) {
             };
 
             $.ajax(settings)
-				.done(function(response) {
-					var displayText = response.new_volume !== undefined ? 'Âm Lượng: ' + response.new_volume + '%' : response.response;
-					messageElement.innerHTML = '<div style="color: green;"><b>' + displayText + '</b></div>';
-				})
+// Biến để theo dõi trạng thái của checkbox
+
+
+// ...
+
+.done(function(responseh) {
+	var isCheckboxChecked = $("#run-checkbox").is(":checked");
+    // Kiểm tra nếu checkbox được tích
+    if (isCheckboxChecked) {
+		var displayText = responseh.new_volume !== undefined ? 'Âm Lượng: ' + responseh.new_volume + '%' : responseh.response;
+		messageElement.innerHTML = ' ';
+        // Hiển thị thông báo khi checkbox được tích và responseh.response không phải là một trong các giá trị chỉ định
+        if (!(responseh.response === "Đã dừng!" || responseh.response === "Đã tiếp tục!" || responseh.response === "Đã tạm dừng!")) {
+            // Xử lý và hiển thị response
+            
+            messageElement.innerHTML = '<div style="color: green;"><b>' + displayText + '</b></div>';
+        }
+    } else {
+        // Hiển thị thông báo khi checkbox không được tích
+        var displayText = responseh.new_volume !== undefined ? 'Âm Lượng: ' + responseh.new_volume + '%' : responseh.response;
+        messageElement.innerHTML = '<div style="color: green;"><b>' + displayText + '</b></div>';
+    }
+})
 
                 .fail(function(jqXHR, textStatus, errorThrown) {
                     if (textStatus === "timeout") {
@@ -760,8 +793,8 @@ if ($response === false) {
         $('.deleteBtn').on('click', function() {
             var fileToDelete = $(this).data('file');
             //console.log(fileToDelete)
-            // Thêm tham số ngẫu nhiên hoặc timestamp vào URL
-            var timestamp = new Date().getTime();
+
+            var timestamp = new Date().getTimee();
             var url = '../include_php/Ajax/Mp3_Del.php?fileToDelete=' + fileToDelete;
             var xacNhan = confirm("Bạn có chắc chắn muốn xóa file: " + fileToDelete);
             if (xacNhan) {
@@ -787,6 +820,142 @@ if ($response === false) {
         });
     });
 </script>
+<script>
+    // Function to convert seconds to HH:MM:SS format
+    function formatTimeajax(seconds) {
+        var hours = Math.floor(seconds / 3600);
+        var minutes = Math.floor((seconds % 3600) / 60);
+        var remainingSeconds = seconds % 60;
+
+        // Ensure two digits for hours, minutes, and seconds
+        var formattedHours = hours < 10 ? "0" + hours : hours;
+        var formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
+        var formattedSeconds = remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds;
+
+        return formattedHours + ":" + formattedMinutes + ":" + formattedSeconds;
+    }
+
+    // Function to make the API request and handle data
+    function fetchData() {
+        var settings = {
+            "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "data": JSON.stringify({
+                "type": 3,
+                "data": "get_api_playback"
+            }),
+        };
+
+        $.ajax(settings)
+            .done(function (response) {
+                // Extract specific fields from the response
+                var media2_duration = response.media2_duration;
+                var media1_path = response.media1_path;
+                var media1_position = response.media1_position;
+                var player1_state = response.player1_state;
+                var state = response.state;
+
+                // Convert media1_duration to seconds
+                var media1_durationInSeconds = Math.round(response.media1_duration);
+
+                // Convert media1_position to seconds
+                var media1_positionInSeconds = media1_position === -1.0 ? -1.0 : Math.round(media1_position * media1_durationInSeconds);
+
+                // Further processing or UI updates can be done here
+
+                // Update the selected time on the UI if media1_position is not -1.0
+                if (media1_positionInSeconds !== -1.0) {
+                    $("#selected-time").text(formatTimeajax(media1_positionInSeconds));
+                }
+
+                // Update the slider values
+                $("#time-slider").attr("max", media1_durationInSeconds);
+                $("#time-slider").val(media1_positionInSeconds);
+
+                // Convert and display media1_duration in HH:MM:SS format
+                $("#media1-duration").text(formatTimeajax(media1_durationInSeconds));
+
+                // Display player state based on player1_state
+                var playerStateText = "";
+				var playerStateColor = "";
+                switch (player1_state) {
+                    case "State.Ended":
+                        playerStateText = "Kết thúc";
+                        playerStateColor = "gray";
+                        break;
+                    case "State.Playing":
+                    case "State.Opening":
+                        playerStateText = "Đang phát nhạc";
+                        playerStateColor = "green";
+                        break;
+                    case "State.Paused":
+                        playerStateText = "Đã tạm dừng";
+                        playerStateColor = "blue";
+                        break;
+                    case "State.Stopped":
+                        playerStateText = "Đã dừng";
+                        playerStateColor = "red";
+                        break;
+                    default:
+                        playerStateText = "Trạng thái không xác định";
+                        playerStateColor = "black";
+                }
+                $("#player-state").text("Trạng thái: " + playerStateText).css("color", playerStateColor);
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                // Handle the failure (e.g., no connection to API)
+                $("#player-state").text("Trạng thái: Không kết nối được tới API");
+            });
+    }
+
+    // Function to check if the code should run
+    function shouldRunCode() {
+        return $("#run-checkbox").is(":checked");
+    }
+
+    // Set an interval to call the fetchData function every 3 seconds
+    var intervalID;
+
+    function startInterval() {
+        intervalID = setInterval(function () {
+            if (shouldRunCode()) {
+                fetchData();
+            }
+        }, 1000);
+    }
+
+    // Check the initial state of the checkbox and show/hide the code section accordingly
+    $(document).ready(function () {
+        if (shouldRunCode()) {
+            startInterval();
+            $("#code-section").show();
+        } else {
+            $("#code-section").hide();
+         //   $("#player-state").text("Player State: Code execution stopped.");
+        }
+    });
+
+    // Update the selected time when the slider value changes
+    $("#time-slider").on("input", function () {
+        $("#selected-time").text(formatTimeajax($(this).val()));
+    });
+
+    // Update the code execution and visibility when the checkbox state changes
+    $("#run-checkbox").on("change", function () {
+        if (shouldRunCode()) {
+            startInterval();
+            $("#code-section").show();
+        } else {
+            clearInterval(intervalID);
+            $("#code-section").hide();
+           // $("#player-state").text("Trạng thái: Code execution stopped.");
+        }
+    });
+</script>
 
 <script src="../assets/js/bootstrap.min.js"></script>
 <script src="../assets/js/bootstrap.js"></script>
@@ -794,7 +963,7 @@ if ($response === false) {
 </html>
 <?php
 
-function formatTime($seconds)
+function formatTimephp($seconds)
 {
     $hours = floor($seconds / 3600);
     $minutes = floor(($seconds % 3600) / 60);
