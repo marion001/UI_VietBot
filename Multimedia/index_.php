@@ -916,13 +916,13 @@ function fetchData() {
                 // Giới hạn tên file tối đa 20 ký tự và ngắt tại khoảng trắng
                 const maxLength = 25;
                 const truncatedFileName = truncateFileName(fileNameWithoutExtension, maxLength);
-                $("#media1-name").text(truncatedFileName).attr("title", fileNameWithoutExtension);
+                $("#media1-name").text("Local MP3: " +truncatedFileName).attr("title", fileNameWithoutExtension);
                 // console.log('Tên file sau khi giải mã, loại bỏ đường dẫn và mở rộng:', truncatedFileName);
             } else if (media1_path.startsWith("http://vnno-")) {
-                $("#media1-name").text("ZingMp3");
+                $("#media1-name").text("ZingMp3: ...");
                 //console.log('Xử lý cho trường hợp khác');
             } else if (media1_path.startsWith("https://rr")) {
-                $("#media1-name").text("Youtube");
+                $("#media1-name").text("Youtube: ...");
             } else {
                 $("#media1-name").text("Tên Bài Hát: .....");
                 //console.log('Xử lý cho trường hợp mặc định');
