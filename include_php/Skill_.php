@@ -183,6 +183,10 @@ chmod($backupFile, 0777);
     $skillArray['hass']['active'] = $activeHass;
 	//ChatGPT
     $skillArray['chatgpt']['token'] = $ChatGptKey;
+	
+	//Media Player Sync ($_POST['media_player_sync_ui'] === 'true');
+    $skillArray['ui_media_player']['sync_media_player'] = ($_POST['media_player_sync_ui'] === 'true');
+    $skillArray['ui_media_player']['sync_delay'] = @$_POST['sync_delay_media_player'];
 	//Camera hanet
 	$activeCameraHanet = isset($_POST['activeCameraHanet']) && $_POST['activeCameraHanet'] === 'on' ? true : false;
 	
@@ -540,18 +544,22 @@ B4: Go to Application -> Cookies -> "__Secure-1PSID" và "__Secure-1PSIDTS" và 
 <hr/>
 
 
-<h5>Ưu Tiên Nguồn Phát Media Player:</h5>
+<h5>Media Player:</h5>
 <?php
 	//Get Ưu tiên Trợ Lý Ảo/ AI
 	$music_source_priority_1 = $skillArray['music_source']['priority_1'];
 	$music_source_priority_2 = $skillArray['music_source']['priority_2'];
 	$music_source_priority_3 = $skillArray['music_source']['priority_3'];
+	
+	$sync_delay_media_player = $skillArray['ui_media_player']['sync_delay'];
+	$sync_media_player = $skillArray['ui_media_player']['sync_media_player'];
+	
 ?>
 <div class="form-check form-switch d-flex justify-content-center">   <div class="col-auto">
 <table class="table table-bordered">
   <thead>
     <tr>
-      <th scope="col" colspan="2"><center><font color=red>Chọn Thứ Tự Nguồn Phát Media Player</font></center></th>
+      <th scope="col" colspan="2"><center><font color=red>Thứ Tự Ưu Tiên Nguồn Phát</font></center></th>
     </tr>
   </thead>
   <tbody>
@@ -586,6 +594,20 @@ B4: Go to Application -> Cookies -> "__Secure-1PSID" và "__Secure-1PSIDTS" và 
         <option value="ZingMP3" <?php if ($music_source_priority_3 === "ZingMP3") echo "selected"; ?>>ZingMP3</option>
         <option value="Youtube" <?php if ($music_source_priority_3 === "Youtube") echo "selected"; ?>>Youtube</option>
     </select></td>
+    </tr>
+	
+	    <tr>
+      <th scope="col" colspan="2"><center><font color=red>Đồng Bộ (Sync)</font></center></th>
+    </tr>
+    <tr>
+      <th scope="row" title="tích để đồng bộ music media của vietbot với tab media trên web ui">Đồng Bộ Media Với Web UI: </th>
+      <td><input type="checkbox" name="media_player_sync_ui" title="tích để đồng bộ music media của vietbot với tab media trên web ui" value="true" <?php echo ($sync_media_player) ? 'checked' : ''; ?>></td>
+
+
+    </tr>
+	    <tr>
+      <th scope="row" title="Mặc định đặt là 1">Độ Trễ Sync (Giây):</th>
+      <td><input type="number" placeholder="1" class="form-control" title="Mặc định đặt là 1" name="sync_delay_media_player" min="1" step="1" max="5" value="<?php echo $sync_delay_media_player; ?>"></td>
     </tr>
   </tbody>
 </table>
