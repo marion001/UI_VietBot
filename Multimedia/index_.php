@@ -15,11 +15,13 @@ require_once '../assets/lib_php/getid3/getid3.php';
         });
     });
 	</script>
+	
 <?php
 if (!is_numeric($sync_media_player_sync_delay) || $sync_media_player_sync_delay < 1 || $sync_media_player_sync_delay > 5) {
     // Nếu không nằm trong khoảng, thiết lập giá trị mặc định là 1
     $sync_media_player_sync_delay = 1;
 }
+
 
 function install_source_node($DuognDanUI_HTML,$serverIP,$SSH_Port,$SSH_TaiKhoan,$SSH_MatKhau,$E_rror_HOST,$E_rror,$PHP_SELF) {
 	
@@ -123,50 +125,41 @@ if (is_dir($directory . '/node_modules')) {
                     </thead>
                     <tbody>
                         <tr>
-<td>
+<td><center>
                                 <!-- Checkbox với giá trị "keymp3" -->
                                 <input type="radio" id="LocalMp3" name="action" value="Local" title="Tìm kiếm trên thiết bị" onchange="handleRadioChangeLocal()">
                                 <label for="LocalMp3" title="Tìm kiếm trên thiết bị">Local MP3</label>
-                            </td>
-                            <td>
+                           </center> </td>
+                            <td><center>
                                 <!-- Checkbox với giá trị "keymp3" -->
                                 <input type="radio" id="keyzingmp3" name="action" value="ZingMp3" title="Tìm kiếm trên ZingMp3" checked onchange="handleRadioChangeLocal()">
                                 <label for="keyzingmp3" title="Tìm kiếm trên ZingMp3">Zing MP3</label>
-                            </td>
+                            </center> </td>
 
-                            <td>
+                            <td><center>
                                 <!-- Checkbox với giá trị "keyyoutube" -->
                                 <input type="radio" id="keyyoutube" name="action" value="Youtube"  onchange="handleRadioChangeLocal()">
                                 <label for="keyyoutube" title="Tìm kiếm trên youtube">YouTube</label>
-                            </td>
+                             </center></td>
                         </tr>
                         <tr>
                             <td colspan="3">
-                                <div class="input-group mb-3">
-                                    <input type="text" id="tenbaihatInput" class="form-control" title="Nhập tên bài hát hoặc link: https://zxc.com/1.mp3" name="tenbaihat" required placeholder="Nhập Tên Bài Hát, link.mp3" aria-label="Recipient's username" aria-describedby="basic-addon2" oninput="handleInputHTTP()">
-                                    <div style="text-align: center;" class="input-group-append">
-                                        <button class="btn btn-primary" id="TimKiem" type="submit" title="Tìm kiếm bài hát">Tìm Kiếm</button>
+                                <div class="form-group mb-2">
+								<div class="form-group mx-sm-3 mb-2">
+                                  <center>    <input type="text" id="tenbaihatInput" class="form-control" title="Nhập tên bài hát hoặc link: https://zxc.com/1.mp3" name="tenbaihat" required placeholder="Nhập Tên Bài Hát, link.mp3" aria-label="Recipient's username" aria-describedby="basic-addon2" oninput="handleInputHTTP()">
+                                    </center> </div>
+                                      <center>  <button class="btn btn-primary" id="TimKiem" type="submit" title="Tìm kiếm bài hát">Tìm Kiếm</button>
                                        
-                                    </div>
-                                    <div class="input-group-append">
+                                   
 
                                         <button type="button" id="submitButton" class="ajax-button btn btn-success" data-song-kichthuoc="---" data-song-thoiluong="---" data-song-link_type="direct" data-song-artist="---" data-song-images="../assets/img/NotNhac.png" data-song-name="Không có dữ liệu" data-song-id="" value="" hidden>Play .Mp3</button>
-                                    </div>
-									                         <div class="input-group-append">
+                                    
 
-                                        <a class="btn btn-danger" href="<?php echo $PHP_SELF; ?>" role="button" title="Làm mới lại trang">Làm Mới</a>
-                                    </div>
-                                </div>
-                            </td>
-
-                        </tr>
-
-            </form>
-
-
- <tr>
-<th colspan="3" scope="col">	<div id="UpLoadFileMp3" hidden>			
-
+                                        <a class="btn btn-danger" href="<?php echo $PHP_SELF; ?>" role="button" title="Làm mới lại trang">Làm Mới</a> 
+                                   </center>
+                                </div></form>
+								
+<div id="UpLoadFileMp3" hidden>				
 <form method="post" id="uploadmp3local" action="<?php echo $_SERVER['PHP_SELF']; ?>"  enctype="multipart/form-data">				
 <div class="input-group" >
 
@@ -177,11 +170,18 @@ if (is_dir($directory . '/node_modules')) {
   <div class="input-group-append">
     <button class="btn btn-primary" type="submit" title="Tải lên file mp3">Tải Lên</button>
   </div> 
-</div> </form><font color=blue>Chọn tối đa: 20 File, Max 300MB/1 File</font></div>
+</div> </form><font color=blue>Chọn tối đa: 20 File, Max 300MB/1 File</font>
+</div>
 
-  
-                                </th>
-                   </tr>
+                            </td>
+
+                        </tr>
+
+           
+
+
+ <tr>
+<th colspan="3" scope="col"></th></tr>
             <tr>
 			
                 <td colspan="3"><center>
@@ -197,41 +197,57 @@ if (is_dir($directory . '/node_modules')) {
                 </td>
 
             </tr>
-            <tr>
 			
-                <td colspan="2">
-                    <center>
-                        <button type="button" id="volumeDown" title="Giảm âm lượng" class="btn btn-info"><i class="bi bi-volume-down"></i>
-                        </button>
+	
+
+
+
+  <tr>
+    <td rowspan="2" colspan="2"><center>
+                        <p>
                         <button type="button" id="playButton" title="Phát nhạc" class="btn btn-success"><i class="bi bi-play-circle"></i>
                         </button>
                         <button type="button" id="pauseButton" title="Tạm dừng phát nhạc" class="btn btn-warning"><i class="bi bi-pause-circle"></i>
                         </button>
                         <button type="button" id="stopButton" title="Dừng phát nhạc" class="btn btn-danger"><i class="bi bi-stop-circle"></i>
+                        </button></p><p>
+						<button type="button" id="volumeDown" title="Giảm âm lượng" class="btn btn-info"><i class="bi bi-volume-down"></i>
                         </button>
                         <button type="button" id="volumeUp" title="Tăng âm lượng" class="btn btn-info"><i class="bi bi-volume-up"></i>
-                        </button>
-						
-
+                        </button></p>
+					
                     </center>
-                </td><td><center>
-<label for="run-checkbox" class="btn btn-warning" title="Bạn có thể cấu hình mặc định trong tab Skill->Media Player">
+					</td>
+<td><center><b>Luồng Phát:</b></center>
 
- <input title="Bạn có thể cấu hình mặc định trong tab Skill->Media Player" type="checkbox" id="run-checkbox" <?php echo ($sync_media_player_checkbox) ? 'checked' : ''; ?>> Đồng bộ</label>
-
+    <select name="select_playback" id="select-playback" class="form-select" aria-label="Default select example">
+        <option <?php if ($sync_music_stream === 'web_ui') echo 'selected'; ?> data-playback="get_api_playback" data-duration="media1_duration" data-path="media1_path" data-position="media1_position" data-state="player1_state" title="Nhạc được phát từ Web UI">Web UI</option>
+        <option <?php if ($sync_music_stream === 'mic') echo 'selected'; ?> data-playback="get_mic_playback" data-duration="media2_duration" data-path="media2_path" data-position="media2_position" data-state="player3_state" title="Nhạc được phát từ Mic">Mic</option>
+    </select>
+	
+	</td>
+  
+					
+   
+  </tr>
+  <tr>
+ <td><center><label for="run-checkbox" class="btn btn-warning" title="Bạn có thể cấu hình mặc định trong tab Skill->Media Player">
+ <input title="Bạn có thể cấu hình mặc định trong tab Skill->Media Player" type="checkbox" id="run-checkbox" <?php echo ($sync_media_player_checkbox) ? 'checked' : ''; ?>> Đồng bộ </label>
 <i class="bi bi-info-circle-fill" onclick="togglePopupSync()" title="Nhấn Để Tìm Hiểu Thêm"></i>
+</center></td>
+  </tr>
 <div id="popupContainer" class="popup-container" onclick="hidePopupSync()">
     <div id="popupContent" onclick="preventEventPropagationSync(event)">
-        <p><b>Đồng bộ Trạng Thái Media Player của Loa với Web UI</b></p>
+        <p><b><center>Đồng bộ Trạng Thái Media Player của Loa với Web UI</center></b></p>
+		- <b>Luồng Phát: </b> chọn luồng phát nhạc từ WEB UI hoặc luồng phát ra lệnh từ Mic<br/>
 		- <b>Tự Động Sync: </b> Truy cập <b>Tab Skill</b> -> <b>Media Player</b> -> <b>Đồng Bộ (Sync)</b> -> tích chọn <b>Đồng Bộ Media Với Web UI</b> -> <b>Lưu cấu hình</b><br/>
 		- <b>Thủ Công:</b> Bạn có thể nhấn tích vào nút <b>Đồng Bộ</b> để Sync thủ công ngay tại tab <b>Media player</b><br/><br/>
 		<i>Lưu Ý: Có thể ảnh hưởng đến tốc độ của Bot có phần cứng yêu nếu bật <b>Cài Đặt Tự Động Sync</b></i><br/>
-        <button class="btn btn-info" type="button" onclick="hidePopupSync()">Đóng</button>
+        <center><button class="btn btn-info" type="button" onclick="hidePopupSync()">Đóng</button></center>
     </div>
 </div>
 
-</td>
-            </tr>
+            
             <tr>
                 <td colspan="3">
                     <center>
@@ -875,8 +891,12 @@ function formatTimeajax(seconds) {
     return formattedHours + ":" + formattedMinutes + ":" + formattedSeconds;
 }
 
+
+
 // Function to make the API request and handle data
 function fetchData() {
+	                    var selectedOption = $("#select-playback").find('option:selected');
+                    var get_playback = selectedOption.data('playback');
     var settings = {
         "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
         "method": "POST",
@@ -886,35 +906,45 @@ function fetchData() {
         },
         "data": JSON.stringify({
             "type": 3,
-            "data": "get_api_playback"
+            "data": get_playback
         }),
     };
 
     $.ajax(settings)
         .done(function(response) {
-            // Extract specific fields from the response
-            var media2_duration = response.media2_duration;
-            var media1_path = response.media1_path;
-            var media1_position = response.media1_position;
-            var player1_state = response.player1_state;
+			
+
+                    var player_duration = selectedOption.data('duration');
+                    var player_path = selectedOption.data('path');
+                    var player_position = selectedOption.data('position');
+                    var player_state = selectedOption.data('state');
+
+                    // Hiển thị thông tin trong console log
+                    //console.log("Playback:", get_playback);
+                    //console.log("Duration:", player_duration);
+                    //console.log("Path:", player_path);
+                    //console.log("Position:", player_position);
+                    //console.log("State:", player_state);
+			
+            //var media2_duration = response.media2_duration;
+			
+            var media_path = response[player_path];
+			var playervlc_state = response[player_state];
+            var media_position = response[player_position];
+            console.log("media_path:", media_path);
             var state = response.state;
-
-            // Convert media1_duration to seconds
-            var media1_durationInSeconds = Math.round(response.media1_duration);
-
-            // Convert media1_position to seconds
-            var media1_positionInSeconds = media1_position === -1.0 ? -1.0 : Math.round(media1_position * media1_durationInSeconds);
-
+            // Convert player_duration to seconds
+            var media_durationInSeconds = Math.round(response[player_duration]);
+            // Convert media_position to seconds
+            var media1_positionInSeconds = media_position === -1.0 ? -1.0 : Math.round(media_position * media_durationInSeconds);
             // Further processing or UI updates can be done here
-
-            // Update the selected time on the UI if media1_position is not -1.0
+            // Update the selected time on the UI if media_position is not -1.0
             if (media1_positionInSeconds !== -1.0) {
                 $("#selected-time").text(formatTimeajax(media1_positionInSeconds));
             }
-
-            if (media1_path.startsWith("file:///home/pi/vietbot_offline/src/mp3/")) {
+            if (media_path.startsWith("file:///home/pi/vietbot_offline/src/mp3/")) {
                 // Giải mã chuỗi URL
-                const decodedString = decodeURIComponent(media1_path);
+                const decodedString = decodeURIComponent(media_path);
                 // Bỏ phần đường dẫn
                 const fileNameWithoutPath = decodedString.split('/').pop();
                 // Bỏ phần mở rộng
@@ -924,26 +954,26 @@ function fetchData() {
                 const truncatedFileName = truncateFileName(fileNameWithoutExtension, maxLength);
                 $("#media1-name").text("Local MP3: " +truncatedFileName).attr("title", fileNameWithoutExtension);
                 // console.log('Tên file sau khi giải mã, loại bỏ đường dẫn và mở rộng:', truncatedFileName);
-            } else if (media1_path.startsWith("http://vnno-")) {
+            } else if (media_path.startsWith("http://vnno-")) {
                 $("#media1-name").text("ZingMp3: ...");
                 //console.log('Xử lý cho trường hợp khác');
-            } else if (media1_path.startsWith("https://rr")) {
+            } else if (media_path.startsWith("https://rr")) {
                 $("#media1-name").text("Youtube: ...");
+            }else if (media_path.startsWith("file:///home/pi/vietbot_offline/src/tts_saved/")) {
+                $("#media1-name").text("TTS");
             } else {
                 $("#media1-name").text("Tên Bài Hát: .....");
                 //console.log('Xử lý cho trường hợp mặc định');
             }
             // Update the slider values
-            $("#time-slider").attr("max", media1_durationInSeconds);
+            $("#time-slider").attr("max", media_durationInSeconds);
             $("#time-slider").val(media1_positionInSeconds);
-
             // Convert and display media1_duration in HH:MM:SS format
-            $("#media1-duration").text(formatTimeajax(media1_durationInSeconds));
-
-            // Display player state based on player1_state
+            $("#media1-duration").text(formatTimeajax(media_durationInSeconds));
+            // Display player state based on playervlc_state
             var playerStateText = "";
             var playerStateColor = "";
-            switch (player1_state) {
+            switch (playervlc_state) {
                 case "State.Ended":
                     playerStateText = "Kết thúc";
                     playerStateColor = "gray";
