@@ -21,7 +21,11 @@ if (!is_numeric($sync_media_player_sync_delay) || $sync_media_player_sync_delay 
     // Nếu không nằm trong khoảng, thiết lập giá trị mặc định là 1
     $sync_media_player_sync_delay = 1;
 }
-
+// Kiểm tra giá trị của biến $sync_music_stream
+if ($sync_music_stream != 'web_ui' && $sync_music_stream != 'mic') {
+    // Nếu không phải là 'web_ui' hoặc 'mic', đặt giá trị mặc định là 'mic'
+    $sync_music_stream = 'mic';
+}
 
 function install_source_node($DuognDanUI_HTML,$serverIP,$SSH_Port,$SSH_TaiKhoan,$SSH_MatKhau,$E_rror_HOST,$E_rror,$PHP_SELF) {
 	
