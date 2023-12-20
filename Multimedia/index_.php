@@ -935,7 +935,7 @@ function fetchData() {
             var media_path = response[player_path];
 			var playervlc_state = response[player_state];
             var media_position = response[player_position];
-            console.log("media_path:", media_path);
+            //console.log("media_path:", media_path);
             var state = response.state;
             // Convert player_duration to seconds
             var media_durationInSeconds = Math.round(response[player_duration]);
