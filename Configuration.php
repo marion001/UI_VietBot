@@ -173,4 +173,5 @@ $apiKeyWeather = $Data_Json_Skill->weather->openweathermap_key;
 
 $sync_media_player_checkbox = $Data_Json_Skill->ui_media_player->sync_media_player;
 $sync_media_player_sync_delay = $Data_Json_Skill->ui_media_player->sync_delay;
+$sync_music_stream = $Data_Json_Skill->ui_media_player->music_stream;
 ?>
