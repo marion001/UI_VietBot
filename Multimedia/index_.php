@@ -834,7 +834,7 @@ if ($response === false) {
             var fileToDelete = $(this).data('file');
             //console.log(fileToDelete)
 
-            var timestamp = new Date().getTimee();
+            //var timestamp = new Date().getTimee();
             var url = '../include_php/Ajax/Mp3_Del.php?fileToDelete=' + fileToDelete;
             var xacNhan = confirm("Bạn có chắc chắn muốn xóa file: " + fileToDelete);
             if (xacNhan) {
@@ -964,7 +964,7 @@ function fetchData() {
             } else if (media_path.startsWith("https://rr")) {
                 $("#media1-name").text("Youtube: ...");
             }else if (media_path.startsWith("file:///home/pi/vietbot_offline/src/tts_saved/")) {
-                $("#media1-name").text("TTS");
+                $("#media1-name").text("Luồng Mic: Không có dữ liệu");
             } else {
                 $("#media1-name").text("Tên Bài Hát: .....");
                 //console.log('Xử lý cho trường hợp mặc định');
