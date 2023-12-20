@@ -16,6 +16,10 @@ require_once '../assets/lib_php/getid3/getid3.php';
     });
 	</script>
 <?php
+if (!is_numeric($sync_media_player_sync_delay) || $sync_media_player_sync_delay < 1 || $sync_media_player_sync_delay > 5) {
+    // Nếu không nằm trong khoảng, thiết lập giá trị mặc định là 1
+    $sync_media_player_sync_delay = 1;
+}
 
 function install_source_node($DuognDanUI_HTML,$serverIP,$SSH_Port,$SSH_TaiKhoan,$SSH_MatKhau,$E_rror_HOST,$E_rror,$PHP_SELF) {
 	
