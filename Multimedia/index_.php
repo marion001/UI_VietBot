@@ -164,7 +164,7 @@ if (is_dir($directory . '/node_modules')) {
                             <td colspan="3">
                                 <div class="form-group mb-2">
 								<div class="form-group mx-sm-3 mb-2">
-                                  <center>    <input type="text" id="tenbaihatInput" class="form-control" title="Nhập tên bài hát hoặc link: https://zxc.com/1.mp3" name="tenbaihat" placeholder="Nhập Tên Bài Hát, link.mp3" aria-label="Recipient's username" aria-describedby="basic-addon2" oninput="handleInputHTTP()">
+                                  <center>    <input type="text" id="tenbaihatInput" class="form-control" title="Nhập tên bài hát, link Youtube, hoặc link mp3: https://zxc.com/1.mp3" name="tenbaihat" placeholder="Nhập Tên Bài Hát, link.mp3, link youtube" aria-label="Recipient's username" aria-describedby="basic-addon2" oninput="handleInputHTTP()">
                                     </center> </div>
                                       <center>  <button class="btn btn-primary" id="TimKiem" type="submit" title="Tìm kiếm bài hát">Tìm Kiếm</button>
                                        
