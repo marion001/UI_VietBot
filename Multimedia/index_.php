@@ -882,8 +882,6 @@ if ($response === false) {
         $('.deleteBtn').on('click', function() {
             var fileToDelete = $(this).data('file');
             //console.log(fileToDelete)
-
-            //var timestamp = new Date().getTimee();
             var url = '../include_php/Ajax/Mp3_Del.php?fileToDelete=' + fileToDelete;
             var xacNhan = confirm("Bạn có chắc chắn muốn xóa file: " + fileToDelete);
             if (xacNhan) {
@@ -929,6 +927,8 @@ function readJsonAndCheckCheckbox() {
             }
         },
         error: function(error) {
+			//Nếu lỗi json thì mặc định sẽ chọn zingmp3
+			$('#keyzingmp3').prop('checked', true);
             console.error('Failed to read JSON file cfg_action.json:', error);
         }
     });
@@ -940,195 +940,203 @@ $(document).ready(function() {
 });
 </script>
 <script>
-
-function truncateFileName(fileName, maxLength) {
-    if (fileName.length <= maxLength) {
-        return fileName;
-    }
-
-    // Tìm vị trí khoảng trắng gần giới hạn maxLength
-    const lastSpaceIndex = fileName.lastIndexOf(' ', maxLength);
-
-    // Nếu không có khoảng trắng, cắt tên file
-    if (lastSpaceIndex === -1) {
-        return fileName.substring(0, maxLength) + '...';
-    }
-
-    // Ngắt tên file tại khoảng trắng gần giới hạn maxLength
-    return fileName.substring(0, lastSpaceIndex) + '...';
-}
-
-
-
-// Function to convert seconds to HH:MM:SS format
-function formatTimeajax(seconds) {
-    var hours = Math.floor(seconds / 3600);
-    var minutes = Math.floor((seconds % 3600) / 60);
-    var remainingSeconds = seconds % 60;
-
-    // Ensure two digits for hours, minutes, and seconds
-    var formattedHours = hours < 10 ? "0" + hours : hours;
-    var formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
-    var formattedSeconds = remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds;
-
-    return formattedHours + ":" + formattedMinutes + ":" + formattedSeconds;
-}
-
-
-
-// Function to make the API request and handle data
-function fetchData() {
-	                    var selectedOption = $("#select-playback").find('option:selected');
-                    var get_playback = selectedOption.data('playback');
-    var settings = {
-        "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
-        "method": "POST",
-        "timeout": 0,
-        "headers": {
-            "Content-Type": "application/json"
-        },
-        "data": JSON.stringify({
-            "type": 3,
-            "data": get_playback
-        }),
-    };
-
-    $.ajax(settings)
-        .done(function(response) {
-			
-
-                    var player_duration = selectedOption.data('duration');
-                    var player_path = selectedOption.data('path');
-                    var player_position = selectedOption.data('position');
-                    var player_state = selectedOption.data('state');
-
-                    // Hiển thị thông tin trong console log
-                    //console.log("Playback:", get_playback);
-                    //console.log("Duration:", player_duration);
-                    //console.log("Path:", player_path);
-                    //console.log("Position:", player_position);
-                    //console.log("State:", player_state);
-			
-            //var media2_duration = response.media2_duration;
-			
-            var media_path = response[player_path];
-			var playervlc_state = response[player_state];
-            var media_position = response[player_position];
-            //console.log("media_path:", media_path);
-            var state = response.state;
-            // Convert player_duration to seconds
-            var media_durationInSeconds = Math.round(response[player_duration]);
-            // Convert media_position to seconds
-            var media1_positionInSeconds = media_position === -1.0 ? -1.0 : Math.round(media_position * media_durationInSeconds);
-            // Further processing or UI updates can be done here
-            // Update the selected time on the UI if media_position is not -1.0
-            if (media1_positionInSeconds !== -1.0) {
-                $("#selected-time").text(formatTimeajax(media1_positionInSeconds));
-            }
-            if (media_path.startsWith("file:///home/pi/vietbot_offline/src/mp3/")) {
-                // Giải mã chuỗi URL
-                const decodedString = decodeURIComponent(media_path);
-                // Bỏ phần đường dẫn
-                const fileNameWithoutPath = decodedString.split('/').pop();
-                // Bỏ phần mở rộng
-                const fileNameWithoutExtension = fileNameWithoutPath.replace(/\..+$/, '');
-                // Giới hạn tên file tối đa 20 ký tự và ngắt tại khoảng trắng
-                const maxLength = 25;
-                const truncatedFileName = truncateFileName(fileNameWithoutExtension, maxLength);
-                $("#media1-name").text("Local MP3: " +truncatedFileName).attr("title", fileNameWithoutExtension);
-                // console.log('Tên file sau khi giải mã, loại bỏ đường dẫn và mở rộng:', truncatedFileName);
-            } else if (media_path.startsWith("http://vnno-")) {
-                $("#media1-name").text("ZingMp3: ...");
-                //console.log('Xử lý cho trường hợp khác');
-            } else if (media_path.startsWith("https://rr")) {
-                $("#media1-name").text("Youtube: ...");
-            }else if (media_path.startsWith("file:///home/pi/vietbot_offline/src/tts_saved/")) {
-                $("#media1-name").text("Luồng Mic: Không có dữ liệu");
-            } else {
-                $("#media1-name").text("Tên Bài Hát: .....");
-                //console.log('Xử lý cho trường hợp mặc định');
-            }
-            // Update the slider values
-            $("#time-slider").attr("max", media_durationInSeconds);
-            $("#time-slider").val(media1_positionInSeconds);
-            // Convert and display media1_duration in HH:MM:SS format
-            $("#media1-duration").text(formatTimeajax(media_durationInSeconds));
-            // Display player state based on playervlc_state
-            var playerStateText = "";
-            var playerStateColor = "";
-            switch (playervlc_state) {
-                case "State.Ended":
-                    playerStateText = "Kết thúc";
-                    playerStateColor = "gray";
-                    break;
-                case "State.Playing":
-                case "State.Opening":
-                    playerStateText = "Đang phát nhạc";
-                    playerStateColor = "green";
-                    break;
-                case "State.Paused":
-                    playerStateText = "Đã tạm dừng";
-                    playerStateColor = "blue";
-                    break;
-                case "State.Stopped":
-                    playerStateText = "Đã dừng";
-                    playerStateColor = "red";
-                    break;
-                default:
-                    playerStateText = "Trạng thái không xác định";
-                    playerStateColor = "black";
-            }
-            $("#player-state").text("Trạng thái: " + playerStateText).css("color", playerStateColor);
-        })
-        .fail(function(jqXHR, textStatus, errorThrown) {
-            // Handle the failure (e.g., no connection to API)
-            $("#player-state").text("Trạng thái: Không kết nối được tới API get_api_playback");
-        });
-}
-
-// Function to check if the code should run
-function shouldRunCode() {
-    return $("#run-checkbox").is(":checked");
-}
-
-// Set an interval to call the fetchData function every 3 seconds
-var intervalID;
-
-function startInterval() {
-    intervalID = setInterval(function() {
-        if (shouldRunCode()) {
-            fetchData();
+    function truncateFileName(fileName, maxLength) {
+        if (fileName.length <= maxLength) {
+            return fileName;
         }
-    }, <?php echo $sync_media_player_sync_delay; ?> * 1000);
-}
 
-// Check the initial state of the checkbox and show/hide the code section accordingly
-$(document).ready(function() {
-    if (shouldRunCode()) {
-        startInterval();
-        $("#code-section").show();
-    } else {
-        $("#code-section").hide();
-        //   $("#player-state").text("Player State: Code execution stopped.");
+        // Tìm vị trí khoảng trắng gần giới hạn maxLength
+        const lastSpaceIndex = fileName.lastIndexOf(' ', maxLength);
+
+        // Nếu không có khoảng trắng, cắt tên file
+        if (lastSpaceIndex === -1) {
+            return fileName.substring(0, maxLength) + '...';
+        }
+
+        // Ngắt tên file tại khoảng trắng gần giới hạn maxLength
+        return fileName.substring(0, lastSpaceIndex) + '...';
     }
-});
 
-// Update the selected time when the slider value changes
-$("#time-slider").on("input", function() {
-    $("#selected-time").text(formatTimeajax($(this).val()));
-});
+    // Function to convert seconds to HH:MM:SS format
+    function formatTimeajax(seconds) {
+        var hours = Math.floor(seconds / 3600);
+        var minutes = Math.floor((seconds % 3600) / 60);
+        var remainingSeconds = seconds % 60;
 
-// Update the code execution and visibility when the checkbox state changes
-$("#run-checkbox").on("change", function() {
-    if (shouldRunCode()) {
-        startInterval();
-        $("#code-section").show();
-    } else {
-        clearInterval(intervalID);
-        $("#code-section").hide();
-        // $("#player-state").text("Trạng thái: Code execution stopped.");
+        // Ensure two digits for hours, minutes, and seconds
+        var formattedHours = hours < 10 ? "0" + hours : hours;
+        var formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
+        var formattedSeconds = remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds;
+
+        return formattedHours + ":" + formattedMinutes + ":" + formattedSeconds;
     }
-});
+
+    // Function to make the API request and handle data
+    function fetchData() {
+        var selectedOption = $("#select-playback").find('option:selected');
+        var get_playback = selectedOption.data('playback');
+        var settings = {
+            "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "data": JSON.stringify({
+                "type": 3,
+                "data": get_playback
+            }),
+        };
+
+        $.ajax(settings)
+            .done(function(response) {
+
+                var player_duration = selectedOption.data('duration');
+                var player_path = selectedOption.data('path');
+                var player_position = selectedOption.data('position');
+                var player_state = selectedOption.data('state');
+
+                // Hiển thị thông tin trong console log
+                //console.log("Playback:", get_playback);
+                //console.log("Duration:", player_duration);
+                //console.log("Path:", player_path);
+                //console.log("Position:", player_position);
+                //console.log("State:", player_state);
+
+                //var media2_duration = response.media2_duration;
+
+                var media_path = response[player_path];
+                var playervlc_state = response[player_state];
+                var media_position = response[player_position];
+                //console.log("media_path:", media_path);
+                var state = response.state;
+                // Convert player_duration to seconds
+                var media_durationInSeconds = Math.round(response[player_duration]);
+                // Convert media_position to seconds
+                var media1_positionInSeconds = media_position === -1.0 ? -1.0 : Math.round(media_position * media_durationInSeconds);
+                // Further processing or UI updates can be done here
+                // Update the selected time on the UI if media_position is not -1.0
+                if (media1_positionInSeconds !== -1.0) {
+                    $("#selected-time").text(formatTimeajax(media1_positionInSeconds));
+                }
+                if (media_path.startsWith("file:///home/pi/vietbot_offline/src/mp3/")) {
+                    // Giải mã chuỗi URL
+                    const decodedString = decodeURIComponent(media_path);
+                    // Bỏ phần đường dẫn
+                    const fileNameWithoutPath = decodedString.split('/').pop();
+                    // Bỏ phần mở rộng
+                    const fileNameWithoutExtension = fileNameWithoutPath.replace(/\..+$/, '');
+                    // Giới hạn tên file tối đa 20 ký tự và ngắt tại khoảng trắng
+                    const maxLength = 25;
+                    const truncatedFileName = truncateFileName(fileNameWithoutExtension, maxLength);
+                    $("#media1-name").text("Local MP3: " + truncatedFileName).attr("title", fileNameWithoutExtension);
+                    // console.log('Tên file sau khi giải mã, loại bỏ đường dẫn và mở rộng:', truncatedFileName);
+                } else if (media_path.startsWith("http://vnno-")) {
+                    $("#media1-name").text("ZingMp3: ...");
+                    //console.log('Xử lý cho trường hợp khác');
+                } else if (media_path.startsWith("https://rr")) {
+                    $("#media1-name").text("Youtube: ...");
+                } else if (media_path.startsWith("file:///home/pi/vietbot_offline/src/tts_saved/")) {
+                    $("#media1-name").text("Luồng Mic: Không có dữ liệu");
+                } else {
+                    $("#media1-name").text("Tên Bài Hát: .....");
+                    //console.log('Xử lý cho trường hợp mặc định');
+                }
+                // Update the slider values
+                $("#time-slider").attr("max", media_durationInSeconds);
+                $("#time-slider").val(media1_positionInSeconds);
+                // Convert and display media1_duration in HH:MM:SS format
+                $("#media1-duration").text(formatTimeajax(media_durationInSeconds));
+                // Display player state based on playervlc_state
+                var playerStateText = "";
+                var playerStateColor = "";
+                switch (playervlc_state) {
+                    case "State.Ended":
+                        playerStateText = "Kết thúc";
+                        playerStateColor = "gray";
+                        break;
+                    case "State.Playing":
+                    case "State.Opening":
+                        playerStateText = "Đang phát nhạc";
+                        playerStateColor = "green";
+                        break;
+                    case "State.Paused":
+                        playerStateText = "Đã tạm dừng";
+                        playerStateColor = "blue";
+                        break;
+                    case "State.Stopped":
+                        playerStateText = "Đã dừng";
+                        playerStateColor = "red";
+                        break;
+                    default:
+                        playerStateText = "Trạng thái không xác định";
+                        playerStateColor = "black";
+                }
+                $("#player-state").text("Trạng thái: " + playerStateText).css("color", playerStateColor);
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                // Handle the failure (e.g., no connection to API)
+                $("#player-state").text("Trạng thái: Không kết nối được tới API get_api_playback");
+            });
+    }
+
+    // Function to check if the code should run
+    function shouldRunCode() {
+        return $("#run-checkbox").is(":checked");
+    }
+
+    // Set an interval to call the fetchData function every 3 seconds
+    var intervalID;
+
+    function startInterval() {
+        intervalID = setInterval(function() {
+            if (shouldRunCode()) {
+                var parentUrl = window.top.location.href;
+                // Tách đường dẫn URL để lấy phần fragment sau dấu #
+                var fragments = parentUrl.split('#');
+                if (fragments.length > 1) {
+                    var fragment = fragments[1];
+                    // Kiểm tra giá trị của fragment
+                    if (fragment === "MediaPlayer") {
+                        fetchData();
+                    }
+                    //else {console.log("Không có MediaPlayer trong đường dẫn URL của trang cha.");}
+                }
+                //else {console.log("Không có fragment trong đường dẫn URL của trang cha.");}
+
+
+
+            }
+        }, <?php echo $sync_media_player_sync_delay; ?> * 1000);
+    }
+
+    // Check the initial state of the checkbox and show/hide the code section accordingly
+    $(document).ready(function() {
+        if (shouldRunCode()) {
+            startInterval();
+            $("#code-section").show();
+        } else {
+            $("#code-section").hide();
+            //   $("#player-state").text("Player State: Code execution stopped.");
+        }
+    });
+
+    // Update the selected time when the slider value changes
+    $("#time-slider").on("input", function() {
+        $("#selected-time").text(formatTimeajax($(this).val()));
+    });
+
+    // Update the code execution and visibility when the checkbox state changes
+    $("#run-checkbox").on("change", function() {
+        if (shouldRunCode()) {
+            startInterval();
+            $("#code-section").show();
+        } else {
+            clearInterval(intervalID);
+            $("#code-section").hide();
+            // $("#player-state").text("Trạng thái: Code execution stopped.");
+        }
+    });
 </script>
 <script>
     // Your JavaScript code here
