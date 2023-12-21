@@ -114,6 +114,14 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         border: 1px solid rgb(255 255 255 / 30%);
         -webkit-backdrop-filter: blur(10px);
     }
+    a.cp-toggleeee {
+        z-index: 1000;
+        transition: all 0.3s ease;
+        border-radius: 0.75rem;
+        background: rgb(255 255 255 / 20%);
+        border: 1px solid rgb(255 255 255 / 30%);
+        -webkit-backdrop-filter: blur(10px);
+    }
 	  .rounded-iframe {
     border-radius: 10px 10px 10px 10px;
     overflow: hidden; /* Để làm tròn góc thì cần che phần dư thừa */
@@ -653,6 +661,14 @@ if (!isset($_SESSION['root_id'])) {
         <iframe src="./include_php/Skill.php" width="100%" height="570px"></iframe>
 	</div>
 </section>
+
+<section id="CFG_WifiManager" class="section contact w-100 bg-gray-400 text-white">
+    <div class="container">
+        <h3 class="subtitle">Cấu Hình Wifi</h3>
+<iframe src="./WifiManager/index.php" width="100%" height="570px"></iframe>
+    </div>
+</section>
+
 <!-- Contact Start -->
 <section id="ForgotPassword" class="section contact w-100 bg-gray-400 text-white">
     <div class="container">
@@ -676,11 +692,12 @@ if (!isset($_SESSION['root_id'])) {
 <!--  Navbar Button Mobile End -->
 <!--  Color Pallet  -->
 <div id="color-switcher" class="color-switcher">
+
     <div class="text-center color-pallet hide">
         <a class="btn btn-danger" href="#vietbot_update" role="button" title="Nhấn Để Kiểm Tra, Cập Nhật Phầm Mềm">Cập Nhật Chương Trình</a>
         <a class="btn btn-success" href="#UI_update" role="button" title="Nhấn Để Kiểm Tra, Cập Nhật Giao Diện">Cập Nhật Giao Diện</a>
         <a class="btn btn-secondary" href="./Help_Support/index.php" role="button" target="_bank" title="Nhấn Để Kiểm Tra, Cập Nhật Giao Diện">Hướng Dẫn / Sử Dụng Vietbot</a>
-
+		<a href="#CFG_WifiManager" role="button" class="btn btn-primary"><i class="bi bi-wifi" title="Cài Đặt,Cấu Hình Wifi"></i></a>
 		<?php	
 if (isset($Web_UI_Login) && $Web_UI_Login === true) {
 	echo '<a class="btn btn-info" href="#PasswordChange" role="button" title="Đổi Mật Khẩu">Đổi Mật Khẩu Web UI</a>';
@@ -693,7 +710,9 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
 	}
 ?>	
         <!--  <h6 class="text-center theme-skin-title">Đổi Màu Giao Diện</h6> -->
-        <div class="colors text-center">
+
+	   
+	   <div class="colors text-center">
             <span class="WhiteBg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
             <span class="01Bg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
             <span class="03Bg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
@@ -704,10 +723,16 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
     </div>
     <div class="pallet-button hide" >
         <a href="javascript:void(0)" class="cp-toggle"><i class="bi bi-gear" title="Nhấn Để Hiển Thị Cài Đặt"></i></a>
-		<div>
-
+ 		<div>
  <a onclick="toggleSidebar()" class="cp-toggleee"><i class="bi bi-chat-dots" title="Nhấn Để Mở ChatBot"></i></a></div>
+ 
+ 			
+
+
+	   
+ 
 	</div>
+	
 </div>
 
     <div class="contentt">
