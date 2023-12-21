@@ -17,6 +17,20 @@ require_once '../assets/lib_php/getid3/getid3.php';
 	</script>
 	
 <?php
+
+$cfg_action_json = "$DuognDanUI_HTML/Multimedia/cfg_action.json";
+if (!file_exists($cfg_action_json)) {
+    // Tạo mới tệp
+    $file_content_action = json_encode(['music_source' => 'ZingMp3'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    file_put_contents($cfg_action_json, $file_content_action);
+    chmod($cfg_action_json, 0777);
+    //echo "Tệp $cfg_action_json đã được tạo mới và quyền chmod đã được thiết lập thành 0777.";
+}
+
+$Data_CFG_ACTION = json_decode(file_get_contents($cfg_action_json), true);
+
+//echo $Data_CFG_ACTION['music_source'];
+
 if (!is_numeric($sync_media_player_sync_delay) || $sync_media_player_sync_delay < 1 || $sync_media_player_sync_delay > 5) {
     // Nếu không nằm trong khoảng, thiết lập giá trị mặc định là 1
     $sync_media_player_sync_delay = 1;
@@ -136,7 +150,7 @@ if (is_dir($directory . '/node_modules')) {
                            </center> </td>
                             <td><center>
                                 <!-- Checkbox với giá trị "keymp3" -->
-                                <input type="radio" id="keyzingmp3" name="action" value="ZingMp3" title="Tìm kiếm trên ZingMp3" checked onchange="handleRadioChangeLocal()">
+                                <input type="radio" id="keyzingmp3" name="action" value="ZingMp3" title="Tìm kiếm trên ZingMp3" onchange="handleRadioChangeLocal()">
                                 <label for="keyzingmp3" title="Tìm kiếm trên ZingMp3">Zing MP3</label>
                             </center> </td>
 
@@ -150,7 +164,7 @@ if (is_dir($directory . '/node_modules')) {
                             <td colspan="3">
                                 <div class="form-group mb-2">
 								<div class="form-group mx-sm-3 mb-2">
-                                  <center>    <input type="text" id="tenbaihatInput" class="form-control" title="Nhập tên bài hát hoặc link: https://zxc.com/1.mp3" name="tenbaihat" required placeholder="Nhập Tên Bài Hát, link.mp3" aria-label="Recipient's username" aria-describedby="basic-addon2" oninput="handleInputHTTP()">
+                                  <center>    <input type="text" id="tenbaihatInput" class="form-control" title="Nhập tên bài hát hoặc link: https://zxc.com/1.mp3" name="tenbaihat" placeholder="Nhập Tên Bài Hát, link.mp3" aria-label="Recipient's username" aria-describedby="basic-addon2" oninput="handleInputHTTP()">
                                     </center> </div>
                                       <center>  <button class="btn btn-primary" id="TimKiem" type="submit" title="Tìm kiếm bài hát">Tìm Kiếm</button>
                                        
@@ -361,6 +375,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'Local') {
+	
+	$NguonNhac = $_POST['action'];
+	// Cập nhật giá trị mới
+    $Data_CFG_ACTION['music_source'] = $NguonNhac;
+    // Ghi lại nội dung tệp JSON
+    $Data_CFG_ACTION_new_music_source = json_encode($Data_CFG_ACTION, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    file_put_contents($cfg_action_json, $Data_CFG_ACTION_new_music_source);
+	
     $directory = $DuognDanThuMucJson.'/mp3';
     $pattern = '*.mp3';
     $mp3Files = glob($directory . DIRECTORY_SEPARATOR . $pattern);
@@ -405,6 +427,19 @@ $duration = isset($fileInfo['playtime_seconds']) ? round($fileInfo['playtime_sec
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'Youtube') {
     $Data_TenBaiHat = $_POST['tenbaihat'];
     $NguonNhac = $_POST['action'];
+	// Cập nhật giá trị mới
+    $Data_CFG_ACTION['music_source'] = $NguonNhac;
+    // Ghi lại nội dung tệp JSON
+    $Data_CFG_ACTION_new_music_source = json_encode($Data_CFG_ACTION, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    file_put_contents($cfg_action_json, $Data_CFG_ACTION_new_music_source);
+	
+	
+    if (empty($Data_TenBaiHat)) {
+        echo "<b><font color=red>Hãy nhập tên bài hát, nội dung cần tìm kiếm trên Youtube</font></b>";
+    } else {
+
+    
+	
     $searchUrlYoutube = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" . urlencode($Data_TenBaiHat) . "&maxResults=20&key=" . base64_decode($apiKeyYoutube);
 
 /*
@@ -475,11 +510,23 @@ if ($responseYoutube === false) {
             echo "</div></div><br/>";
         }
     }
+
+}
 }
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'ZingMp3') {
     $Data_TenBaiHat = urlencode($_POST['tenbaihat']);
 	$NguonNhac = $_POST['action'];
+	// Cập nhật giá trị mới
+    $Data_CFG_ACTION['music_source'] = $NguonNhac;
+    // Ghi lại nội dung tệp JSON
+    $Data_CFG_ACTION_new_music_source = json_encode($Data_CFG_ACTION, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    file_put_contents($cfg_action_json, $Data_CFG_ACTION_new_music_source);
+	
+	if (empty($Data_TenBaiHat)) {
+    echo "<b><font color=red>Hãy nhập tên bài hát, nội dung cần tìm kiếm trên Zing MP3</font></b>";
+} else {
+    // Thực hiện các hành động khác nếu $Data_TenBaiHat có giá trị
 	/*
 	if (strpos($Data_TenBaiHat, 'http') !== false) {
     // Biến chứa "http", hiển thị thông báo và ngừng thực thi
@@ -542,6 +589,8 @@ if ($response === false) {
 }
     //exit; // Dừng xử lý ngay sau khi gửi dữ liệu JSON về trình duyệt
 }
+}
+
 ?>
       </div>
 	</div>
@@ -859,6 +908,36 @@ if ($response === false) {
             }
         });
     });
+</script>
+<script>
+// Hàm thực hiện AJAX để đọc dữ liệu từ tệp JSON
+function readJsonAndCheckCheckbox() {
+    $.ajax({
+        url: 'cfg_action.json',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // Đánh dấu checked cho checkbox nếu điều kiện được đáp ứng
+            if (data && data.music_source === 'ZingMp3') {
+                $('#keyzingmp3').prop('checked', true);
+            }else if (data && data.music_source === 'Youtube') {
+                // Thực hiện hành động khác nếu giá trị khác
+               $('#keyyoutube').prop('checked', true);
+            }else if (data && data.music_source === 'Local') {
+                // Thực hiện hành động khác nếu giá trị khác
+               $('#LocalMp3').prop('checked', true);
+            }
+        },
+        error: function(error) {
+            console.error('Failed to read JSON file cfg_action.json:', error);
+        }
+    });
+}
+
+// Gọi hàm khi trang web được tải
+$(document).ready(function() {
+    readJsonAndCheckCheckbox();
+});
 </script>
 <script>
 
