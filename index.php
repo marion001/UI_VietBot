@@ -1,138 +1,43 @@
-<?php
-include "Configuration.php";
-include "./include_php/Fork_PHP/INFO_OS.php";
-$jsonDatazXZzz = file_get_contents("assets/json/List_Lat_Lon_Huyen_VN.json");
-$dataVTGETtt = json_decode($jsonDatazXZzz);
-$latitude = $dataVTGETtt->$wards_Tinh->latitude;
-$longitude = $dataVTGETtt->$wards_Tinh->longitude;
-?>
 <!DOCTYPE html>
-<html lang="vi" class="max-width-d">
-<!--
-Code By: Vũ Tuyển
-Facebook: https://www.facebook.com/TWFyaW9uMDAx
--->
+<html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title><?php echo $MYUSERNAME; ?>, VietBot Bảng Điều Khiển</title>
-    <link rel="shortcut icon" href="assets/img/VietBot128.png">
- <!--   <link href="assets/css/Font_Muli_300,400,600,700.css" rel="stylesheet">
-    <link href="assets/css/Font_Poppins_400,500,600,700.css" rel="stylesheet"> -->
-    <link rel="stylesheet" href="assets/css/bootstrap.css">
-    <link rel="stylesheet" href="assets/css/bootstrap-icons.css">
-    <link rel="stylesheet" href="assets/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.css">
-   <link rel="stylesheet" href="assets/css/animate.min.css"> 
-    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="assets/css/magnific-popup.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-	<link rel="stylesheet" href="assets/css/loading.css">
-	  <script src="assets/js/ajax_jquery_3.6.0_jquery.min.js"></script>
-<style>
-    .blinking-container {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        background-color: #f1f1f1;
-        text-align: center;
-        z-index: 9999;
-    }
-    
-    .ptexxt {
-        margin-bottom: 0rem;
-    }
-    
-    .contentt {
-        z-index: 9999999;
-        width: 100%;
-        padding: 20px;
-        position: relative;
-    }
-    
-    .right-sidebar {
-        border-radius: 10px;
-        position: fixed;
-        top: 10px;
-        right: -100%;
-        width: 40%;
-        height: auto;
-        background-color: #d2d8bb;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        transition: right 0.1s ease;
-        z-index: 1;
-    }
-    
-    @media (max-width: 768px) {
-        /* Media query for mobile devices */
-        
-        .right-sidebar {
-            width: 100%;
-            /* Width for mobile */
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Vietbot WiFi Management</title>
+
+<link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="../assets/css/bootstrap-icons.css">
+	<link rel="stylesheet" href="../assets/css/loading.css">
+    <style>
+        body,
+        html {
+            background-color: #d2d8bb;
+          /*  overflow-x: hidden;
+             Ẩn thanh cuộn ngang */
+            
+            max-width: 100%;
+            /* Ngăn cuộn ngang trang */
         }
+            ::-webkit-scrollbar {
+        width: 13px;
     }
     
-    .toggle-btnnn {
-        cursor: pointer;
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        position: absolute;
-        top: 0;
-        right: 20px;
-        z-index: 2;
-        /* Ensure it appears above .right-sidebar */
+    ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
     }
     
-    .toggle-btnnn:focus {
-        outline: none;
+    ::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        background: rgb(251, 255, 7);
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
     }
-    /* Add background overlay style */
-    
-    .background-overlay {
-        display: none;
-        /* Initially hidden */
-        
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.3);
-        /* Semi-transparent background */
-        
-        z-index: 0;
-        /* Set a lower z-index to be behind .right-sidebar */
-    }
-    
-    a.cp-toggleee {
-        z-index: 1000;
-        transition: all 0.3s ease;
-        border-radius: 0.75rem;
-        background: rgb(255 255 255 / 20%);
-        border: 1px solid rgb(255 255 255 / 30%);
-        -webkit-backdrop-filter: blur(10px);
-    }
-    a.cp-toggleeee {
-        z-index: 1000;
-        transition: all 0.3s ease;
-        border-radius: 0.75rem;
-        background: rgb(255 255 255 / 20%);
-        border: 1px solid rgb(255 255 255 / 30%);
-        -webkit-backdrop-filter: blur(10px);
-    }
-	  .rounded-iframe {
-    border-radius: 10px 10px 10px 10px;
-    overflow: hidden; /* Để làm tròn góc thì cần che phần dư thừa */
-  }
-</style>
+		</style>
+		  <script src="../assets/js/ajax_jquery_3.6.0_jquery.min.js"></script>
 </head>
 <body>
-	    <!-- Preloader -->
-    <div id="line-loader">
-      <div class="middle-line"></div>
-    </div>
 	    <div id="loading-overlay">
           <img id="loading-icon" src="../assets/img/Loading.gif" alt="Loading...">
 		  <div id="loading-message">Đang Thực Thi...</div>
@@ -148,911 +53,358 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     });
 });
 </script>
+<center>
+<!-- <button onclick="getWifiInfo()">Lấy thông tin Wi-Fi</button> -->
+<div id="wifiInfoResult"></div>
 
 
+<button id="loadWifiButton" class="btn btn-primary">Danh Sách Wifi Đã Kết Nối</button>
+<button id="scanWifiButton" class="btn btn-secondary">Quét Mạng Wifi</button>
+<a href="index.php"><button type="submit" class="btn btn-danger">Làm Mới</button></a>
+</center>
+<hr/>
+<div id="hienthiketqua"></div>
 
-    <script>
+<!-- ... -->
+<script>
+    function getWifiInfo() {
+        $.ajax({
+            type: "GET",
+            url: "get_wifi_list.php", // Đường dẫn đến tập tin PHP xử lý
+            data: {
+                action: 'get_wifi_info'
+            },
+            success: function(data) {
+                $("#wifiInfoResult").html(data); // Hiển thị kết quả trong div có id là wifiInfoResult
+            },
+            error: function() {
+                alert("Đã có lỗi xảy ra trong quá trình lấy dữ liệu Wi-Fi.");
+            }
+        });
+    }
+
+    getWifiInfo();
+
     $(document).ready(function() {
-        var apiKey = "<?php echo $apiKeyWeather; ?>";
-        var lat = "<?php echo $latitude ?>"; // Latitude
-        var lon = "<?php echo $longitude ?>"; // Longitude
+        // Bắt sự kiện khi nút "Load WiFi List" được nhấn
+        $("#loadWifiButton").click(function() {
+            loadWifiList();
+        });
 
-        function getWeather() {
-            var apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+        // Bắt sự kiện khi nút "Scan WiFi Networks" được nhấn
+        $("#scanWifiButton").click(function() {
+            scanWifiNetworks();
+        });
 
+        // Hàm để tải danh sách WiFi
+        function loadWifiList() {
+            $('#loading-overlay').show();
             $.ajax({
-                url: apiUrl,
-                method: "GET",
-                success: function(response) {
-                    var temperature = response.main.temp;
-                    var humidity = response.main.humidity;
-                    var windSpeed = response.wind.speed;
-                    var cityName = response.name;
-                    var countryName = response.sys.country;
-                    var iconCode = response.weather[0].icon;
-
-                    $("#" + "temperature").text(temperature + "°C");
-                    $("#" + "humidity").text(humidity + "%");
-                    $("#" + "wind-speed").text(windSpeed + " m/s");
-                    $("#" + "city").text(cityName);
-                    $("#" + "country").text(countryName);
-                    $("#" + "weather-icon").attr("src", "https://openweathermap.org/img/w/" + iconCode + ".png");
+                url: 'get_wifi_list.php',
+                type: 'GET',
+                data: {
+                    action: 'get_data'
                 },
-                error: function(xhr, status, error) {
-                    console.error("Error fetching weather data:", error);
-                    var errorMessage = "<h2>Error:</h2>" +
-                                       "<p>Failed to fetch weather data.</p>";
-                    $("#weather-info").html(errorMessage);
+                success: function(response) {
+                    $("#hienthiketqua").html(response);
+                    attachDeleteHandlers(); // Gắn sự kiện xóa sau khi tải danh sách
+                    attachConnectHandlers(); // Gắn sự kiện kết nối sau khi tải danh sách
+                    attachKetNoiWiFiDaLuu();
+                    attachShowPass();
+                    $('#loading-overlay').hide();
                 }
             });
         }
 
-        getWeather();
-    });
-    </script>
-    <div class="menu-overlay d-none"></div>
-    <!--   Right Side Start  -->
-    <div class="right-side d-none d-lg-block">
-      <div id="date"></div><hr/>
-	   <body onload="time()">
-	  <b><div id="clock"></div></b>
-      <div class="social-box">
-      <div class="follow-label">
-          <span><b><?php echo $MYUSERNAME; ?></b> 
-		  <a title="Nhóm VietBot" href="<?php echo $FacebookGroup; ?>" target="_bank">
-            <i class="bi bi-facebook"></i>
-          </a>
-		  <a title="Github VietBot Offline" href="<?php echo $GitHub_VietBot_OFF; ?>" target="_bank">
-            <i class="bi bi-github"></i>
-          </a>
-		 
-		  		  <a title="Web UI VietBot Offline" href="<?php echo $UI_VietBot; ?>" target="_bank">
-            <i class="bi bi-pentagon-half"></i>
-          </a>
-		  </span>
-        </div> 
-      </div>
-      <div class="next-prev-page">
-        <button type="button" class="prev-page bg-base-color hstack">
-          <i class="bi bi-chevron-compact-up mx-auto" title="Trước Đó"></i>
-        </button>
-        <button type="button" class="next-page bg-base-color mt-3 hstack">
-          <i class="bi bi-chevron-compact-down mx-auto" title="Sau Đó"></i>
-        </button>
-      </div>
-    </div>
-    <!--  Right Side End  -->
-    <!--  Left Side Start  -->
-    <div class="left-side  nav-close">
-      <div class="menu-content-align">
-        <div class="left-side-image">
-          <a href="./"><img src="assets/img/VietBot128.png" alt="/" title="Nhấn Để Về Trang Chủ"></a>
-        </div>
-      <h1 class="mt-1" style="font-size: 14px;"><?php echo $MYUSERNAME; ?></h1>
-			<a class="download-cv btn btn-warning d-none d-lg-inline-block" href="#LogServiceCMD" style="opacity: 1; font-size: 16px; padding: 10px 30px;" title="Nhấn để kiểm tra log, các tác vụ, và nhập lệnh cần thiết">Log/Service/CMD</a>
-      </div>
-      <div class="menu-align">
-        <ul class="list-group menu text-center " id="menu">
-          <li class="list-group-item">
-            <a href="#hero">
-              <i class="bi bi-house" title="Trang Chủ"></i>
-              <span>HOME</span>
-            </a>
-          </li>
+        // Hàm để quét mạng WiFi xung quanh
+        function scanWifiNetworks() {
+            $('#loading-overlay').show();
+            $.ajax({
+                url: 'get_wifi_list.php',
+                type: 'GET',
+                data: {
+                    action: 'scan_wifi'
+                },
+                success: function(response) {
+                    $("#hienthiketqua").html(response);
+                    attachConnectHandlers(); // Gắn sự kiện kết nối sau khi quét mạng WiFi
+                    attachDeleteHandlers();
+                    attachShowPass();
+                    $('#loading-overlay').hide();
+                }
+            });
+        }
 
-          <li class="list-group-item">
-            <a href="#config">
-              <i class="bi bi-gear-wide-connected" title="Cấu Hình/Config"></i>
-              <span>Config</span>
-            </a>
-          </li>
-		  
-		            <li class="list-group-item">
-            <a href="#Skill">
-              <i class="bi bi-stars" title="Skill"></i>
-              <span>Skill</span>
-            </a>
-          </li>
-          <li class="list-group-item">
-            <a href="#File_Shell">
-              <i class="bi bi-file-earmark-code" title="Quản Lý File"></i>
-              <span>File</span>
-            </a>
-          </li>
-		  
-		  
-		 		  		          <li class="list-group-item">
-            <a href="#MediaPlayer" class="custom-btn">
-              <i class="bi bi-disc" title="Media Player"></i>
-              <span>Media</span>
-            </a>
-          </li>    
-		  
-		  
-          <li class="list-group-item">
-            <a href="#about" class="custom-btn">
-              <i class="bi bi-info-circle-fill" title="Thông Tin"></i>
-              <span>Info</span>
-            </a>
-          </li>
-        
-         
-        </ul>
-        <div class="menu-footer">
-          <a class="download-cv primary-button mt-3 mb-4 d-lg-none" href="#LogServiceCMD" title="Kiểm Tra Log, Các Hoạt Động Của Hệ Thống, Command">Log/Service/CMD</a>
-        </div>
-	
-      </div>
-    </div>
-    <!--  Left Side End  -->
-    <!--  Main Start  -->
-    <main id="main" class="main-2">
-      <!--  Hero Start  -->
-      <section id="hero" class="bg-primary text-white section hero w-100">
-	  	  				<!--		<div class="d-flex flex-row-reverse">
-							  <div class="p-2"><?php //echo "$wards_Duong $wards_Lang $wards_Huyen $wards_Tinh"; ?></div></div> -->
-							<div class="d-flex flex-row">
-				<div class="p-2"><div id="tmptoday"></div></div>  <div class="p-2"><div id="clock1"></div></div></div>
-<div class="d-flex flex-row">
-  <div class="p-2"><div class="d-flex flex-row"> <div id="temperature" class="h1"></div> <img id="weather-icon" src="" alt="Weather Icon"></div></div>
-  <div class="d-flex flex-column">
-  <div class="d-flex flex-row"><?php echo "$wards_Tinh".",<div id='country'></div>"; ?></div>
- <div class="d-flex flex-row">Độ ẩm: &nbsp;<div id="humidity"></div></div>
- <div class="d-flex flex-row"> Tốc độ gió: &nbsp;<div id="wind-speed"></div></div>
-</div>
-</div>
-<div class="info">
-<?php
+        // Hàm để gắn sự kiện xóa cho các nút xóa
+        function attachDeleteHandlers() {
+            $(".delete-button").click(function() {
+                var wifiName = $(this).data('wifi-name');
+                deleteWifi(wifiName);
+            });
+        }
 
-// Đường dẫn tới tệp JSON
-$jsonFilePath = "$DuognDanUI_HTML/assets/json/password.json";
-// Kiểm tra xem tệp JSON đã tồn tại chưa
-if (!file_exists($jsonFilePath)) {
-    // Tạo một mảng mặc định nếu tệp JSON không tồn tại
-    $defaultData = [
-        "password_ui" => "",
-		"salt" => "",
-		"mail" => ""
-    ];
-    // Tạo tệp JSON và ghi dữ liệu mặc định vào nó
-    file_put_contents($jsonFilePath, json_encode($defaultData,JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        // Hàm để xóa WiFi
+        function deleteWifi(wifiName) {
+            // Sử dụng hộp thoại xác nhận
+            var confirmDelete = confirm('Bạn có chắc chắn muốn xóa mạng WiFi "' + wifiName + '" không?');
+            // Kiểm tra xem người dùng đã xác nhận xóa hay không
+            if (confirmDelete) {
+                $('#loading-overlay').show();
+                $.ajax({
+                    url: 'delete_wifi.php',
+                    type: 'POST',
+                    data: {
+                        action: 'delete_wifi',
+                        wifiName: wifiName
+                    },
+                    success: function(response) {
+                        // Sau khi xóa, tải lại danh sách WiFi
+                        loadWifiList();
+                        $('#loading-overlay').hide();
+                    }
+                });
+            }
+            //else {
+            // Người dùng đã hủy xác nhận xóa
+            //alert('Xóa mạng WiFi đã được hủy.');
+            //}
+        }
 
-    // Đặt quyền truy cập cho tệp JSON thành 644 (quyền đọc và ghi cho người sở hữu, quyền đọc cho các người dùng khác)
-    chmod($jsonFilePath, 0777);
-}
-// Đọc nội dung từ tệp JSON
-$jsonData = file_get_contents($jsonFilePath);
-// Chuyển dữ liệu JSON thành mảng PHP
-$data = json_decode($jsonData, true);
+        //Hiển thị mật khẩu
+        function attachShowPass() {
+            $(".show-matkhau").click(function() {
+                var wifiName = $(this).data('wifi-name');
+                passWifi(wifiName);
+            });
+        }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	
-        if (isset($_POST['password1']) && isset($_POST['password2'])) {
-            $password1 = $_POST['password1'];
-            $password2 = $_POST['password2'];
-            $mailllgmail = $_POST['mailllgmail'];
+        // Hàm để hiển thị mật khẩu
+        function passWifi(wifiName) {
+            //console.log(wifiName);
+            // Sử dụng hộp thoại xác nhận
+            $('#loading-overlay').show();
+            $.ajax({
+                url: 'get_wifi_list.php',
+                type: 'GET',
+                data: {
+                    action: 'get_password',
+                    ssid: wifiName
+                },
+                success: function(response) {
 
-            // Kiểm tra xem mật khẩu và xác nhận mật khẩu có khớp nhau
-            if ($password1 === $password2) {
-                // Lưu mật khẩu vào mảng và ghi vào tệp JSON
-                $data['password_ui'] = md5($password1);
-                $data['salt'] = base64_encode($password1);
-                $data['mail'] = $mailllgmail;
-                file_put_contents($jsonFilePath, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+                    $("#showPassWifi").html(response);
 
-                // Đặt quyền truy cập cho tệp JSON thành 644 (quyền đọc và ghi cho người sở hữu, quyền đọc cho các người dùng khác)
-                chmod($jsonFilePath, 0777);
+                    //alert(response);
+                    $('#loading-overlay').hide();
+                }
+            });
 
-                // Đăng nhập thành công, đánh dấu phiên đã đăng nhập
-                $_SESSION['logged_in'] = true;
-                echo "<br/><center><font size=3><b><i>- Tạo mật khẩu mới thành công!<br/>- Hãy nhập mật khẩu để đăng nhập</i></b></font></center>";
+            //else {
+            // Người dùng đã hủy xác nhận xóa
+            //alert('Xóa mạng WiFi đã được hủy.');
+            //}
+        }
+
+        function attachKetNoiWiFiDaLuu() {
+
+            $(".connect-wifi-da-luu").click(function() {
+                var wifiName = $(this).data('wifi-name');
+                connectWWifiDaLUU(wifiName);
+            });
+        }
+
+        // Hàm để kết nối wifi đã lưu
+        function connectWWifiDaLUU(wifiName) {
+            $('#loading-overlay').show();
+
+            // Thiết lập thời gian chờ là 30 giây (30000 milliseconds)
+            var timeout = setTimeout(function() {
+                alert('Hết thời gian chờ, hãy kiểm tra thiết bị ở kết nối wifi mới. Và khởi động lại thiết bị');
+                $('#loading-overlay').hide();
+            }, 35000);
+
+            $.ajax({
+                url: 'connect_wifi.php',
+                type: 'POST',
+                data: {
+                    action: 'connect_wifi',
+                    wifiName: wifiName
+                },
+                success: function(response) {
+                    // Hủy bỏ thời gian chờ khi có phản hồi
+                    clearTimeout(timeout);
+                    if (response.indexOf("Connection successfully activated") !== -1) {
+                        // Nếu chuỗi trả về có chứa "Connection successfully activated"
+                        loadWifiList();
+                        alert('Kết nối tới wifi "' + wifiName + '" thành công!');
+                        getWifiInfo();
+                    } else {
+                        alert(response);
+                        // console.log(response);
+                    }
+                    $('#loading-overlay').hide();
+                }
+            });
+        }
+
+        // Hàm để gắn sự kiện kết nối cho các nút kết nối
+        function attachConnectHandlers() {
+            $(".connect-end-save-button").click(function() {
+                var ssid = $(this).data('wifi-ssid');
+                var security = $(this).data('wifi-security');
+                connectWifi(ssid, security);
+            });
+        }
+
+        // Hàm để kết nối WiFi
+        function connectWifi(ssid, security) {
+            var baomat = security;
+            // console.log(baomat);
+
+            // Kiểm tra nếu biến baomat là null
+            if (baomat === "") {
+                // Sử dụng confirm thay vì prompt
+                var confirmConnect = confirm('Mạng Không Được Bảo Mật\n Bạn có chắc chắn muốn kết nối tới mạng "' + ssid + '" không?');
+
+                if (confirmConnect) {
+                    // Thực hiện kết nối khi người dùng chọn OK
+                    var password = "";
+                    $('#loading-overlay').show();
+
+                    // Thiết lập thời gian chờ là 30 giây (30000 milliseconds)
+                    var timeout = setTimeout(function() {
+                        alert('Hết thời gian chờ, hãy kiểm tra thiết bị ở kết nối wifi mới. Và khởi động lại thiết bị');
+                        $('#loading-overlay').hide();
+                    }, 40000);
+
+                    $.ajax({
+                        url: 'connect_wifi.php',
+                        type: 'POST',
+                        data: {
+                            action: 'connect_and_save_wifi',
+                            ssid: ssid,
+                            password: password
+                        },
+                        success: function(response) {
+                            // Hủy bỏ thời gian chờ khi có phản hồi
+                            clearTimeout(timeout);
+                            if (response.indexOf("Error: Connection activation failed: (7) Secrets were required") === 0) {
+                                alert('Kết nối thất bại, mật khẩu không đúng hoặc thông tin bảo mật không đầy đủ.');
+                            } else if (response.indexOf("successfully activated") !== -1) {
+                                alert('Kết nối tới wifi ' + ssid + ' thành công.');
+                                getWifiInfo();
+                            } else {
+                                alert(response);
+                                // console.log(response);
+                            }
+                            $('#loading-overlay').hide();
+                        }
+                    });
+                }
+                //else {
+                // Người dùng đã chọn Cancel trong confirm
+                //alert('Bạn đã hủy bỏ kết nối.');
+                //}
+            } else if (baomat === "wifi_hidden") {
+
+                // Hiển thị hộp thoại prompt để nhập tài khoản
+                var tenwifian = prompt("Nhập tên Wifi:");
+
+                // Kiểm tra nếu người dùng đã nhập tên tài khoản
+                if (tenwifian !== null) {
+                    // Hiển thị hộp thoại prompt để nhập mật khẩu
+                    var matkhauan = prompt("Nhập mật khẩu Wifi:");
+
+                    // Kiểm tra nếu người dùng đã nhập mật khẩu
+                    if (matkhauan !== null) {
+                        // Hiển thị thông báo với tên tài khoản và mật khẩu
+                        //alert("Bạn đã nhập:\nTài khoản: " + tenwifian + "\nMật khẩu: " + matkhauan);
+                        $('#loading-overlay').show();
+                        // Thiết lập thời gian chờ là 30 giây (30000 milliseconds)
+                        var timeout = setTimeout(function() {
+                            alert('Hết thời gian chờ, hãy kiểm tra thiết bị ở kết nối wifi mới. Và khởi động lại thiết bị');
+                            $('#loading-overlay').hide();
+                        }, 40000);
+                        $.ajax({
+                            url: 'connect_wifi.php',
+                            type: 'POST',
+                            data: {
+                                action: 'connect_and_save_wifi',
+                                ssid: tenwifian,
+                                password: matkhauan
+                            },
+                            success: function(response) {
+                                // Hủy bỏ thời gian chờ khi có phản hồi
+                                clearTimeout(timeout);
+                                if (response.indexOf("Error: Connection activation failed: (7) Secrets were required") === 0) {
+                                    alert('Kết nối thất bại, kiểm tra lại tên wifi và mật khẩu');
+                                } else if (response.indexOf("successfully activated") !== -1) {
+                                    alert('Kết nối tới wifi ẩn: "' + tenwifian + '" thành công.');
+                                    getWifiInfo();
+                                } else {
+                                    alert(response);
+                                    // console.log(response);
+                                }
+                                $('#loading-overlay').hide();
+                            }
+                        });
+                    }
+                    //else {
+                    //alert("Bạn đã hủy nhập mật khẩu.");
+                    //}
+                }
+                //else {
+                //alert("Bạn đã hủy nhập tài khoản.");
+                //}
             } else {
-                echo "<br/><center><font size=3><b><i>Mật khẩu không khớp, vui lòng thử lại!</i></b></font></center>";
+                // Biến baomat không phải là null, sử dụng prompt như bình thường
+                var password = prompt('Nhập mật khẩu cho mạng ' + ssid + ':');
+
+                // Kiểm tra nếu người dùng đã nhập mật khẩu
+                if (password !== null) {
+                    if (password.length >= 8 && password.length <= 32) {
+                        $('#loading-overlay').show();
+                        // Thiết lập thời gian chờ là 30 giây (30000 milliseconds)
+                        var timeout = setTimeout(function() {
+                            alert('Hết thời gian chờ, hãy kiểm tra thiết bị ở kết nối wifi mới. Và khởi động lại thiết bị');
+                            $('#loading-overlay').hide();
+                        }, 40000);
+                        $.ajax({
+                            url: 'connect_wifi.php',
+                            type: 'POST',
+                            data: {
+                                action: 'connect_and_save_wifi',
+                                ssid: ssid,
+                                password: password
+                            },
+                            success: function(response) {
+                                // Hủy bỏ thời gian chờ khi có phản hồi
+                                clearTimeout(timeout);
+                                if (response.indexOf("Error: Connection activation failed: (7) Secrets were required") === 0) {
+                                    alert('Kết nối thất bại, mật khẩu không đúng hoặc thông tin bảo mật không đầy đủ.');
+                                } else if (response.indexOf("successfully activated") !== -1) {
+                                    alert('Kết nối tới wifi "' + ssid + '" thành công.');
+                                    getWifiInfo();
+                                } else {
+                                    alert(response);
+                                    // console.log(response);
+                                }
+                                $('#loading-overlay').hide();
+                            }
+                        });
+                    } else {
+                        alert('Mật khẩu phải từ 8 đến 32 ký tự.');
+                    }
+                }
+                //else {
+                //alert('Bạn đã hủy bỏ việc nhập mật khẩu.');
+                // }
             }
-        }else {
-			
-			    // Kiểm tra xem người dùng đã đăng nhập hay chưa
-    if (isset($_SESSION['root_id'])) {
-		if (isset($_POST['logout'])) {
-			// Xử lý đăng xuất
-			session_unset();
-			session_destroy();
-			echo "<br/><center><font size=3><b><i>Đăng xuất thành công!</i></b></font></center>";
-		}
-    } else {
-        // Nếu chưa đăng nhập, xử lý đăng nhập
-        $password = $_POST["password"];
-        if (md5($password) === $data['password_ui']) {
-            $_SESSION['root_id'] = "$SESSION_ID_Name"; // Thêm biến root_id
-            $_SESSION['username'] = 'example_user';
-            echo "<i>Đăng nhập thành công!</i>";
-           // header("Location: ./index.php");
-            // Kết thúc thực thi của script sau khi đăng nhập
-            //exit();
-        } else {
-            echo "<br/><center><font size=3><b><i>Đăng nhập thất bại, vui lòng kiểm tra lại mật khẩu</i></b></font></center>";
         }
-    }
-	
-		}
-
-}
-?>
-
-
-<?php	
-if (isset($Web_UI_Login) && $Web_UI_Login === true) {
-if (!isset($_SESSION['root_id'])) {
-?>
- <br/><center>
-		    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" id="my-form" method="post">
-  <?php if (empty($data['password_ui'])) : ?>
-		Tạo Mật Khẩu Mới Cho Web UI<br/>
-        <label for="password1">Mật khẩu mới:</label>
-        <input type="password" id="password"  class="input-group-text" name="password1" required>
-        <label for="password2">Nhập lại mật khẩu:</label>
-        <input type="password" id="confirmPassword" class="input-group-text" name="password2" required>
-		<label for="mailll">Địa chỉ mail:</label>
-		<input type="text" id="mailll" class="input-group-text" name="mailllgmail" required>
-		<br/>
-		<input type="checkbox" id="showPassword">
-		<label for="showPassword">Hiển Thị Mật Khẩu</label>
-		<br/>
-        <input type="submit" class="btn btn-success" value="Tạo Mật Khẩu Mới"><a href='<?php echo $PHP_SELF; ?>'><button type='button' class='btn btn-danger'>Tải Lại</button></a>
-        <?php else : ?>
-
-        <label for="passwordd">Nhập Mật khẩu:</label>
-
-        <input type="password" id="passwordd" class="input-group-text" name="password" required><br>
-		<input type="checkbox" id="showPasswordd">
-		<label for="showPasswordd">Hiển Thị Mật Khẩu</label> | <a style="color:Yellow" href="#ForgotPassword"><b>Quên mật khẩu</b></a>
-		<br/>
-        <input type="submit" class="btn btn-success" value="Đăng nhập">
-		<a href='<?php echo $PHP_SELF; ?>'><button type='button' class='btn btn-danger'>Tải Lại</button></a>
-        <?php endif; ?>
-        </form>
-		</center>
-
-<?php
-
-
-} else {
-    include "include_php/Fork_PHP/index_.php";
-}
-	
-	} else {
-	   
-	   include "include_php/Fork_PHP/index_.php";
-	   
-	   
-	}
-?>	
-		
-
-
-
-
-	
-	  	</div>
-
-      </section>
-      <!--  Hero End  -->
-	        <section id="LogServiceCMD" class="section about bg-secondary text-primary">
-			 <iframe src="./include_php/LogServiceCMD.php" width="100%" height="430px"></iframe>
-			 </section>
-      <!--  About Start  -->
-      <section id="about" class="section about bg-gray-400 text-black">
-        <div class="container">
-		
-
-          <!--  Count up  -->
-          <div id="count-up" class="count-up text-center box-border">
-
-            <div class="row">
-              <!-- Item-01 -->
-			                <div class="col-6 col-lg-3 my-4 count-item">
-                <div class="count-icon">🖥️</div>
-                <span><a href="http://<?php echo gethostname(); ?>" target="_bank"><?php echo gethostname(); ?></a></span>
-                <p class="mb-0">Host Name</p>
-              </div>
-			  <!-- Item-04 -->
-              <div class="col-6 col-lg-3 my-4 count-item">
-                <div class="count-icon">📟</div>
-                <span><?php echo $_SERVER['SERVER_NAME']; ?></span>
-                <p class="mb-0">Server Name</p>
-              </div>
-              <!-- Item-02 -->
-              <div class="col-6 col-lg-3 my-4 count-item">
-                <div class="count-icon">💻</div>
-                <span><?php echo get_client_ip(); ?></span>
-                <p class="mb-0">IP Của Thiết Bị Truy Cập</p>
-              </div>
-              <!-- Item-03 -->
-              <div class="col-6 col-lg-3 my-4 count-item">
-                <div class="count-icon">🌀</div>
-                <span><?php echo phpversion(); ?></span>
-                <p class="mb-0">PHP Version</p>
-              </div>
-              <!-- Item-04 -->
-            </div>
-          </div>
-          <!--  Skillbar  -->
-          <div class="row mt-5 skills">
-            <div class="col-lg-6">
-              <h3 class="subtitle">Thông Tin Máy Chủ</h3>
-              <div id="skills">
-			   
-                <!-- Item 01 -->
-                <div class="col-lg-12 skill-box">
-                  <div class="skill-text">
-                    <div class="skillbar-title">🏽 Dung Lượng Ram Đã Dùng: </div>
-                    <div class="skill-bar-percent"><span data-from="0" data-to="<?php echo $memusage; ?>" data-speed="4000"><?php echo $memusage; ?></span>%</div>
-                  </div>
-                  <div class="skillbar clearfix" data-percent="<?php echo $memusage."%";?>">
-                    <div class="skillbar-bar"></div>
-                  </div>
-                </div>
-                <!-- Item 02 -->
-                <div class="col-lg-12 skill-box">
-                  <div class="skill-text">
-                    <div class="skillbar-title">🏾 Dung Lượng CPU Đã Dùng</div>
-                    <div class="skill-bar-percent"><span data-from="" data-to="<?php echo $cpuload; ?>" data-speed="4000"><?php echo $cpuload; ?></span>%</div>
-                  </div>
-                  <div class="skillbar clearfix" data-percent="<?php echo $cpuload."%"; ?>">
-                    <div class="skillbar-bar"></div>
-                  </div>
-                </div>
-                <!-- Item 03 -->
-
-              </div>
-            </div>
-            <div class="col-lg-5 ms-auto mt-5 mt-lg-0">
-          
-              <div class="language-bar">
-			    <!-- Item 01 -->
-			                  <div class="col-lg-12 skill-box">
-                  <div class="skill-text">
-                    <div class="skillbar-title">💽 Tổng Dung Lượng Ổ Đĩa</div>
-                    <div class="skill-bar-percent"><span data-from="0" data-to="<?php echo $disktotal; ?>" data-speed="4000"><?php echo $disktotal; ?></span>GB</div>
-                  </div>
-                  <div class="skillbar clearfix" data-percent="<?php echo $disktotal."%"; ?>">
-                    <div class="skillbar-bar"></div>
-                  </div>
-                </div>
-			    <!-- Item 01 -->
-                <!-- Item 01 -->
-                <div class="col-lg-12 skill-box">
-                  <div class="skill-text">
-                    <div class="skillbar-title">💽 Dung Lượng Ổ Đĩa Đã Dùng</div>
-                    <div class="skill-bar-percent"><span data-from="0" data-to="<?php echo $diskusage; ?>" data-speed="4000"><?php echo $diskusage; ?></span>%</div>
-                  </div>
-                  <div class="skillbar clearfix" data-percent="<?php echo $diskusage."%"; ?>">
-                    <div class="skillbar-bar"></div>
-                  </div>
-                </div>
-                <!-- Item 02 -->
-                <div class="col-lg-12 skill-box">
-                  <div class="skill-text">
-                    <div class="skillbar-title">🖥️ Số Luồng CPU</div>
-                    <div class="skill-bar-percent"><span data-from="0" data-to="<?php echo $cpu_count; ?>" data-speed="4000"><?php echo $cpu_count; ?></span></div>
-                  </div>
-                  <div class="skillbar clearfix" data-percent="30%">
-                    <div class="skillbar-bar"></div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
-          <!--  Client  -->
-          <div class="testimonial mt-5">
-		  <hr/>
-            <div class="owl-carousel">
-			              <!-- Item 03 -->
-              <div class="testimonial-box">
-                <p class="testimonial-comment">THÔNG TIN KHÁC</p>
-                <div class="testimonial-item">
-                  <div class="testimonial-info">
-				  <p><span class="description">SYSTEM: </span> <span class="result"><?php system("uname -a"); ?></span><br/><br/>
-		<span class="description">🕔 Thời Gian Khởi Động: </span> <span class="result"><?php echo "$ut[0] Ngày, $ut[1]:$ut[2] Phút"; ?></span> | 
-		<span class="description">🖧 Kết nối được thiết lập: </span> <span class="result"><?php echo $connections; ?></span> | 
-		<span class="description">🖧 Tổng số kết nối: </span> <span class="result"><?php echo $totalconnections; ?></span> | 
-					<span class="description">🏋️ PHP Load: </span> <span class="result"><?php echo $phpload; ?> GB</span> | 
-					<span class="description">⏱️ Thời gian tải: </span> <span class="result"><?php echo $total_time; ?> Giây</span></p>
-                  </div>
-                </div>
-              </div>
-              <!-- Item 01 -->
-              <div class="testimonial-box">
-                <p class="testimonial-comment">THÔNG TIN RAM</p>
-                <div class="testimonial-item">
-
-                  <div class="testimonial-info">
-		<p><span class="description">🌡️ Dung Lượng RAM:</span> <span class="result"><?php echo $memtotal; ?> GB</span> | 
-		<span class="description">🌡️ Dung Lượng RAM Đã Dùng:</span> <span class="result"><?php echo $memused; ?> GB</span> | 
-		<span class="description">🌡️ Dung Lượng RAM Còn Lại:</span> <span class="result"><?php echo $memavailable; ?> GB</span></p>
-                  </div>
-                </div>
-              </div>
-              <!-- Item 02 -->
-              <div class="testimonial-box">
-                <p class="testimonial-comment">THÔNG TIN Ổ ĐĨA (BỘ NHỚ)</p>
-                <div class="testimonial-item">
-                  <div class="testimonial-info">
-		<span class="description">💽 Dung Lượng Ổ Đĩa:</span> <span class="result"><?php echo $disktotal; ?> GB</span> |  
-		<span class="description">💽 Dung Lượng Đã Dùng:</span> <span class="result"><?php echo $diskused; ?> GB</span> | 
-		<span class="description">💽 Dung Lượng Còn Lại:</span> <span class="result"><?php echo $diskfree; ?> GB</span></p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!--  About End  -->
-<!--  Resume Start  -->
-<section id="config" class="bg-gray-400 text-white section">
-    <div class="container">
-        <!-- Servises -->
-        <div class="services">
-            <div class="boxes">
-                <h3 class="subtitle">Config/Cấu Hình</h3>
-					<div class="rounded-iframe">
-                <iframe src="./include_php/ConfigSetting.php" width="100%" height="470px"></iframe>
-            </div>
-            </div>
-            <!--  Resume  -->
-        </div>
-    </div>
-</section>
-<!--  Resume End  -->
-<!--  Portfolio Start  -->
-<section id="File_Shell" class="section portfolio bg-gray-400 text-white">
-    <iframe src="./include_php/Fork_PHP/Shell.php" width="100%" height="470px"></iframe>
-</section>
-<!--  Portfolio End  -->
-<!--  Blog Start  -->
-<section id="ChatBot" class="section blog bg-gray-400 text-white">
-    <iframe src="./include_php/ChatBot.php" width="100%" height="570px"></iframe>
-</section>
-
-<section id="Google_Drive_Auto_Backup" class="section blog bg-gray-400 text-white">
-    <div class="container">
-        <h3 class="subtitle">Google Drive Auto Backup</h3>
-			<div class="rounded-iframe">
-     <iframe src="./GoogleDrive/index.php" width="100%" height="570px"></iframe>
-		</div>
-</section>
-
-<section id="MediaPlayer" class="section blog bg-gray-400 text-white">
-    <div class="container">
-        <h3 class="subtitle">Media Player</h3>
-			<div class="rounded-iframe">
-     <iframe src="./Multimedia/index.php" width="100%" height="570px"></iframe>
-		</div>
-</section>
-
-<!--  Blog End  -->
-<section id="vietbot_update" class="section blog bg-gray-400 text-white">
-    <div class="container">
-        <h3 class="subtitle">Cập Nhật Chương Trình</h3>
-			<div class="rounded-iframe">
-        <iframe src="./backup_update/index.php" width="100%" height="570px"></iframe>
-		</div>
-</section>
-<section id="UI_update" class="section blog bg-gray-400 text-white">
-    <div class="container">
-        <h3 class="subtitle">Cập Nhật Giao Diện</h3>
-			<div class="rounded-iframe">
-        <iframe src="./ui_update/index.php" width="100%" height="570px"></iframe>
-	</div>
-</section>
-<section id="PasswordChange" class="section blog bg-gray-400 text-white">
-    <div class="container">
-        <h3 class="subtitle">Thay Đổi Mật Khẩu</h3>
-			<div class="rounded-iframe">
-        <iframe src="./include_php/Fork_PHP/ChangePassword.php" width="100%" height="570px"></iframe>
-	</div>
-</section>
-<section id="Skill" class="section blog bg-gray-400 text-white">
-    <div class="container">
-        <h3 class="subtitle">Cấu hình skill</h3>
-			<div class="rounded-iframe">
-        <iframe src="./include_php/Skill.php" width="100%" height="570px"></iframe>
-	</div>
-</section>
-
-<section id="CFG_WifiManager" class="section contact w-100 bg-gray-400 text-white">
-    <div class="container">
-        <h3 class="subtitle">Cấu Hình Wifi</h3>
-<iframe src="./WifiManager/index.php" width="100%" height="570px"></iframe>
-    </div>
-</section>
-
-<!-- Contact Start -->
-<section id="ForgotPassword" class="section contact w-100 bg-gray-400 text-white">
-    <div class="container">
-        <h3 class="subtitle">Quên Mật Khẩu</h3>
-		<div class="rounded-iframe">
-        <iframe src="./include_php/Fork_PHP/ForgotPassword.php" width="100%" height="470px"></iframe>
-</div>
-
-    </div>
-</section>
-<!--  Contact End  -->
-
-</main>
-
-<!--  Navbar Button Mobile Start -->
-<div class="menu-toggle">
-    <span></span>
-    <span></span>
-    <span></span>
-</div>
-<!--  Navbar Button Mobile End -->
-<!--  Color Pallet  -->
-<div id="color-switcher" class="color-switcher">
-
-    <div class="text-center color-pallet hide">
-        <a class="btn btn-danger" href="#vietbot_update" role="button" title="Nhấn Để Kiểm Tra, Cập Nhật Phầm Mềm">Cập Nhật Chương Trình</a>
-        <a class="btn btn-success" href="#UI_update" role="button" title="Nhấn Để Kiểm Tra, Cập Nhật Giao Diện">Cập Nhật Giao Diện</a>
-        
-		
-		<?php	
-if (isset($Web_UI_Login) && $Web_UI_Login === true) {
-	echo '<a class="btn btn-info" href="#PasswordChange" role="button" title="Đổi Mật Khẩu">Đổi Mật Khẩu Web UI</a>';
-	echo '<form action="" id="my-form" method="post">
-         <button class="btn btn-warning" type="submit" name="logout" title="Đăng Xuất">Đăng Xuất Hệ Thống</button>
-        </form>';
-	} else {
-		//nếu trong config là false thì sẽ ẩn
-	   echo '<!-- <a class="btn btn-info" href="#PasswordChange" role="button" title="Đổi Mật Khẩu">Đổi Mật Khẩu Web UI</a> -->';
-	}
-?>	
-        <!--  <h6 class="text-center theme-skin-title">Đổi Màu Giao Diện</h6> -->
-
-	   <a href="#CFG_WifiManager" role="button" class="btn btn-primary"><i class="bi bi-wifi" title="Cài Đặt,Cấu Hình Wifi"></i></a>
-	   <a class="btn btn-secondary" href="./Help_Support/index.php" role="button" target="_bank" title="Hướng Dẫn / Sử Dụng Vietbot"><i class="bi bi-question-square-fill" title="Hướng Dẫn / Sử Dụng Vietbot"></i></a>
-	   <div class="colors text-center">
-            <span class="WhiteBg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
-            <span class="01Bg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
-            <span class="03Bg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
-            <span class="BlackBg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
-            <span class="GG01Bg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
-            <span class="GG02Bg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
-        </div>
-    </div>
-    <div class="pallet-button hide" >
-        <a href="javascript:void(0)" class="cp-toggle"><i class="bi bi-gear" title="Nhấn Để Hiển Thị Cài Đặt"></i></a>
- 		<div>
- <a onclick="toggleSidebar()" class="cp-toggleee"><i class="bi bi-chat-dots" title="Nhấn Để Mở ChatBot"></i></a></div>
- 
- 			
-
-
-	   
- 
-	</div>
-	
-</div>
-
-    <div class="contentt">
-        <!-- Content of your website goes here -->
-        <!-- Add background overlay element -->
-        <div class="background-overlay" onclick="closeSidebar()"></div>
-
-        <div class="right-sidebar" id="sidebar" onclick="event.stopPropagation()">
-            <!-- Your sidebar content goes here -->
-            <div class="toggle-btnnn-container">
-            <center>   <a onclick="toggleSidebar()" class="cp-toggleee"><i class="bi bi-x-circle-fill" title="Nhấn để đóng"></i></a></center>
-		
-			
-				 <iframe src="./include_php/ChatBot.php" width="100%" height="570px"></iframe>
-               
-            </div>
-        </div>
-    </div>
-
-
-
-<div class="blinking-container" id="updateMessage"></div>
-
-
-
-    <!-- Mouase Magic Cursor Start -->
-    <div class="m-magic-cursor mmc-outer"></div>
-	  <div class="m-magic-cursor mmc-inner"></div>
-    <!-- Mouase Magic Cursor End -->
-
-    <!--  JavaScripts  -->
-    <!--  Jquery 3.4.1  
-    <script src="assets/js/jquery-3.6.1.min.js"></script>-->
-    <!--  Bootstrap Js  -->
-    <script src="assets/js/bootstrap.js"></script>
-    <!--  Malihu ScrollBar Js  -->
-    <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
-    <!--  CountTo Js  -->
-    <script src="assets/js/jquery.countTo.js"></script>
-    <!--  Swiper Js  -->
-    <script src="assets/js/owl.carousel.min.js"></script>
-    <!--  Isotope Js  -->
-    <script src="assets/js/isotope.pkgd.min.js"></script>
-    <!--  Magnific Popup Js  -->
-    <script src="assets/js/jquery.magnific-popup.min.js"></script>
-    <!--  Arshia Js  -->
-    <script src="assets/js/main.js"></script>
-
-
-
-
-<script>
-  $(document).ready(function() {
-    // AJAX request for UI version
-    $.ajax({
-      url: '<?php echo $UI_Version; ?>',
-      type: 'GET',
-      dataType: 'json',
-      success: function(remoteData) {
-        var localJsonData = <?php echo json_encode(file_get_contents($DuognDanUI_HTML.'/version.json')); ?>;
-        var localData = JSON.parse(localJsonData);
-        var remoteValue = remoteData['ui_version']['latest'];
-        var localValue = localData['ui_version']['current'];
-        handleUIVersion(remoteValue, localValue);
-      }
     });
-
-    function handleUIVersion(remoteValue, localValue) {
-	var updateMessageElement = document.getElementById('updateMessage');
-      if (remoteValue === localValue) {
-		//Phiên bản mới nhất
-      } else {
-        //console.log('Có phiên bản giao diện mới: ' + remoteValue);
-        var message = '<font color="red"><b>Có phiên bản giao diện mới: ' + remoteValue + ' </font><a href="#UI_update"> Kiểm Tra</b></a>';
-        updateMessageElement.innerHTML = message;
-      }
-    }
-  });
 </script>
-
-<script>
-  $(document).ready(function() {
-    // AJAX request for vietbot version
-    $.ajax({
-      url: '<?php echo $Vietbot_Version; ?>',
-      type: 'GET',
-      dataType: 'json',
-      success: function(remoteDataa) {
-        var localJsonDataa = <?php echo json_encode(file_get_contents($DuognDanThuMucJson.'/version.json')); ?>;
-        var localDataa = JSON.parse(localJsonDataa);
-        var remoteValuea = remoteDataa['vietbot_version']['latest'];
-        var localValuea = localDataa['vietbot_version']['latest'];
-        handleUIVersion(remoteValuea, localValuea);
-      }
-    });
-
-    function handleUIVersion(remoteValuea, localValuea) {
-	var updateMessageElement = document.getElementById('updateMessage');
-      if (remoteValuea === localValuea) {
-		//Phiên bản mới nhất
-      } else {
-        //console.log('Có phiên bản giao diện mới: ' + remoteValuea);
-        var message = '<font color="red"><b>Có phiên bản Vietbot mới: ' + remoteValuea + ' </font><a href="#vietbot_update"> Kiểm Tra</b></a>';
-        updateMessageElement.innerHTML = message;
-      }
-    }
-  });
-</script>
-
-<script type="text/javascript">
-    function time() {
-        var today = new Date();
-        var weekday = new Array(7);
-        weekday[0] = "Chủ nhật";
-        weekday[1] = "Thứ Hai";
-        weekday[2] = "Thứ Ba";
-        weekday[3] = "Thứ Tư";
-        weekday[4] = "Thứ Năm";
-        weekday[5] = "Thứ Sáu";
-        weekday[6] = "Thứ Bảy";
-        var day = weekday[today.getDay()];
-        var dd = today.getDate();
-        var mm = today.getMonth() + 1; //January is 0!
-        var yyyy = today.getFullYear();
-        var h = today.getHours();
-        var m = today.getMinutes();
-        var s = today.getSeconds();
-        m = checkTime(m);
-        s = checkTime(s);
-        nowTime = h + ":" + m + ":" + s;
-        if (dd < 10) {
-            dd = '0' + dd
-        }
-        if (mm < 10) {
-            mm = '0' + mm
-        }
-        today = day + ', ' + dd + '/' + mm + '/' + yyyy;
-
-        tmptoday = '<span class="date">' + today + '</span>';
-        tmp = '<span class="date">' + nowTime + '</span>';
-
-        document.getElementById("clock").innerHTML = tmp;
-        document.getElementById("clock1").innerHTML = tmp;
-        document.getElementById("tmptoday").innerHTML = tmptoday;
-
-        clocktime = setTimeout("time()", "1000", "JavaScript");
-
-        function checkTime(i) {
-            if (i < 10) {
-                i = "0" + i;
-            }
-            return i;
-        }
-    }
-	
-    // Lấy phần tử <div>, phần tử liên kết và phần tử nút bấm
-    const divElement = document.querySelector('.text-center.color-pallet');
-    const linkElement = document.querySelector('.btn-success');
-    const buttonElement = document.querySelector('.btn-danger');
-    const buttonnElement = document.querySelector('.btn-secondary');
-    const buttonnnElement = document.querySelector('.btn-info');
-    const buttonnnnElement = document.querySelector('.btn-primary');
-
-    buttonElement.addEventListener('click', function() {
-        // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
-        divElement.classList.remove('show');
-        divElement.classList.add('hide');
-    });
-	    buttonnElement.addEventListener('click', function() {
-        // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
-        divElement.classList.remove('show');
-        divElement.classList.add('hide');
-    });
-	
-		//bỏ qua lỗi nếu phần tử không tồn tại
-		if (buttonnnElement) {
-  	    buttonnnElement.addEventListener('click', function() {
-        // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
-        divElement.classList.remove('show');
-        divElement.classList.add('hide');
-		});
-		}
-		if (buttonnnnElement) {
-  	    buttonnnnElement.addEventListener('click', function() {
-        // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
-        divElement.classList.remove('show');
-        divElement.classList.add('hide');
-		});
-		}
-	
-
-    // Gắn sự kiện click vào liên kết
-    linkElement.addEventListener('click', function() {
-        // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
-        divElement.classList.remove('show');
-        divElement.classList.add('hide');
-    });
-
-    function handleInteractionStart(event) {
-        // Kiểm tra xem người dùng đang bắt đầu tương tác với phần tử div hay không
-        const isInteractionInsideDiv = divElement.contains(event.target);
-
-        if (!isInteractionInsideDiv) {
-            // Thực hiện hành động mong muốn
-            divElement.classList.remove('show');
-            divElement.classList.add('hide');
-        }
-    }
-
-    function handleInteractionEnd(event) {
-        // Kiểm tra xem người dùng đã kết thúc tương tác với phần tử div hay không
-        const isInteractionInsideDiv = divElement.contains(event.target);
-
-        if (!isInteractionInsideDiv) {
-            // Thực hiện hành động mong muốn
-            divElement.classList.remove('show');
-            divElement.classList.add('hide');
-        }
-    }
-
-    document.addEventListener('mousedown', handleInteractionStart);
-    document.addEventListener('touchstart', handleInteractionStart);
-
-    document.addEventListener('mouseup', handleInteractionEnd);
-    document.addEventListener('touchend', handleInteractionEnd);
-</script>
-
-    <script>
-	//Chatbox Slide
-        let isSidebarOpen = false; // Variable to keep track of sidebar state
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-
-            // Check the current state of the sidebar
-            if (isSidebarOpen) {
-                sidebar.style.right = '-100%';
-                isSidebarOpen = false;
-            } else {
-                sidebar.style.right = '0';
-                isSidebarOpen = true;
-            }
-
-            // Show/hide the background overlay accordingly
-            const backgroundOverlay = document.querySelector('.background-overlay');
-            backgroundOverlay.style.display = isSidebarOpen ? 'block' : 'none';
-        }
-
-        function closeSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const sidebarWidth = sidebar.clientWidth;
-
-            if (isSidebarOpen) {
-                sidebar.style.right = `-${sidebarWidth}px`;
-                // Hide the background overlay
-                const backgroundOverlay = document.querySelector('.background-overlay');
-                backgroundOverlay.style.display = 'none';
-                isSidebarOpen = false;
-            }
-        }
-    </script>
-	 
-	<script>
-function reloadHostPage() {
-  window.location.reload();
-}
-
-// Lắng nghe thông điệp từ iframe
-window.addEventListener('message', function(event) {
-  if (event.data === 'reload') {
-    reloadHostPage();
-  }
-});
-</script>
- <script>
-        // Lấy các phần tử cần thao tác
-        const showPasswordCheckbox = document.getElementById('showPassword');
-        const passwordInput = document.getElementById('password');
-        const confirmPasswordInput = document.getElementById('confirmPassword');
-		
-
-	if (showPasswordCheckbox) {
-          // Thêm sự kiện change cho checkbox
-        showPasswordCheckbox.addEventListener('change', function () {
-            // Nếu checkbox được tích, thay đổi type thành "text", ngược lại thì là "password"
-            if (showPasswordCheckbox.checked) {
-                passwordInput.type = 'text';
-                confirmPasswordInput.type = 'text';
-                
-            } else {
-                passwordInput.type = 'password';
-                confirmPasswordInput.type = 'password';
-                
-            }
-        });
-		
-}
-    </script>
-	
-    <script>
-        // Lấy các phần tử cần thao tác
-        const showPasswordCheckboxx = document.getElementById('showPasswordd');
-        const passwordInputt = document.getElementById('passwordd');
+<!-- ... -->
 
 
-		if (showPasswordCheckboxx) {
-         // Thêm sự kiện change cho checkbox
-        showPasswordCheckboxx.addEventListener('change', function () {
-            // Nếu checkbox được tích, thay đổi type thành "text", ngược lại thì là "password"
-            if (showPasswordCheckboxx.checked) {
-                passwordInputt.type = 'text';
-            } else {
-                passwordInputt.type = 'password';
-            }
-        });
-}
-
-
-    </script>
-	
 </body>
-
 </html>
