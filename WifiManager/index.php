@@ -176,7 +176,7 @@ function deleteWifi(wifiName) {
 
 // Hàm để hiển thị mật khẩu
 function passWifi(wifiName) {
-	console.log(wifiName);
+	//console.log(wifiName);
   // Sử dụng hộp thoại xác nhận
     $('#loading-overlay').show();
     $.ajax({
