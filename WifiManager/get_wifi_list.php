@@ -148,7 +148,7 @@ echo '
                 <td><center>'.$chan.'</center></td>
                 <td><center>'.$rate.'</center></td>
                 <td><center>'.$signal.'</center></td>
-                <td>'.$bars.'</td>
+                <td><font color=green>'.$bars.'</font></td>
                 <td>'.$security.'</td>
                 <td><center>'.$Button_connect.'</center></td>
             </tr>';
