@@ -132,11 +132,12 @@ echo '
 			
 			if (empty($parts[0])) {
 				$Check_ssid_hide = "<font color=red title='Chưa hỗ trợ kết nối tới mạng ẩn'>Mạng ẩn</font>";
-				$Button_connect = '<button class="connect-end-save-button btn btn-danger" data-wifi-ssid="'.$Check_ssid_hide.'" data-wifi-security="'.$securityy.'" title="Chưa hỗ trợ kết nối tới mạng ẩn" disabled>Kết nối</button>';
+				$Check_ssid_hidee = "wifi_hidden";
+				$Button_connect = '<button class="connect-end-save-button btn btn-danger" data-wifi-ssid="'.$Check_ssid_hidee.'" data-wifi-security="'.$Check_ssid_hidee.'" title="Wifi bị ẩn, cần nhập cả tên wifi và mật khẩu">Kết nối</button>';
 		
 			} else {
 				$Check_ssid_hide = $parts[0];
-				$Button_connect = '<button class="connect-end-save-button btn btn-success" data-wifi-ssid="'.$Check_ssid_hide.'" data-wifi-security="'.$securityy.'">Kết nối</button>';
+				$Button_connect = '<button class="connect-end-save-button btn btn-success" data-wifi-ssid="'.$Check_ssid_hide.'" data-wifi-security="'.$securityy.'" title="Kết nối tới wifi: '.$Check_ssid_hide.'">Kết nối</button>';
 			}
 			
             // Hiển thị giá trị
