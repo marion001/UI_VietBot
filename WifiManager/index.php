@@ -59,7 +59,7 @@
 
 
 <button id="loadWifiButton" class="btn btn-primary">Danh Sách Wifi Đã Kết Nối</button>
-<button id="scanWifiButton" class="btn btn-secondary">Tìm Kiếm Mạng Wifi</button>
+<button id="scanWifiButton" class="btn btn-secondary">Quét Mạng Wifi</button>
 <a href="index.php"><button type="submit" class="btn btn-danger">Làm Mới</button></a>
 </center>
 <hr/>
