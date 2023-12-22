@@ -895,6 +895,7 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
     const buttonElement = document.querySelector('.btn-danger');
     const buttonnElement = document.querySelector('.btn-secondary');
     const buttonnnElement = document.querySelector('.btn-info');
+    const buttonnnnElement = document.querySelector('.btn-primary');
 
     buttonElement.addEventListener('click', function() {
         // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
@@ -910,6 +911,13 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
 		//bỏ qua lỗi nếu phần tử không tồn tại
 		if (buttonnnElement) {
   	    buttonnnElement.addEventListener('click', function() {
+        // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
+        divElement.classList.remove('show');
+        divElement.classList.add('hide');
+		});
+		}
+		if (buttonnnnElement) {
+  	    buttonnnnElement.addEventListener('click', function() {
         // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
         divElement.classList.remove('show');
         divElement.classList.add('hide');
