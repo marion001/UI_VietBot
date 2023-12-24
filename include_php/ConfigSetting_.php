@@ -1226,8 +1226,11 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
 <div class="row g-3 d-flex justify-content-center"><div class="col-auto"> 
 <table class="table table-responsive align-middle">
 <tbody><tr><th scope="row"><center>Token:</center></th></tr><tr>
-<td><input type="text" placeholder="Nhập Key Của Bạn" title="Nhập Key Picovoice" class="form-control" style="width: 290px;" name="hotword_engine_key"  value="<?php echo $HOTWORD_ENGINE_KEY ?>" required></td>
-</tr></tbody></table></div></div>
+<td><input type="text" placeholder="Nhập Key Của Bạn" title="Nhập Key Picovoice" class="form-control" style="width: 290px;" id="hotword_engine_key" name="hotword_engine_key"  value="<?php echo $HOTWORD_ENGINE_KEY ?>" required></td>
+</tr>
+<tr><td><center><input type="button" id="check_token_picovoice" class="btn btn-warning" value="Kiểm Tra Token"></td></center></tr>
+
+</tbody></table></div></div>
 <div id="popupContainer" class="popup-container" onclick="hidePopup()">
 <div id="popupContent" onclick="preventEventPropagation(event)">
 <p><center><b>Hotword Engine</b></center><br/>
@@ -3538,6 +3541,42 @@ $(document).ready(function() {
 
 
   </script>
+<script>
+    document.getElementById("check_token_picovoice").addEventListener("click", function() {
+        $('#loading-overlay').show();
+
+        // Lấy giá trị từ thẻ input
+        var hotwordEngineKey = document.getElementById("hotword_engine_key").value;
+
+        // Kiểm tra giá trị trước khi gửi yêu cầu
+        if (!hotwordEngineKey) {
+            alert("Vui lòng nhập key Picovoice.");
+            return;
+        }
+
+        // Gửi yêu cầu AJAX sử dụng jQuery
+        $.ajax({
+            url: "Ajax/Check_Key_Picovoice.php",
+            type: "GET",
+            data: { key: hotwordEngineKey },
+            success: function(response) {
+                // Kiểm tra nếu dữ liệu trả về là null
+                if (response === "") {
+                    alert("Không lấy được dữ liệu trả về, kiểm tra lại Key");
+                } else {
+                    // Xử lý dữ liệu nhận được từ server
+                    alert(response); // In dữ liệu nhận được ra console (có thể thay thế bằng xử lý dữ liệu theo nhu cầu)
+                }
+                $('#loading-overlay').hide();
+            },
+            error: function(xhr, status, error) {
+                // Xử lý lỗi nếu có
+                alert("Đã xảy ra lỗi: " + error);
+                $('#loading-overlay').hide();
+            }
+        });
+    });
+</script>
 
 </body>
 
