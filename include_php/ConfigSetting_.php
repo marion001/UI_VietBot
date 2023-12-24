@@ -3562,7 +3562,7 @@ $(document).ready(function() {
             success: function(response) {
                 // Kiểm tra nếu dữ liệu trả về là null
                 if (response === "") {
-                    alert("Không có dữ liệu trả về, kiểm tra lại Key không hợp lệ hoặc tài khoản picovoice đã bị khóa");
+                    alert("Không có dữ liệu trả về, kiểm tra lại Token không hợp lệ hoặc tài khoản picovoice đã bị khóa");
                 } else {
                     // Xử lý dữ liệu nhận được từ server
                     alert(response); // In dữ liệu nhận được ra console (có thể thay thế bằng xử lý dữ liệu theo nhu cầu)
