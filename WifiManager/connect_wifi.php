@@ -59,11 +59,11 @@ $result = stream_get_contents($stream_out);
 	
 	} 
     else {
-        echo "Invalid action.";
+        echo "Hành động không được phép";
     }
 } 
 else {
-    echo "Invalid request.";
+    echo "Yêu cầu không được phép";
 }
 ?>
 
