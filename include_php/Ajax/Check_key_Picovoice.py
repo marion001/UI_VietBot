@@ -47,7 +47,7 @@ except pvporcupine.PorcupineInvalidArgumentError as e:
             print(f"Lỗi, Token Picovoice không hợp lệ hoặc bị khóa\n Hãy kiểm tra lại")
         else:
         # Xử lý PorcupineInvalidArgumentError khác
-            print(f"Lỗi Token không hợp lệ: {e}")
+            print(f"Có lỗi xảy ra khi kiểm tra mã Token: {e}")
     except pvporcupine.PorcupineInvalidArgumentError as f:
             access_key_error_regexx = re.compile(r'Failed to parse AccessKey `(?P<access_key>.*?)`')
             access_key_matchh = access_key_error_regexx.search(str(f))
@@ -56,4 +56,4 @@ except pvporcupine.PorcupineInvalidArgumentError as e:
                 print(f"Lỗi, Token Picovoice không hợp lệ hoặc bị khóa\n Hãy kiểm tra lại")
             else:
         # Xử lý PorcupineInvalidArgumentError khác
-                print(f"Lỗi Token không hợp lệ: {f}")
+                print(f"Có lỗi xảy ra khi kiểm tra mã Token: {f}")
