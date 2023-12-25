@@ -526,42 +526,16 @@ if (isset($_POST['download']) && isset($_POST['selectedFile'])) {
             echo "var message = document.getElementById('message');";
             echo "message.innerHTML += '<font color=red>Không có tệp tin được chọn để tải xuống</font>';";
             echo "</script>";
-		
     }
 }
 ?>
 <br/>
-
 <?php
 if (isset($_POST['checkforupdates'])) {
-$curl = curl_init();
-curl_setopt_array($curl, array(
-  CURLOPT_URL => 'http://'.$serverIP.':5000',
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_ENCODING => '',
-  CURLOPT_MAXREDIRS => 10,
-  CURLOPT_TIMEOUT => 0,
-  CURLOPT_FOLLOWLOCATION => true,
-  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-  CURLOPT_CUSTOMREQUEST => 'POST',
-  CURLOPT_POSTFIELDS =>'{"type": 3,"data": "vietbot_version"}',
-  CURLOPT_HTTPHEADER => array(
-    'Accept: */*',
-    'Accept-Language: vi',
-    'Connection: keep-alive',
-    'Content-Type: application/json',
-    'DNT: 3',
-    'Origin: http://'.$serverIP,
-    'Referer: http://'.$serverIP.'/',
-    'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'
-  ),
-));
-$response = curl_exec($curl);
-curl_close($curl);
-$data = json_decode($response, true);
+$data_vietbot_Version = $dataVersionUI->vietbot_version->latest;
 // Kiểm tra kết quả từ yêu cầu cURL
-if (!empty($data) && isset($data['result'])) {
-  $currentresult = $data['result'];
+if (!empty($data_vietbot_Version)) {
+  $currentresult = $data_vietbot_Version;
 } else {
   // Lấy dữ liệu "latest" từ tệp tin version.json cục bộ
   $localJson = file_get_contents($DuognDanThuMucJson.'/version.json');
@@ -579,7 +553,6 @@ if ($currentresult === $latestVersion) {
             echo "</script>";
   
 } else {
-
     		echo "<script>";
             echo "var messagee = document.getElementById('messagee');";
             echo "messagee.innerHTML += '<font color=green>Có phiên bản mới: <b>$latestVersion</b></font><br/>';";
