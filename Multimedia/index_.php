@@ -41,7 +41,7 @@ if ($sync_music_stream != 'web_ui' && $sync_music_stream != 'mic') {
     $sync_music_stream = 'mic';
 }
 
-function install_source_node($DuognDanUI_HTML,$serverIP,$SSH_Port,$SSH_TaiKhoan,$SSH_MatKhau,$E_rror_HOST,$E_rror,$PHP_SELF) {
+function install_source_node($DuognDanUI_HTML,$serverIP,$SSH_Port,$SSH_TaiKhoan,$SSH_MatKhau,$E_rror_HOST,$E_rror) {
 	
 		$url = 'https://raw.githubusercontent.com/marion001/Google-APIs-Client-Library-PHP/main/node_modules.tar.gz';
 		$destination = $DuognDanUI_HTML.'/assets/lib_php/node_modules.tar.gz';
@@ -54,10 +54,12 @@ function install_source_node($DuognDanUI_HTML,$serverIP,$SSH_Port,$SSH_TaiKhoan,
 			$result = file_put_contents($destination, $fileContent);
 
 			if ($result !== false) {
-				echo 'File đã được tải xuống thành công và lưu vào ' . $destination;
+				//echo 'Dữ liệu đã được tải xuống thành công và lưu vào ' . $destination.'<br/>';
+				echo '<center>Dữ liệu đã được tải xuống thành công</center>';
 				$phar = new PharData($destination);
 				$phar->extractTo($extractedFolderPath, null, true);  // Tham số thứ ba (true) cho phép ghi đè
-				echo "Tệp đã được giải nén thành công vào $extractedFolderPath<br/>";
+				//echo "Tệp dữ liệu đã được cấu hình thành công vào $extractedFolderPath <br/>Hãy tải lại trang để áp dụng<br/>";
+				echo "<center>Tệp dữ liệu đã được cấu hình thành công. <br/>Hãy tải lại trang để áp dụng<br/><center>";
 				chmod($extractedFolderPath . 'node_modules', 0777);
 				shell_exec("rm $destination");
 				$connection = ssh2_connect($serverIP, $SSH_Port);
@@ -71,14 +73,17 @@ function install_source_node($DuognDanUI_HTML,$serverIP,$SSH_Port,$SSH_TaiKhoan,
 				stream_set_blocking($stream, true);
 				$stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
 				stream_get_contents($stream_out);
+				echo '<center><a href="index.php"><button type="submit" class="btn btn-danger">Tải Lại</button></a></center>';
 				} 
 			else {
-        echo 'Lỗi khi lưu nội dung vào ' . $destination;
+        echo 'Lỗi khi lưu nội dung tệp cấu hình vào ' . $destination;
+		echo '<br/><center><a href="index.php"><button type="submit" class="btn btn-danger">Tải Lại</button></a></center>';
 			}
 		} else {
-			echo 'Lỗi khi tải file từ ' . $url;
+			echo 'Lỗi khi tải xuống tệp cấu hình từ ' . $url;
+			echo '<br/><center><a href="index.php"><button type="submit" class="btn btn-danger">Tải Lại</button></a></center>';
 		}
-	
+		exit();
 }
 
 if (isset($_POST['install_lib_node_js'])) {
@@ -90,13 +95,18 @@ if (isset($_POST['install_lib_node_js'])) {
     if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {
         die($E_rror);
     }
+	//cập nhật nguồn trước khi cài thư viện node js
+    $stream1 = ssh2_exec($connection, 'sudo apt update');
+    stream_set_blocking($stream1, true);
+    $stream_out1 = ssh2_fetch_stream($stream1, SSH2_STREAM_STDIO);
+    stream_get_contents($stream_out1);
+	
     $stream = ssh2_exec($connection, 'sudo apt install nodejs -y');
     stream_set_blocking($stream, true);
     $stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
     stream_get_contents($stream_out);
-install_source_node($DuognDanUI_HTML,$serverIP,$SSH_Port,$SSH_TaiKhoan,$SSH_MatKhau,$E_rror_HOST,$E_rror,$PHP_SELF);
-header("Location: $PHP_SELF");
-exit();
+install_source_node($DuognDanUI_HTML,$serverIP,$SSH_Port,$SSH_TaiKhoan,$SSH_MatKhau,$E_rror_HOST,$E_rror);
+
 }
 
 
@@ -117,9 +127,7 @@ if (is_dir($directory . '/node_modules')) {
     //echo 'Thư mục node_modules tồn tại.<br>';
 } else {
     //echo 'Thư mục node_modules không tồn tại.<br>';
-	install_source_node($DuognDanUI_HTML,$serverIP,$SSH_Port,$SSH_TaiKhoan,$SSH_MatKhau,$E_rror_HOST,$E_rror,$PHP_SELF);
-	header("Location: $PHP_SELF");
-	exit();
+	install_source_node($DuognDanUI_HTML,$serverIP,$SSH_Port,$SSH_TaiKhoan,$SSH_MatKhau,$E_rror_HOST,$E_rror);
 	
 }
 
