@@ -20,6 +20,6 @@ echo stream_get_contents($stream_out);
 
     //echo $result;
 } else {
-    echo "Invalid action.";
+    echo "Lỗi khi Xóa Wifi: '$wifiName'";
 }
 ?>
