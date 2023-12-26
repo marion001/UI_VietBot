@@ -229,8 +229,9 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
           <a href="./"><img src="assets/img/VietBot128.png" alt="/" title="Nhấn Để Về Trang Chủ"></a>
         </div>
       <h1 class="mt-1" style="font-size: 14px;"><?php echo $MYUSERNAME; ?></h1>
-			<a class="download-cv btn btn-warning d-none d-lg-inline-block" href="#LogServiceCMD" style="opacity: 1; font-size: 16px; padding: 10px 30px;" title="Nhấn để kiểm tra log, các tác vụ, và nhập lệnh cần thiết">Log/Service/CMD</a>
-      </div>
+		<!--	<a class="download-cv btn btn-warning d-none d-lg-inline-block" href="" style="opacity: 1; font-size: 16px; padding: 10px 30px;" title="Comback_Soon">Comback_Soon</a>
+      -->
+	  </div>
       <div class="menu-align">
         <ul class="list-group menu text-center " id="menu">
           <li class="list-group-item">
@@ -254,9 +255,9 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
             </a>
           </li>
           <li class="list-group-item">
-            <a href="#File_Shell">
-              <i class="bi bi-file-earmark-code" title="Quản Lý File"></i>
-              <span>File</span>
+            <a href="#LogServiceCMD1">
+              <i class="bi bi-terminal-plus" title="Log/Service/Debug/Command"></i>
+              <span>Debug</span>
             </a>
           </li>
 		  
@@ -278,9 +279,9 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         
          
         </ul>
-        <div class="menu-footer">
-          <a class="download-cv primary-button mt-3 mb-4 d-lg-none" href="#LogServiceCMD" title="Kiểm Tra Log, Các Hoạt Động Của Hệ Thống, Command">Log/Service/CMD</a>
-        </div>
+      <!--  <div class="menu-footer">
+          <a class="download-cv primary-button mt-3 mb-4 d-lg-none" href="" title="Comback_Soon">Comback_Soon</a>
+        </div> -->
 	
       </div>
     </div>
@@ -436,10 +437,7 @@ if (!isset($_SESSION['root_id'])) {
 	  	</div>
 
       </section>
-      <!--  Hero End  -->
-	        <section id="LogServiceCMD" class="section about bg-secondary text-primary">
-			 <iframe src="./include_php/LogServiceCMD.php" width="100%" height="430px"></iframe>
-			 </section>
+
       <!--  About Start  -->
       <section id="about" class="section about bg-gray-400 text-black">
         <div class="container">
@@ -607,8 +605,9 @@ if (!isset($_SESSION['root_id'])) {
 </section>
 <!--  Resume End  -->
 <!--  Portfolio Start  -->
-<section id="File_Shell" class="section portfolio bg-gray-400 text-white">
-    <iframe src="./include_php/Fork_PHP/Shell.php" width="100%" height="470px"></iframe>
+<section id="LogServiceCMD1" class="section portfolio bg-gray-400 text-white">
+ <!--   <iframe src="./include_php/Fork_PHP/Shell.php" width="100%" height="470px"></iframe> -->
+<iframe src="./include_php/LogServiceCMD.php" width="100%" height="430px"></iframe>
 </section>
 <!--  Portfolio End  -->
 <!--  Blog Start  -->
