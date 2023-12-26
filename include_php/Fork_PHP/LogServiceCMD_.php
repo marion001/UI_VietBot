@@ -446,6 +446,7 @@ $output .= stream_get_contents($stream_out1);
 }
 
 ?>
+<br/>
     <form  id="my-form"  method="post">
 	<div class="row g-3 d-flex justify-content-center">
   <div class="col-auto"> 
@@ -585,7 +586,7 @@ if ($xml_content) {
 
 </center>
 
-
+<br/>
     <script>
         let intervalId;
         let logType = "<?php echo $check_current_log_status; ?>"; // Default log type
