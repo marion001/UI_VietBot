@@ -35,7 +35,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
 		</style>
 		  <script src="../assets/js/ajax_jquery_3.6.0_jquery.min.js"></script>
 </head>
-<body>
+<body><br/>
 	    <div id="loading-overlay">
           <img id="loading-icon" src="../assets/img/Loading.gif" alt="Loading...">
 		  <div id="loading-message">Đang Thực Thi...</div>
