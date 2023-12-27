@@ -752,7 +752,7 @@ if (@$_POST['audioo_playmp3_success'] === "playmp3_success") {
 ?>
 
 <?php
-}
+} 
 }
 
 if (isset($_POST['upload_restors_ui'])) {
@@ -890,14 +890,16 @@ echo $selectDropdown;
  <form action="" id="my-form" method="post" enctype="multipart/form-data">
  <b>Tải lên tệp tin khôi phục:</b>
 <div class="input-group">
-  <div class="custom-file col-xs-2">
+
+  
     <input type="file" class="form-control"  name="file_restos_upload" id="file_restos_upload" accept=".tar.gz">
-  </div>
-  <div class="input-group-append">
+
+  
     <button class="btn btn-primary" name="upload_restors_ui" type="submit">Tải Lên</button>
-  </div>
+  
+ 
 </div>
-    </form>
+    </form> 
 	
 
 
