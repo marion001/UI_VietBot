@@ -151,6 +151,47 @@ if (file_exists($autoloadPath) && is_file($autoloadPath)) {
 }
 
 
+
+//Chmod 777
+if (isset($_POST['set_full_quyen'])) {
+$connection = ssh2_connect($serverIP, $SSH_Port);
+if (!$connection) {die($E_rror_HOST);}
+if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
+$stream1 = ssh2_exec($connection, 'sudo chmod -R 0777 '.$Path_Vietbot_src);
+stream_set_blocking($stream1, true);
+$stream_out1 = ssh2_fetch_stream($stream1, SSH2_STREAM_STDIO);
+stream_get_contents($stream_out1);
+echo '<meta http-equiv="refresh" content="1">';
+//header("Location: $PHP_SELF"); 
+exit;
+}
+// Thư mục cần kiểm tra 777
+$directories = array("$DuognDanUI_HTML","$DuognDanThuMucJson");
+function checkPermissions($path, &$hasPermissionIssue) {
+    $files = scandir($path);
+    foreach ($files as $file) {
+		// bỏ qua thư mục tts_saved và __pycache__ check quyền
+        if ($file === '.' || $file === '..' || $file === 'tts_saved' || $file === '__pycache__' || $file === 'backup') {continue;}
+        $filePath = $path . '/' . $file;
+        $permissions = fileperms($filePath);
+        if ($permissions !== false && ($permissions & 0777) !== 0777) {
+            if (!$hasPermissionIssue) {
+               // echo "<br/><center><h3 class='text-danger'>Một Số File,Thư Mục Trong <b>$path</b> Không Có Quyền Can Thiệp.<h3><br/>";
+			   echo "<br/><center>Phát hiện thấy một số nội dung bị thay đổi quyền hạn.<br/>";
+			echo "<form method='post' id='my-form' action=''> <button type='submit' name='set_full_quyen' class='btn btn-success'>Cấp Quyền</button></form></center><br/>";
+                $hasPermissionIssue = true;
+				exit();
+			}	
+            break;}
+        if (is_dir($filePath)) {
+            checkPermissions($filePath, $hasPermissionIssue);
+        }}}
+// Kiểm tra từng thư mục 777
+foreach ($directories as $directory) {
+    $hasPermissionIssue = false;
+    checkPermissions($directory, $hasPermissionIssue);
+}
+
 ?>
 	
 	
@@ -288,43 +329,7 @@ function deleteDirectory($directory) {
     }
     rmdir($directory);
 }
-//Chmod 777
-if (isset($_POST['set_full_quyen'])) {
-$connection = ssh2_connect($serverIP, $SSH_Port);
-if (!$connection) {die($E_rror_HOST);}
-if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
-$stream1 = ssh2_exec($connection, 'sudo chmod -R 0777 '.$Path_Vietbot_src);
-stream_set_blocking($stream1, true);
-$stream_out1 = ssh2_fetch_stream($stream1, SSH2_STREAM_STDIO);
-stream_get_contents($stream_out1);
-header("Location: $PHP_SELF"); exit;
-}
-// Thư mục cần kiểm tra 777
-$directories = array("$DuognDanUI_HTML","$DuognDanThuMucJson");
-function checkPermissions($path, &$hasPermissionIssue) {
-    $files = scandir($path);
-    foreach ($files as $file) {
-		// bỏ qua thư mục tts_saved và __pycache__ check quyền
-        if ($file === '.' || $file === '..' || $file === 'tts_saved' || $file === '__pycache__' || $file === 'backup') {continue;}
-        $filePath = $path . '/' . $file;
-        $permissions = fileperms($filePath);
-        if ($permissions !== false && ($permissions & 0777) !== 0777) {
-            if (!$hasPermissionIssue) {
-               // echo "<br/><center><h3 class='text-danger'>Một Số File,Thư Mục Trong <b>$path</b> Không Có Quyền Can Thiệp.<h3><br/>";
-			   echo "<center>Phát hiện thấy một số nội dung bị thay đổi quyền hạn.<br/>";
-			echo "<form method='post' id='my-form' action='".$PHP_SELF."'> <button type='submit' name='set_full_quyen' class='btn btn-success'>Cấp Quyền</button></form></center>";
-                $hasPermissionIssue = true;
-				exit();
-			}	
-            break;}
-        if (is_dir($filePath)) {
-            checkPermissions($filePath, $hasPermissionIssue);
-        }}}
-// Kiểm tra từng thư mục 777
-foreach ($directories as $directory) {
-    $hasPermissionIssue = false;
-    checkPermissions($directory, $hasPermissionIssue);
-}
+
 
 if (isset($_POST['checkforupdates_ui'])) {
 $localFile = $DuognDanUI_HTML.'/version.json';
