@@ -249,7 +249,11 @@ $tokenDatajjj = json_decode(file_get_contents($tokenFilePath), true);
 		echo '<form method="POST" id="my-form" action="">';
         echo '<center><h4><font color=green>Google Drive Auto Backup hiện đang hợp lệ và hoạt động bình thường!</font></h4><br/>';
 		echo "<button name='reset_token' class='btn btn-danger'>Reset Token</button>";
-		echo "<a href='$PHP_SELF'><button class='btn btn-primary'>Làm Mới</button></a></center>";
+		echo "<a href='$PHP_SELF'><button class='btn btn-primary'>Làm Mới</button></a>";
+		
+		echo "<button name='list_backup_web_ui' class='btn btn-success'>List Backup WEB UI</button>";
+		echo "<button name='list_back_up_vietbot' class='btn btn-warning'>List Backup Vietbot</button></center>";
+		
 		echo "</form>";
     }
 	
@@ -307,7 +311,136 @@ else {
     echo "<font color=red><h4><center>Cần phải được bật <b>Google Drive Auto Backup</b> trong tab <b>Config/Cấu Hình</b> để xem và thiết lập</center></h4></font><br/>";
 	echo "<center><a href='$PHP_SELF'><button class='btn btn-primary'>Tải lại</button></a></center>";
 }
+
+
+
+	//list_backup_web_ui
+if (isset($_POST['list_backup_web_ui'])) {
+$driveService = new Google_Service_Drive($client);
+$folderName = 'Vietbot_WebUi';
+$folders = $driveService->files->listFiles([
+    'q' => "mimeType='application/vnd.google-apps.folder' and name='$folderName'",
+]);
+
+if (count($folders) > 0) {
+    $folderId = $folders[0]->getId();
+    $files = $driveService->files->listFiles([
+        'q' => "'$folderId' in parents",
+    ]);
+    if (count($files) > 0) {
+		$i = 0;
+		echo '<br/><div class="row justify-content-center"><div class="col-auto"><table class="table table-bordered">
+		<thead>
+		<tr><th colspan="3"><center><font color=red>Danh Sách File Backup WebUI Trên Google Drive</font></center></th></tr>
+    <tr>
+      <th scope="col"><center>Tên File</center></th>
+      <th scope="col"><center>Tải Xuống</center></th>
+      <th scope="col"><center>Xem File</center></th>
+    </tr>
+  </thead>
+		<tbody>';
+        foreach ($files as $file) {
+			$i++;
+            $fileName = $file->getName();
+            $fileId = $file->getId();
+            $downloadLink = "https://drive.google.com/uc?export=download&id=$fileId";
+            $viewLink = "https://drive.google.com/file/d/$fileId/view";
+
+            //echo "<p>$fileName <a href=\"$downloadLink\" target=\"_blank\" download>Tải Xuống</a> | <a href=\"$viewLink\" target=\"_blank\">Xem file</a></p>";
+
+echo '<tr>
+      <th scope="row" title="ID file: '.$fileId.'">'.$fileName.'</th>
+      <td><a href="'.$downloadLink.'" target="_blank" download><button class="btn btn-danger">Tải Xuống</button></a></td>
+      <td><a href="'.$viewLink.'" target="_blank"><button class="btn btn-primary">Xem File</button></a></td>
+    </tr>
+	';
+            // Cài đặt quyền truy cập công khai cho tệp tin
+            $userPermission = new Google_Service_Drive_Permission([
+                'type' => 'anyone',
+                'role' => 'reader',
+            ]);
+
+            $driveService->permissions->create($fileId, $userPermission, ['fields' => 'id']);
+        }
+		echo '<tr><td colspan="3">Tổng số: <font color=red>'.$i.'</font> file</td></tr></tbody></table></div></div>';
+		
+    } else {
+        echo "Không có tệp tin trong thư mục sao lưu của WebUI trên Google Drive";
+    }
+} else {
+    //echo "Không tìm thấy thư mục có tên '$folderName'.";
+    echo "Không tìm thấy thư mục chứa các tệp sao lưu WebUI";
+}
+
+}
+
+
+	//list_back_up_vietbot
+if (isset($_POST['list_back_up_vietbot'])) {
+$driveService = new Google_Service_Drive($client);
+$folderName = 'Vietbot_Source';
+$folders = $driveService->files->listFiles([
+    'q' => "mimeType='application/vnd.google-apps.folder' and name='$folderName'",
+]);
+
+if (count($folders) > 0) {
+    $folderId = $folders[0]->getId();
+    $files = $driveService->files->listFiles([
+        'q' => "'$folderId' in parents",
+    ]);
+    if (count($files) > 0) {
+		$i = 0;
+		echo '<br/><div class="row justify-content-center"><div class="col-auto"><table class="table table-bordered">
+		<thead>
+		<tr><th colspan="3"><center><font color=red>Danh Sách File Backup Vietbot src Trên Google Drive</font></center></th></tr>
+    <tr>
+      <th scope="col"><center>Tên File</center></th>
+      <th scope="col"><center>Tải Xuống</center></th>
+      <th scope="col"><center>Xem File</center></th>
+    </tr>
+  </thead>
+		<tbody>';
+        foreach ($files as $file) {
+			$i++;
+            $fileName = $file->getName();
+            $fileId = $file->getId();
+            $downloadLink = "https://drive.google.com/uc?export=download&id=$fileId";
+            $viewLink = "https://drive.google.com/file/d/$fileId/view";
+
+            //echo "<p>$fileName <a href=\"$downloadLink\" target=\"_blank\" download>Tải Xuống</a> | <a href=\"$viewLink\" target=\"_blank\">Xem file</a></p>";
+
+echo '<tr>
+      <th scope="row" title="ID file: '.$fileId.'">'.$fileName.'</th>
+      <td><a href="'.$downloadLink.'" target="_blank" download><button class="btn btn-danger">Tải Xuống</button></a></td>
+      <td><a href="'.$viewLink.'" target="_blank"><button class="btn btn-primary">Xem File</button></a></td>
+    </tr>
+	';
+            // Cài đặt quyền truy cập công khai cho tệp tin
+            $userPermission = new Google_Service_Drive_Permission([
+                'type' => 'anyone',
+                'role' => 'reader',
+            ]);
+
+            $driveService->permissions->create($fileId, $userPermission, ['fields' => 'id']);
+        }
+		echo '<tr><td colspan="3">Tổng số: <font color=red>'.$i.'</font> file</td></tr></tbody></table></div></div>';
+		
+    } else {
+        echo "<center>Không có tệp tin trong thư mục sao lưu của Vietbot trên Google Drive</center>";
+    }
+} else {
+    //echo "Không tìm thấy thư mục có tên '$folderName'.";
+    echo "<center>Không tìm thấy thư mục chứa các tệp sao lưu Vietbot</center>";
+}
+
+}
+
 ?>
+
+
+
+
+
 	<br/><div class="right-align" id="messageeee"></div>
 				<script>
             var messageeee = document.getElementById('messageeee');
