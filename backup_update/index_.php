@@ -244,7 +244,9 @@ $stream_out1 = ssh2_fetch_stream($stream1, SSH2_STREAM_STDIO);
 $stream_out2 = ssh2_fetch_stream($stream2, SSH2_STREAM_STDIO); 
 stream_get_contents($stream_out1); 
 stream_get_contents($stream_out2); 
-header("Location: $PHP_SELF"); exit;
+echo '<meta http-equiv="refresh" content="1">';
+//header("Location: $PHP_SELF"); 
+exit;
 }
 // Thư mục cần kiểm tra 777
 $directories = array("$DuognDanUI_HTML","$DuognDanThuMucJson");
@@ -258,7 +260,7 @@ function checkPermissions($path, &$hasPermissionIssue) {
         if ($permissions !== false && ($permissions & 0777) !== 0777) {
             if (!$hasPermissionIssue) {
 			   echo "<center>Phát hiện thấy một số nội dung bị thay đổi quyền hạn.<br/>";
-			echo "<form method='post' id='my-form' action='".$PHP_SELF."'> <button type='submit' name='set_full_quyen' class='btn btn-success'>Cấp Quyền</button></form></center>";
+			echo "<form method='post' id='my-form' action=''> <button type='submit' name='set_full_quyen' class='btn btn-success'>Cấp Quyền</button></form></center>";
                 $hasPermissionIssue = true;
 				exit();
 			}	
@@ -493,7 +495,7 @@ if (!is_dir($DuognDanThuMucJson)) {
 	    // Lấy danh sách các tệp tin sao lưu
     $files = glob($backupDir . '/*.tar.gz');
     if (count($files) === 0) {
-        echo '<center>Không có tệp tin sao lưu nào</center>';
+        echo '<center>Không có tệp tin sao lưu nào</center><br/>';
     } else {
 		?>
         <div class="row justify-content-center"><div class="col-auto"><div class="input-group">
