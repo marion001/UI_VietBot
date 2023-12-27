@@ -217,8 +217,51 @@ function copyFiles($sourceDirectory, $destinationDirectory, $excludedFiles, $exc
         }
     }
 }
+//function dành cho upload 
+function deleteDirectory($directory) {
+    if (!file_exists($directory)) {
+        return;
+    }
+    $iterator = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS),
+        RecursiveIteratorIterator::CHILD_FIRST
+    );
+    foreach ($iterator as $file) {
+        if ($file->isDir()) {
+            rmdir($file->getPathname());
+        } else {
+            unlink($file->getPathname());
+        }
+    }
+    rmdir($directory);
+}
 
+function extractTarGz($file, $destination) {
+    $command = "tar -xzf $file -C $destination";
+    exec($command);
+}
+function copyRecursiveExclude($source, $destination, $excludeExtensions = array('.zip', '.tar.gz')) {
+    $dir = opendir($source);
+    @mkdir($destination);
 
+    while (($file = readdir($dir))) {
+        if (($file != '.') && ($file != '..')) {
+            $sourceFile = $source . '/' . $file;
+            $destinationFile = $destination . '/' . $file;
+
+            if (is_dir($sourceFile)) {
+                copyRecursiveExclude($sourceFile, $destinationFile, $excludeExtensions);
+            } else {
+                $extension = pathinfo($sourceFile, PATHINFO_EXTENSION);
+                if (!in_array($extension, $excludeExtensions)) {
+                    copy($sourceFile, $destinationFile);
+                }
+            }
+        }
+    }
+    closedir($dir);
+}
+//end functyion dành cho upload
 	//restart vietbot
 if (isset($_POST['restart_vietbot'])) {
 $connection = ssh2_connect($serverIP, $SSH_Port);
@@ -248,6 +291,64 @@ echo '<meta http-equiv="refresh" content="1">';
 //header("Location: $PHP_SELF"); 
 exit;
 }
+
+if (isset($_POST['upload_restors_ui'])) {
+    // Kiểm tra nếu biểu mẫu đã được gửi và có file được chọn
+    if (!empty($_FILES['file_restos_upload']['name'])) {
+        $uploadDir = "$DuognDanUI_HTML/backup_update/extract/"; // Thay đổi đường dẫn tải lên của bạn
+        $uploadedFileName = 'upload_restors_vietbotsrc.tar.gz'; // Thay đổi tên tệp tin mới
+        
+        // Kiểm tra xem tên tệp có bắt đầu bằng "ui_backup_"
+        if (strpos($_FILES['file_restos_upload']['name'], 'vietbot_src_') === 0) {
+            $uploadFile = $uploadDir . $uploadedFileName;
+            
+            // Di chuyển tập tin đã tải lên đến thư mục chỉ định
+            if (move_uploaded_file($_FILES['file_restos_upload']['tmp_name'], $uploadFile)) {
+                //echo 'Tập tin hợp lệ và đã được tải lên thành công: ' . $uploadedFileName;
+                // Thực hiện chmod cho tệp tin .tar.gz và các tệp tin khi giải nén
+                chmod($uploadFile, 0777);
+				//Giải nén
+				extractTarGz($uploadFile, $uploadDir);
+                // Xóa tệp tin nén và thư mục đã giải nén
+				unlink($uploadFile);
+                // Kiểm tra xem trong thư mục $uploadDir đã có thư mục "src" hay không
+                $vietbotDirectory = $uploadDir . 'src';
+                $vietbotDirectoryResources = $uploadDir . 'resources';
+                if (is_dir($vietbotDirectory)) {
+                    //echo 'Thư mục "src" đã tồn tại sau khi giải nén.';
+					copyRecursiveExclude($vietbotDirectory, $DuognDanThuMucJson, array('.zip', '.tar.gz'));
+					copyRecursiveExclude($vietbotDirectoryResources, $PathResources, array('.zip', '.tar.gz'));
+					deleteDirectory($vietbotDirectory);
+					deleteDirectory($vietbotDirectoryResources);
+					//shell_exec("rm $DuognDanUI_HTML/backup_update/dowload_extract/README.md");
+					//SSH Chmod file
+					$connection = ssh2_connect($serverIP, $SSH_Port);
+					if (!$connection) {die($E_rror_HOST);}
+					if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
+					$stream1 = ssh2_exec($connection, 'sudo chmod -R 0777 '.$Path_Vietbot_src);
+					stream_set_blocking($stream1, true);
+					$stream_out1 = ssh2_fetch_stream($stream1, SSH2_STREAM_STDIO);
+					stream_get_contents($stream_out1);
+					//echo '<meta http-equiv="refresh" content="1">';   
+					//header("Location: $PHP_SELF"); 
+					//exit;
+					echo "<center><font color=green>Khôi phục dữ liệu Vietbot thành công, hãy khởi động lại Vietbot để áp dụng</font></center>";
+                } else {
+                    echo '<center><font color=red>Khôi Phục Thất Bại, Thư mục "html" không tồn tại sau khi giải nén.</font></center>';
+                }
+                //echo 'Tệp tin đã được giải nén và cấp quyền chmod thành công';
+            } else {
+                echo '<center><font color=red>Tải lên thất bại: ' . $_FILES['file_restos_upload']['error'] . '</font></center>';
+            }
+        } else {
+            echo '<center><font color=red>Lỗi! Tên tệp không hợp lệ. Vui lòng chọn tệp backup được Web UI tạo ra và có tên bắt đầu bằng "vietbot_src_"</font></center>';
+        }
+    } else {
+        echo '<center><font color=red>Hãy chọn file tải lên để khôi phục Vietbot</font></center>';
+    }
+}
+
+
 // Thư mục cần kiểm tra 777
 $directories = array("$DuognDanUI_HTML","$DuognDanThuMucJson");
 function checkPermissions($path, &$hasPermissionIssue) {
@@ -511,7 +612,25 @@ if (!is_dir($DuognDanThuMucJson)) {
         echo ' <input type="submit" name="restore" class="btn btn-warning" value="Khôi Phục">';
     }
 	?>
-</div></div></div><br/></div></form>
+</div></div></div><br/></form>
+
+ <div class="row justify-content-center"><div class="col-auto">
+ <form action="" id="my-form" method="post" enctype="multipart/form-data">
+ <b>Tải lên tệp tin khôi phục:</b>
+<div class="input-group">
+
+  
+    <input type="file" class="form-control"  name="file_restos_upload" id="file_restos_upload" accept=".tar.gz">
+
+  
+    <button class="btn btn-primary" name="upload_restors_ui" type="submit">Tải Lên</button>
+  
+ 
+</div>
+</div>
+</div>
+    </form> <br/>
+</div>
 <br/> <p class="right-align"><b>Phiên bản Vietbot:  <font color=red><?php echo $dataVersionVietbot->vietbot_version->latest; ?></font></b></p>
 	<?php
 // Xử lý tải xuống tệp tin được chọn
