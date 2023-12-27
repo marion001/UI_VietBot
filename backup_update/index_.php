@@ -217,6 +217,31 @@ function copyFiles($sourceDirectory, $destinationDirectory, $excludedFiles, $exc
         }
     }
 }
+//Xóa các file và thư mục  con, giữ lại thư mục dích
+function deleteContents($directory) {
+    if (!is_dir($directory)) {
+        return false;
+    }
+
+    $files = glob($directory . '/*');
+
+    foreach ($files as $file) {
+        is_dir($file) ? deleteDirectorySub($file) : unlink($file);
+    }
+
+    echo 'Đã xóa tất cả nội dung trong thư mục: ' . $directory . '<br>';
+}
+
+function deleteDirectorySub($directory) {
+    if (!is_dir($directory)) {
+        return false;
+    }
+
+    deleteContents($directory);
+    rmdir($directory);
+    echo 'Đã xóa thư mục: ' . $directory . '<br>';
+}
+
 //function dành cho upload 
 function deleteDirectory($directory) {
     if (!file_exists($directory)) {
@@ -318,8 +343,8 @@ if (isset($_POST['upload_restors_ui'])) {
                     //echo 'Thư mục "src" đã tồn tại sau khi giải nén.';
 					copyRecursiveExclude($vietbotDirectory, $DuognDanThuMucJson, array('.zip', '.tar.gz'));
 					copyRecursiveExclude($vietbotDirectoryResources, $PathResources, array('.zip', '.tar.gz'));
-					deleteDirectory($vietbotDirectory);
-					deleteDirectory($vietbotDirectoryResources);
+					deleteContents($uploadDir);
+					//deleteDirectory($vietbotDirectoryResources);
 					//shell_exec("rm $DuognDanUI_HTML/backup_update/dowload_extract/README.md");
 					//SSH Chmod file
 					$connection = ssh2_connect($serverIP, $SSH_Port);
@@ -334,7 +359,8 @@ if (isset($_POST['upload_restors_ui'])) {
 					//exit;
 					echo "<center><font color=green>Khôi phục dữ liệu Vietbot thành công, hãy khởi động lại Vietbot để áp dụng</font></center>";
                 } else {
-                    echo '<center><font color=red>Khôi Phục Thất Bại, Thư mục "html" không tồn tại sau khi giải nén.</font></center>';
+					deleteContents($uploadDir);
+                    echo '<center><font color=red>Khôi Phục Thất Bại, Dữ liệu "Vietbot" không tồn tại sau khi giải nén.</font></center>';
                 }
                 //echo 'Tệp tin đã được giải nén và cấp quyền chmod thành công';
             } else {
