@@ -14,7 +14,7 @@
     <script>
         $(document).ready(function() {
             $('#my-form').on('submit', function() {
-                // Hiển thị biểu tượng loading
+                // Hiển thị biểu tượng loading 
                 $('#loading-overlay').show();
 
                 // Vô hiệu hóa nút gửi
@@ -752,13 +752,63 @@ if (@$_POST['audioo_playmp3_success'] === "playmp3_success") {
 ?>
 
 <?php
-
-
-
-
-
 }
 }
+
+if (isset($_POST['upload_restors_ui'])) {
+    // Kiểm tra nếu biểu mẫu đã được gửi và có file được chọn
+    if (!empty($_FILES['file_restos_upload']['name'])) {
+        $uploadDir = "$DuognDanUI_HTML/ui_update/dowload_extract/"; // Thay đổi đường dẫn tải lên của bạn
+        $uploadedFileName = 'upload_restors_ui.tar.gz'; // Thay đổi tên tệp tin mới
+        
+        // Kiểm tra xem tên tệp có bắt đầu bằng "ui_backup_"
+        if (strpos($_FILES['file_restos_upload']['name'], 'ui_backup_') === 0) {
+            $uploadFile = $uploadDir . $uploadedFileName;
+            
+            // Di chuyển tập tin đã tải lên đến thư mục chỉ định
+            if (move_uploaded_file($_FILES['file_restos_upload']['tmp_name'], $uploadFile)) {
+                //echo 'Tập tin hợp lệ và đã được tải lên thành công: ' . $uploadedFileName;
+                // Thực hiện chmod cho tệp tin .tar.gz và các tệp tin khi giải nén
+                chmod($uploadFile, 0777);
+				//Giải nén
+				extractTarGz($uploadFile, $uploadDir);
+                // Xóa tệp tin nén và thư mục đã giải nén
+                unlink($uploadFile);
+                // Kiểm tra xem trong thư mục $uploadDir đã có thư mục "html" hay không
+                $htmlDirectory = $uploadDir . 'html';
+                if (is_dir($htmlDirectory)) {
+                    //echo 'Thư mục "html" đã tồn tại sau khi giải nén.';
+					copyRecursiveExclude($htmlDirectory, $DuognDanUI_HTML, array('.zip', '.tar.gz'));
+					deleteDirectory($htmlDirectory);
+					shell_exec("rm $DuognDanUI_HTML/ui_update/dowload_extract/README.md");
+					//SSH Chmod file
+					$connection = ssh2_connect($serverIP, $SSH_Port);
+					if (!$connection) {die($E_rror_HOST);}
+					if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
+					$stream1 = ssh2_exec($connection, 'sudo chmod -R 0777 '.$Path_Vietbot_src);
+					stream_set_blocking($stream1, true);
+					$stream_out1 = ssh2_fetch_stream($stream1, SSH2_STREAM_STDIO);
+					stream_get_contents($stream_out1);
+					//echo '<meta http-equiv="refresh" content="1">';   
+					//header("Location: $PHP_SELF"); 
+					//exit;
+					echo "<center><font color=green>Khôi phục dữ liệu Web UI thành công, hãy tải lại trang để áp dụng</font></center>";
+                } else {
+                    echo '<center><font color=red>Khôi Phục Thất Bại, Thư mục "html" không tồn tại sau khi giải nén.</font></center>';
+                }
+                //echo 'Tệp tin đã được giải nén và cấp quyền chmod thành công';
+            } else {
+                echo '<center><font color=red>Tải lên thất bại: ' . $_FILES['file_restos_upload']['error'] . '</font></center>';
+            }
+        } else {
+            echo '<center><font color=red>Lỗi! Tên tệp không hợp lệ. Vui lòng chọn tệp backup được Web UI tạo ra và có tên bắt đầu bằng "ui_backup_"</font></center>';
+        }
+    } else {
+        echo '<center><font color=red>Hãy chọn file tải lên để khôi phục Web UI</font></center>';
+    }
+}
+
+ 
 if (isset($_POST['restors_ui'])) {
     $selectedFile = $_POST['tarFile'];
     if ($selectedFile === "....") {
@@ -810,7 +860,7 @@ if (isset($_POST['download']) && isset($_POST['tarFile'])) {
 
 
 
-	   <div class="row justify-content-center"><div class="col-auto"><div class="input-group">
+<br/>	   <div class="row justify-content-center"><div class="col-auto"><div class="input-group">
 <?php
 $directory = $DuognDanUI_HTML.'/ui_update/backup';
 // Lấy danh sách các tệp .tar.gz trong thư mục
@@ -829,12 +879,34 @@ $selectDropdown .= '</select>';
 echo $selectDropdown; 
 ?>
 <input type="submit" name="download" class="btn btn-primary" value="Tải xuống">
-<input type="submit" name="restors_ui" class="btn btn-warning" value="Khôi Phục">
+<input type="submit" name="restors_ui" class="btn btn-warning" value="Khôi Phục"></form>
+
 </div>
 </div>
-</div><br/>
+</div>
+<div class="row justify-content-center">
+<div class="col-auto">
+<br/>
+ <form action="" id="my-form" method="post" enctype="multipart/form-data">
+ <b>Tải lên tệp tin khôi phục:</b>
+<div class="input-group">
+  <div class="custom-file col-xs-2">
+    <input type="file" class="form-control"  name="file_restos_upload" id="file_restos_upload" accept=".tar.gz">
   </div>
-  </form>
+  <div class="input-group-append">
+    <button class="btn btn-primary" name="upload_restors_ui" type="submit">Tải Lên</button>
+  </div>
+</div>
+    </form>
+	
+
+
+</div>
+</div>
+
+<br/>
+  </div>
+  
  <br/> <p class="right-align"><b>Phiên bản giao diện:  <font color=red><?php echo $dataVersionUI->ui_version->current; ?></font></b></p>
   
 
