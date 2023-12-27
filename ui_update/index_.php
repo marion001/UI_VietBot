@@ -308,7 +308,7 @@ function copyRecursiveExclude($source, $destination, $excludeExtensions = array(
                     copy($sourceFile, $destinationFile);
                 }
             }
-        }
+        } 
     }
     closedir($dir);
 }
@@ -329,7 +329,30 @@ function deleteDirectory($directory) {
     }
     rmdir($directory);
 }
+//Xóa các file và thư mục  con, giữ lại thư mục dích
+function deleteContents($directory) {
+    if (!is_dir($directory)) {
+        return false;
+    }
 
+    $files = glob($directory . '/*');
+
+    foreach ($files as $file) {
+        is_dir($file) ? deleteDirectorySub($file) : unlink($file);
+    }
+
+    //echo 'Đã xóa tất cả nội dung trong thư mục: ' . $directory . '<br>';
+}
+
+function deleteDirectorySub($directory) {
+    if (!is_dir($directory)) {
+        return false;
+    }
+
+    deleteContents($directory);
+    rmdir($directory);
+   // echo 'Đã xóa thư mục: ' . $directory . '<br>';
+}
 
 if (isset($_POST['checkforupdates_ui'])) {
 $localFile = $DuognDanUI_HTML.'/version.json';
@@ -779,8 +802,9 @@ if (isset($_POST['upload_restors_ui'])) {
                 if (is_dir($htmlDirectory)) {
                     //echo 'Thư mục "html" đã tồn tại sau khi giải nén.';
 					copyRecursiveExclude($htmlDirectory, $DuognDanUI_HTML, array('.zip', '.tar.gz'));
-					deleteDirectory($htmlDirectory);
+					//deleteDirectory($htmlDirectory);
 					shell_exec("rm $DuognDanUI_HTML/ui_update/dowload_extract/README.md");
+					deleteContents($uploadDir);
 					//SSH Chmod file
 					$connection = ssh2_connect($serverIP, $SSH_Port);
 					if (!$connection) {die($E_rror_HOST);}
@@ -794,6 +818,7 @@ if (isset($_POST['upload_restors_ui'])) {
 					//exit;
 					echo "<center><font color=green>Khôi phục dữ liệu Web UI thành công, hãy tải lại trang để áp dụng</font></center>";
                 } else {
+					deleteContents($uploadDir);
                     echo '<center><font color=red>Khôi Phục Thất Bại, Thư mục "html" không tồn tại sau khi giải nén.</font></center>';
                 }
                 //echo 'Tệp tin đã được giải nén và cấp quyền chmod thành công';
