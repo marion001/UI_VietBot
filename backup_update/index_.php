@@ -229,7 +229,7 @@ function deleteContents($directory) {
         is_dir($file) ? deleteDirectorySub($file) : unlink($file);
     }
 
-    echo 'Đã xóa tất cả nội dung trong thư mục: ' . $directory . '<br>';
+    //echo 'Đã xóa tất cả nội dung trong thư mục: ' . $directory . '<br>';
 }
 
 function deleteDirectorySub($directory) {
@@ -239,7 +239,7 @@ function deleteDirectorySub($directory) {
 
     deleteContents($directory);
     rmdir($directory);
-    echo 'Đã xóa thư mục: ' . $directory . '<br>';
+   // echo 'Đã xóa thư mục: ' . $directory . '<br>';
 }
 
 //function dành cho upload 
