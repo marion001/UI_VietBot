@@ -317,62 +317,7 @@ echo '<meta http-equiv="refresh" content="1">';
 exit;
 }
 
-if (isset($_POST['upload_restors_ui'])) {
-    // Kiểm tra nếu biểu mẫu đã được gửi và có file được chọn
-    if (!empty($_FILES['file_restos_upload']['name'])) {
-        $uploadDir = "$DuognDanUI_HTML/backup_update/extract/"; // Thay đổi đường dẫn tải lên của bạn
-        $uploadedFileName = 'upload_restors_vietbotsrc.tar.gz'; // Thay đổi tên tệp tin mới
-        
-        // Kiểm tra xem tên tệp có bắt đầu bằng "ui_backup_"
-        if (strpos($_FILES['file_restos_upload']['name'], 'vietbot_src_') === 0) {
-            $uploadFile = $uploadDir . $uploadedFileName;
-            
-            // Di chuyển tập tin đã tải lên đến thư mục chỉ định
-            if (move_uploaded_file($_FILES['file_restos_upload']['tmp_name'], $uploadFile)) {
-                //echo 'Tập tin hợp lệ và đã được tải lên thành công: ' . $uploadedFileName;
-                // Thực hiện chmod cho tệp tin .tar.gz và các tệp tin khi giải nén
-                chmod($uploadFile, 0777);
-				//Giải nén
-				extractTarGz($uploadFile, $uploadDir);
-                // Xóa tệp tin nén và thư mục đã giải nén
-				unlink($uploadFile);
-                // Kiểm tra xem trong thư mục $uploadDir đã có thư mục "src" hay không
-                $vietbotDirectory = $uploadDir . 'src';
-                $vietbotDirectoryResources = $uploadDir . 'resources';
-                if (is_dir($vietbotDirectory)) {
-                    //echo 'Thư mục "src" đã tồn tại sau khi giải nén.';
-					copyRecursiveExclude($vietbotDirectory, $DuognDanThuMucJson, array('.zip', '.tar.gz'));
-					copyRecursiveExclude($vietbotDirectoryResources, $PathResources, array('.zip', '.tar.gz'));
-					deleteContents($uploadDir);
-					//deleteDirectory($vietbotDirectoryResources);
-					//shell_exec("rm $DuognDanUI_HTML/backup_update/dowload_extract/README.md");
-					//SSH Chmod file
-					$connection = ssh2_connect($serverIP, $SSH_Port);
-					if (!$connection) {die($E_rror_HOST);}
-					if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
-					$stream1 = ssh2_exec($connection, 'sudo chmod -R 0777 '.$Path_Vietbot_src);
-					stream_set_blocking($stream1, true);
-					$stream_out1 = ssh2_fetch_stream($stream1, SSH2_STREAM_STDIO);
-					stream_get_contents($stream_out1);
-					//echo '<meta http-equiv="refresh" content="1">';   
-					//header("Location: $PHP_SELF"); 
-					//exit;
-					echo "<center><font color=green>Khôi phục dữ liệu Vietbot thành công, hãy khởi động lại Vietbot để áp dụng</font></center>";
-                } else {
-					deleteContents($uploadDir);
-                    echo '<center><font color=red>Khôi Phục Thất Bại, Dữ liệu "Vietbot" không tồn tại sau khi giải nén.</font></center>';
-                }
-                //echo 'Tệp tin đã được giải nén và cấp quyền chmod thành công';
-            } else {
-                echo '<center><font color=red>Tải lên thất bại: ' . $_FILES['file_restos_upload']['error'] . '</font></center>';
-            }
-        } else {
-            echo '<center><font color=red>Lỗi! Tên tệp không hợp lệ. Vui lòng chọn tệp backup được Web UI tạo ra và có tên bắt đầu bằng "vietbot_src_"</font></center>';
-        }
-    } else {
-        echo '<center><font color=red>Hãy chọn file tải lên để khôi phục Vietbot</font></center>';
-    }
-}
+
 
 
 // Thư mục cần kiểm tra 777
@@ -641,7 +586,7 @@ if (!is_dir($DuognDanThuMucJson)) {
 </div></div></div><br/></form>
 
  <div class="row justify-content-center"><div class="col-auto">
- <form action="" id="my-form" method="post" enctype="multipart/form-data">
+ <form action="" id="from_upload" method="post" enctype="multipart/form-data">
  <b>Tải lên tệp tin khôi phục:</b>
 <div class="input-group">
 
@@ -677,7 +622,89 @@ if (isset($_POST['download']) && isset($_POST['selectedFile'])) {
 }
 ?>
 <br/>
+
 <?php
+
+if (isset($_POST['upload_restors_ui'])) {
+    // Kiểm tra nếu biểu mẫu đã được gửi và có file được chọn
+    if (!empty($_FILES['file_restos_upload']['name'])) {
+        $uploadDir = "$DuognDanUI_HTML/backup_update/extract/"; // Thay đổi đường dẫn tải lên của bạn
+        $uploadedFileName = 'upload_restors_vietbotsrc.tar.gz'; // Thay đổi tên tệp tin mới
+        
+        // Kiểm tra xem tên tệp có bắt đầu bằng "ui_backup_"
+        if (strpos($_FILES['file_restos_upload']['name'], 'vietbot_src_') === 0) {
+            $uploadFile = $uploadDir . $uploadedFileName;
+            
+            // Di chuyển tập tin đã tải lên đến thư mục chỉ định
+            if (move_uploaded_file($_FILES['file_restos_upload']['tmp_name'], $uploadFile)) {
+                //echo 'Tập tin hợp lệ và đã được tải lên thành công: ' . $uploadedFileName;
+                // Thực hiện chmod cho tệp tin .tar.gz và các tệp tin khi giải nén
+                chmod($uploadFile, 0777);
+				//Giải nén
+				extractTarGz($uploadFile, $uploadDir);
+                // Xóa tệp tin nén và thư mục đã giải nén
+				unlink($uploadFile);
+                // Kiểm tra xem trong thư mục $uploadDir đã có thư mục "src" hay không
+                $vietbotDirectory = $uploadDir . 'src';
+                $vietbotDirectoryResources = $uploadDir . 'resources';
+                if (is_dir($vietbotDirectory)) {
+                    //echo 'Thư mục "src" đã tồn tại sau khi giải nén.';
+					copyRecursiveExclude($vietbotDirectory, $DuognDanThuMucJson, array('.zip', '.tar.gz'));
+					copyRecursiveExclude($vietbotDirectoryResources, $PathResources, array('.zip', '.tar.gz'));
+					deleteContents($uploadDir);
+					//deleteDirectory($vietbotDirectoryResources);
+					//shell_exec("rm $DuognDanUI_HTML/backup_update/dowload_extract/README.md");
+					//SSH Chmod file
+					$connection = ssh2_connect($serverIP, $SSH_Port);
+					if (!$connection) {die($E_rror_HOST);}
+					if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
+					$stream1 = ssh2_exec($connection, 'sudo chmod -R 0777 '.$Path_Vietbot_src);
+					stream_set_blocking($stream1, true);
+					$stream_out1 = ssh2_fetch_stream($stream1, SSH2_STREAM_STDIO);
+					stream_get_contents($stream_out1);
+					//echo '<meta http-equiv="refresh" content="1">';   
+					//header("Location: $PHP_SELF"); 
+					//exit;
+			echo "<script>";
+            echo "var message = document.getElementById('message');";
+            echo "message.innerHTML += '<center><font color=green>Khôi phục dữ liệu Vietbot thành công, hãy khởi động lại Vietbot để áp dụng</font></center>';";
+            echo "</script>";
+					//echo "<center><font color=green>Khôi phục dữ liệu Vietbot thành công, hãy khởi động lại Vietbot để áp dụng</font></center>";
+                } else {
+					deleteContents($uploadDir);
+			echo "<script>";
+			echo "var message = document.getElementById('message');";
+            echo "message.innerHTML += '<center><font color=red>Khôi Phục Thất Bại, Dữ liệu Vietbot không tồn tại sau khi giải nén.</font></center>';";
+            echo "</script>";
+                    //echo '<center><font color=red>Khôi Phục Thất Bại, Dữ liệu "Vietbot" không tồn tại sau khi giải nén.</font></center>';
+                }
+                //echo 'Tệp tin đã được giải nén và cấp quyền chmod thành công';
+            } else {
+			echo "<script>";
+			echo "var message = document.getElementById('message');";
+            echo "message.innerHTML += '<center><font color=red>Tải lên thất bại: " . $_FILES['file_restos_upload']['error'] . "</font></center>';";
+            echo "</script>";
+                //echo '<center><font color=red>Tải lên thất bại: ' . $_FILES['file_restos_upload']['error'] . '</font></center>';
+            }
+        } else {
+			
+			echo "<script>";
+			echo "var message = document.getElementById('message');";
+            echo "message.innerHTML += '<center><font color=red>Lỗi! Tên tệp không hợp lệ. Vui lòng chọn tệp backup được Web UI tạo ra và có tên bắt đầu bằng <b>vietbot_src_</b></font></center>';";
+            echo "</script>";
+			
+            //echo '<center><font color=red>Lỗi! Tên tệp không hợp lệ. Vui lòng chọn tệp backup được Web UI tạo ra và có tên bắt đầu bằng "vietbot_src_"</font></center>';
+        }
+    } else {
+					echo "<script>";
+			echo "var message = document.getElementById('message');";
+            echo "message.innerHTML += '<center><font color=red>Hãy chọn file tải lên để khôi phục Vietbot</font></center>';";
+            echo "</script>";
+        //echo '<center><font color=red>Hãy chọn file tải lên để khôi phục Vietbot</font></center>';
+    }
+}
+
+
 if (isset($_POST['checkforupdates'])) {
 $data_vietbot_Version = $dataVersionUI->vietbot_version->latest;
 // Kiểm tra kết quả từ yêu cầu cURL
@@ -1431,5 +1458,16 @@ startCheckbox.addEventListener('change', function() {
   }
 });
 </script>
+    <script>
+        $(document).ready(function() {
+            $('#from_upload').on('submit', function() {
+                // Hiển thị biểu tượng loading
+                $('#loading-overlay').show();
+
+                // Vô hiệu hóa nút gửi
+                $('#submit-btn').attr('disabled', true);
+            });
+        });
+    </script>
 </body>
 </html>
