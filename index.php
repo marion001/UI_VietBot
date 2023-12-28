@@ -711,6 +711,7 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
         <!--  <h6 class="text-center theme-skin-title">Đổi Màu Giao Diện</h6> -->
 
 	   <a href="#CFG_WifiManager" role="button" class="btn btn-primary"><i class="bi bi-wifi" title="Cài Đặt,Cấu Hình Wifi"></i></a>
+	   <a href="#Google_Drive_Auto_Backup" role="button" class="btn btn-dark" title="Google Drive Backup"><img src="assets/img/drive.png" title="Google Drive Backup"></a>
 	   <a class="btn btn-secondary" href="./Help_Support/index.php" role="button" target="_bank" title="Hướng Dẫn / Sử Dụng Vietbot"><i class="bi bi-question-square-fill" title="Hướng Dẫn / Sử Dụng Vietbot"></i></a>
 	   <div class="colors text-center">
             <span class="WhiteBg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
@@ -895,6 +896,7 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
     const buttonnElement = document.querySelector('.btn-secondary');
     const buttonnnElement = document.querySelector('.btn-info');
     const buttonnnnElement = document.querySelector('.btn-primary');
+    const buttonnnnnElement = document.querySelector('.btn-dark');
 
     buttonElement.addEventListener('click', function() {
         // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
@@ -917,6 +919,13 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
 		}
 		if (buttonnnnElement) {
   	    buttonnnnElement.addEventListener('click', function() {
+        // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
+        divElement.classList.remove('show');
+        divElement.classList.add('hide');
+		});
+		}
+		if (buttonnnnnElement) {
+  	    buttonnnnnElement.addEventListener('click', function() {
         // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
         divElement.classList.remove('show');
         divElement.classList.add('hide');
