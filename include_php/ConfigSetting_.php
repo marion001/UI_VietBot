@@ -1627,7 +1627,7 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
 				</div>
 				</div></div>
 				<div class="row g-3 d-flex justify-content-center"><div class="col-auto"><br/>
-				<a href="../#Google_Drive_Auto_Backup" target="_bank"><button type="button" class="btn btn-success">Cấu Hình</button></a><a href="../Help_Support/HuongDanGDriveBackup.html" target="_bank"><button type="button" class="btn btn-primary">Hướng Dẫn</button></a>
+				<a href="../Help_Support/HuongDanGDriveBackup.html" target="_bank"><button type="button" class="btn btn-primary">Hướng Dẫn</button></a>
 			</div></div>	<div id="otherDivGoogleDrive" style="display: none;">
 				<br/><div class="row g-3 d-flex justify-content-center"><div class="col-auto">
 				<textarea id="jsonGoogleDriveBackup" class="form-control" name="json_Google_Drive_Backup" rows="10" cols="50"><?php echo $jsonDataGDriveBackup; ?></textarea>
