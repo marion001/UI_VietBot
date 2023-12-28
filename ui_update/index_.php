@@ -11,6 +11,12 @@
 	<script src="../assets/js/jquery-3.6.1.min.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
     
+
+    <div id="loading-overlay">
+        <img id="loading-icon" src="../assets/img/Loading.gif" alt="Loading...">
+        <div id="loading-message">Đang tiến hành, vui lòng đợi...</div>
+    </div>
+	
     <script>
         $(document).ready(function() {
             $('#my-form').on('submit', function() {
@@ -21,13 +27,7 @@
                 $('#submit-btn').attr('disabled', true);
             });
         });
-    </script>
-    <div id="loading-overlay">
-        <img id="loading-icon" src="../assets/img/Loading.gif" alt="Loading...">
-        <div id="loading-message">Đang tiến hành, vui lòng đợi...</div>
-    </div>
-	
-	
+    </script>	
 	
 <?php
 echo '<center><div id="messageee"></div></center>';
@@ -912,7 +912,7 @@ echo $selectDropdown;
 <div class="row justify-content-center">
 <div class="col-auto">
 <br/>
- <form action="" id="my-form" method="post" enctype="multipart/form-data">
+ <form action="" id="form_update" method="post" enctype="multipart/form-data">
  <b>Tải lên tệp tin khôi phục:</b>
 <div class="input-group">
 
@@ -990,6 +990,16 @@ startCheckbox.addEventListener('change', function() {
   }
 });
 </script>
+    <script>
+        $(document).ready(function() {
+            $('#form_update').on('submit', function() {
+                // Hiển thị biểu tượng loading 
+                $('#loading-overlay').show();
 
+                // Vô hiệu hóa nút gửi
+                $('#submit-btn').attr('disabled', true);
+            });
+        });
+    </script>	
 	</body>
 	</html>
