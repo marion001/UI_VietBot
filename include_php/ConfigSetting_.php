@@ -1627,7 +1627,7 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
 				</div>
 				</div></div>
 				<div class="row g-3 d-flex justify-content-center"><div class="col-auto"><br/>
-				<a href="../Help_Support/HuongDanGDriveBackup.html" target="_bank"><button type="button" class="btn btn-primary">Hướng Dẫn</button></a>
+				<button type="button" class="btn btn-primary" data-url-link="../Help_Support/HuongDanGDriveBackup.html" onclick="openNewTab(this)">Hướng Dẫn</button>
 			</div></div>	<div id="otherDivGoogleDrive" style="display: none;">
 				<br/><div class="row g-3 d-flex justify-content-center"><div class="col-auto">
 				<textarea id="jsonGoogleDriveBackup" class="form-control" name="json_Google_Drive_Backup" rows="10" cols="50"><?php echo $jsonDataGDriveBackup; ?></textarea>
@@ -3589,7 +3589,21 @@ $(document).ready(function() {
         });
     });
 </script>
+	<script>
+    function openNewTab(button) {
+        // Lấy giá trị của thuộc tính data-url-link
+        var urlToOpen = button.getAttribute('data-url-link');
 
+        if (urlToOpen) {
+            // Mở đường dẫn trong tab mới nếu giá trị tồn tại
+            window.open(urlToOpen, '_blank');
+        } else {
+            // Xử lý trường hợp không có giá trị data-url-link
+            alert('Không có đường dẫn được cung cấp');
+            console.error('Không có đường dẫn được cung cấp.');
+        }
+    }
+</script>
 </body>
 
 </html>
