@@ -439,7 +439,7 @@ B4: Go to Application -> Cookies -> "__Secure-1PSID" và "__Secure-1PSIDTS" và 
 <div class="row justify-content-center"><div class="col-auto">	 
  <table class="table table-responsive table-striped table-bordered align-middle">
 <tbody>
-<tr><th scope="row"colspan="2"><center><font color=red>Session Google Bard</font></center></th>
+<tr><th scope="row" colspan="2"><center><font color=red>Cookie Google Bard</font></center></th>
 </tr>
 <tr><th scope="row">Secure-1PSID:</th>
 <td><input type="text" class="form-control" id="Secure-1PSID" name="Secure-1PSID" placeholder="Nhập Cookie Secure-1PSID Của Google bard" title="Nhập Cookie Secure-1PSID Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure-1PSID']; ?>">
@@ -455,6 +455,10 @@ B4: Go to Application -> Cookies -> "__Secure-1PSID" và "__Secure-1PSIDTS" và 
 <td><input type="text" class="form-control" id="Secure-1PSIDCC" name="Secure-1PSIDCC" placeholder="Nhập Cookie Secure-1PSIDCC Của Google bard" title="Nhập Cookie Secure-1PSIDCC Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure-1PSIDCC']; ?>">
 </td>
 </tr>
+
+<tr><td colspan="2"><center>
+<button class="btn btn-warning" type="button" onclick="sendCookiesBard()">Kiểm Tra Cookie</button>
+</center></td></tr>
 
 </tbody>
 </table></div></div>
@@ -1553,7 +1557,28 @@ if (count($fileLists) > 0) {
     });
 </script>
 
+    <script>
+        function sendCookiesBard() {
+			$('#loading-overlay').show();
+            var Cookie_1PSID = document.getElementById('Secure-1PSID').value;
+            var Cookie_1PSIDTS = document.getElementById('Secure-1PSIDTS').value;
+            var Cookie_1PSIDCC = document.getElementById('Secure-1PSIDCC').value;
 
+            var xhr = new XMLHttpRequest();
+            var url = `Ajax/Check_Bard_Cookie.php?Cookie_1PSID=${Cookie_1PSID}&Cookie_1PSIDTS=${Cookie_1PSIDTS}&Cookie_1PSIDCC=${Cookie_1PSIDCC}`;
+
+            xhr.open("GET", url, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    // Xử lý kết quả nếu cần
+					$('#loading-overlay').hide();
+                    //console.log(xhr.responseText);
+                    alert(xhr.responseText);
+                }
+            };
+            xhr.send();
+        }
+    </script>
 <script>
     // Hàm để cuộn lên đầu trang
     function scrollToTop() {
