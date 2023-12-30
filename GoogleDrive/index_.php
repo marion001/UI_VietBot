@@ -506,10 +506,9 @@ if (count($folders) > 0) {
 
 echo '<tr>
       <th scope="row" title="ID file: '.$fileId.'">'.$fileName.'</th>
-	  
 		<td><button name="dowload_file_end_restor_ui" class="btn btn-warning" title="Khôi phục dữ liệu từ File: '.$fileName.'" value="'.$fileId.'">Khôi Phục</button></center></td>
       <td><a href="'.$downloadLink.'" target="_blank" download><button class="btn btn-danger" title="Tải xuống file: '.$fileName.'">Tải Xuống</button></a></td>
-      <td><a href="'.$viewLink.'" target="_blank"><button class="btn btn-primary" title="Xem file '.$fileName.' trực tiếp từ link Google Drive">Xem File</button></a></td>
+      <td><button type="button" class="btn btn-primary" data-url-link="'.$viewLink.'" onclick="openNewTab(this)" title="Xem file '.$fileName.' trực tiếp từ link Google Drive">Mở Trong Tab Mới</button></td>
     </tr>
 	';
             // Cài đặt quyền truy cập công khai cho tệp tin
@@ -572,7 +571,7 @@ echo '<tr>
       <th scope="row" title="ID file: '.$fileId.'">'.$fileName.'</th>
 	  <td><button name="dowload_file_end_restor_vietbot" class="btn btn-warning" title="Khôi phục dữ liệu từ File: '.$fileName.'" value="'.$fileId.'">Khôi Phục</button></td>
       <td><a href="'.$downloadLink.'" target="_blank" download><button class="btn btn-danger">Tải Xuống</button></a></td>
-      <td><a href="'.$viewLink.'" target="_blank"><button class="btn btn-primary">Xem File</button></a></td>
+	  <td><button type="button" class="btn btn-primary" data-url-link="'.$viewLink.'" onclick="openNewTab(this)" title="Xem file '.$fileName.' trực tiếp từ link Google Drive">Mở Trong Tab Mới</button></td>
     </tr>
 	';
             // Cài đặt quyền truy cập công khai cho tệp tin
@@ -617,4 +616,19 @@ echo '<tr>
             });
         });
     </script>
+	<script>
+    function openNewTab(button) {
+        // Lấy giá trị của thuộc tính data-url-link
+        var urlToOpen = button.getAttribute('data-url-link');
+
+        if (urlToOpen) {
+            // Mở đường dẫn trong tab mới nếu giá trị tồn tại
+            window.open(urlToOpen, '_blank');
+        } else {
+            // Xử lý trường hợp không có giá trị data-url-link
+            alert('Không có đường dẫn được cung cấp');
+            console.error('Không có đường dẫn được cung cấp.');
+        }
+    }
+</script>
 </body></html>
