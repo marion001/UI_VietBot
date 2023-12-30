@@ -3330,7 +3330,7 @@ $(document).ready(function() {
     //Xử lý hotword và ppn file
     // Hàm xóa file bằng jQuery Ajax
     function deleteFileAjax(filePath) {
-		
+		$('#loading-overlay').show();
 		var pathSegments = filePath.split('/');
 		var fileNameExplode = pathSegments[pathSegments.length - 1];
 		
@@ -3354,9 +3354,11 @@ $(document).ready(function() {
                     } else {
                         alert("Lỗi không thể xóa file.");
                     }
+					$('#loading-overlay').hide();
                 },
                 error: function() {
                     alert("Lỗi trong quá trình xử lý yêu cầu.");
+					$('#loading-overlay').hide();
                 }
             });
         }
@@ -3364,6 +3366,7 @@ $(document).ready(function() {
 
     // Hàm hiển thị danh sách file
     function showFiles() {
+			$('#loading-overlay').show();
             var fileListDiv = $("#fileList");
 
             $.ajax({
@@ -3371,9 +3374,11 @@ $(document).ready(function() {
                 url: "Fork_PHP/hotword_ppn_file.php?action=list_files&language=" + $('input[name="language_hotword"]:checked').val(),
                 success: function(response) {
                     fileListDiv.html(response);
+					$('#loading-overlay').hide();
                 },
                 error: function() {
                     alert("Lỗi trong quá trình xử lý yêu cầu.");
+					$('#loading-overlay').hide();
                 }
             });
         }
@@ -3403,6 +3408,7 @@ $(document).ready(function() {
 
     // Hàm xử lý khi nút "Tải lên" được nhấn
     function uploadFiles() {
+		$('#loading-overlay').show();
         var formData = new FormData($('#uploadForm')[0]); // Lấy dữ liệu từ form
         var selectedLanguage = $('input[name="language_hotword"]:checked').val();
         formData.append("language_hotword", selectedLanguage);
@@ -3431,6 +3437,7 @@ $(document).ready(function() {
                     alert(response);
                     showFiles();
                 }
+				$('#loading-overlay').hide();
             },
 
             /*
@@ -3441,11 +3448,13 @@ $(document).ready(function() {
 		*/
             error: function() {
                 alert("Lỗi trong quá trình xử lý yêu cầu.");
+				$('#loading-overlay').hide();
             }
         });
     }
 
     function downloadFileAjax(filePath) {
+		$('#loading-overlay').show();
         var xhr = new XMLHttpRequest();
         xhr.open('GET', "Fork_PHP/hotword_ppn_file.php?action=download_file&fileToDownload=" + encodeURIComponent(filePath), true);
         // Set responseType về "blob" để xử lý dữ liệu nhị phân
@@ -3466,14 +3475,17 @@ $(document).ready(function() {
                 link.click();
                 // Giải phóng tài nguyên
                 window.URL.revokeObjectURL(url);
+				$('#loading-overlay').hide();
             } else {
                 // Xử lý lỗi
                 alert('Lỗi trong quá trình tải xuống.');
+				$('#loading-overlay').hide();
             }
         };
         // Xử lý sự kiện khi có lỗi
         xhr.onerror = function() {
             alert('Lỗi mạng trong quá trình tải xuống.');
+			$('#loading-overlay').hide();
         };
         // Gửi yêu cầu
         xhr.send();
