@@ -352,7 +352,7 @@ if (!is_dir($DuognDanThuMucJson)) {
 }
 ?>
 <div class="my-div">
-    <span class="corner-text"><h5>Sao Lưu/Cập Nhật:</h5></span>
+    <span class="corner-text"><h5>Cập Nhật:</h5></span>
     <br/>
     <br/>
     <center>
@@ -556,7 +556,7 @@ if (!is_dir($DuognDanThuMucJson)) {
 
 <br/>
 <div class="my-div">
-    <span class="corner-text"><h5>Khôi Phục:</h5></span>
+    <span class="corner-text"><h5>Sao Lưu/Khôi Phục:</h5></span>
     <br/>
     <br/>
     <center>
@@ -598,8 +598,15 @@ if (!is_dir($DuognDanThuMucJson)) {
   
  
 </div>
+
+
 </div>
 </div>
+<br/>
+<center>
+    <button class="btn btn-success" name="tao_ban_sao_luu_va_tai_xuong" type="submit">Tạo Mới Bản Sao Lưu Và Tải Xuống</button>
+</center>
+
     </form> <br/>
 </div>
 <br/> <p class="right-align"><b>Phiên bản Vietbot:  <font color=red><?php echo $dataVersionVietbot->vietbot_version->latest; ?></font></b></p>
@@ -776,7 +783,72 @@ if ($currentresult === $latestVersion) {
 }
 }
 
+
+
+if (isset($_POST['tao_ban_sao_luu_va_tai_xuong'])) {
+	        // Tạo lệnh để nén thư mục
+		$mp33 = "mp3/*";
+		$tts_savedd = "tts_saved/*";
+		$tarCommand = "tar -czvf " . $backupFile ." -C $Path_Vietbot_src --exclude=$tts_savedd --exclude=$mp33 resources src";
+        exec($tarCommand, $output, $returnCode);
+        if ($returnCode === 0) {
+            chmod($backupFile, 0777);
+         //echo 'Tạo bản sao lưu thành công<br/>';
+         //echo 'Tên File: '.$backupFile;
+            // Xóa các file cũ nếu số lượng tệp tin sao lưu vượt quá giới hạn
+            $backupFiles = glob($backupDir . '/*.tar.gz');
+            $numBackupFiles = count($backupFiles);
+            if ($numBackupFiles > $maxBackupFiles) {
+                // Sắp xếp tệp tin sao lưu theo thời gian tăng dần
+                usort($backupFiles, function ($a, $b) {
+                    return filemtime($a) - filemtime($b);
+                });
+                // Xóa các tệp tin cũ nhất cho đến khi số lượng tệp tin sao lưu đạt đến giới hạn
+                $filesToDelete = array_slice($backupFiles, 0, $numBackupFiles - $maxBackupFiles);
+                foreach ($filesToDelete as $file) {
+                    unlink($file);
+                   //echo 'Backup đã đạt giới hạn, đã xóa tệp tin cũ: ' . $file . '\n';
+				//;
+                }
+            }
+	//Tải Xuống
+    $filePath = '/backup_update/backup/' . basename($backupFile); // Đường dẫn đến thư mục chứa tệp tin
+	    if (!empty(basename($backupFile))) {
+        // Tạo liên kết tới trang mục tiêu trong tab mới
+        $targetLink = "http://$serverIP$filePath"; // Đặt đường dẫn mục tiêu tại đây
+        echo "<script>window.open('$targetLink',  '_blank');</script>";
+			echo "<script>";
+            echo "var message = document.getElementById('message');";
+            echo "message.innerHTML += '<font color=green>Đã tạo bản sao lưu mới và tải xuống thành công</font>';";
+            echo "</script>";
+    } else {
+        // Xử lý khi $selectedFile không có giá trị
+			echo "<script>";
+            echo "var message = document.getElementById('message');";
+            echo "message.innerHTML += '<font color=red>Lỗi, Không tìm được file tải xuống</font>';";
+            echo "</script>";
+    }
+        } else {
+			echo "<script>";
+            echo "var messagee = document.getElementById('messagee');";
+            echo "messagee.innerHTML += 'Có lỗi xảy ra khi tạo bản sao lưu. Thư mục <font color=red>resources</font> hoặc <font color=red>src</font> không tồn tại.<br/>';";
+            echo "</script>";
+        }
+		if (!file_exists($PathResources)) {
+    // Nếu không tồn tại, tạo mới thư mục
+    if (!mkdir($PathResources, 0777, true)) {
+        die('Không thể tạo thư mục Resources');
+    } else {
+        // Nếu tạo mới thành công, đặt quyền chmod 777 cho thư mục
+        chmod($PathResources, 0777);
+        //echo 'Tạo và đặt quyền thư mục Resources thành công!';
+    }
+}
+}
+
+
 $startCheckboxReload = "";
+
 
 if (isset($_POST['backup_update'])) {
 	if (isset($block_updates_vietbot_program) && $block_updates_vietbot_program === true) {
