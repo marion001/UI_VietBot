@@ -30,6 +30,9 @@
     </script>	
 	
 <?php
+$timestamp = date('d_m_Y_His'); 
+$backupDir = $DuognDanUI_HTML.'/ui_update/backup'; // Đường dẫn thư mục sao lưu lại file sao lưu
+
 echo '<center><div id="messageee"></div></center>';
 if (isset($_POST['install_lib_gdrive'])) {
 $compressedFilePath = $DuognDanUI_HTML.'/assets/lib_php/lib_Google_APIs_Client_php.tar.gz';
@@ -397,9 +400,6 @@ if (isset($_POST['ui_update'])) {
             echo "messagee.innerHTML += '<font color=red><i>Cập Nhật <b>Web UI</b> Đã Bị Tắt, Cần Đi Tới Tab <b>Cấu Hình Config</b> Để Bỏ Tích</i></font><br/>';";
             echo "</script>";
     } else {
-$backupDir = $DuognDanUI_HTML.'/ui_update/backup'; // Đường dẫn thư mục sao lưu lại file sao lưu
-$timestamp = date('d_m_Y_His'); 
-
 
 //$startCheckboxReload = $_POST['startCheckboxReload'];
 if (isset($_POST['startCheckboxReload'])) {
@@ -747,20 +747,6 @@ echo "</script>";
             echo "</script>";
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 if (@$_POST['audioo_playmp3_success'] === "playmp3_success") {
 	echo '<audio style="display: none;" id="myAudio_success" controls autoplay>';
     echo '<source src="../assets/audio/ui_update_success.mp3" type="audio/mpeg">';
@@ -878,6 +864,58 @@ if (isset($_POST['download']) && isset($_POST['tarFile'])) {
         echo "<script>window.open('$targetLink', '_blank');</script>";
     }
 }
+
+if (isset($_POST['tao_ban_sao_luu_va_tai_xuong'])) {
+	
+$backupFile = $backupDir . '/ui_backup_' . $timestamp . '.tar.gz';
+$excludeArgs = '--exclude="*.tar.gz" --exclude="backup_update/extract/UI_VietBot-main/*"';
+$tarCommand = 'tar -czvf ' . $backupFile . ' ' . $excludeArgs . ' -C ' . dirname($DuognDanUI_HTML) . ' ' . basename($DuognDanUI_HTML);
+exec($tarCommand, $output, $returnCode);
+if ($returnCode === 0) {
+    chmod($backupFile, 0777);
+  //echo 'Tạo bản sao lưu giao diện thành công, hãy tải lại trang để áp dụng';
+    $backupFiles = glob($backupDir . '/*.tar.gz');
+    $numBackupFiles = count($backupFiles);
+    if ($numBackupFiles > $maxBackupFilesUI) {
+        usort($backupFiles, function ($a, $b) {
+            return filemtime($a) - filemtime($b);
+        });
+        $filesToDelete = array_slice($backupFiles, 0, $numBackupFiles - $maxBackupFilesUI);
+        foreach ($filesToDelete as $file) {
+            unlink($file);
+			$basenameeee = basename($file);
+           // $messagee .= 'Backup đạt giới hạn, đã xóa tệp tin sao lưu cũ: ' . $basenameeee . '\n';
+        }
+    }
+	//Tải xuống
+    $filePath = '/ui_update/backup/' . basename($backupFile); // Đường dẫn đến thư mục chứa tệp tin
+    if (basename($backupFile) === "....") {
+        // $message .= '<font color=red>Vui lòng chọn file cần tải xuống!</font>';
+		 	echo "<script>";
+            echo "var message = document.getElementById('message');";
+            echo "message.innerHTML += '<font color=red>Lỗi, Không tìm thấy file backup để tải xuống</font><br/>';";
+            echo "</script>";
+    } else {
+        // Tạo liên kết tới trang mục tiêu trong tab mới
+        $targetLink = "http://$serverIP$filePath"; // Đặt đường dẫn mục tiêu tại đây
+        echo "<script>window.open('$targetLink', '_blank');</script>";
+		echo "<script>";
+            echo "var message = document.getElementById('message');";
+            echo "message.innerHTML += '<font color=green>Đã tạo bản sao lưu mới và tải xuống thành công</font><br/>';";
+            echo "</script>";
+    }
+	
+} else { 
+			echo "<script>";
+            echo "var messagee = document.getElementById('messagee');";
+            echo "messagee.innerHTML += '<font color=red>Có lỗi xảy ra khi tạo bản sao lưu.</font><br/>';";
+            echo "</script>";
+	
+}
+	
+}
+
+
 ?>
 
 
@@ -923,7 +961,11 @@ echo $selectDropdown;
     <button class="btn btn-primary" name="upload_restors_ui" type="submit">Tải Lên</button>
   
  
-</div>
+</div><br/>
+<center>
+<button class="btn btn-success" name="tao_ban_sao_luu_va_tai_xuong" type="submit">Tạo Mới Bản Sao Lưu WEB UI Và Tải Xuống</button>
+
+</center>
     </form> 
 	
 
