@@ -604,7 +604,7 @@ if (!is_dir($DuognDanThuMucJson)) {
 </div>
 <br/>
 <center>
-    <button class="btn btn-success" name="tao_ban_sao_luu_va_tai_xuong" type="submit">Tạo Mới Bản Sao Lưu Và Tải Xuống</button>
+    <button class="btn btn-success" name="tao_ban_sao_luu_va_tai_xuong" type="submit">Tạo Mới Bản Sao Lưu Vietbot Và Tải Xuống</button>
 </center>
 
     </form> <br/>
