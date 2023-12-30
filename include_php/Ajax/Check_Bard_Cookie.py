@@ -29,8 +29,8 @@ try:
 
     # Kiểm tra xem có nội dung hay không
     if 'content' in res:
-        print("Cookie sử dụng được")
-        print(f"Nội dung: {res['content']}")
+        print("Cookie vẫn sử dụng được")
+        print(f"Nội dung kiểm tra: {res['content']}")
     else:
         print("Lỗi, Không có nội dung trả về hãy kiểm tra lại Cookie hoặc thay mới")
 except Exception as e:
