@@ -98,7 +98,8 @@ function picovoice_version($noi_dung_tep, $ten_lop, $ten_phuong_thuc) {
     "stt_gg_ass" => "Google Assistant",
     "stt_fpt" => "FPT",
     "stt_hpda" => "HPDA",
-    "stt_viettel" => "Viettel"
+    "stt_viettel" => "Viettel",
+    "stt_vietbot" => "Vietbot"
 );
 // Thực hiện thay thế từng từ khóa
 foreach ($keywordsSTT as $keywordSTT => $replacementSTT) {
@@ -1260,8 +1261,11 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
 - Chuyển Giọng Nói Thành Văn Bản<br/>
 - <b>Thời Gian Chờ:</b> nếu bọi bot dậy, hết thời gian chờ mà không ra lệnh cho bot, thì bot sẽ quay trở lại trạng thái sleep và chờ gọi hotword.
 </div></div>
-<center><b>Bạn Đang Dùng STT: <font color="red"><?php echo $GET_STT_Replacee; ?></font></b></center>
-<label><input type="radio" name="stt_type" title="Chuyển Giọng Nói Thành Văn Bản Server Google Cloud" value="stt_gg_cloud" <?php if ($GET_STT === 'stt_gg_cloud') echo 'checked'; ?> required  onchange="toggleTokenInput(this)">
+<center><b title="Chuyển giọng nói thành văn bản">Bạn Đang Dùng STT: <font color="red"><?php echo $GET_STT_Replacee; ?></font></b></center>
+
+<label><input type="radio" name="stt_type" title="Chuyển Giọng Nói Thành Văn Bản Vietbot" value="stt_vietbot" <?php if ($GET_STT === 'stt_vietbot') echo 'checked'; ?> required  onchange="toggleTokenInput(this)">
+<font color=blue>Vietbot</font></label>&nbsp;<label>
+<input type="radio" name="stt_type" title="Chuyển Giọng Nói Thành Văn Bản Server Google Cloud" value="stt_gg_cloud" <?php if ($GET_STT === 'stt_gg_cloud') echo 'checked'; ?> required  onchange="toggleTokenInput(this)">
 Google Cloud</label>&nbsp;<label>
 <input type="radio" name="stt_type" title="Chuyển Giọng Nói Thành Văn Bản Server Google Assistant" value="stt_gg_ass" <?php if ($GET_STT === 'stt_gg_ass') echo 'checked'; ?> required  onchange="toggleTokenInput(this)">
 Google Assistant</label>&nbsp;<label>
