@@ -816,6 +816,20 @@ stream_get_contents($stream_out);
 header("Location: $PHP_SELF");
 exit;
 }
+
+//restart vietbot
+if (isset($_POST['install_lib_Socket_Python'])) {
+$connection = ssh2_connect($serverIP, $SSH_Port);
+if (!$connection) {die($E_rror_HOST);}
+if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
+$stream = ssh2_exec($connection, 'pip install websocket-client==1.7.0');
+stream_set_blocking($stream, true);
+$stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
+stream_get_contents($stream_out);
+header("Location: $PHP_SELF");
+exit;
+}
+
 	//Chmod sét full quyền
 if (isset($_POST['set_full_quyen'])) {
 $connection = ssh2_connect($serverIP, $SSH_Port);
@@ -1278,6 +1292,9 @@ Viettel</label>&nbsp;<label>
 <input type="radio" name="stt_type" title="Chuyển Giọng Nói Thành Văn Bản Server HPDA" value="stt_hpda" <?php if ($GET_STT === 'stt_hpda') echo 'checked'; ?> required onchange="toggleTokenInput(this)">
 HPDA</label>
 <br/>
+
+<div id="install_lib_SocketPython"></div>
+
 <div id="tokenInputContainer" style="display: none;">
 <div class="row g-3 d-flex justify-content-center"><div class="col-auto">
 <table class="table table-responsive align-middle"><tbody>
@@ -2049,6 +2066,11 @@ if (count($fileLists) > 0) {
 	<script src="../assets/js/axios_0.21.1.min.js"></script>
 	   
     <script src="../assets/js/bootstrap.min.js"></script>
+	
+	
+
+	
+	
   <script>
        function showSensitiveInput(file_name) {
             var sensitiveInput = document.getElementById('sensitive');
@@ -2629,25 +2651,30 @@ function validateInputs() {
   var tokenInput = document.getElementById("tokenInput");
   var otherDiv = document.getElementById("otherDiv");
   var otherDivgcloud = document.getElementById("otherDivgcloud");
+  var installlibSocketPython = document.getElementById("install_lib_SocketPython");
 
   if (radio.value === "stt_fpt" || radio.value === "stt_viettel") {
     tokenInputContainer.style.display = "block";
     otherDiv.style.display = "none";
 	otherDivgcloud.style.display = "none";
+	installlibSocketPython.style.display = "none";
     tokenInput.value = "<?php echo $GET_Token_STT; ?>";
   } else if (radio.value === "stt_gg_ass") {
     tokenInputContainer.style.display = "none";
     otherDiv.style.display = "block";
 	otherDivgcloud.style.display = "none";
+	installlibSocketPython.style.display = "none";
     tokenInput.value = "Null";
   }else if (radio.value === "stt_gg_cloud") {
     tokenInputContainer.style.display = "none";
     otherDiv.style.display = "none";
+    installlibSocketPython.style.display = "none";
     otherDivgcloud.style.display = "block";
     tokenInput.value = "Null";
   }else if (radio.value === "stt_gg_free") {
     tokenInputContainer.style.display = "none";
     otherDiv.style.display = "none";
+    installlibSocketPython.style.display = "none";
 	otherDivgcloud.style.display = "none";
     tokenInput.value = "Null";
   }
@@ -2655,13 +2682,52 @@ else if (radio.value === "stt_hpda") {
     tokenInputContainer.style.display = "none";
     otherDiv.style.display = "none";
 	otherDivgcloud.style.display = "none";
+	installlibSocketPython.style.display = "none";
     tokenInput.value = "Null";
+  }
+
+else if (radio.value === "stt_vietbot") {
+	installlibSocketPython.style.display = "block";
+    tokenInputContainer.style.display = "none";
+    otherDiv.style.display = "none";
+	otherDivgcloud.style.display = "none";
+    tokenInput.value = "Null";
+///////////////////
+		$('#loading-overlay').show();
+        // Kiểm tra xem radio đã được chọn chưa
+        if (radio.checked) {
+            // Sử dụng AJAX để gửi yêu cầu GET
+            $.ajax({
+                type: 'GET',
+                url: '/include_php/Ajax/Check_Lib_websocket_client.php',
+                success: function(response) {
+					$('#loading-overlay').hide();
+                    // Kiểm tra giá trị trả về từ server
+                    if (response.trim() === 'websocket-client_library_is_not_installed') {
+                        // Thông báo nếu thư viện chưa được cài đặt
+						  $('#install_lib_SocketPython').html('<button style="display: block;" name="install_lib_Socket_Python" class="btn btn-success">Cấu hình STT Vietbot</button><br/>');
+                        alert('STT Vietbot cần được cấu hình\n Hãy nhấn vào nút "Cấu hình STT Vietbot" ngay bên dưới\nSau đó hãy chọn lại và lưu Config');
+					} //else {
+                        // Hiển thị kết quả trả về từ server
+                        //$('#result').html(response);
+                        //console.log(response);
+                    //}
+                },
+                error: function() {
+                    // Xử lý lỗi nếu có
+					$('#loading-overlay').hide();
+					alert('Đã xảy ra lỗi trong quá trình xử lý cấu hình STT Vietbot');
+                    //$('#result').html('Đã xảy ra lỗi trong quá trình xử lý yêu cầu.');
+                }
+            });
+        }
   }
 
   else {
     tokenInputContainer.style.display = "none";
     otherDiv.style.display = "none";
 	otherDivgcloud.style.display = "none";
+	installlibSocketPython.style.display = "none";
     tokenInput.value = "Null";
   }
  
@@ -3608,6 +3674,9 @@ $(document).ready(function() {
         }
     }
 </script>
+
+
+
 </body>
 
 </html>
