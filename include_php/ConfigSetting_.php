@@ -1675,6 +1675,7 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
 <div id="popupContainerLED" class="popup-container" onclick="hidePopupLED()">
 <div id="popupContent" onclick="preventEventPropagationLED(event)">
 <center><b>Cấu Hình Đèn LED</b></center><br/>
+- Chân Led Pin Mặc Định: (GPIO 10) tương ứng với chân Pin số 10<br/>
 - Chọn phần cứng của bạn và cấu hình các mục chức năng cho phép nhập bên dưới<br/><br/></div></div>
 <div id="myDivz" style="display: none;"><center>
  <label><input type="radio" name="led_chonkieu" title="Vietbot AIO Board V2.0 GPIO10" value="Vietbot AIO Board V2.0" <?php if ($LED_TYPE === 'Vietbot AIO Board V2.0') echo 'checked'; ?> onclick="handleLedChange()" required>
@@ -1693,6 +1694,10 @@ WS2812</label>
 None (Không Dùng)</label></center>
 <div class="row justify-content-center"><div class="col-auto">
 <table class="table table-bordered">
+<tr>
+<th scope="row" title="Đầu ra tín hiệu điều khiển led mặc định là GPIO 10">Chân Led Mặc Định: </th>
+<td colspan="2" title="Đầu ra tín hiệu điều khiển led mặc định là GPIO 10"><b><font color=red title="Đầu ra tín hiệu điều khiển led mặc định là GPIO 10">GPIO 10</font></b></td>
+</tr>
 <tr><th scope="row">Số led:</th>
 <td colspan="2"><input type="text"  value="<?php echo $LED_NUMBER_LED; ?>" id="number_led_mode_input" name="number_led" class="disabled-input form-control"></td></tr>
 <tr><th scope="row">Độ sáng:</th>
@@ -1773,7 +1778,7 @@ None (Không Dùng)</label></center>
 <div id="popupContent" onclick="preventEventPropagationGPIO(event)">
 <p><center><b>Cấu Hình Nút Nhấn GPIO</b></center><br/>
 - <b>GPIO:</b> Chọn Chân GPIO để cài đặt chức năng cho nút bấm<br/>
-- <b>Kéo Mức Cao:</b> Tích Để Kéo Nút Nhấn Lên Mức Cao (3.3V), Bỏ Tích Kéo Xuống Mức Thấp GND<br/>
+- <b>Kéo Mức Thấp:</b> Tích Để Kéo Nút Nhấn Xuống Mức Thấp (GND), Bỏ Tích Kéo Lên Mức Cao (3.3v)<br/>
 - <b>Kích Hoạt:</b> Tích để kích hoạt chức năng của nút nhấn, bỏ tích nút nhấn sẽ bị vô hiệu
 <br/></div></div>
 <!--  
@@ -1784,7 +1789,7 @@ None (Không Dùng)</label></center>
 <table class="table table-responsive table-striped table-bordered align-middle">
 <tr><th scope="col"><center>Nút Nhấn</center></th>
 <th scope="col"><center>GPIO</center></th>
-<th scope="col" title="Tích Để Kéo Nút Nhấn Lên Mức Cao (3.3V), Bỏ Tích Kéo Xuống Mức Thấp GND"><center>Kéo Mức Cao</center></th>
+<th scope="col" title="Tích Để Kéo Nút Nhấn Xuống Mức Thấp (GND), Bỏ Tích Kéo Lên Mức Cao 3.3v"><center>Kéo Mức Thấp</center></th>
 <th scope="col" title="Tích Vào Để Kích Hoạt Chức Năng Của Nút Nhấn, Bỏ Tích Nút Nhấn Sẽ Bị Vô Hiệu"><center>Kích Hoạt</center></th></tr>
 <?php
     foreach ($data_config['smart_config']['button'] as $buttonName => $buttonData) {
