@@ -424,12 +424,8 @@ $text_porcupine_version = porcupine_version($file_path);
 //echo "Phiên bản Porcupine: $text_porcupine_version";
 $output .= "Phiên bản Porcupine: $text_porcupine_version";
 }
-
-
 if (isset($_POST['install_picovoice'])) {
-	
 $versions_picovoice_install = $_POST['versions_picovoice_install'];
-
 if (empty($versions_picovoice_install)) {
     $output = "Picovoice:> Hãy chọn phiên bản picovoice cần cài đặt\n";
 } else {
@@ -442,7 +438,53 @@ $stream_out1 = ssh2_fetch_stream($stream1, SSH2_STREAM_STDIO);
 $output = "$GET_current_USER@$HostName:~$ pip install picovoice==$versions_picovoice_install\n";
 $output .= stream_get_contents($stream_out1);
 }
+}
+
+
+if (isset($_POST['install_porcupine'])) {
+$destinationPath = "$PathResources/picovoice/lib";
+$versions_porcupine_install = $_POST['versions_porcupine_install'];
+if (empty($versions_porcupine_install)) {
+    $output .= "Porcupine:> Hãy chọn phiên bản Porcupine cần cài đặt\n";
+} else {
+$fileUrl = 'https://github.com/Picovoice/porcupine/archive/refs/tags/v'.$versions_porcupine_install.'.zip';
+$fileContent = file_get_contents($fileUrl);
+$filename = basename($fileUrl);
+$destinationFile = $destinationPath . '/' . $filename;
+file_put_contents($destinationFile, $fileContent);
+chmod($destinationFile, 0777);
+$output .= "Porcupine:> Phiên bản thư viện Porcupine (.pv) được cài đặt là: $versions_porcupine_install\n";
+
+$fileNameZip = 'porcupine-'.$versions_porcupine_install.'/lib/common';
+$zipFilePath = $destinationPath.'/v'.$versions_porcupine_install.'.zip'; // Đường dẫn đến file ZIP
+$zip = new ZipArchive;
+if ($zip->open($zipFilePath) === TRUE) {
+    $fileNamesToCopy = ["$fileNameZip/porcupine_params.pv", "$fileNameZip/porcupine_params_vn.pv"];
+
+    foreach ($fileNamesToCopy as $fileNameInZip) {
+        // Kiểm tra xem file có tồn tại trong ZIP hay không
+        $index = $zip->locateName($fileNameInZip);
+        if ($index !== false) {
+            // Đọc nội dung của file từ ZIP
+            $fileContent = $zip->getFromIndex($index);
+            // Đường dẫn đến thư mục đích
+            $destinationFilee = $destinationPath . '/' . basename($fileNameInZip);
+            // Ghi nội dung của file vào thư mục đích
+            file_put_contents($destinationFilee, $fileContent);
+            
+            //$output .= 'Porcupine:> File '.basename($fileNameInZip).' đã được đưa vào thư mục lib có chứa tệp .pv | ';
+        } else {
+            $output .= 'Porcupine:> File '.basename($fileNameInZip). 'không tồn tại | ';
+        }
+    }
+    $zip->close();
+	shell_exec('rm ' . escapeshellarg($zipFilePath));
+	$output .= 'Porcupine:> HÃY CHỌN LẠI NGÔN NGỮ HOTWORD VÀ LƯU CẤU HÌNH SAU ĐÓ KHỞI ĐỘNG LẠI VIETBOT ĐỂ ÁP DỤNG.';
 	
+} else {
+    $output .= 'Porcupine:> Lỗi không thể mở file thư viện Porcupine: v'.$versions_porcupine_install.'.zip \n';
+}
+}
 }
 
 ?>
@@ -560,21 +602,49 @@ if ($xml_content) {
     }
     // Hiển thị dropdown list
     foreach ($versions as $version) {
-        echo '<option value="' . $version . '">Phiên Bản: ' . $version . '</option>';
+        echo '<option value="' . $version . '">Picovoice: ' . $version . '</option>';
     }
 } else {
     echo "<option value=''>Phiên bản: -----</option>";
 }
 ?>
  </select></div> </div><div class="col-auto"> <div class="input-group-append">
- <button class="btn btn-danger" name="install_picovoice" title="Cài đặt Picovoice" type="submit">Cài Đặt</button>
+ <button class="btn btn-danger" name="install_picovoice" title="Cài đặt Picovoice" type="submit">Cài Đặt Picovoice</button>
  <button type='submit' name='check_version_picovoice_porcupine' class='btn btn-primary' title='Kiểm tra phiên bản Picovoice và Porcupine'>Kiểm tra phiên bản</button>
  </div> 
  </div> 
 
 
+ </div><hr/>
+ <div class="row g-3 d-flex justify-content-center">
+ <div class="col-auto">
+ <div class="input-group">
+ <span class="input-group-text text-success">Thư Viện Porcupine (.pv)</span>
+     <select class="btn btn-success dropdown-toggle" data-toggle="dropdown" id="inputGroupSelect04" name="versions_porcupine_install">
+	<option value="" selected>Chọn Phiên Bản</option>
+ <?php
+ $uniqueVersions = [];
+    foreach ($versions as $versionpv) {
+    // Lấy 3 ký tự đầu tiên của chuỗi
+    $versionFirstThreeChars = substr($versionpv, 0, 3);
+    
+    // Kiểm tra xem giá trị đã xuất hiện chưa
+    if (!in_array($versionFirstThreeChars, $uniqueVersions)) {
+        // Nếu chưa xuất hiện, thêm vào mảng và hiển thị
+        $uniqueVersions[] = $versionFirstThreeChars;
+        echo '<option value="' . $versionFirstThreeChars . '">Porcupine: ' . $versionFirstThreeChars . '</option>';
+    }
+   }
+?>
+ </select>
  </div>
- 
+ </div>
+ <div class="col-auto"> <div class="input-group-append">
+ <button class="btn btn-danger" name="install_porcupine" title="Cài đặt Porcupine" type="submit">Cài Đặt Porcupine</button>
+ </div> 
+ </div> 
+ </div>
+
     </form>
     <div id="loading-overlay">
           <img id="loading-icon" src="../../assets/img/Loading.gif" alt="Loading...">
