@@ -4,8 +4,8 @@
 //error_reporting(E_ALL);
 //ini_set('display_errors', 1);
 ?>
-  <body>
-      <script>
+<body>
+    <script>
         $(document).ready(function() {
             $('#my-form').on('submit', function() {
                 // Hiển thị biểu tượng loading
@@ -16,31 +16,57 @@
             });
         });
     </script>
-	<script>
-    function selectAllText() {
-        var input = document.getElementById("boidennoidung");
-        input.select();
-		try {
-            document.execCommand("copy");
-          //  alert("Nội dung đã được sao chép thành công!");
-        } catch (err) {
-            //console.error('Lỗi khi sao chép nội dung: ', err);
-           // alert("Lỗi khi sao chép nội dung. Vui lòng thử lại.");
+    <script>
+        $(document).ready(function() {
+            $('#form_dowload_restors').on('submit', function() {
+                // Hiển thị biểu tượng loading
+                $('#loading-overlay').show();
+
+                // Vô hiệu hóa nút gửi
+                $('#submit-btn').attr('disabled', true);
+            });
+        });
+    </script>
+    <script>
+        function selectAllText() {
+            var input = document.getElementById("boidennoidung");
+            input.select();
+            try {
+                document.execCommand("copy");
+                //  alert("Nội dung đã được sao chép thành công!");
+            } catch (err) {
+                //console.error('Lỗi khi sao chép nội dung: ', err);
+                // alert("Lỗi khi sao chép nội dung. Vui lòng thử lại.");
+            }
         }
-    }
-	
-</script>
+
+        function openNewTab(button) {
+            // Lấy giá trị của thuộc tính data-url-link
+            var urlToOpen = button.getAttribute('data-url-link');
+
+            if (urlToOpen) {
+                // Mở đường dẫn trong tab mới nếu giá trị tồn tại
+                window.open(urlToOpen, '_blank');
+            } else {
+                // Xử lý trường hợp không có giá trị data-url-link
+                alert('Không có đường dẫn được cung cấp');
+                console.error('Không có đường dẫn được cung cấp.');
+            }
+        }
+    </script>
     <div id="loading-overlay">
         <img id="loading-icon" src="../assets/img/Loading.gif" alt="Loading...">
-       <div id="loading-message">Đang tiến hành, vui lòng đợi...</div> 
-         
+        <div id="loading-message">Đang tiến hành, vui lòng đợi...</div>
+
     </div>
-  <center><h4>Google Drive Auto Backup Vietbot</h4></center><br/>
-  
-	<center> 
-	<div id="messageee"></div></center>
-	
-	
+    <center>
+        <h4>Google Drive Auto Backup Vietbot</h4>
+    </center>
+    <br/>
+
+    <center>
+        <div id="messageee"></div>
+    </center>
 
 
 <?php
@@ -323,7 +349,12 @@ $tokenDatajjj = json_decode(file_get_contents($tokenFilePath), true);
             echo '<font color=green>Vui lòng xác thực ứng dụng với <b>Vietbot</b> bằng cách truy cập đường dẫn sau và nhập mã ủy quyền:</font><br/><br/>';
 			echo 'Sao chép địa chỉ bên dưới đây và dán vào trình duyệt để <a href="' . $authUrl . '" target="_bank">Lấy Mã Ủy Quyền</a>:<br/>';
             echo '<div class="input-group mb-3"><input type="text" id="boidennoidung" class="form-control" value="' . $authUrl . '" aria-describedby="basic-addon2">
-			<button onclick="selectAllText()" class="btn btn-primary">Sao Chép</button></div><br>';
+			<button onclick="selectAllText()" class="btn btn-primary">Sao Chép</button>
+			
+<button type="button" class="btn btn-success" data-url-link="'.$authUrl.'" onclick="openNewTab(this)">Đi Tới</button>
+			
+			</div>
+			<br>';
 			echo '<form method="POST" id="my-form" action="">Nhập Mã Ủy Quyền <font color=red>*</font>:<br/><div class="input-group mb-3">
 			<input type="text" name="code_token" class="form-control" placeholder="Nhập mã ủy quyền vào đây" aria-describedby="basic-addon2" required>
 			<div class="input-group-append"><input class="btn btn-primary" type="submit" value="Xác thực"></div></div></form>';
@@ -605,30 +636,6 @@ echo '<tr>
             var messageeee = document.getElementById('messageeee');
             messageeee.innerHTML += '<?php echo $messageeee; ?>';
              </script>
-			       <script>
-        $(document).ready(function() {
-            $('#form_dowload_restors').on('submit', function() {
-                // Hiển thị biểu tượng loading
-                $('#loading-overlay').show();
 
-                // Vô hiệu hóa nút gửi
-                $('#submit-btn').attr('disabled', true);
-            });
-        });
-    </script>
-	<script>
-    function openNewTab(button) {
-        // Lấy giá trị của thuộc tính data-url-link
-        var urlToOpen = button.getAttribute('data-url-link');
 
-        if (urlToOpen) {
-            // Mở đường dẫn trong tab mới nếu giá trị tồn tại
-            window.open(urlToOpen, '_blank');
-        } else {
-            // Xử lý trường hợp không có giá trị data-url-link
-            alert('Không có đường dẫn được cung cấp');
-            console.error('Không có đường dẫn được cung cấp.');
-        }
-    }
-</script>
 </body></html>
