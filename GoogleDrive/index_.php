@@ -323,7 +323,7 @@ $tokenDatajjj = json_decode(file_get_contents($tokenFilePath), true);
             echo '<font color=green>Vui lòng xác thực ứng dụng với <b>Vietbot</b> bằng cách truy cập đường dẫn sau và nhập mã ủy quyền:</font><br/><br/>';
 			echo 'Sao chép địa chỉ bên dưới đây và dán vào trình duyệt để <a href="' . $authUrl . '" target="_bank">Lấy Mã Ủy Quyền</a>:<br/>';
             echo '<div class="input-group mb-3"><input type="text" id="boidennoidung" class="form-control" value="' . $authUrl . '" aria-describedby="basic-addon2">
-			<button onclick="selectAllText()" class="btn btn-success">Sao Chép</button></div><br>';
+			<button onclick="selectAllText()" class="btn btn-primary">Sao Chép</button></div><br>';
 			echo '<form method="POST" id="my-form" action="">Nhập Mã Ủy Quyền <font color=red>*</font>:<br/><div class="input-group mb-3">
 			<input type="text" name="code_token" class="form-control" placeholder="Nhập mã ủy quyền vào đây" aria-describedby="basic-addon2" required>
 			<div class="input-group-append"><input class="btn btn-primary" type="submit" value="Xác thực"></div></div></form>';
@@ -507,7 +507,7 @@ if (count($folders) > 0) {
 echo '<tr>
       <th scope="row" title="ID file: '.$fileId.'">'.$fileName.'</th>
 		<td><button name="dowload_file_end_restor_ui" class="btn btn-warning" title="Khôi phục dữ liệu từ File: '.$fileName.'" value="'.$fileId.'">Khôi Phục</button></center></td>
-      <td><a href="'.$downloadLink.'" target="_blank" download><button class="btn btn-danger" title="Tải xuống file: '.$fileName.'">Tải Xuống</button></a></td>
+      <td><a href="'.$downloadLink.'" data-url-link="'.$downloadLink.'" onclick="openNewTab(this)" download><button type="button" class="btn btn-danger" title="Tải xuống file: '.$fileName.'">Tải Xuống</button></a></td>
       <td><button type="button" class="btn btn-primary" data-url-link="'.$viewLink.'" onclick="openNewTab(this)" title="Xem file '.$fileName.' trực tiếp từ link Google Drive">Mở Trong Tab Mới</button></td>
     </tr>
 	';
@@ -570,7 +570,7 @@ if (count($folders) > 0) {
 echo '<tr>
       <th scope="row" title="ID file: '.$fileId.'">'.$fileName.'</th>
 	  <td><button name="dowload_file_end_restor_vietbot" class="btn btn-warning" title="Khôi phục dữ liệu từ File: '.$fileName.'" value="'.$fileId.'">Khôi Phục</button></td>
-      <td><a href="'.$downloadLink.'" target="_blank" download><button class="btn btn-danger">Tải Xuống</button></a></td>
+      <td><a href="'.$downloadLink.'" data-url-link="'.$downloadLink.'" onclick="openNewTab(this)" download><button type="button" class="btn btn-danger">Tải Xuống</button></a></td>
 	  <td><button type="button" class="btn btn-primary" data-url-link="'.$viewLink.'" onclick="openNewTab(this)" title="Xem file '.$fileName.' trực tiếp từ link Google Drive">Mở Trong Tab Mới</button></td>
     </tr>
 	';
