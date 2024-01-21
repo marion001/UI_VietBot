@@ -329,6 +329,14 @@ $tokenDatajjj = json_decode(file_get_contents($tokenFilePath), true);
 		echo "<button name='list_back_up_vietbot' class='btn btn-warning'>List Backup Vietbot</button></center><br/>";
 		
 		echo "</form>";
+		$driveService = new Google_Service_Drive($client);
+		// Lấy thông tin người dùng đang đăng nhập
+		$about = $driveService->about->get(array('fields' => 'user'));
+		// Hiển thị tên tài khoản
+		$accountName = $about->getUser()->getDisplayName();
+		//echo 'Tên tài khoản: ' . $accountName;
+		$messageeee .= "<br/><font color=blue>Tên tài khoản: <b>$accountName</b></font>";
+		
     }
 	
     } else {
@@ -502,7 +510,7 @@ if (empty($fileId)) {
 
 	//list_backup_web_ui
 if (isset($_POST['list_backup_web_ui'])) {
-$driveService = new Google_Service_Drive($client);
+#$driveService = new Google_Service_Drive($client);
 $folderName = 'Vietbot_WebUi';
 $folders = $driveService->files->listFiles([
     'q' => "mimeType='application/vnd.google-apps.folder' and name='$folderName'",
@@ -565,7 +573,7 @@ echo '<tr>
 
 	//list_back_up_vietbot
 if (isset($_POST['list_back_up_vietbot'])) {
-$driveService = new Google_Service_Drive($client);
+#$driveService = new Google_Service_Drive($client);
 $folderName = 'Vietbot_Source';
 $folders = $driveService->files->listFiles([
     'q' => "mimeType='application/vnd.google-apps.folder' and name='$folderName'",
