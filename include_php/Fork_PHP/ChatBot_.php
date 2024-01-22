@@ -25,9 +25,8 @@
 					
 					</span> -->
   <select id="message-type-checkbox" class="form-select">
-  <option  selected value="4" title="Chế Độ Hỏi Đáp Ở Chatbox Không Phát Ra Loa">Hỏi Đáp</option>
-  <option value="<?php echo $api_vietbot->tts_api->payload->api_type; ?>" title="TTS Chuyển Văn Bản Thành Giọng Nói Để Đọc Ra Loa">Chỉ Đọc</option>
-  <option value="2" title="Full Chức Năng">Full</option>
+  <option  selected value="<?php echo $api_vietbot->chat_box->payload->type; ?>" title="Chế Độ Hỏi Đáp Ở Chatbox Không Phát Ra Loa">Hỏi Đáp</option>
+  <option value="<?php echo $api_vietbot->tts_api->payload->type; ?>" title="TTS Chuyển Văn Bản Thành Giọng Nói Để Đọc Ra Loa">Chỉ Đọc</option>
 </select>
                 </div>
                 <input type="text" class="form-control" id="user-input" class="chat-input" placeholder="Nhập tin nhắn..." aria-label="Recipient's username" aria-describedby="basic-addon2">
@@ -83,9 +82,10 @@ function getTimestamp() {
     const messageType = parseInt(messageTypeCheckbox.value);
 
     // Kiểm tra kết nối tới API trước khi gửi yêu cầu để đưa ra thông báo
-	/*
+	
     try {
-      const response = await axios.get('http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>');
+      //const response = await axios.get('http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>');
+      const response = await axios.get('http://<?php echo $serverIP; ?>');
       if (response.status === 200) {
         // Kết nối thành công, tiến hành gửi yêu cầu và xử lý câu trả lời
         displayMessage(userMessage, true);
@@ -99,7 +99,7 @@ function getTimestamp() {
       return;
     }
 	
-	*/
+	
 	
 ///////////////////////////
     const url = 'http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>/';
@@ -152,8 +152,7 @@ function getTimestamp() {
       if (waitMessageElement) {
         waitMessageElement.remove();
       }
-      //displayMessage(response.data.answer, false);
-      displayMessage(response.data.response, false);
+      displayMessage(response.data.answer, false);
     } catch (error) {
       console.error(error);
 
