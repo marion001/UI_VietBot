@@ -194,7 +194,7 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	} elseif ($data_config['smart_config']['bot_mode'] === 'custom') {
 		$Bot_Mode = "2";
 		$Bot_Mode_Text = "Cân Bằng";
-	} elseif ($data_config['smart_config']['bot_mode'] === 'feature') {
+	} elseif ($data_config['smart_config']['bot_mode'] === 'full') {
 		$Bot_Mode = "3";
 		$Bot_Mode_Text = "Đầy Đủ Tính Năng";
 	}
@@ -728,7 +728,7 @@ chmod($backupFile, 0777);
 		
 	} elseif ($_POST['bot_mode_slide'] === '3') {
 		
-		$data_config['smart_config']['bot_mode'] = "feature";
+		$data_config['smart_config']['bot_mode'] = "full";
 	}
 	
 	
