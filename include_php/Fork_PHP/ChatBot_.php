@@ -26,7 +26,7 @@
 					</span> -->
   <select id="message-type-checkbox" class="form-select">
   <option  selected value="4" title="Chế Độ Hỏi Đáp Ở Chatbox Không Phát Ra Loa">Hỏi Đáp</option>
-  <option value="1" title="TTS Chuyển Văn Bản Thành Giọng Nói Để Đọc Ra Loa">Chỉ Đọc</option>
+  <option value="<?php echo $api_vietbot->tts_api->payload->api_type; ?>" title="TTS Chuyển Văn Bản Thành Giọng Nói Để Đọc Ra Loa">Chỉ Đọc</option>
   <option value="2" title="Full Chức Năng">Full</option>
 </select>
                 </div>
@@ -80,16 +80,10 @@ function getTimestamp() {
     if (userMessage.trim() === '') {
       return;
     }
-	//1 = tts, 4 = hỏi đáp
-    //const messageType = messageTypeCheckbox.checked ? 1 : 4;
-	//parseInt chuyển đổi giá trị thành một số nguyên (integer) không nằm trong dấu nháy
     const messageType = parseInt(messageTypeCheckbox.value);
 
-	   // Hiển thị giá trị đã chọn và giá trị đã nhập trong console
-   // console.log("Giá trị đã chọn là: " + messageType);
-    // console.log("Tin nhắn của người dùng là: " + userMessage);
-	
     // Kiểm tra kết nối tới API trước khi gửi yêu cầu để đưa ra thông báo
+	/*
     try {
       const response = await axios.get('http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>');
       if (response.status === 200) {
@@ -104,6 +98,9 @@ function getTimestamp() {
      displayMessage(ERROR_MESSAGE_CONNECTION, false, true);
       return;
     }
+	
+	*/
+	
 ///////////////////////////
     const url = 'http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>/';
     const headers = {
@@ -155,7 +152,8 @@ function getTimestamp() {
       if (waitMessageElement) {
         waitMessageElement.remove();
       }
-      displayMessage(response.data.answer, false);
+      //displayMessage(response.data.answer, false);
+      displayMessage(response.data.response, false);
     } catch (error) {
       console.error(error);
 
@@ -184,7 +182,7 @@ showTimestampCheckbox.addEventListener('change', () => {
 	  
 	  //Nếu Giá trị là undefined
 	if (typeof message === 'undefined') {
-		message = 'Nội dung đã được đọc ra loa';
+		message = 'Nội dung trả về không được xác định';
 	    //return;
 	}
 	  //Nếu Giá trị là null
