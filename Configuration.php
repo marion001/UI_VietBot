@@ -3,9 +3,9 @@
 //Facebook: https://www.facebook.com/TWFyaW9uMDAx
 //Bỏ qua hiển thị lỗi trên màn hình nếu có
 //Mail: vietbotsmartspeaker@gmail.com
-//ini_set('display_errors', 1);
-//error_reporting(E_ALL);
-@error_reporting(0);
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+//@error_reporting(0);
 @date_default_timezone_set('Asia/Ho_Chi_Minh');
 ini_set('memory_limit', '256M');
 // Khởi động session
@@ -145,6 +145,8 @@ $dataVersionVietbot = json_decode(file_get_contents("$DuognDanThuMucJson"."/vers
 $action_json = json_decode(file_get_contents("$DuognDanThuMucJson"."/action.json"));
 
 $object_json = json_decode(file_get_contents("$DuognDanThuMucJson"."/object.json"));
+
+$api_vietbot = json_decode(file_get_contents("/home/pi/vietbot_offline/html/assets/json/api_list_vietbot.json"));
 
 
 $PORT_CHATBOT = $dataVTGET->smart_config->web_interface->port;
