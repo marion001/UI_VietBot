@@ -3,65 +3,95 @@
         "Content-Type": "application/json",
         "method": "POST",
         "payload": {
-            "api_type": 1,
-            "data": "tts content"
+            "type": 1,
+            "data": "mấy giờ rồi"
         }
     },
-	
     "playback_direct_music_api": {
         "Content-Type": "application/json",
         "method": "POST",
         "payload": {
-            "api_type": 3,
+            "type": 2,
             "data": "play_music",
-            "link_type": "direct"
+            "link_type": "direct",
+			"link": "mp3/thương ly biệt giọng nam remix  chu thúy quỳnh  nhạc nền tiktokkhi yêu cứ ngỡ nên thơ tình yêu.mp3"
+			
         }
     },
     "playback_zingmp3_music_api": {
         "Content-Type": "application/json",
         "method": "POST",
         "payload": {
-            "api_type": 3,
+            "type": 2,
             "data": "play_music",
-            "link_type": "zingmp3"
+            "link_type": "zingmp3",
+			"link": ""
         }
     },
     "playback_youtube_music_api": {
         "Content-Type": "application/json",
         "method": "POST",
         "payload": {
-            "api_type": 3,
+            "type": 2,
             "data": "play_music",
-            "link_type": "youtube"
+            "link_type": "youtube",
+			"link": ""
         }
     },
     "set_player_pause_state": {
         "Content-Type": "application/json",
         "method": "POST",
         "payload": {
-            "api_type": 3,
+            "type": 2,
             "data": "set_player",
             "action": "pause"
         }
-    },
+    },	
     "set_player_continue_state": {
         "Content-Type": "application/json",
         "method": "POST",
         "payload": {
-            "api_type": 3,
+            "type": 2,
             "data": "set_player",
             "action": "continue"
         }
-    },
+    },	
     "set_player_stop_state": {
         "Content-Type": "application/json",
         "method": "POST",
         "payload": {
-            "api_type": 3,
+            "type": 2,
             "data": "set_player",
             "action": "stop"
         }
-    },	
+    },		
+    "set_volume_up": {
+        "Content-Type": "application/json",
+        "method": "POST",
+        "payload": {
+            "type": 2,
+            "data": "volume",
+            "action": "up"
+        }
+    },
+    "set_volume_down": {
+        "Content-Type": "application/json",
+        "method": "POST",
+        "payload": {
+            "type": 2,
+            "data": "volume",
+            "action": "down"
+        }
+    },
+	
+
+	
+	
+	
+	
+
+
+
     "set_wakeup_button_short_press": {
         "Content-Type": "application/json",
         "method": "POST",
@@ -131,7 +161,7 @@
             "action": "short"
         }
     },
-    "set_down_-_button_long_press": {
+    "set_down_button_long_press": {
         "Content-Type": "application/json",
         "method": "POST",
         "payload": {
@@ -142,24 +172,7 @@
         }
     },
 
-    "set_volume_up": {
-        "Content-Type": "application/json",
-        "method": "POST",
-        "payload": {
-            "api_type": 3,
-            "data": "volume",
-            "action": "up"
-        }
-    },
-    "set_volume_down": {
-        "Content-Type": "application/json",
-        "method": "POST",
-        "payload": {
-            "api_type": 3,
-            "data": "volume",
-            "action": "down"
-        }
-    },
+
     "set_volume_min": {
         "Content-Type": "application/json",
         "method": "POST",
