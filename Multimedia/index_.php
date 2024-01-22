@@ -412,7 +412,7 @@ $duration = isset($fileInfo['playtime_seconds']) ? round($fileInfo['playtime_sec
             echo '<b>Tên bài hát:</b> ' . basename($mp3File) . '<br/>';
             echo '<b>Thời lượng:</b> ' . formatTimephp($duration) . '<br/>';
             echo '<b>Kích thước:</b> ' . $fileSizeMB . ' MB<br/>';
-            echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-kichthuoc="' . $fileSizeMB . ' MB" data-song-thoiluong="' . formatTimephp($duration) . '" data-song-artist=" ---" data-song-images="../assets/img/NotNhac.png" data-song-name="' . basename($mp3File) . '" data-song-link_type="local" data-song-id="mp3/' . basename($mp3File) . '">Phát Nhạc</button>';
+            echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-data_type="'.$api_vietbot->playback_direct_music_api->payload->type.'" data-song-data_play_music="'.$api_vietbot->playback_direct_music_api->payload->data.'" data-song-kichthuoc="' . $fileSizeMB . ' MB" data-song-thoiluong="' . formatTimephp($duration) . '" data-song-artist=" ---" data-song-images="../assets/img/NotNhac.png" data-song-name="' . basename($mp3File) . '" data-song-link_type="'.$api_vietbot->playback_direct_music_api->payload->link_type.'" data-song-id="mp3/' . basename($mp3File) . '">Phát Nhạc</button>';
             echo '<button class="deleteBtn btn btn-danger" data-file="' . basename($mp3File) . '">Xóa File</button>';
             echo "</div></div><br/>";
         }
@@ -514,7 +514,7 @@ if ($responseYoutube === false) {
             echo '<b>Tên bài hát:</b><a href="'.$Youtube_videoLink.'" target="_bank" style="color: black;" title="Mở trong Youtube"> ' . $Youtube_title . '</a><br/><b>Tên Kênh:</b> ' . $Youtube_channelTitle . '<br/>';
             //echo '<b>Mô tả:</b> ' . $Youtube_description . ' <br/>';
             //echo '<b>Link:</b> ' . $Youtube_videoLink . ' <br/>';
-            echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Tên Kênh" data-song-link_type="direct" data-song-artist="' . $Youtube_channelTitle . '" data-song-images="' .$Youtube_images.'" data-song-name="'  . $Youtube_title . '" data-song-kichthuoc=" ---" data-song-thoiluong=" ---" data-song-id="' . $Youtube_videoLink . '" >Phát Nhạc</button>';
+            echo '<button class="ajax-button btn btn-success" data-song-data_type="'.$api_vietbot->playback_youtube_music_api->payload->type.'" data-song-data_play_music="'.$api_vietbot->playback_youtube_music_api->payload->data.'" data-song-tenkenhnghesi="Tên Kênh" data-song-link_type="direct" data-song-artist="' . $Youtube_channelTitle . '" data-song-images="' .$Youtube_images.'" data-song-name="'  . $Youtube_title . '" data-song-kichthuoc=" ---" data-song-thoiluong=" ---" data-song-id="' . $Youtube_videoLink . '" >Phát Nhạc</button>';
             echo "</div></div><br/>";
         }
     }
@@ -585,7 +585,7 @@ if ($response === false) {
                 echo "<img src='$img_images' class='imagesize' alt='' /> <div class='caption'>";
                 echo '<b>Tên bài hát:</b> ' . $song['name'] . '<br/><b>Nghệ sĩ:</b> ' . $song['artist'] . '<br/>';
                 //echo 'ID bài hát: ' . $song['id'] . ' <br/>';
-                echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-kichthuoc="---" data-song-thoiluong="---" data-song-link_type="zingmp3" data-song-artist="' . $song['artist'] . '" data-song-name="' . $song['name'] . '" data-song-images="' . $img_images . '" data-song-id="' . $originalUrl . '">Phát Nhạc</button>';
+                echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-kichthuoc="---" data-song-thoiluong="---" data-song-link_type="'.$api_vietbot->playback_zingmp3_music_api->payload->link_type.'" data-song-data_type="'.$api_vietbot->playback_zingmp3_music_api->payload->type.'" data-song-data_play_music="'.$api_vietbot->playback_zingmp3_music_api->payload->data.'" data-song-artist="' . $song['artist'] . '" data-song-name="' . $song['name'] . '" data-song-images="' . $img_images . '" data-song-id="' . $originalUrl . '">Phát Nhạc</button>';
                 //echo "Original URL: $originalUrl<br>";
                 // echo "MP3 128 URL: $finalUrl<br/><br/>";
                 echo "</div></div><br/>";
@@ -614,6 +614,8 @@ if ($response === false) {
 			var messageElement = document.getElementById("messagee");
             var songId = $(this).data('song-id');
             var link_type = $(this).data('song-link_type');
+            var data_play_music = $(this).data('song-data_play_music');
+            var data_type = $(this).data('song-data_type');
             var songImages = $(this).data('song-images');
             var songTenKenhNgheSi = $(this).data('song-tenkenhnghesi');
             var songKichThuoc = $(this).data('song-kichthuoc');
@@ -652,8 +654,8 @@ if ($response === false) {
                                 "Content-Type": "application/json"
                             },
                             "data": JSON.stringify({
-                                "type": 3,
-                                "data": "<?php echo $object_json->music[0]->value; ?>",
+                                "type": data_type,
+                                "data": data_play_music,
                                 "link_type": link_type,
                                 "link": finalUrl
                             }),
@@ -724,35 +726,36 @@ if ($response === false) {
         var messageElement = document.getElementById("messagee");
 
         $('#volumeDown').on('click', function() {
-            sendAudioControlCommand('<?php echo $action_json->decrase->value." ".$object_json->volume[0]->value." 10%";  ?>');
+            sendAudioControlCommand('<?php echo $api_vietbot->set_volume_down->payload->action; ?>', '<?php echo $api_vietbot->set_volume_down->payload->data; ?>', <?php echo $api_vietbot->set_volume_down->payload->type; ?>, '<?php echo $api_vietbot->set_volume_down->method; ?>');
         });
 
         $('#playButton').on('click', function() {
-            sendAudioControlCommand('<?php echo $action_json->continue->value; ?>');
+            sendAudioControlCommand('<?php echo $api_vietbot->set_player_continue_state->payload->action; ?>', '<?php echo $api_vietbot->set_player_continue_state->payload->data; ?>', <?php echo $api_vietbot->set_player_continue_state->payload->type; ?>, '<?php echo $api_vietbot->set_player_continue_state->method; ?>');
         });
 
         $('#pauseButton').on('click', function() {
-            sendAudioControlCommand('<?php echo $action_json->pause[0]->value; ?>');
+            sendAudioControlCommand('<?php echo $api_vietbot->set_player_pause_state->payload->action; ?>', '<?php echo $api_vietbot->set_player_pause_state->payload->data; ?>', <?php echo $api_vietbot->set_player_pause_state->payload->type; ?>, '<?php echo $api_vietbot->set_player_pause_state->method; ?>');
         });
 
         $('#stopButton').on('click', function() {
-            sendAudioControlCommand('<?php echo $action_json->stop[0]->value; ?>');
+            sendAudioControlCommand('<?php echo $api_vietbot->set_player_stop_state->payload->action; ?>', '<?php echo $api_vietbot->set_player_stop_state->payload->data; ?>', <?php echo $api_vietbot->set_player_stop_state->payload->type; ?>, '<?php echo $api_vietbot->set_player_stop_state->method; ?>');
         });
         $('#volumeUp').on('click', function() {
-            sendAudioControlCommand('<?php echo $action_json->incrase->value." ".$object_json->volume[0]->value." 10%";  ?>');
+            sendAudioControlCommand('<?php echo $api_vietbot->set_volume_up->payload->action; ?>', '<?php echo $api_vietbot->set_volume_up->payload->data; ?>', <?php echo $api_vietbot->set_volume_up->payload->type; ?>, '<?php echo $api_vietbot->set_volume_up->method; ?>');
         });
 
-        function sendAudioControlCommand(action) {
+        function sendAudioControlCommand(action, data, type, method) {
             var settings = {
                 "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
-                "method": "POST",
+                "method": method,
                 "timeout": <?php echo $Time_Out_MediaPlayer_API; ?> ,
                 "headers": {
                     "Content-Type": "application/json"
                 },
                 "data": JSON.stringify({
-                    "type": 3,
-                    "data": action
+                    "type": type,
+                    "data": data,
+					"action": action
                 }),
             };
 
