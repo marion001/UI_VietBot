@@ -187,7 +187,6 @@ chmod($backupFile, 0777);
 	//Media Player Sync ($_POST['media_player_sync_ui'] === 'true');
     $skillArray['ui_media_player']['sync_media_player'] = ($_POST['media_player_sync_ui'] === 'true');
     $skillArray['ui_media_player']['sync_delay'] = @$_POST['sync_delay_media_player'];
-    $skillArray['ui_media_player']['music_stream'] = @$_POST['select_music_stream'];
 	//Camera hanet
 	$activeCameraHanet = isset($_POST['activeCameraHanet']) && $_POST['activeCameraHanet'] === 'on' ? true : false;
 	
@@ -558,7 +557,6 @@ B4: Go to Application -> Cookies -> "__Secure-1PSID" và "__Secure-1PSIDTS" và 
 	
 	$sync_delay_media_player = $skillArray['ui_media_player']['sync_delay'];
 	$sync_media_player = $skillArray['ui_media_player']['sync_media_player'];
-	$sync_media_music_stream = $skillArray['ui_media_player']['music_stream'];
 	
 ?>
 <div class="form-check form-switch d-flex justify-content-center">   <div class="col-auto">
@@ -611,17 +609,7 @@ B4: Go to Application -> Cookies -> "__Secure-1PSID" và "__Secure-1PSIDTS" và 
 
 
     </tr>
-		    <tr>
-      <th scope="row" title="Mặc định đặt là 1">Luồng Phát Mặc Định:</th>
-      <td>
-    <select name="select_music_stream" class="form-select" aria-label="Default select example">
-        <option <?php if ($sync_media_music_stream === 'web_ui') echo 'selected'; ?> value="web_ui" title="Mặc định lấy nguồn phát từ">Web UI</option>
-        <option <?php if ($sync_media_music_stream === 'mic') echo 'selected'; ?> value="mic" title="Mặc định lấy nguồn phát từ">Mic</option>
-    </select>
-	  
-	  </td>
-    
-	</tr>
+
 	    <tr>
       <th scope="row" title="Mặc định đặt là 1">Độ Trễ Sync (Giây):</th>
       <td><input type="number" placeholder="1" class="form-control" title="Mặc định đặt là 1" name="sync_delay_media_player" min="1" step="1" max="5" value="<?php echo $sync_delay_media_player; ?>"></td>
