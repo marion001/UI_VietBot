@@ -12,7 +12,7 @@
     <br/>
     <div class="chat-container">
         <div class="chat-wrapper">
-            <div id="message-content" class="message-content">Chào bạn mình là loa thông minh Vietbot!</div>
+            <div id="message-content" class="message-content">Chào <?php echo $MYUSERNAME; ?> mình là loa thông minh Vietbot!</div>
         </div>
 
         <div id="chatbox" class="container-fluid"></div>
@@ -152,7 +152,13 @@ function getTimestamp() {
       if (waitMessageElement) {
         waitMessageElement.remove();
       }
-      displayMessage(response.data.answer, false);
+      // Kiểm tra xem giá trị response.data.answer có tồn tại hay không
+	if (response.data.answer !== undefined && response.data.answer !== null) {
+		displayMessage(response.data.answer, false);
+	} else {
+		// Nếu không tồn tại, sử dụng giá trị response.data.response
+		displayMessage(response.data.response, false);
+	}
     } catch (error) {
       console.error(error);
 
@@ -178,15 +184,16 @@ showTimestampCheckbox.addEventListener('change', () => {
 
 
   const displayMessage = (message, isUserMessage, isTimeoutMessage = false) => {
-	  
+	  console.log(message);
 	  //Nếu Giá trị là undefined
 	if (typeof message === 'undefined') {
-		message = 'Nội dung trả về không được xác định';
+		//message = 'Nội dung trả về không được xác định';
+		message = displayMessage(response.data.response, false);
 	    //return;
 	}
 	  //Nếu Giá trị là null
 	if (message === null) {
-		message = 'Không có dữ liệu';
+		message = 'Không nhận được dữ liệu trả về';
 	    //return;
 	}
 	
