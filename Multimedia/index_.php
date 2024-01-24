@@ -212,6 +212,9 @@ if (is_dir($directory . '/node_modules')) {
 			
                 <td colspan="3"><center>
 <div id="code-section">
+ <div id="infomusicplayer">
+
+            </div>
 <b><p id="media1-name"></p></b>
     <span id="selected-time"></span>
     <input type="range" id="time-slider" min="1" max=""> 
@@ -244,16 +247,7 @@ if (is_dir($directory . '/node_modules')) {
 					
                     </center>
 					</td>
-<td><center><b>Luồng Phát:</b></center>
-
-    <select name="select_playback" id="select-playback" class="form-select" aria-label="Default select example">
-        <option <?php if ($sync_music_stream === 'web_ui') echo 'selected'; ?> data-playback="get_api_playback" data-duration="media1_duration" data-path="media1_path" data-position="media1_position" data-state="player1_state" title="Nhạc được phát từ Web UI">Web UI</option>
-        <option <?php if ($sync_music_stream === 'mic') echo 'selected'; ?> data-playback="get_mic_playback" data-duration="media2_duration" data-path="media2_path" data-position="media2_position" data-state="player3_state" title="Nhạc được phát từ Mic">Mic</option>
-    </select>
-	
-	</td>
-  
-					
+						
    
   </tr>
   <tr>
@@ -274,7 +268,7 @@ if (is_dir($directory . '/node_modules')) {
 </div>
 
             
-            <tr>
+            <tr>           
                 <td colspan="3">
                     <center>
                         <div id="messagee"></div>
@@ -286,9 +280,7 @@ if (is_dir($directory . '/node_modules')) {
             </tbody>
             </table>
 
-            <div id="infomusicplayer">
 
-            </div>
         </div>
 
 
@@ -950,6 +942,9 @@ $(document).ready(function() {
     readJsonAndCheckCheckbox();
 });
 </script>
+
+
+
 <script>
     function truncateFileName(fileName, maxLength) {
         if (fileName.length <= maxLength) {
@@ -987,25 +982,21 @@ $(document).ready(function() {
         var selectedOption = $("#select-playback").find('option:selected');
         var get_playback = selectedOption.data('playback');
         var settings = {
-            "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
-            "method": "POST",
+            "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>/?api_type=<?php echo $api_vietbot->get_long_player_state->payload->api_type; ?>&data=<?php echo $api_vietbot->get_long_player_state->payload->data; ?>",
+            "method": "GET",
             "timeout": 0,
             "headers": {
                 "Content-Type": "application/json"
-            },
-            "data": JSON.stringify({
-                "type": 3,
-                "data": get_playback
-            }),
+            }
         };
 
         $.ajax(settings)
             .done(function(response) {
 
-                var player_duration = selectedOption.data('duration');
-                var player_path = selectedOption.data('path');
-                var player_position = selectedOption.data('position');
-                var player_state = selectedOption.data('state');
+                //var player_duration = selectedOption.data('duration');
+                //var player_path = selectedOption.data('path');
+                //var player_position = selectedOption.data('position');
+                //var player_state = selectedOption.data('state');
 
                 // Hiển thị thông tin trong console log
                 //console.log("Playback:", get_playback);
@@ -1015,14 +1006,15 @@ $(document).ready(function() {
                 //console.log("State:", player_state);
 
                 //var media2_duration = response.media2_duration;
-
-                var media_path = response[player_path];
-                var playervlc_state = response[player_state];
-                var media_position = response[player_position];
+				var messageinfomusicplayer = document.getElementById("infomusicplayer");
+                var media_path = response.media1_path;
+                var playervlc_state = response.player1_state;
+                var media_position = response.media1_position;
+                var cover_link = response.cover_link;
                 //console.log("media_path:", media_path);
-                var state = response.state;
+                var state = response.player1_state;
                 // Convert player_duration to seconds
-                var media_durationInSeconds = Math.round(response[player_duration]);
+                var media_durationInSeconds = Math.round(response.media1_duration);
                 // Convert media_position to seconds
                 var media1_positionInSeconds = media_position === -1.0 ? -1.0 : Math.round(media_position * media_durationInSeconds);
                 // Further processing or UI updates can be done here
@@ -1058,6 +1050,10 @@ $(document).ready(function() {
                 $("#time-slider").val(media1_positionInSeconds);
                 // Convert and display media1_duration in HH:MM:SS format
                 $("#media1-duration").text(formatTimeajax(media_durationInSeconds));
+				
+				//messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + cover_link + ' alt="" /></div><div class="caption"><b>Tên bài hát: </b> ' + songName + '<br/><b>'+songTenKenhNgheSi+': </b> ' + songArtist + '<br/><b>Thời lượng: </b> ' + songThoiLuong + '<br/><b>Kích thước: </b> ' + songKichThuoc + '</div></div>';
+                           
+				
                 // Display player state based on playervlc_state
                 var playerStateText = "";
                 var playerStateColor = "";
@@ -1149,6 +1145,9 @@ $(document).ready(function() {
         }
     });
 </script>
+
+
+
 <script>
     // Your JavaScript code here
     function togglePopupSync() {
