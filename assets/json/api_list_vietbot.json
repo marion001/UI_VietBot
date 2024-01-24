@@ -14,7 +14,7 @@
             "type": 2,
             "data": "play_music",
             "link_type": "direct",
-			"link": "mp3/thương ly biệt giọng nam remix  chu thúy quỳnh  nhạc nền tiktokkhi yêu cứ ngỡ nên thơ tình yêu.mp3"
+	    "link": "mp3/thương ly biệt giọng nam remix  chu thúy quỳnh  nhạc nền tiktokkhi yêu cứ ngỡ nên thơ tình yêu.mp3"
 			
         }
     },
@@ -83,8 +83,22 @@
             "action": "down"
         }
     },
-	
-
+    "get_short_player_state": {
+        "Content-Type": "application/json",
+        "method": "GET",
+        "payload": {
+            "api_type": 2,
+            "data": "short_player"
+        }
+    },
+    "get_long_player_state": {
+        "Content-Type": "application/json",
+        "method": "GET",
+        "payload": {
+            "api_type": 2,
+            "data": "long_player"
+        }
+    },
 	
 	
 	
