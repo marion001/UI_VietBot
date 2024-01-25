@@ -213,6 +213,7 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	//Led
 	$LED_TYPE = $data_config['smart_config']['led']['type'];
 	$LED_NUMBER_LED = $data_config['smart_config']['led']['number_led'];
+	$LED_GPIO = $data_config['smart_config']['led']['led_gpio'];
 	$LED_EFFECT_MODE = $data_config['smart_config']['led']['effect_mode'];
 	$LED_BRIGHTNESS = $data_config['smart_config']['led']['brightness'];
 	$LED_WAKEUP_COLOR = $data_config['smart_config']['led']['wakeup_color'];
@@ -674,6 +675,7 @@ chmod($backupFile, 0777);
 	if (strcasecmp(@$_POST['led_chonkieu'], "Null") === 0) {$TTS_LED_Type_CheckINPUT = null;
     } else {$TTS_LED_Type_CheckINPUT = @$_POST['led_chonkieu'];}
 	$Led_Number_Led = @$_POST['number_led'];
+	$Led_GPIO_Led = @$_POST['led_gpio'];
 	$Led_Effect_Mode = @$_POST['effect_mode'];
 	$Led_Brightness = @$_POST['brightness'];
 	$Led_Wakeup_Color = @$_POST['wakeup_color'];
@@ -782,6 +784,7 @@ chmod($backupFile, 0777);
 	//LED
 	$data_config['smart_config']['led']['type'] = $TTS_LED_Type_CheckINPUT;
 	$data_config['smart_config']['led']['number_led'] = intval($Led_Number_Led);
+	$data_config['smart_config']['led']['led_gpio'] = intval($Led_GPIO_Led);
 	$data_config['smart_config']['led']['effect_mode'] = intval($Led_Effect_Mode);
 	$data_config['smart_config']['led']['brightness'] = intval($Led_Brightness);
 	$data_config['smart_config']['led']['wakeup_color'] = $Led_Wakeup_Color;
@@ -1695,16 +1698,17 @@ None (Không Dùng)</label></center>
 <div class="row justify-content-center"><div class="col-auto">
 <table class="table table-bordered">
 <tr>
-<th scope="row" title="Đầu ra tín hiệu điều khiển led mặc định là GPIO 10">Chân Led Mặc Định: </th>
-<td colspan="2" title="Đầu ra tín hiệu điều khiển led mặc định là GPIO 10"><b><font color=red title="Đầu ra tín hiệu điều khiển led mặc định là GPIO 10">GPIO 10</font></b></td>
+<th scope="row" title="Đầu ra tín hiệu điều khiển led mặc định là GPIO 10">LED GPIO: </th>
+<td colspan="2" title="Đầu ra tín hiệu điều khiển led mặc định là GPIO 10">
+<input type="number"  value="<?php echo $LED_GPIO; ?>" id="number_led_gpio_output" name="led_gpio" class="disabled-input form-control"></td>
 </tr>
 <tr><th scope="row">Số led:</th>
-<td colspan="2"><input type="text"  value="<?php echo $LED_NUMBER_LED; ?>" id="number_led_mode_input" name="number_led" class="disabled-input form-control"></td></tr>
+<td colspan="2"><input type="number"  value="<?php echo $LED_NUMBER_LED; ?>" id="number_led_mode_input" name="number_led" class="disabled-input form-control"></td></tr>
 <tr><th scope="row">Độ sáng:</th>
-<td colspan="2"><input type="text"  value="<?php echo $LED_BRIGHTNESS; ?>" id="brightness_mode_input" name="brightness" class="disabled-input form-control" ></td></tr>
+<td colspan="2"><input type="number"  value="<?php echo $LED_BRIGHTNESS; ?>" id="brightness_mode_input" name="brightness" class="disabled-input form-control" ></td></tr>
 
 <tr><th scope="row">Chế độ hiệu ứng:</th>
-<td colspan="1"><input type="text"  value="<?php echo $LED_EFFECT_MODE; ?>" id="effect_mode_input" name="effect_mode" class="disabled-input form-control"></td>
+<td colspan="1"><input type="number"  value="<?php echo $LED_EFFECT_MODE; ?>" id="effect_mode_input" name="effect_mode" class="disabled-input form-control"></td>
 
 <td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success"  onclick="sendLedSettings('effect_mode_input')">Test LED</button></td>
 
@@ -1713,19 +1717,19 @@ None (Không Dùng)</label></center>
 </tr>
 
 <tr><th scope="row">Hiệu ứng nghe:</th>
-<td colspan="1"><input type="text"  value="<?php echo $LED_LISTEN_EFFECT; ?>" id="listen_effect_mode_input" name="listen_effect" class="disabled-input form-control"></td>
+<td colspan="1"><input type="number"  value="<?php echo $LED_LISTEN_EFFECT; ?>" id="listen_effect_mode_input" name="listen_effect" class="disabled-input form-control"></td>
 
 <td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success" onclick="sendLedSettings('listen_effect_mode_input')">Test LED</button></td>
 
 </tr>
 <tr><th scope="row">Hiệu ứng chờ xử lý</th>
-<td colspan="1"><input type="text"  value="<?php echo $LED_THINK_EFFECT; ?>" id="think_effect_mode_input" name="think_effect" class="disabled-input form-control"></td>
+<td colspan="1"><input type="number"  value="<?php echo $LED_THINK_EFFECT; ?>" id="think_effect_mode_input" name="think_effect" class="disabled-input form-control"></td>
 
 <td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success" onclick="sendLedSettings('think_effect_mode_input')">Test LED</button></td>
 
 </tr>
 <tr><th scope="row">Hiệu ứng khi trả lời:</th>
-<td colspan="1"><input type="text"   value="<?php echo $LED_SPEAK_EFFECT; ?>" id="speak_effect_mode_input" name="speak_effect" class="disabled-input form-control"></td>
+<td colspan="1"><input type="number"   value="<?php echo $LED_SPEAK_EFFECT; ?>" id="speak_effect_mode_input" name="speak_effect" class="disabled-input form-control"></td>
 
 <td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success" onclick="sendLedSettings('speak_effect_mode_input')">Test LED</button></td>
 
@@ -1937,7 +1941,7 @@ else {
 
 	<hr/>
 <center>
-<input type="submit" class="btn btn-success" name="config_setting" value="Lưu Cấu Hình">  <a href="<?php echo $PHP_SELF ?>"><button type="submit" class="btn btn-danger">Hủy Bỏ/Làm Mới</button></a>
+<input type="submit" class="btn btn-success" name="config_setting" value="Lưu Cấu Hình">  <a href="<?php echo $PHP_SELF ?>"><button type="button" class="btn btn-danger">Hủy Bỏ/Làm Mới</button></a>
  <button type="submit" name="restart_vietbot" class="btn btn-warning">Khởi Động Lại VietBot</button>
 
  <input type="button" id="view-button" class="btn btn-info" value="Json View">
@@ -2317,6 +2321,7 @@ else if (radio.value === "tts_gg_free") {
             var DeleteText = document.getElementsByClassName("disabled-input");
 			//
 			var NumberModeLed = document.getElementById("number_led_mode_input");
+			var NumberLedGPIO = document.getElementById("number_led_gpio_output");
             var EffectModeInput = document.getElementById("effect_mode_input");
             var BrightnessModeInput = document.getElementById("brightness_mode_input");
             var WakeupColorModeInput = document.getElementById("wakeup_color_mode_input");
@@ -2337,8 +2342,12 @@ else if (radio.value === "tts_gg_free") {
             // Xử lý các thay đổi loại đèn LED cụ thể
 			//ReSpeaker 2-Mics Pi HAT
             if (selectedLed === "ReSpeaker 2-Mics Pi HAT") {
+				disabledInputs["number_led_gpio_output"].disabled = false;
                 NumberModeLed.type = "text";
                 NumberModeLed.value = "";
+                NumberLedGPIO.type = "number";
+                NumberLedGPIO.value = "<?php echo $LED_GPIO; ?>";
+				NumberLedGPIO.placeholder = "<?php echo $LED_GPIO; ?>";
 				EffectModeInput.type = "text";
 				EffectModeInput.value = "";
 				BrightnessModeInput.type = "text";
@@ -2365,8 +2374,12 @@ else if (radio.value === "tts_gg_free") {
 			else if (selectedLed === "ReSpeaker 4-Mics Pi HAT") {
 				disabledInputs["effect_mode_input"].disabled = false;
 				disabledInputs["effect_mode_input"].required = true;
+				disabledInputs["number_led_gpio_output"].disabled = false;
                 NumberModeLed.value = "";
 				EffectModeInput.type = "number";
+                NumberLedGPIO.type = "number";
+                NumberLedGPIO.value = "<?php echo $LED_GPIO; ?>";
+				NumberLedGPIO.placeholder = "<?php echo $LED_GPIO; ?>";
 				EffectModeInput.value = "<?php echo $LED_EFFECT_MODE; ?>";
 				EffectModeInput.min = "1";
 				EffectModeInput.max = "2";
@@ -2395,10 +2408,14 @@ else if (radio.value === "tts_gg_free") {
 					for (var i = 0; i < disabledInputs.length; i++) {
 				disabledInputs[i].required = true;
 					}
+				disabledInputs["number_led_gpio_output"].disabled = false;
 				disabledInputs["effect_mode_input"].disabled = true;
 				disabledInputs["effect_mode_input"].required = false;
 				NumberModeLed.type = "number";
 				NumberModeLed.value = "<?php echo $LED_NUMBER_LED; ?>";
+                NumberLedGPIO.type = "number";
+                NumberLedGPIO.value = "<?php echo $LED_GPIO; ?>";
+				NumberLedGPIO.placeholder = "<?php echo $LED_GPIO; ?>";
 				NumberModeLed.min = "0";
 				NumberModeLed.placeholder = "16";
 				EffectModeInput.type = "text";
@@ -2441,6 +2458,7 @@ else if (radio.value === "tts_gg_free") {
 			}
 			//ReSpeaker Mic Array v2.0 | ReSpeaker USB
 			else if (selectedLed === "ReSpeaker Mic Array v2.0") {
+				disabledInputs["number_led_gpio_output"].disabled = false;
 				disabledInputs["wakeup_color_mode_input"].disabled = false;
 				disabledInputs["muted_color_mode_input"].disabled = false;
 				disabledInputs["color_pickerwakeup_color"].disabled = false;
@@ -2454,6 +2472,9 @@ else if (radio.value === "tts_gg_free") {
 				//EffectModeInput.type = "text";
 				EffectModeInput.value = "";
 				EffectModeInput.placeholder = ""
+                NumberLedGPIO.type = "number";
+                NumberLedGPIO.value = "<?php echo $LED_GPIO; ?>";
+				NumberLedGPIO.placeholder = "<?php echo $LED_GPIO; ?>";
 				BrightnessModeInput.value = "";
 				BrightnessModeInput.placeholder = "";
 				WakeupColorModeInput.type = "text"; 
@@ -2485,10 +2506,14 @@ else if (radio.value === "tts_gg_free") {
 					for (var i = 0; i < disabledInputs.length; i++) {
 				disabledInputs[i].required = true;
 			}
+			//disabledInputs["number_led_gpio_output"].disabled = false;
 			disabledInputs["effect_mode_input"].disabled = true;
 			disabledInputs["effect_mode_input"].required = false;
 				NumberModeLed.type = "number";
 				NumberModeLed.value = "<?php echo $LED_NUMBER_LED; ?>";
+                NumberLedGPIO.type = "number";
+                NumberLedGPIO.value = "<?php echo $LED_GPIO; ?>";
+				NumberLedGPIO.placeholder = "<?php echo $LED_GPIO; ?>";
 				NumberModeLed.min = "0";
 				NumberModeLed.placeholder = "16";
 				EffectModeInput.type = "text";
@@ -2534,6 +2559,9 @@ else if (radio.value === "tts_gg_free") {
 				//disabledInputs["effect_mode_input"].disabled = false;
                 NumberModeLed.type = "text";
                 NumberModeLed.value = "";
+                NumberLedGPIO.type = "number";
+                NumberLedGPIO.value = "<?php echo $LED_GPIO; ?>";
+				NumberLedGPIO.placeholder = "<?php echo $LED_GPIO; ?>";
                 NumberModeLed.placeholder = "";
 				EffectModeInput.type = "text";
 				EffectModeInput.value = "";
@@ -2577,6 +2605,9 @@ else if (radio.value === "tts_gg_free") {
 			}
 				NumberModeLed.type = "number";
 				NumberModeLed.value = "<?php echo $LED_NUMBER_LED; ?>";
+                NumberLedGPIO.type = "number";
+                NumberLedGPIO.value = "<?php echo $LED_GPIO; ?>";
+				NumberLedGPIO.placeholder = "<?php echo $LED_GPIO; ?>";
 				NumberModeLed.placeholder = "16";
 				EffectModeInput.type = "number";
 				EffectModeInput.value = "<?php echo $LED_EFFECT_MODE; ?>";
