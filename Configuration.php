@@ -3,9 +3,9 @@
 //Facebook: https://www.facebook.com/TWFyaW9uMDAx
 //Bỏ qua hiển thị lỗi trên màn hình nếu có
 //Mail: vietbotsmartspeaker@gmail.com
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-//@error_reporting(0);
+//ini_set('display_errors', 1);
+//error_reporting(E_ALL);
+@error_reporting(0);
 @date_default_timezone_set('Asia/Ho_Chi_Minh');
 ini_set('memory_limit', '256M');
 // Khởi động session
@@ -175,5 +175,5 @@ $apiKeyWeather = $Data_Json_Skill->weather->openweathermap_key;
 
 $sync_media_player_checkbox = $Data_Json_Skill->ui_media_player->sync_media_player;
 $sync_media_player_sync_delay = $Data_Json_Skill->ui_media_player->sync_delay;
-$sync_music_stream = $Data_Json_Skill->ui_media_player->music_stream;
+//$sync_music_stream = $Data_Json_Skill->ui_media_player->music_stream;
 ?>
