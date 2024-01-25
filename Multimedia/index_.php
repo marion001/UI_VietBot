@@ -719,7 +719,7 @@ if ($response === false) {
 </script>
 <script>
     function setupAudioControls() {
-
+		
         var messageElement = document.getElementById("messagee");
 
         $('#volumeDown').on('click', function() {
@@ -742,6 +742,7 @@ if ($response === false) {
         });
 
         function sendAudioControlCommand(action, data, type, method) {
+			$('#loading-overlay').show();
             var settings = {
                 "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
                 "method": method,
@@ -771,9 +772,9 @@ if ($response === false) {
         // Hiển thị thông báo khi checkbox được tích và responseh.response không phải là một trong các giá trị chỉ định
         if (!(responseh.response === "Đã dừng!" || responseh.response === "Đã tiếp tục!" || responseh.response === "Đã tạm dừng!")) {
             // Xử lý và hiển thị response
-            
+            		messageElement.style.display = "block";
             messageElement.innerHTML = '<div style="color: green;"><b>' + displayText + '</b></div>';
-			
+			$('#loading-overlay').hide();
 		// Kiểm tra xem thẻ có tồn tại không trước khi ẩn
 		if (messageElement) {
 		// Sử dụng setTimeout để ẩn thẻ sau 5 giây
@@ -787,18 +788,23 @@ if ($response === false) {
         // Hiển thị thông báo khi checkbox không được tích
         var displayText = responseh.new_volume !== undefined ? 'Âm Lượng: ' + responseh.new_volume + '%' : responseh.response;
         messageElement.innerHTML = '<div style="color: green;"><b>' + displayText + '</b></div>';
+		$('#loading-overlay').hide();
 
     }
+	
 })
 
                 .fail(function(jqXHR, textStatus, errorThrown) {
                     if (textStatus === "timeout") {
                         messageElement.innerHTML = '<div style="color: red;"><b>Lỗi: Hết thời gian chờ khi kết nối với API.</b></div>';
+						$('#loading-overlay').hide();
                     } else {
                         messageElement.innerHTML = '<div style="color: red;"><b>Lỗi! Không thể kết nối tới API</b></div>';
+						$('#loading-overlay').hide();
                     }
                     // console.error('<div style="color: red;"><b>Error sending audio control command:</b></div>', textStatus, errorThrown);
                     messageElement.innerHTML = '<div style="color: red;"><b>Lỗi khi gửi lệnh điều khiển chức năng:</b></div>' + textStatus + errorThrow;
+					$('#loading-overlay').hide();
                 });
         }
 
@@ -1067,10 +1073,12 @@ $(document).ready(function() {
                         playerStateColor = "black";
                 }
                 $("#player-state").text("Trạng thái: " + playerStateText).css("color", playerStateColor);
+				$('#loading-overlay').hide();
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
                 // Handle the failure (e.g., no connection to API)
                 $("#player-state").text("Trạng thái: Không kết nối được tới API get_api_playback");
+				$('#loading-overlay').hide();
             });
     }
 
