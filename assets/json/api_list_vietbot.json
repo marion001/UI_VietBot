@@ -7,6 +7,15 @@
             "data": "mấy giờ rồi"
         }
     },
+    "chat_box": {
+        "Content-Type": "application/json",
+        "method": "POST",
+        "payload": {
+            "type": 3,
+            "data": "text"
+
+        }
+    },
     "playback_direct_music_api": {
         "Content-Type": "application/json",
         "method": "POST",
@@ -14,7 +23,7 @@
             "type": 2,
             "data": "play_music",
             "link_type": "direct",
-	    "link": "mp3/thương ly biệt giọng nam remix  chu thúy quỳnh  nhạc nền tiktokkhi yêu cứ ngỡ nên thơ tình yêu.mp3"
+			"link": "mp3/thương ly biệt giọng nam remix  chu thúy quỳnh  nhạc nền tiktokkhi yêu cứ ngỡ nên thơ tình yêu.mp3"
 			
         }
     },
@@ -103,6 +112,11 @@
 	
 	
 	
+
+
+
+
+
 
 
 
