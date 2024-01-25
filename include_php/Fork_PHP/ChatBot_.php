@@ -84,8 +84,7 @@ function getTimestamp() {
     // Kiểm tra kết nối tới API trước khi gửi yêu cầu để đưa ra thông báo
 	
     try {
-      //const response = await axios.get('http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>');
-      const response = await axios.get('http://<?php echo $serverIP; ?>');
+      const response = await axios.get('http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>');
       if (response.status === 200) {
         // Kết nối thành công, tiến hành gửi yêu cầu và xử lý câu trả lời
         displayMessage(userMessage, true);
