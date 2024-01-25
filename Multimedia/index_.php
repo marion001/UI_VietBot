@@ -212,9 +212,7 @@ if (is_dir($directory . '/node_modules')) {
 			
                 <td colspan="3"><center>
 <div id="code-section">
- <div id="infomusicplayer">
-
-            </div>
+ <div id="infomusicplayer"> </div>
 <b><p id="media1-name"></p></b>
     <span id="selected-time"></span>
     <input type="range" id="time-slider" min="1" max=""> 
@@ -775,6 +773,15 @@ if ($response === false) {
             // Xử lý và hiển thị response
             
             messageElement.innerHTML = '<div style="color: green;"><b>' + displayText + '</b></div>';
+			
+		// Kiểm tra xem thẻ có tồn tại không trước khi ẩn
+		if (messageElement) {
+		// Sử dụng setTimeout để ẩn thẻ sau 5 giây
+		setTimeout(function() {
+		messageElement.style.display = "none";
+		}, 7000); // 5000 milliseconds = 5 giây
+		}
+			
         }
     } else {
         // Hiển thị thông báo khi checkbox không được tích
@@ -1012,17 +1019,17 @@ $(document).ready(function() {
                     // Giới hạn tên file tối đa 20 ký tự và ngắt tại khoảng trắng
                     const maxLength = 25;
                     const truncatedFileName = truncateFileName(fileNameWithoutExtension, maxLength);
-                    $("#media1-name").text("Nguồn nhạc: Local MP3: " + truncatedFileName).attr("title", fileNameWithoutExtension);
+                    $("#media1-name").html("Nguồn nhạc: <font color=green>Local MP3</font><br/> " + truncatedFileName).attr("title", fileNameWithoutExtension);
                     // console.log('Tên file sau khi giải mã, loại bỏ đường dẫn và mở rộng:', truncatedFileName);
                 } else if (media_path.startsWith("http://vnno-")) {
-                    $("#media1-name").text("Nguồn nhạc: ZingMp3");
+                    $("#media1-name").html("Nguồn nhạc: <font color=green>ZingMp3</font>");
                     //console.log('Xử lý cho trường hợp khác');
                 } else if (media_path.startsWith("https://rr")) {
-                    $("#media1-name").text("Nguồn nhạc: Youtube");
+                    $("#media1-name").html("Nguồn nhạc: <font color=green>Youtube</font>");
                 } else if (media_path.startsWith("file:///home/pi/vietbot_offline/src/tts_saved/")) {
-                    $("#media1-name").text("Luồng Mic: Không có dữ liệu");
+                    $("#media1-name").html("Luồng Mic: Không có dữ liệu");
                 } else {
-                    $("#media1-name").text("Nguồn nhạc: .....");
+                    $("#media1-name").html("Nguồn nhạc: <font color=green>.....</font>");
                     //console.log('Xử lý cho trường hợp mặc định');
                 }
                 // Update the slider values
