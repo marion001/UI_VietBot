@@ -1710,7 +1710,7 @@ None (Không Dùng)</label></center>
 <tr><th scope="row">Chế độ hiệu ứng:</th>
 <td colspan="1"><input type="number"  value="<?php echo $LED_EFFECT_MODE; ?>" id="effect_mode_input" name="effect_mode" class="disabled-input form-control"></td>
 
-<td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success"  onclick="sendLedSettings('effect_mode_input')">Test LED</button></td>
+<td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success"  onclick="sendLedSettings('effect_mode_input')" disabled>Test LED</button></td>
 
 
 
@@ -1719,19 +1719,19 @@ None (Không Dùng)</label></center>
 <tr><th scope="row">Hiệu ứng nghe:</th>
 <td colspan="1"><input type="number"  value="<?php echo $LED_LISTEN_EFFECT; ?>" id="listen_effect_mode_input" name="listen_effect" class="disabled-input form-control"></td>
 
-<td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success" onclick="sendLedSettings('listen_effect_mode_input')">Test LED</button></td>
+<td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success" onclick="sendLedSettings('listen_effect_mode_input')" disabled>Test LED</button></td>
 
 </tr>
 <tr><th scope="row">Hiệu ứng chờ xử lý</th>
 <td colspan="1"><input type="number"  value="<?php echo $LED_THINK_EFFECT; ?>" id="think_effect_mode_input" name="think_effect" class="disabled-input form-control"></td>
 
-<td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success" onclick="sendLedSettings('think_effect_mode_input')">Test LED</button></td>
+<td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success" onclick="sendLedSettings('think_effect_mode_input')" disabled>Test LED</button></td>
 
 </tr>
 <tr><th scope="row">Hiệu ứng khi trả lời:</th>
 <td colspan="1"><input type="number"   value="<?php echo $LED_SPEAK_EFFECT; ?>" id="speak_effect_mode_input" name="speak_effect" class="disabled-input form-control"></td>
 
-<td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success" onclick="sendLedSettings('speak_effect_mode_input')">Test LED</button></td>
+<td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success" onclick="sendLedSettings('speak_effect_mode_input')" disabled>Test LED</button></td>
 
 </tr>
 <tr><th scope="row">Màu khi được đánh thức:</th>
@@ -1750,22 +1750,22 @@ None (Không Dùng)</label></center>
 <div class="col-auto">
 <center>
 <input type="text" value="LISTEN" id="listen_test_led" class="disabled-input form-control" hidden>
-<button type="button" title="Test hiệu ứng led" class="btn btn-primary" onclick="sendLedSettings('listen_test_led')">LED Listen</button>
+<button type="button" title="Test hiệu ứng led" class="btn btn-primary" onclick="sendLedSettings('listen_test_led')" disabled>LED Listen</button>
 
 
 <input type="text" value="THINK" id="think_test_led" class="disabled-input form-control" hidden>
-<button type="button" title="Test hiệu ứng led" class="btn btn-secondary" onclick="sendLedSettings('think_test_led')">LED Think</button>
+<button type="button" title="Test hiệu ứng led" class="btn btn-secondary" onclick="sendLedSettings('think_test_led')" disabled>LED Think</button>
 
 
 <input type="text" value="SPEAK" id="speak_test_led" class="disabled-input form-control" hidden>
-<button type="button" title="Test hiệu ứng led" class="btn btn-info" onclick="sendLedSettings('speak_test_led')">LED Speak</button>
+<button type="button" title="Test hiệu ứng led" class="btn btn-info" onclick="sendLedSettings('speak_test_led')" disabled>LED Speak</button>
 
 
 <input type="text" value="MUTE" id="mute_test_led" class="disabled-input form-control" hidden>
-<button type="button" title="Test hiệu ứng led" class="btn btn-warning" onclick="sendLedSettings('mute_test_led')">LED Mute</button>
+<button type="button" title="Test hiệu ứng led" class="btn btn-warning" onclick="sendLedSettings('mute_test_led')" disabled>LED Mute</button>
 
 <input type="text" value="OFF" id="stop_test_led_off" class="disabled-input form-control" hidden>
-<button type="button" title="Test hiệu ứng led" class="btn btn-danger" onclick="sendLedSettings('stop_test_led_off')">Dừng Test LED</button>
+<button type="button" title="Test hiệu ứng led" class="btn btn-danger" onclick="sendLedSettings('stop_test_led_off')" disabled>Dừng Test LED</button>
 </center>
 
 </div></div>
