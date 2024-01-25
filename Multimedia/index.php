@@ -106,7 +106,6 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
             }
         }
 		*/
-	
     </style>
 	    <style>
         /* Your CSS styles here */
