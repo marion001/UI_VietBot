@@ -221,16 +221,15 @@ if (is_dir($directory . '/node_modules')) {
 	<span id="media1-duration"></span>
     <p id="player-state">Trạng thái: Đang đồng bộ...</p>
 </div>
+<center>
+                        <div id="messagee"></div>
+                    </center>
 				
                     </center>
                 </td>
 
             </tr>
-			
-	
-
-
-
+		
   <tr>
     <td rowspan="2" colspan="2"><center>
                         <p>
@@ -267,23 +266,10 @@ if (is_dir($directory . '/node_modules')) {
     </div>
 </div>
 
-            
-            <tr>           
-                <td colspan="3">
-                    <center>
-                        <div id="messagee"></div>
-                    </center>
-                </td>
-
-            </tr>
 
             </tbody>
             </table>
-
-
         </div>
-
-
         <div class="col-sm-6">
 
 
@@ -402,7 +388,7 @@ $duration = isset($fileInfo['playtime_seconds']) ? round($fileInfo['playtime_sec
             echo " <div class='image-container'>";
             echo "<img src='../assets/img/NotNhac.png' class='imagesize' alt='' /> <div class='caption'>";
             echo '<b>Tên bài hát:</b> ' . basename($mp3File) . '<br/>';
-            echo '<b>Thời lượng:</b> ' . formatTimephp($duration) . '<br/>';
+           // echo '<b>Thời lượng:</b> ' . formatTimephp($duration) . '<br/>';
             echo '<b>Kích thước:</b> ' . $fileSizeMB . ' MB<br/>';
             echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-data_type="'.$api_vietbot->playback_direct_music_api->payload->type.'" data-song-data_play_music="'.$api_vietbot->playback_direct_music_api->payload->data.'" data-song-kichthuoc="' . $fileSizeMB . ' MB" data-song-thoiluong="' . formatTimephp($duration) . '" data-song-artist=" ---" data-song-images="../assets/img/NotNhac.png" data-song-name="' . basename($mp3File) . '" data-song-link_type="'.$api_vietbot->playback_direct_music_api->payload->link_type.'" data-song-id="mp3/' . basename($mp3File) . '">Phát Nhạc</button>';
             echo '<button class="deleteBtn btn btn-danger" data-file="' . basename($mp3File) . '">Xóa File</button>';
@@ -599,6 +585,24 @@ if ($response === false) {
 </div>
 <!-- Đoạn mã JavaScript của bạn -->
 <script>
+
+    function truncateFileName(fileName, maxLength) {
+        if (fileName.length <= maxLength) {
+            return fileName;
+        }
+
+        // Tìm vị trí khoảng trắng gần giới hạn maxLength
+        const lastSpaceIndex = fileName.lastIndexOf(' ', maxLength);
+
+        // Nếu không có khoảng trắng, cắt tên file
+        if (lastSpaceIndex === -1) {
+            return fileName.substring(0, maxLength) + '...';
+        }
+
+        // Ngắt tên file tại khoảng trắng gần giới hạn maxLength
+        return fileName.substring(0, lastSpaceIndex) + '...';
+    }
+
     $(document).ready(function() {
         // Xử lý sự kiện khi nút Ajax được nhấn
         $('.ajax-button').on('click', function() {
@@ -661,8 +665,12 @@ if ($response === false) {
                                 let modifiedStringSuccess = response.state.replace("Success", "Thành Công");
                                 var endTime = new Date(); // Lấy thời gian kết thúc yêu cầu
                                 var elapsedTime = endTime - startTime; // Tính thời gian thực hiện yêu cầu
+								
+								const maxLengthhhh = 50;
+								const truncatedFileNamesongName = truncateFileName(songName, maxLengthhhh);
+								
                                 messageElement.innerHTML = '<div style="color: green;"><b>' + getTimee + ' - ' + modifiedStringSuccess + ' | ' + elapsedTime + 'ms</b></div>';
-                                messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + songImages + ' alt="" /></div><div class="caption"><b>Tên bài hát: </b> ' + songName + '<br/><b>'+songTenKenhNgheSi+': </b> ' + songArtist + '<br/><b>Thời lượng: </b> ' + songThoiLuong + '<br/><b>Kích thước: </b> ' + songKichThuoc + '</div></div>';
+                                messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + songImages + ' alt="" /></div><div class="caption"><ul><li><p style="text-align: left;"><b>Tên bài hát: </b> ' + truncatedFileNamesongName + '</p></li><li><p style="text-align: left;"><b>'+songTenKenhNgheSi+': </b> ' + songArtist + '</p></li><li><p style="text-align: left;"><b>Kích thước: </b> ' + songKichThuoc + '</p></li></ul></div></div>';
                             })
                             .fail(function(jqXHR, textStatus, errorThrown) {
                                 //var messageElement = document.getElementById("messagee");
@@ -773,6 +781,7 @@ if ($response === false) {
         // Hiển thị thông báo khi checkbox không được tích
         var displayText = responseh.new_volume !== undefined ? 'Âm Lượng: ' + responseh.new_volume + '%' : responseh.response;
         messageElement.innerHTML = '<div style="color: green;"><b>' + displayText + '</b></div>';
+
     }
 })
 
@@ -906,6 +915,7 @@ if ($response === false) {
                 // Người dùng đã nhấn nút "Cancel" hoặc đóng hộp thoại
                 // alert("Hành động đã bị hủy bỏ!");
                 messageElement.innerHTML = '<div style="color: red;">Thao tác xóa file <b>' + fileToDelete + '</b> đã bị hủy bỏ</div>';
+				
             }
         });
     });
@@ -946,22 +956,7 @@ $(document).ready(function() {
 
 
 <script>
-    function truncateFileName(fileName, maxLength) {
-        if (fileName.length <= maxLength) {
-            return fileName;
-        }
 
-        // Tìm vị trí khoảng trắng gần giới hạn maxLength
-        const lastSpaceIndex = fileName.lastIndexOf(' ', maxLength);
-
-        // Nếu không có khoảng trắng, cắt tên file
-        if (lastSpaceIndex === -1) {
-            return fileName.substring(0, maxLength) + '...';
-        }
-
-        // Ngắt tên file tại khoảng trắng gần giới hạn maxLength
-        return fileName.substring(0, lastSpaceIndex) + '...';
-    }
 
     // Function to convert seconds to HH:MM:SS format
     function formatTimeajax(seconds) {
@@ -992,20 +987,6 @@ $(document).ready(function() {
 
         $.ajax(settings)
             .done(function(response) {
-
-                //var player_duration = selectedOption.data('duration');
-                //var player_path = selectedOption.data('path');
-                //var player_position = selectedOption.data('position');
-                //var player_state = selectedOption.data('state');
-
-                // Hiển thị thông tin trong console log
-                //console.log("Playback:", get_playback);
-                //console.log("Duration:", player_duration);
-                //console.log("Path:", player_path);
-                //console.log("Position:", player_position);
-                //console.log("State:", player_state);
-
-                //var media2_duration = response.media2_duration;
 				var messageinfomusicplayer = document.getElementById("infomusicplayer");
                 var media_path = response.media1_path;
                 var playervlc_state = response.player1_state;
@@ -1032,13 +1013,13 @@ $(document).ready(function() {
                     // Giới hạn tên file tối đa 20 ký tự và ngắt tại khoảng trắng
                     const maxLength = 25;
                     const truncatedFileName = truncateFileName(fileNameWithoutExtension, maxLength);
-                    $("#media1-name").text("Local MP3: " + truncatedFileName).attr("title", fileNameWithoutExtension);
+                    $("#media1-name").text("Nguồn nhạc: Local MP3: " + truncatedFileName).attr("title", fileNameWithoutExtension);
                     // console.log('Tên file sau khi giải mã, loại bỏ đường dẫn và mở rộng:', truncatedFileName);
                 } else if (media_path.startsWith("http://vnno-")) {
-                    $("#media1-name").text("ZingMp3: ...");
+                    $("#media1-name").text("Nguồn nhạc: ZingMp3");
                     //console.log('Xử lý cho trường hợp khác');
                 } else if (media_path.startsWith("https://rr")) {
-                    $("#media1-name").text("Youtube: ...");
+                    $("#media1-name").text("Nguồn nhạc: Youtube");
                 } else if (media_path.startsWith("file:///home/pi/vietbot_offline/src/tts_saved/")) {
                     $("#media1-name").text("Luồng Mic: Không có dữ liệu");
                 } else {
@@ -1059,7 +1040,7 @@ $(document).ready(function() {
                 var playerStateColor = "";
                 switch (playervlc_state) {
                     case "State.Ended":
-                        playerStateText = "Kết thúc";
+                        playerStateText = "Đã kết thúc";
                         playerStateColor = "gray";
                         break;
                     case "State.Playing":
