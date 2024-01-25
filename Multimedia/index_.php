@@ -665,10 +665,19 @@ if ($response === false) {
 								
 								const maxLengthhhh = 50;
 								const truncatedFileNamesongName = truncateFileName(songName, maxLengthhhh);
-								
+								//hiển thị thẻ div  messagee
+								messageElement.style.display = "block";
                                 messageElement.innerHTML = '<div style="color: green;"><b>' + getTimee + ' - ' + modifiedStringSuccess + ' | ' + elapsedTime + 'ms</b></div>';
                                 messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + songImages + ' alt="" /></div><div class="caption"><ul><li><p style="text-align: left;"><b>Tên bài hát: </b> ' + truncatedFileNamesongName + '</p></li><li><p style="text-align: left;"><b>'+songTenKenhNgheSi+': </b> ' + songArtist + '</p></li><li><p style="text-align: left;"><b>Kích thước: </b> ' + songKichThuoc + '</p></li></ul></div></div>';
-                            })
+                            
+							  if (messageElement) {
+								// Sử dụng setTimeout để ẩn thẻ sau 5 giây
+							setTimeout(function() {
+							messageElement.style.display = "none";
+							}, 7000); // 5000 milliseconds = 5 giây
+							}
+							
+							})
                             .fail(function(jqXHR, textStatus, errorThrown) {
                                 //var messageElement = document.getElementById("messagee");
                                 var endTime = new Date(); // Lấy thời gian kết thúc yêu cầu
