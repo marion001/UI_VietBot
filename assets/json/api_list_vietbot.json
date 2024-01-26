@@ -109,6 +109,20 @@
         }
     },
 	
+    "set_song_info": {
+        "Content-Type": "application/json",
+        "method": "POST",
+        "payload": {
+            "type": 2,
+            "data": "set_song_info",
+			"song_name": "Tên bài hát",
+			"cover_link": "url hình ảnh"
+        }
+    },
+	
+	
+	
+	
 	
 	
 	
