@@ -626,6 +626,27 @@ if ($response === false) {
 				messageElement.innerHTML = '<font color=red>Không Có Dữ Liệu Bài Hát songId...</font>';
             }
 			
+//Gửi thông tin tên bài hát và cover tới vietbot
+var settings_cover_name = {
+  "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
+  "method": "POST",
+  "timeout": 0,
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "data": JSON.stringify({
+    "type": 2,
+    "data": "set_song_info",
+    "song_name": songName,
+    "cover_link": songImages
+  }),
+};
+$.ajax(settings_cover_name).done(function (response_cover_name) {
+  //console.log(response_cover_name);
+});
+
+			
+			
              //console.log('song id:', songId);
             $.ajax({
                 url: '../include_php/Ajax/Get_Final_Url_ZingMp3.php?url=' + encodeURIComponent(songId),
@@ -1013,6 +1034,11 @@ $(document).ready(function() {
                 var playervlc_state = response.player1_state;
                 var media_position = response.media1_position;
                 var cover_link = response.cover_link;
+				
+				
+                var song_name = response.song_name;
+                //var cover_link = response.cover_link;
+				
                 //console.log("media_path:", media_path);
                 var state = response.player1_state;
                 // Convert player_duration to seconds
@@ -1034,17 +1060,21 @@ $(document).ready(function() {
                     // Giới hạn tên file tối đa 20 ký tự và ngắt tại khoảng trắng
                     const maxLength = 25;
                     const truncatedFileName = truncateFileName(fileNameWithoutExtension, maxLength);
-                    $("#media1-name").html("Nguồn nhạc: <font color=green>Local MP3</font><br/> " + truncatedFileName).attr("title", fileNameWithoutExtension);
+                    var nguonnhac = "<font color=green>Local MP3</font>";
                     // console.log('Tên file sau khi giải mã, loại bỏ đường dẫn và mở rộng:', truncatedFileName);
                 } else if (media_path.startsWith("http://vnno-")) {
-                    $("#media1-name").html("Nguồn nhạc: <font color=green>ZingMp3</font>");
+                    //$("#media1-name").html("Nguồn nhạc: <font color=green>ZingMp3</font>");
+                    var nguonnhac = "<font color=green>ZingMp3</font>";
                     //console.log('Xử lý cho trường hợp khác');
                 } else if (media_path.startsWith("https://rr")) {
-                    $("#media1-name").html("Nguồn nhạc: <font color=green>Youtube</font>");
+                    //$("#media1-name").html("Nguồn nhạc: <font color=green>Youtube</font>");
+                    var nguonnhac = "<font color=green>Youtube</font>";
                 } else if (media_path.startsWith("file:///home/pi/vietbot_offline/src/tts_saved/")) {
-                    $("#media1-name").html("Luồng Mic: Không có dữ liệu");
+                    //$("#media1-name").html("Luồng Mic: Không có dữ liệu");
+                    var nguonnhac = "Không có dữ liệu";
                 } else {
-                    $("#media1-name").html("Nguồn nhạc: <font color=green>.....</font>");
+                    //$("#media1-name").html("Nguồn nhạc: <font color=green>.....</font>");
+                    var nguonnhac = "<font color=green>.....</font>";
                     //console.log('Xử lý cho trường hợp mặc định');
                 }
                 // Update the slider values
@@ -1053,8 +1083,10 @@ $(document).ready(function() {
                 // Convert and display media1_duration in HH:MM:SS format
                 $("#media1-duration").text(formatTimeajax(media_durationInSeconds));
 				
+				$("infomusicplayer").html("Nguồn nhạc: <font color=green>.....</font>");
 				//messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + cover_link + ' alt="" /></div><div class="caption"><b>Tên bài hát: </b> ' + songName + '<br/><b>'+songTenKenhNgheSi+': </b> ' + songArtist + '<br/><b>Thời lượng: </b> ' + songThoiLuong + '<br/><b>Kích thước: </b> ' + songKichThuoc + '</div></div>';
-                           
+                messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src='+cover_link+' alt="" /></div><div class="caption"><ul><li><p style="text-align: left;"><b>Tên bài hát: </b>'+truncateFileName(song_name, 20)+'</p></li><li><p style="text-align: left;"><b>Nguồn Nhạc:</b> '+nguonnhac+'</li></p></ul></div></div>';
+                            
 				
                 // Display player state based on playervlc_state
                 var playerStateText = "";
