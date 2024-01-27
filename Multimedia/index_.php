@@ -833,10 +833,28 @@ $.ajax(settings_cover_name).done(function (response_cover_name) {
 		}
 			
         }
-    } else {
-        // Hiển thị thông báo khi checkbox không được tích
-        var displayText = responseh.new_volume !== undefined ? 'Âm Lượng: ' + responseh.new_volume + '%' : responseh.response;
-        messageElement.innerHTML = '<div style="color: green;"><b>' + displayText + '</b></div>';
+    } 
+	//nếu checkbox đồng bộ không được tích
+	else {
+		var displayText = responseh.new_volume !== undefined ? 'Âm Lượng: ' + responseh.new_volume + '%' : responseh.response;
+		messageElement.innerHTML = ' ';
+        // Hiển thị thông báo khi checkbox được tích và responseh.response không phải là một trong các giá trị chỉ định
+        if (responseh.response === "Đã dừng!" || responseh.response === "Đã tiếp tục!" || responseh.response === "Đã tạm dừng!") {
+            // Xử lý và hiển thị response
+            		messageElement.style.display = "block";
+            messageElement.innerHTML = '<div style="color: green;"><b>' + displayText + '</b></div>';
+			$('#loading-overlay').hide();
+		// Kiểm tra xem thẻ có tồn tại không trước khi ẩn
+		if (messageElement) {
+		// Sử dụng setTimeout để ẩn thẻ sau 5 giây
+		setTimeout(function() {
+		messageElement.style.display = "none";
+		}, 7000); // 5000 milliseconds = 5 giây
+		}
+			
+        }
+		
+		
 		$('#loading-overlay').hide();
 
     }
@@ -1110,9 +1128,6 @@ $(document).ready(function() {
 				document.getElementById('volume').value = response.volume;
 				document.getElementById('currentVolume').innerText = response.volume;
 				
-
-				
-				
 				
                 // Display player state based on playervlc_state
                 var playerStateText = "";
@@ -1172,9 +1187,6 @@ $(document).ready(function() {
                     //else {console.log("Không có MediaPlayer trong đường dẫn URL của trang cha.");}
                 }
                 //else {console.log("Không có fragment trong đường dẫn URL của trang cha.");}
-
-
-
             }
         }, <?php echo $sync_media_player_sync_delay; ?> * 1000);
     }
@@ -1235,7 +1247,7 @@ $(document).ready(function() {
     $.ajax(ajaxSettingsss).done(function (response) {
       console.log(response);
 
-      // Update the volume slider value and the displayed current volume with the new_volume value from the response
+      // Cập nhật giá trị thanh trượt âm lượng và âm lượng hiện tại được hiển thị với giá trị new_volume từ phản hồi
       document.getElementById('volume').value = response.new_volume;
       document.getElementById('currentVolume').innerText = response.new_volume;
     });
