@@ -233,7 +233,7 @@ if (is_dir($directory . '/node_modules')) {
 	
 						<div>
   <i id="volumeIcon" class="bi bi-volume-up-fill"></i>
-  <input type="range" id="volume" name="volume" min="0" max="100" value="" oninput="updateVolume(this.value)">
+  <input type="range" id="volume" name="volume" step="1" min="0" max="100" value="" oninput="updateVolume(this.value)">
   <span id="currentVolume">...</span>%
 </div><br/>
 	
