@@ -1703,12 +1703,12 @@ None (Không Dùng)</label></center>
 <tr>
 <th scope="row" title="Đầu ra tín hiệu điều khiển led mặc định là GPIO 10">LED GPIO: </th>
 <td colspan="2" title="Đầu ra tín hiệu điều khiển led mặc định là GPIO 10">
-<input type="number"  value="<?php echo $LED_GPIO; ?>" id="number_led_gpio_output" name="led_gpio" class="disabled-input form-control"></td>
+<input type="number"  value="<?php echo $LED_GPIO; ?>" placeholder="<?php echo $LED_GPIO; ?>" id="number_led_gpio_output" name="led_gpio" class="disabled-input form-control"></td>
 </tr>
 <tr><th scope="row">Số led:</th>
-<td colspan="2"><input type="number"  value="<?php echo $LED_NUMBER_LED; ?>" id="number_led_mode_input" name="number_led" class="disabled-input form-control"></td></tr>
+<td colspan="2"><input type="number"  value="<?php echo $LED_NUMBER_LED; ?>" placeholder="<?php echo $LED_NUMBER_LED; ?>" id="number_led_mode_input" name="number_led" class="disabled-input form-control"></td></tr>
 <tr><th scope="row">Độ sáng:</th>
-<td colspan="2"><input type="number"  value="<?php echo $LED_BRIGHTNESS; ?>" id="brightness_mode_input" name="brightness" class="disabled-input form-control" ></td></tr>
+<td colspan="2"><input type="number"  value="<?php echo $LED_BRIGHTNESS; ?>" placeholder="<?php echo $LED_BRIGHTNESS; ?>" id="brightness_mode_input" name="brightness" class="disabled-input form-control" ></td></tr>
 
 <tr><th scope="row">Chế độ hiệu ứng:</th>
 <td colspan="1"><input type="number"  value="<?php echo $LED_EFFECT_MODE; ?>" id="effect_mode_input" name="effect_mode" class="disabled-input form-control"></td>
