@@ -1053,6 +1053,7 @@ $(document).ready(function() {
                 var playervlc_state = response.player1_state;
                 var media_position = response.media1_position;
                 var cover_link = response.cover_link;
+                var last_request = response.last_request;
 				
 				
                 var song_name = response.song_name;
@@ -1104,7 +1105,7 @@ $(document).ready(function() {
 				
 				$("infomusicplayer").html("Nguồn nhạc: <font color=green>.....</font>");
 				//messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + cover_link + ' alt="" /></div><div class="caption"><b>Tên bài hát: </b> ' + songName + '<br/><b>'+songTenKenhNgheSi+': </b> ' + songArtist + '<br/><b>Thời lượng: </b> ' + songThoiLuong + '<br/><b>Kích thước: </b> ' + songKichThuoc + '</div></div>';
-                messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src='+cover_link+' alt="" /></div><div class="caption"><ul><li><p style="text-align: left;"><b>Tên bài hát: </b>'+truncateFileName(song_name, 20)+'</p></li><li><p style="text-align: left;"><b>Nguồn Nhạc:</b> '+nguonnhac+'</li></p></ul></div></div>';
+                messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src='+cover_link+' alt="" /></div><div class="caption"><ul><li><p style="text-align: left;"><b>Yêu Cầu: </b>'+truncateFileName(last_request, 30)+'</p></li><li><p style="text-align: left;"><b>Tên bài hát: </b><font color=blue>'+truncateFileName(song_name, 20)+'</font></p></li><li><p style="text-align: left;"><b>Nguồn Nhạc:</b> '+nguonnhac+'</li></p></ul></div></div>';
                 //thay đổi giá trị volume ở thanh slile
 				document.getElementById('volume').value = response.volume;
 				document.getElementById('currentVolume').innerText = response.volume;
