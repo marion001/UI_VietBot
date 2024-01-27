@@ -230,19 +230,35 @@ if (is_dir($directory . '/node_modules')) {
 		
   <tr>
     <td rowspan="2" colspan="2"><center>
+	
+						<div>
+  <i id="volumeIcon" class="bi bi-volume-up-fill"></i>
+  <input type="range" id="volume" name="volume" min="0" max="100" value="" oninput="updateVolume(this.value)">
+  <span id="currentVolume">...</span>%
+</div><br/>
+	
+	
                         <p>
                         <button type="button" id="playButton" title="Phát nhạc" class="btn btn-success"><i class="bi bi-play-circle"></i>
                         </button>
                         <button type="button" id="pauseButton" title="Tạm dừng phát nhạc" class="btn btn-warning"><i class="bi bi-pause-circle"></i>
                         </button>
                         <button type="button" id="stopButton" title="Dừng phát nhạc" class="btn btn-danger"><i class="bi bi-stop-circle"></i>
-                        </button></p><p>
+                        </button></p>
+						<!--<p>
 						<button type="button" id="volumeDown" title="Giảm âm lượng" class="btn btn-info"><i class="bi bi-volume-down"></i>
                         </button>
                         <button type="button" id="volumeUp" title="Tăng âm lượng" class="btn btn-info"><i class="bi bi-volume-up"></i>
-                        </button></p>
+                        </button></p> -->
 					
                     </center>
+					
+					
+					
+					
+					
+
+					
 					</td>
 						
    
@@ -691,6 +707,9 @@ $.ajax(settings_cover_name).done(function (response_cover_name) {
                                 messageElement.innerHTML = '<div style="color: green;"><b>' + getTimee + ' - ' + modifiedStringSuccess + ' | ' + elapsedTime + 'ms</b></div>';
                                 messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + songImages + ' alt="" /></div><div class="caption"><ul><li><p style="text-align: left;"><b>Tên bài hát: </b> ' + truncatedFileNamesongName + '</p></li><li><p style="text-align: left;"><b>'+songTenKenhNgheSi+': </b> ' + songArtist + '</p></li><li><p style="text-align: left;"><b>Kích thước: </b> ' + songKichThuoc + '</p></li></ul></div></div>';
                             
+
+							
+							
 							  if (messageElement) {
 								// Sử dụng setTimeout để ẩn thẻ sau 5 giây
 							setTimeout(function() {
@@ -1086,7 +1105,13 @@ $(document).ready(function() {
 				$("infomusicplayer").html("Nguồn nhạc: <font color=green>.....</font>");
 				//messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + cover_link + ' alt="" /></div><div class="caption"><b>Tên bài hát: </b> ' + songName + '<br/><b>'+songTenKenhNgheSi+': </b> ' + songArtist + '<br/><b>Thời lượng: </b> ' + songThoiLuong + '<br/><b>Kích thước: </b> ' + songKichThuoc + '</div></div>';
                 messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src='+cover_link+' alt="" /></div><div class="caption"><ul><li><p style="text-align: left;"><b>Tên bài hát: </b>'+truncateFileName(song_name, 20)+'</p></li><li><p style="text-align: left;"><b>Nguồn Nhạc:</b> '+nguonnhac+'</li></p></ul></div></div>';
-                            
+                //thay đổi giá trị volume ở thanh slile
+				document.getElementById('volume').value = response.volume;
+				document.getElementById('currentVolume').innerText = response.volume;
+				
+
+				
+				
 				
                 // Display player state based on playervlc_state
                 var playerStateText = "";
@@ -1181,6 +1206,41 @@ $(document).ready(function() {
         }
     });
 </script>
+
+
+
+
+<script>
+  function updateVolume(newVolume) {
+    // Update the display of the current volume
+    document.getElementById('currentVolume').innerText = newVolume;
+
+    // Send the new volume value via Ajax
+    var ajaxSettingsss = {
+      "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
+      method: "<?php echo $api_vietbot->set_volume_percent->method; ?>",
+      timeout: 0,
+      headers: {
+        "Content-Type": "application/json"
+      },
+      data: JSON.stringify({
+        type: <?php echo $api_vietbot->set_volume_percent->payload->type; ?>,
+        data: "<?php echo $api_vietbot->set_volume_percent->payload->data; ?>",
+        action: "<?php echo $api_vietbot->set_volume_percent->payload->action; ?>",
+        new_value: parseInt(newVolume) // Convert newVolume to an integer
+      }),
+    };
+
+    $.ajax(ajaxSettingsss).done(function (response) {
+      console.log(response);
+
+      // Update the volume slider value and the displayed current volume with the new_volume value from the response
+      document.getElementById('volume').value = response.new_volume;
+      document.getElementById('currentVolume').innerText = response.new_volume;
+    });
+  }
+</script>
+
 
 
 
