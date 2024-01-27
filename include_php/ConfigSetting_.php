@@ -472,14 +472,14 @@ $text_porcupine_version = $firstThreeCharspicovoice_version;
 		$fileName = end(explode('/', $filePath));
         $jsonData['smart_wakeup']['hotword'][] = [
             "type" => "porcupine",
-			//"custom_skill" => false,
-            //"value" => null,
+			"custom_skill" => false,
+            "value" => null,
             "lang" => $selectedLanguage,
            //"file_name" => $fileName.".ppn",
             "file_name" => $fileName,
             "sensitive" => 0.3,
-          //  "say_reply" => false,
-          //  "command" => null,
+            "say_reply" => false,
+            "command" => null,
             "active" => true
         ];
 		//echo $fileName.".ppn<br/>";
@@ -1588,7 +1588,7 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
         </div>
     </td>
 </tr>
-<!-- 
+
 <tr>
     <th scope="row">
         <label for="say_reply" title="Bật/Tắt Phản Hồi Của Bot Khi Được Đánh Thức" class="form-label">
@@ -1603,8 +1603,7 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
         </div>
     </td>
 </tr>
--->
-<!--
+
 <tr>
     <th scope="row"><label for="custom_skill">Dùng Cho Custom Skill:</label></th>
     <td>
@@ -1615,7 +1614,6 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
         </div>
     </td>
 </tr>
--->
 <tr>
     <th scope="row">
         <label for="sensitive" title="Độ Nhạy Sensitive" class="form-label">
