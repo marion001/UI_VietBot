@@ -119,7 +119,16 @@
 			"cover_link": "url hình ảnh"
         }
     },
-	
+    "set_volume_percent": {
+        "Content-Type": "application/json",
+        "method": "POST",
+        "payload": {
+            "type": 2,
+            "data": "volume",
+            "action": "setup",
+            "new_value": "100"
+        }
+    },
 	
 	
 	
@@ -231,16 +240,6 @@
             "api_type": 3,
             "data": "volume",
             "action": "max"
-        }
-    },
-    "set_volume_percent": {
-        "Content-Type": "application/json",
-        "method": "POST",
-        "payload": {
-            "api_type": 3,
-            "data": "volume",
-            "action": "setup",
-            "new_value": "100"
         }
     },
     "set_led_state_wakeup": {
