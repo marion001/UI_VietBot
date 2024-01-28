@@ -227,7 +227,7 @@ if (is_dir($directory . '/node_modules')) {
     <td rowspan="2" colspan="2"><center>
 	
 						<div>
-  <i id="volumeIcon" class="bi bi-volume-up-fill"></i>
+  <i id="volumeIcon" class="bi bi-volume-up"></i>
   <input type="range" id="volume" name="volume" step="1" min="0" max="100" value="" oninput="updateVolume(this.value)">
   <span id="currentVolume">...</span>%
 </div><br/>
@@ -766,24 +766,24 @@ $.ajax(settings_cover_name).done(function (response_cover_name) {
 		
         var messageElement = document.getElementById("messagee");
 
-        $('#volumeDown').on('click', function() {
-            sendAudioControlCommand('<?php echo $api_vietbot->set_volume_down->payload->action; ?>', '<?php echo $api_vietbot->set_volume_down->payload->data; ?>', <?php echo $api_vietbot->set_volume_down->payload->type; ?>, '<?php echo $api_vietbot->set_volume_down->method; ?>');
-        });
+        //$('#volumeDown').on('click', function() {
+            //sendAudioControlCommand('down', 'volume', 2, 'POST');
+        //});
 
         $('#playButton').on('click', function() {
-            sendAudioControlCommand('<?php echo $api_vietbot->set_player_continue_state->payload->action; ?>', '<?php echo $api_vietbot->set_player_continue_state->payload->data; ?>', <?php echo $api_vietbot->set_player_continue_state->payload->type; ?>, '<?php echo $api_vietbot->set_player_continue_state->method; ?>');
+            sendAudioControlCommand('continue', 'set_player', 2, 'POST');
         });
 
         $('#pauseButton').on('click', function() {
-            sendAudioControlCommand('<?php echo $api_vietbot->set_player_pause_state->payload->action; ?>', '<?php echo $api_vietbot->set_player_pause_state->payload->data; ?>', <?php echo $api_vietbot->set_player_pause_state->payload->type; ?>, '<?php echo $api_vietbot->set_player_pause_state->method; ?>');
+            sendAudioControlCommand('pause', 'set_player', 2, 'POST');
         });
 
         $('#stopButton').on('click', function() {
-            sendAudioControlCommand('<?php echo $api_vietbot->set_player_stop_state->payload->action; ?>', '<?php echo $api_vietbot->set_player_stop_state->payload->data; ?>', <?php echo $api_vietbot->set_player_stop_state->payload->type; ?>, '<?php echo $api_vietbot->set_player_stop_state->method; ?>');
+            sendAudioControlCommand('stop', 'set_player', 2, 'POST');
         });
-        $('#volumeUp').on('click', function() {
-            sendAudioControlCommand('<?php echo $api_vietbot->set_volume_up->payload->action; ?>', '<?php echo $api_vietbot->set_volume_up->payload->data; ?>', <?php echo $api_vietbot->set_volume_up->payload->type; ?>, '<?php echo $api_vietbot->set_volume_up->method; ?>');
-        });
+        //$('#volumeUp').on('click', function() {
+            //sendAudioControlCommand('up', 'volume', 2, 'POST');
+        //});
 
         function sendAudioControlCommand(action, data, type, method) {
 			$('#loading-overlay').show();
@@ -1028,6 +1028,20 @@ $(document).ready(function() {
 </script>
 
 <script>
+
+function removeAllAndAddNewClass(elementId, newClass) {
+  var element = document.getElementById(elementId);
+
+  // Xóa hết tất cả các giá trị trong classList
+  while (element.classList.length > 0) {
+    element.classList.remove(element.classList.item(0));
+  }
+
+  // Thêm giá trị mới vào classList
+  element.classList.add(newClass);
+}
+
+
     // Function to convert seconds to HH:MM:SS format
     function formatTimeajax(seconds) {
         var hours = Math.floor(seconds / 3600);
@@ -1046,7 +1060,7 @@ $(document).ready(function() {
         var selectedOption = $("#select-playback").find('option:selected');
         var get_playback = selectedOption.data('playback');
         var settings = {
-            "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>/?api_type=<?php echo $api_vietbot->get_long_player_state->payload->api_type; ?>&data=<?php echo $api_vietbot->get_long_player_state->payload->data; ?>",
+            "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>/?api_type=2&data=long_player",
             "method": "GET",
             "timeout": 0,
             "headers": {
@@ -1063,7 +1077,8 @@ $(document).ready(function() {
                 var cover_link = response.cover_link;
                 var last_request = response.last_request;
 				
-				
+				     var volumeIcon = document.getElementById('volumeIcon');
+
                 var song_name = response.song_name;
                 //var cover_link = response.cover_link;
 				
@@ -1108,6 +1123,20 @@ $(document).ready(function() {
 				//messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + cover_link + ' alt="" /></div><div class="caption"><b>Tên bài hát: </b> ' + songName + '<br/><b>'+songTenKenhNgheSi+': </b> ' + songArtist + '<br/><b>Thời lượng: </b> ' + songThoiLuong + '<br/><b>Kích thước: </b> ' + songKichThuoc + '</div></div>';
                 messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src='+cover_link+' alt="" /></div><div class="caption"><ul><li><p style="text-align: left;"><b>Yêu Cầu: </b>'+truncateFileName(last_request, 40)+'</p></li><li><p style="text-align: left;"><b>Tên bài hát: </b><font color=blue>'+truncateFileName(song_name, 20)+'</font></p></li><li><p style="text-align: left;"><b>Nguồn Nhạc:</b> '+nguonnhac+'</li></p></ul></div></div>';
                 //thay đổi giá trị volume ở thanh slile
+				
+				// Update the volume icon based on the volume value
+
+
+
+if (response.volume == 0) {
+  volumeIcon.classList = 'bi bi-volume-mute-fill';
+} else if (response.volume >= 1 && response.volume <= 49) {
+  volumeIcon.classList = 'bi bi-volume-down-fill';
+} else {
+  volumeIcon.classList = 'bi bi-volume-up-fill';
+}
+				
+				
 				document.getElementById('volume').value = response.volume;
 				document.getElementById('currentVolume').innerText = response.volume;
                 // Display player state based on playervlc_state
@@ -1211,21 +1240,21 @@ $(document).ready(function() {
 
     var ajaxSettingsss = {
       "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
-      method: "<?php echo $api_vietbot->set_volume_percent->method; ?>",
+      method: "POST",
       timeout: 0,
       headers: {
         "Content-Type": "application/json"
       },
       data: JSON.stringify({
-        type: <?php echo $api_vietbot->set_volume_percent->payload->type; ?>,
-        data: "<?php echo $api_vietbot->set_volume_percent->payload->data; ?>",
-        action: "<?php echo $api_vietbot->set_volume_percent->payload->action; ?>",
+        type: 2,
+        data: "volume",
+        action: "setup",
         new_value: parseInt(newVolume)
       }),
     };
 
     $.ajax(ajaxSettingsss).done(function (response) {
-      console.log(response);
+      //console.log(response);
 
       // Cập nhật giá trị thanh trượt âm lượng và âm lượng hiện tại được hiển thị với giá trị new_volume từ phản hồi
       document.getElementById('volume').value = response.new_volume;
