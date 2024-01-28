@@ -35,11 +35,6 @@ if (!is_numeric($sync_media_player_sync_delay) || $sync_media_player_sync_delay 
     // Nếu không nằm trong khoảng, thiết lập giá trị mặc định là 1
     $sync_media_player_sync_delay = 1;
 }
-// Kiểm tra giá trị của biến $sync_music_stream
-if ($sync_music_stream != 'web_ui' && $sync_music_stream != 'mic') {
-    // Nếu không phải là 'web_ui' hoặc 'mic', đặt giá trị mặc định là 'mic'
-    $sync_music_stream = 'mic';
-}
 
 function install_source_node($DuognDanUI_HTML,$serverIP,$SSH_Port,$SSH_TaiKhoan,$SSH_MatKhau,$E_rror_HOST,$E_rror) {
 	
@@ -1021,7 +1016,7 @@ function readJsonAndCheckCheckbox() {
         error: function(error) {
 			//Nếu lỗi json thì mặc định sẽ chọn zingmp3
 			$('#keyzingmp3').prop('checked', true);
-            console.error('Failed to read JSON file cfg_action.json:', error);
+            //console.error('Failed to read JSON file cfg_action.json:', error);
         }
     });
 }
@@ -1032,17 +1027,12 @@ $(document).ready(function() {
 });
 </script>
 
-
-
 <script>
-
-
     // Function to convert seconds to HH:MM:SS format
     function formatTimeajax(seconds) {
         var hours = Math.floor(seconds / 3600);
         var minutes = Math.floor((seconds % 3600) / 60);
         var remainingSeconds = seconds % 60;
-
         // Ensure two digits for hours, minutes, and seconds
         var formattedHours = hours < 10 ? "0" + hours : hours;
         var formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
@@ -1101,34 +1091,25 @@ $(document).ready(function() {
                     var nguonnhac = "<font color=green>Local MP3</font>";
                     // console.log('Tên file sau khi giải mã, loại bỏ đường dẫn và mở rộng:', truncatedFileName);
                 } else if (media_path.startsWith("http://vnno-")) {
-                    //$("#media1-name").html("Nguồn nhạc: <font color=green>ZingMp3</font>");
                     var nguonnhac = "<font color=green>ZingMp3</font>";
-                    //console.log('Xử lý cho trường hợp khác');
                 } else if (media_path.startsWith("https://rr")) {
-                    //$("#media1-name").html("Nguồn nhạc: <font color=green>Youtube</font>");
                     var nguonnhac = "<font color=green>Youtube</font>";
                 } else if (media_path.startsWith("file:///home/pi/vietbot_offline/src/tts_saved/")) {
-                    //$("#media1-name").html("Luồng Mic: Không có dữ liệu");
                     var nguonnhac = "Không có dữ liệu";
                 } else {
-                    //$("#media1-name").html("Nguồn nhạc: <font color=green>.....</font>");
                     var nguonnhac = "<font color=green>.....</font>";
-                    //console.log('Xử lý cho trường hợp mặc định');
                 }
                 // Update the slider values
                 $("#time-slider").attr("max", media_durationInSeconds);
                 $("#time-slider").val(media1_positionInSeconds);
                 // Convert and display media1_duration in HH:MM:SS format
                 $("#media1-duration").text(formatTimeajax(media_durationInSeconds));
-				
 				$("infomusicplayer").html("Nguồn nhạc: <font color=green>.....</font>");
 				//messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + cover_link + ' alt="" /></div><div class="caption"><b>Tên bài hát: </b> ' + songName + '<br/><b>'+songTenKenhNgheSi+': </b> ' + songArtist + '<br/><b>Thời lượng: </b> ' + songThoiLuong + '<br/><b>Kích thước: </b> ' + songKichThuoc + '</div></div>';
                 messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src='+cover_link+' alt="" /></div><div class="caption"><ul><li><p style="text-align: left;"><b>Yêu Cầu: </b>'+truncateFileName(last_request, 40)+'</p></li><li><p style="text-align: left;"><b>Tên bài hát: </b><font color=blue>'+truncateFileName(song_name, 20)+'</font></p></li><li><p style="text-align: left;"><b>Nguồn Nhạc:</b> '+nguonnhac+'</li></p></ul></div></div>';
                 //thay đổi giá trị volume ở thanh slile
 				document.getElementById('volume').value = response.volume;
 				document.getElementById('currentVolume').innerText = response.volume;
-				
-				
                 // Display player state based on playervlc_state
                 var playerStateText = "";
                 var playerStateColor = "";
@@ -1224,11 +1205,10 @@ $(document).ready(function() {
 
 
 <script>
+//Cập Nhật và gửi Giá trị volume theo thời gian thực
   function updateVolume(newVolume) {
-    // Update the display of the current volume
     document.getElementById('currentVolume').innerText = newVolume;
 
-    // Send the new volume value via Ajax
     var ajaxSettingsss = {
       "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
       method: "<?php echo $api_vietbot->set_volume_percent->method; ?>",
@@ -1240,7 +1220,7 @@ $(document).ready(function() {
         type: <?php echo $api_vietbot->set_volume_percent->payload->type; ?>,
         data: "<?php echo $api_vietbot->set_volume_percent->payload->data; ?>",
         action: "<?php echo $api_vietbot->set_volume_percent->payload->action; ?>",
-        new_value: parseInt(newVolume) // Convert newVolume to an integer
+        new_value: parseInt(newVolume)
       }),
     };
 
