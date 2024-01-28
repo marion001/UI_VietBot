@@ -490,7 +490,7 @@ if (!is_dir($DuognDanThuMucJson)) {
 
 									  <tr>
 									     <th colspan="4">
-                            <center class="text-danger">Lựa Chọn Nâng Cao Khi Cập Nhật/Khôi Phục Hoàn Tất</center>
+                            <center class="text-danger">Lựa Chọn Nâng Cao Khi Cập Nhật Hoàn Tất</center>
                         </th></tr><tr>
                         <th>
                             <center title="Khởi Động Lại Toàn Bộ Hệ Thống Loa Thông Minh Vietbot">Reboot Hệ Thống:</center>
@@ -1078,6 +1078,35 @@ $data_State['volume'] = $volume_State_value;
 $output_State_json = json_encode($data_State, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 file_put_contents($DuognDanThuMucJson.'/state.json', $output_State_json);
 ////End thay thế các giá trị
+
+//xóa các giá trị hotword và Thay thế các giá trị 
+	//hiển thị ngôn ngữ hotword hiện tại
+	$selectedLanguage = $oldConfigData['smart_wakeup']['hotword'][0]['lang'];
+    // Xóa tất cả hotword hiện tại
+    $newConfigData['smart_wakeup']['hotword'] = [];
+    // Lấy danh sách tên tệp trong thư mục tương ứng
+    $folderPath = '/'.$DuognDanThuMucJson.'/hotword/' . $selectedLanguage . '/';
+	 $fileList = glob($folderPath . '*.ppn');
+    $fileList = array_diff($fileList, array('.', '..')); // Loại bỏ các tệp . và ..
+    // Thêm hotword mới từ danh sách tên tệp
+    foreach ($fileList as $filePath) {
+		$filePathParts = explode('/', $filePath);
+		$fileName = end($filePathParts);
+        $newConfigData['smart_wakeup']['hotword'][] = [
+            "type" => "porcupine",
+			"custom_skill" => false,
+            "value" => null,
+            "lang" => $selectedLanguage,
+            "file_name" => $fileName,
+            "sensitive" => 0.3,
+            "say_reply" => false,
+            "command" => null,
+            "active" => true
+        ];
+    }
+    // Lưu lại các thay đổi vào tệp json.php
+    file_put_contents($newConfigPath, json_encode($newConfigData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+//End
 
 //Chmod 777 khi chạy xong backup
 $connection = ssh2_connect($serverIP, $SSH_Port);
