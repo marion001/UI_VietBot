@@ -173,7 +173,7 @@ if (is_dir($directory . '/node_modules')) {
                                        
                                    
 
-                                        <button type="button" id="submitButton" class="ajax-button btn btn-success" data-song-kichthuoc="---" data-song-thoiluong="---" data-song-link_type="direct" data-song-artist="---" data-song-images="../assets/img/NotNhac.png" data-song-name="Không có dữ liệu" data-song-id="" value="" hidden>Play .Mp3</button>
+                                        <button type="button" id="submitButton" class="ajax-button btn btn-success" data-song-data_type="2" data-song-data_play_music="play_music" data-song-link_type="direct" data-song-images="../assets/img/NotNhac.png" data-song-name="Không có dữ liệu" data-song-id="" value="" hidden>Play .Mp3</button>
                                     
 
                                         <a class="btn btn-danger" href="<?php echo $PHP_SELF; ?>" role="button" title="Làm mới lại trang">Làm Mới</a> 
@@ -398,7 +398,7 @@ $duration = isset($fileInfo['playtime_seconds']) ? round($fileInfo['playtime_sec
             echo '<b>Tên bài hát:</b> ' . basename($mp3File) . '<br/>';
            // echo '<b>Thời lượng:</b> ' . formatTimephp($duration) . '<br/>';
             echo '<b>Kích thước:</b> ' . $fileSizeMB . ' MB<br/>';
-            echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-data_type="'.$api_vietbot->playback_direct_music_api->payload->type.'" data-song-data_play_music="'.$api_vietbot->playback_direct_music_api->payload->data.'" data-song-kichthuoc="' . $fileSizeMB . ' MB" data-song-thoiluong="' . formatTimephp($duration) . '" data-song-artist=" ---" data-song-images="../assets/img/NotNhac.png" data-song-name="' . basename($mp3File) . '" data-song-link_type="'.$api_vietbot->playback_direct_music_api->payload->link_type.'" data-song-id="mp3/' . basename($mp3File) . '">Phát Nhạc</button>';
+            echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-data_type="2" data-song-data_play_music="play_music" data-song-kichthuoc="' . $fileSizeMB . ' MB" data-song-thoiluong="' . formatTimephp($duration) . '" data-song-artist=" ---" data-song-images="../assets/img/NotNhac.png" data-song-name="' . basename($mp3File) . '" data-song-link_type="direct" data-song-id="mp3/' . basename($mp3File) . '">Phát Nhạc</button>';
             echo '<button class="deleteBtn btn btn-danger" data-file="' . basename($mp3File) . '">Xóa File</button>';
             echo "</div></div><br/>";
         }
@@ -500,7 +500,7 @@ if ($responseYoutube === false) {
             echo '<b>Tên bài hát:</b><a href="'.$Youtube_videoLink.'" target="_bank" style="color: black;" title="Mở trong Youtube"> ' . $Youtube_title . '</a><br/><b>Tên Kênh:</b> ' . $Youtube_channelTitle . '<br/>';
             //echo '<b>Mô tả:</b> ' . $Youtube_description . ' <br/>';
             //echo '<b>Link:</b> ' . $Youtube_videoLink . ' <br/>';
-            echo '<button class="ajax-button btn btn-success" data-song-data_type="'.$api_vietbot->playback_youtube_music_api->payload->type.'" data-song-data_play_music="'.$api_vietbot->playback_youtube_music_api->payload->data.'" data-song-tenkenhnghesi="Tên Kênh" data-song-link_type="direct" data-song-artist="' . $Youtube_channelTitle . '" data-song-images="' .$Youtube_images.'" data-song-name="'  . $Youtube_title . '" data-song-kichthuoc=" ---" data-song-thoiluong=" ---" data-song-id="' . $Youtube_videoLink . '" >Phát Nhạc</button>';
+            echo '<button class="ajax-button btn btn-success" data-song-data_type="2" data-song-data_play_music="play_music" data-song-tenkenhnghesi="Tên Kênh" data-song-link_type="direct" data-song-artist="' . $Youtube_channelTitle . '" data-song-images="' .$Youtube_images.'" data-song-name="'  . $Youtube_title . '" data-song-kichthuoc=" ---" data-song-thoiluong=" ---" data-song-id="' . $Youtube_videoLink . '" >Phát Nhạc</button>';
             echo "</div></div><br/>";
         }
     }
@@ -571,7 +571,7 @@ if ($response === false) {
                 echo "<img src='$img_images' class='imagesize' alt='' /> <div class='caption'>";
                 echo '<b>Tên bài hát:</b> ' . $song['name'] . '<br/><b>Nghệ sĩ:</b> ' . $song['artist'] . '<br/>';
                 //echo 'ID bài hát: ' . $song['id'] . ' <br/>';
-                echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-kichthuoc="---" data-song-thoiluong="---" data-song-link_type="'.$api_vietbot->playback_zingmp3_music_api->payload->link_type.'" data-song-data_type="'.$api_vietbot->playback_zingmp3_music_api->payload->type.'" data-song-data_play_music="'.$api_vietbot->playback_zingmp3_music_api->payload->data.'" data-song-artist="' . $song['artist'] . '" data-song-name="' . $song['name'] . '" data-song-images="' . $img_images . '" data-song-id="' . $originalUrl . '">Phát Nhạc</button>';
+                echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-kichthuoc="---" data-song-thoiluong="---" data-song-link_type="zingmp3" data-song-data_type="2" data-song-data_play_music="play_music" data-song-artist="' . $song['artist'] . '" data-song-name="' . $song['name'] . '" data-song-images="' . $img_images . '" data-song-id="' . $originalUrl . '">Phát Nhạc</button>';
                 //echo "Original URL: $originalUrl<br>";
                 // echo "MP3 128 URL: $finalUrl<br/><br/>";
                 echo "</div></div><br/>";
