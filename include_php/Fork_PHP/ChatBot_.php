@@ -25,8 +25,8 @@
 					
 					</span> -->
   <select id="message-type-checkbox" class="form-select">
-  <option  selected value="<?php echo $api_vietbot->chat_box->payload->type; ?>" title="Chế Độ Hỏi Đáp Ở Chatbox Không Phát Ra Loa">Hỏi Đáp</option>
-  <option value="<?php echo $api_vietbot->tts_api->payload->type; ?>" title="TTS Chuyển Văn Bản Thành Giọng Nói Để Đọc Ra Loa">Chỉ Đọc</option>
+  <option  selected value="3" title="Chế Độ Hỏi Đáp Ở Chatbox Không Phát Ra Loa">Hỏi Đáp</option>
+  <option value="1" title="TTS Chuyển Văn Bản Thành Giọng Nói Để Đọc Ra Loa">Chỉ Đọc</option>
 </select>
                 </div>
                 <input type="text" class="form-control" id="user-input" class="chat-input" placeholder="Nhập tin nhắn..." aria-label="Recipient's username" aria-describedby="basic-addon2">
