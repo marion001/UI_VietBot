@@ -464,11 +464,11 @@ B4: Go to Application -> Cookies -> "__Secure-1PSID" và "__Secure-1PSIDTS" và 
 <td><input type="text" class="form-control" id="Secure-1PSIDCC" name="Secure-1PSIDCC" placeholder="Nhập Cookie Secure-1PSIDCC Của Google bard" title="Nhập Cookie Secure-1PSIDCC Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure-1PSIDCC']; ?>">
 </td>
 </tr>
-
+<!--
 <tr><td colspan="2"><center>
 <button class="btn btn-warning" type="button" onclick="sendCookiesBard()">Kiểm Tra Cookie</button>
 </center></td></tr>
-
+-->
 </tbody>
 </table></div></div>
 	
@@ -1554,7 +1554,7 @@ if (count($fileLists) > 0) {
         }
     });
 </script>
-
+<!--
     <script>
         function sendCookiesBard() {
 			$('#loading-overlay').show();
@@ -1577,6 +1577,7 @@ if (count($fileLists) > 0) {
             xhr.send();
         }
     </script>
+	-->
 <script>
     // Hàm để cuộn lên đầu trang
     function scrollToTop() {
