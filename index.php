@@ -298,7 +298,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
 <div class="d-flex flex-row">
   <div class="p-2"><div class="d-flex flex-row"> <div id="temperature" class="h1"></div> <img id="weather-icon" src="" alt="Weather Icon"></div></div>
   <div class="d-flex flex-column">
-  <div class="d-flex flex-row"><?php echo "$wards_Tinh".",<div id='country'></div>"; ?></div>
+  <div class="d-flex flex-row"><?php //echo "$wards_Tinh".",<div id='country'></div>"; ?></div>
  <div class="d-flex flex-row">Độ ẩm: &nbsp;<div id="humidity"></div></div>
  <div class="d-flex flex-row"> Tốc độ gió: &nbsp;<div id="wind-speed"></div></div>
 </div>
