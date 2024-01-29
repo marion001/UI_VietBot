@@ -23,11 +23,6 @@
     });
 });
 </script>
-
-
-
-
-
 <?php
 
 // Kiểm tra nếu form đã được gửi
@@ -160,12 +155,16 @@ chmod($backupFile, 0777);
     $HassUrl = @$_POST['hass_url'];
     $HassDisplay_Full_State = isset($_POST['hass_display_full_state']) ? true : false;
     $activeHass = isset($_POST['activeHass']) && $_POST['activeHass'] === 'on' ? true : false;
+	
+	//bỏ qua skill vietbot
+    $bypass_all_skill = isset($_POST['bypass_all_skill']) && $_POST['bypass_all_skill'] === 'on' ? true : false;
 	//Chat GPT
 	$ChatGptKey = @$_POST['chatgpt_key'];
 	//Google Brand
 	$Google_bard_Secure1PSID = @$_POST['Secure-1PSID'];
 	$Google_bard_Secure_1PSIDTS = @$_POST['Secure-1PSIDTS'];
 	$Google_bard_Secure_1PSIDCC = @$_POST['Secure-1PSIDCC'];
+	
 	
 	//Telegram
 	$activeTelegram = isset($_POST['activeTelegram']) && $_POST['activeTelegram'] === 'on' ? true : false;
@@ -181,6 +180,8 @@ chmod($backupFile, 0777);
     $skillArray['hass']['url'] = $HassUrl;
     $skillArray['hass']['display_full_state'] = $HassDisplay_Full_State;
     $skillArray['hass']['active'] = $activeHass;
+	//bypass_all_skill
+    $skillArray['bypass_all_skill'] = $bypass_all_skill;
 	//ChatGPT
     $skillArray['chatgpt']['token'] = $ChatGptKey;
 	
@@ -333,6 +334,15 @@ if (count($fileLists) > 0) {
 
 <!-- Form để hiển thị và chỉnh sửa dữ liệu -->
 <form id="my-form" onsubmit="return vuTuyen();"  method="POST">
+<h5>Bỏ Qua Skill Vietbot</h5>
+
+<div class="row justify-content-center"><div class="col-auto">	 
+        <div class="custom-control custom-switch" title="Bật/Tắt để kích hoạt/huỷ kích hoạt">
+            <input type="checkbox" class="custom-control-input" id="bypass_all_skill" name="bypass_all_skill" <?php echo $skillArray['bypass_all_skill'] === true ? 'checked' : ''; ?>>
+            <label class="custom-control-label" for="bypass_all_skill"></label>
+</div></div></div>
+
+<hr/>
 <h5>Open Weather Map: <i class="bi bi-info-circle-fill" onclick="togglePopupOpenWeatherMap()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
       <div id="popupContainerOpenWeatherMap" class="popup-container" onclick="hidePopupOpenWeatherMap()">
     <div id="popupContent" onclick="preventEventPropagationOpenWeatherMap(event)">
