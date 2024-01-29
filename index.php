@@ -149,13 +149,13 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
 });
 </script>
 
-
+<!--
 
     <script>
     $(document).ready(function() {
-        var apiKey = "<?php echo $apiKeyWeather; ?>";
-        var lat = "<?php echo $latitude ?>"; // Latitude
-        var lon = "<?php echo $longitude ?>"; // Longitude
+        var apiKey = "<?php //echo $apiKeyWeather; ?>";
+        var lat = "<?php //echo $latitude ?>"; // Latitude
+        var lon = "<?php //echo $longitude ?>"; // Longitude
 
         function getWeather() {
             var apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
@@ -190,6 +190,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         getWeather();
     });
     </script>
+	-->
     <div class="menu-overlay d-none"></div>
     <!--   Right Side Start  -->
     <div class="right-side d-none d-lg-block">
@@ -292,7 +293,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
       <section id="hero" class="bg-primary text-white section hero w-100">
 	  	  				<!--		<div class="d-flex flex-row-reverse">
 							  <div class="p-2"><?php //echo "$wards_Duong $wards_Lang $wards_Huyen $wards_Tinh"; ?></div></div> -->
-							<div class="d-flex flex-row">
+<!--							<div class="d-flex flex-row">
 				<div class="p-2"><div id="tmptoday"></div></div>  <div class="p-2"><div id="clock1"></div></div></div>
 <div class="d-flex flex-row">
   <div class="p-2"><div class="d-flex flex-row"> <div id="temperature" class="h1"></div> <img id="weather-icon" src="" alt="Weather Icon"></div></div>
@@ -302,7 +303,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
  <div class="d-flex flex-row"> Tốc độ gió: &nbsp;<div id="wind-speed"></div></div>
 </div>
 </div>
-<div class="info">
+<div class="info"> -->
 <?php
 
 // Đường dẫn tới tệp JSON
@@ -434,9 +435,12 @@ if (!isset($_SESSION['root_id'])) {
 
 
 	
-	  	</div>
+	<!--  	</div> -->
 
       </section>
+
+
+
 
       <!--  About Start  -->
       <section id="about" class="section about bg-gray-400 text-black">
