@@ -472,13 +472,13 @@ $text_porcupine_version = $firstThreeCharspicovoice_version;
 		$fileName = end(explode('/', $filePath));
         $jsonData['smart_wakeup']['hotword'][] = [
             "type" => "porcupine",
-			"custom_skill" => false,
-            "value" => null,
+			//"custom_skill" => false,
+            //"value" => null,
             "lang" => $selectedLanguage,
            //"file_name" => $fileName.".ppn",
             "file_name" => $fileName,
             "sensitive" => 0.3,
-            "say_reply" => false,
+            //"say_reply" => false,
             "command" => null,
             "active" => true
         ];
@@ -610,17 +610,17 @@ chmod($backupFile, 0777);
     } else {$commandHW = @$_POST['command'];}
    $selectedSensitive = floatval($_POST['sensitive']);
     $selectedActive = isset($_POST['active']) ? true : false;
-    $selectedSayReply = isset($_POST['say_reply']) ? true : false;
-    $selectedCustom_Skill = isset($_POST['custom_skill']) ? true : false;
+    //$selectedSayReply = isset($_POST['say_reply']) ? true : false;
+    //$selectedCustom_Skill = isset($_POST['custom_skill']) ? true : false;
     // Đọc dữ liệu từ file config.json
     // Tìm và cập nhật thông tin của hotword được chọn
     foreach ($data_config['smart_wakeup']['hotword'] as &$hotword) {
         if ($hotword['file_name'] === $selectedFileName) {
             $hotword['sensitive'] = $selectedSensitive;
-            $hotword['custom_skill'] = $selectedCustom_Skill;
+            //$hotword['custom_skill'] = $selectedCustom_Skill;
             $hotword['active'] = $selectedActive;
             $hotword['command'] = $commandHW;
-            $hotword['say_reply'] = $selectedSayReply;
+            //$hotword['say_reply'] = $selectedSayReply;
             break;
         }
     }
@@ -1221,7 +1221,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
 <th scope="col"><center>Card ID:</center></th>
 <th scope="col"><center>Âm lượng:</center></th></tr><tr>
 <td><input type="number" class="form-control" title="Từ 0 Đến 3" title="Từ 0 Đến 3" name="input_number_card_number" size="28" value="<?php echo $GET_Speaker_Amixer_ID; ?>"  min="0" max="3" required></td>
-<td><input type="range" title="Kéo Để Thay Đổi Âm Lượng Sau Đó Nhấn Lưu" name="volume_value" min="10" max="100" step="1" value="<?php echo $value_volume; ?>" style="width:200px;" oninput="updateSliderValue(this.value)">
+<td><input type="range" title="Kéo Để Thay Đổi Âm Lượng" id="volume_value" name="volume_value" min="10" max="100" step="1" oninput="updateVolume(this.value)" value="<?php echo $value_volume; ?>" style="width:200px;" oninput="updateSliderValue(this.value)">
 <font color=red><span id="slider-value" class="slider-value"><?php echo $value_volume; ?>%</span></font></div> </td></tr></table></div></div></center><hr/>
 <!-- Kết Thúc  Volume --> 
 <!-- mục  Web Interface --> 
@@ -1588,7 +1588,7 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
         </div>
     </td>
 </tr>
-
+<!--
 <tr>
     <th scope="row">
         <label for="say_reply" title="Bật/Tắt Phản Hồi Của Bot Khi Được Đánh Thức" class="form-label">
@@ -1603,7 +1603,8 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
         </div>
     </td>
 </tr>
-
+-->
+<!--
 <tr>
     <th scope="row"><label for="custom_skill">Dùng Cho Custom Skill:</label></th>
     <td>
@@ -1613,7 +1614,8 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
             </center>
         </div>
     </td>
-</tr>
+</tr> 
+-->
 <tr>
     <th scope="row">
         <label for="sensitive" title="Độ Nhạy Sensitive" class="form-label">
@@ -1626,7 +1628,7 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
         </div>
     </td>
 </tr>
-<!--
+
 <tr>
     <td colspan="2">
         <div class="input-group mb-3">
@@ -1637,7 +1639,7 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
         </div>
     </td>
 </tr>
--->
+
 </tbody>
 </table>
 </div>
@@ -2092,8 +2094,8 @@ if (count($fileLists) > 0) {
             var sensitiveInput = document.getElementById('sensitive');
            // var sensitiveLabel = document.querySelector('label[for="sensitive"]');
             var activeInput = document.getElementById('active');
-            var sayReplyInput = document.getElementById('say_reply');
-            var customSkillInput = document.getElementById('custom_skill');
+            //var sayReplyInput = document.getElementById('say_reply');
+            //var customSkillInput = document.getElementById('custom_skill');
             var commandInput = document.getElementById('command'); // Trường input command
            // var sayReplyLabel = document.querySelector('label[for="say_reply"]');
             if (file_name !== '') {
@@ -2101,10 +2103,10 @@ if (count($fileLists) > 0) {
                 sensitiveInput.value = getSensitiveValue(file_name);
                 activeInput.classList.remove('hidden');
                 activeInput.checked = getActiveValue(file_name);
-                sayReplyInput.classList.remove('hidden');
-                sayReplyInput.checked = getSayReplyValue(file_name);
-				customSkillInput.classList.remove('hidden');
-                customSkillInput.checked = getCustomSkill(file_name);
+                //sayReplyInput.classList.remove('hidden');
+                //sayReplyInput.checked = getSayReplyValue(file_name);
+				//customSkillInput.classList.remove('hidden');
+                //customSkillInput.checked = getCustomSkill(file_name);
 			    // Hiển thị dữ liệu command
 				commandInput.classList.remove('hidden');
 				commandInput.value = getCommandValue(file_name);
@@ -2113,10 +2115,10 @@ if (count($fileLists) > 0) {
                 sensitiveInput.value = '';
                 activeInput.classList.add('hidden');
                 activeInput.checked = false;
-                sayReplyInput.classList.add('hidden');
-                sayReplyInput.checked = false;
-				customSkillInput.classList.add('hidden');
-                customSkillInput.checked = false;
+                //sayReplyInput.classList.add('hidden');
+                //sayReplyInput.checked = false;
+				//customSkillInput.classList.add('hidden');
+                //customSkillInput.checked = false;
 				
 			    // Ẩn trường input command khi không có dữ liệu
 				commandInput.classList.add('hidden');
@@ -2141,6 +2143,7 @@ if (count($fileLists) > 0) {
             }
             return false;
         }
+		/*
         function getSayReplyValue(file_name) {
             var sayReplyData = <?php echo json_encode($data_config['smart_wakeup']['hotword']); ?>;
             for (var i = 0; i < sayReplyData.length; i++) {
@@ -2150,6 +2153,8 @@ if (count($fileLists) > 0) {
             }
             return false;
         }
+		*/
+		/*
         function getCustomSkill(file_name) {
             var customSkillData = <?php echo json_encode($data_config['smart_wakeup']['hotword']); ?>;
             for (var i = 0; i < customSkillData.length; i++) {
@@ -2159,7 +2164,7 @@ if (count($fileLists) > 0) {
             }
             return false;
         }
-		
+		*/
 		function getCommandValue(file_name) {
 			var commandData = <?php echo json_encode($data_config['smart_wakeup']['hotword']); ?>;
 			for (var i = 0; i < commandData.length; i++) {
@@ -3716,6 +3721,42 @@ $(document).ready(function() {
             console.error('Không có đường dẫn được cung cấp.');
         }
     }
+</script>
+
+
+
+<script>
+  function updateVolume(newVolume) {
+
+      // Update the display of the current volume
+      document.getElementById('slider-value').innerText = newVolume+'%';
+
+      // Update the volume slider value and the displayed current volume with the new_volume value from the response
+      document.getElementById('volume_value').value = newVolume;
+
+
+
+      // Send the new volume value via Ajax
+      var ajaxSettings = {
+        url: "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
+        method: "POST",
+        timeout: 0,
+        headers: {
+          "Content-Type": "application/json"
+        },
+        data: JSON.stringify({
+          type: 2,
+          data: "volume",
+          action: "setup",
+          new_value: parseInt(newVolume) // Convert newVolume to an integer
+        }),
+      };
+
+      $.ajax(ajaxSettings).done(function (response) {
+        //console.log(response);
+      });
+    
+  }
 </script>
 
 
