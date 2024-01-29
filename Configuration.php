@@ -3,9 +3,9 @@
 //Facebook: https://www.facebook.com/TWFyaW9uMDAx
 //Bỏ qua hiển thị lỗi trên màn hình nếu có
 //Mail: vietbotsmartspeaker@gmail.com
-//ini_set('display_errors', 1);
-//error_reporting(E_ALL);
-@error_reporting(0);
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+#@error_reporting(0);
 @date_default_timezone_set('Asia/Ho_Chi_Minh');
 ini_set('memory_limit', '256M');
 // Khởi động session
@@ -60,16 +60,17 @@ $maxFilesUploadMp3 = "20";
 //Key youtube tìm kiếm nhạc mp3 mã hóa base64
 $apiKeyYoutube = "QUl6YVN5QXVXZVZueU0zaWphbzVYUEQ2MnpyTVh1QmowSmdMWUF3"; // Thay YOUR_YOUTUBE_API_KEY bằng khóa API YouTube của bạn
 
-//ĐƯờng Dẫn VietBot Chính
-$Path_Vietbot_src = "/home/pi/vietbot_offline";
 
+$PATH_USER_ROOT = "/home/pi";
+//ĐƯờng Dẫn VietBot Chính
+$Path_Vietbot_src = $PATH_USER_ROOT.'/vietbot_offline';
 //Đường dẫn nhánh để hết mặc định
 $DuognDanThuMucJson = $Path_Vietbot_src.'/src';
 $DuognDanUI_HTML = $Path_Vietbot_src.'/html';
 $PathResources = $Path_Vietbot_src.'/resources';
 $directorySound = $Path_Vietbot_src.'/src/sound/default/';
 $Lib_Hotword = $Path_Vietbot_src.'/resources/picovoice/lib';
-$path_picovoice = '/home/pi/.local/lib/python3.9/site-packages/picovoice';
+$path_picovoice = $PATH_USER_ROOT.'/.local/lib/python3.9/site-packages/picovoice';
 
 //SSH Tải Khoản, Mật Khẩu Đăng Nhập SSH (Bắt Buộc Phải Nhập Để Dùng Các Lệnh Hệ Thống)
 $SSH_TaiKhoan = "pi"; //Tài Khoản Đăng Nhập pi SSH Của Bạn
@@ -146,7 +147,7 @@ $action_json = json_decode(file_get_contents("$DuognDanThuMucJson"."/action.json
 
 $object_json = json_decode(file_get_contents("$DuognDanThuMucJson"."/object.json"));
 
-$api_vietbot = json_decode(file_get_contents("/home/pi/vietbot_offline/html/assets/json/api_list_vietbot.json"));
+//$api_vietbot = json_decode(file_get_contents("/home/pi/vietbot_offline/html/assets/json/api_list_vietbot.json"));
 
 
 $PORT_CHATBOT = $dataVTGET->smart_config->web_interface->port;
