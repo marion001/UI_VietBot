@@ -45,7 +45,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     }
     
     ::-webkit-scrollbar {
-        width: 5px;
+        width: 12px;
     }
     
     ::-webkit-scrollbar-track {
