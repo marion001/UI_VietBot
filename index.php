@@ -290,7 +290,8 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     <!--  Main Start  -->
     <main id="main" class="main-2">
       <!--  Hero Start  -->
-      <section id="hero" class="bg-primary text-white section hero w-100">
+      <section id="hero" style="width: 0px;left: 0px;" class="bg-primary text-white section hero w-100">
+	  <h1><center>Xin Chào: <?php echo $MYUSERNAME; ?></center></h1>
 	  	  				<!--		<div class="d-flex flex-row-reverse">
 							  <div class="p-2"><?php //echo "$wards_Duong $wards_Lang $wards_Huyen $wards_Tinh"; ?></div></div> -->
 <!--							<div class="d-flex flex-row">
