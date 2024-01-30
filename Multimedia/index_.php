@@ -228,7 +228,7 @@ if (is_dir($directory . '/node_modules')) {
 	
 						<div>
   <i id="volumeIcon" class="bi bi-volume-up"></i>
-  <input type="range" id="volume" name="volume" step="1" min="0" max="100" value="" oninput="updateVolume(this.value)">
+  <input type="range" id="volume" name="volume" step="1" min="0" max="100" value="">
   <span id="currentVolume">...</span>%
 </div><br/>
 	
@@ -1054,7 +1054,23 @@ function removeAllAndAddNewClass(elementId, newClass) {
 
         return formattedHours + ":" + formattedMinutes + ":" + formattedSeconds;
     }
+// Khởi tạo biến hover và update
+var hover = false;
+var update = true;
 
+// Bắt sự kiện khi con trỏ chuột hover vào thẻ input
+document.getElementById('volume').addEventListener('mouseenter', function() {
+    hover = true; // Đặt trạng thái hover thành true khi con trỏ chuột hover vào
+    update = false; // Dừng cập nhật khi con trỏ chuột hover vào
+    //console.log('Dừng cập nhật tự động');
+});
+
+// Bắt sự kiện khi con trỏ chuột rời khỏi thẻ input
+document.getElementById('volume').addEventListener('mouseleave', function() {
+    hover = false; // Đặt trạng thái hover thành false khi con trỏ chuột rời khỏi
+    update = true; // Cho phép cập nhật khi con trỏ chuột rời đi
+    //console.log('Tiếp tục cập nhật tự động');
+});
     // Function to make the API request and handle data
     function fetchData() {
         var selectedOption = $("#select-playback").find('option:selected');
@@ -1067,6 +1083,20 @@ function removeAllAndAddNewClass(elementId, newClass) {
                 "Content-Type": "application/json"
             }
         };
+
+
+        // Bắt sự kiện khi con trỏ chuột hover vào thẻ input
+        document.getElementById('volume').addEventListener('mouseenter', function() {
+            update = false; // Dừng cập nhật khi con trỏ chuột hover vào
+            //console.log('Dừng cập nhật tự động');
+        });
+
+        // Bắt sự kiện khi con trỏ chuột rời khỏi thẻ input
+        document.getElementById('volume').addEventListener('mouseleave', function() {
+            update = true; // Cho phép cập nhật khi con trỏ chuột rời đi
+            //console.log('Tiếp tục cập nhật tự động');
+        });
+
 
         $.ajax(settings)
             .done(function(response) {
@@ -1127,18 +1157,19 @@ function removeAllAndAddNewClass(elementId, newClass) {
 				// Update the volume icon based on the volume value
 
 
+            if (!hover && update) {
+                if (response.volume == 0) {
+                    volumeIcon.classList = 'bi bi-volume-mute-fill';
+                } else if (response.volume >= 1 && response.volume <= 49) {
+                    volumeIcon.classList = 'bi bi-volume-down-fill';
+                } else {
+                    volumeIcon.classList = 'bi bi-volume-up-fill';
+                }
 
-if (response.volume == 0) {
-  volumeIcon.classList = 'bi bi-volume-mute-fill';
-} else if (response.volume >= 1 && response.volume <= 49) {
-  volumeIcon.classList = 'bi bi-volume-down-fill';
-} else {
-  volumeIcon.classList = 'bi bi-volume-up-fill';
-}
-				
-				
-				document.getElementById('volume').value = response.volume;
-				document.getElementById('currentVolume').innerText = response.volume;
+                // Cập nhật giá trị âm lượng và hiển thị
+                document.getElementById('volume').value = response.volume;
+                document.getElementById('currentVolume').innerText = response.volume;
+            }
                 // Display player state based on playervlc_state
                 var playerStateText = "";
                 var playerStateColor = "";
@@ -1231,40 +1262,52 @@ if (response.volume == 0) {
 </script>
 
 
-
-
 <script>
-//Cập Nhật và gửi Giá trị volume theo thời gian thực
-  function updateVolume(newVolume) {
-    document.getElementById('currentVolume').innerText = newVolume;
+  var updatee = true;
 
-    var ajaxSettingsss = {
-      "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
-      method: "POST",
-      timeout: 0,
-      headers: {
-        "Content-Type": "application/json"
-      },
-      data: JSON.stringify({
-        type: 2,
-        data: "volume",
-        action: "setup",
-        new_value: parseInt(newVolume)
-      }),
-    };
+  document.getElementById('volume').addEventListener('input', function() {
+    if (updatee) {
+      var newVolume = this.value;
+      document.getElementById('currentVolume').innerText = newVolume;
+    }
+  });
 
-    $.ajax(ajaxSettingsss).done(function (response) {
-      //console.log(response);
+  document.getElementById('volume').addEventListener('mouseup', function() {
+    if (updatee) {
+      var newVolume = this.value;
+      document.getElementById('currentVolume').innerText = newVolume;
 
-      // Cập nhật giá trị thanh trượt âm lượng và âm lượng hiện tại được hiển thị với giá trị new_volume từ phản hồi
-      document.getElementById('volume').value = response.new_volume;
-      document.getElementById('currentVolume').innerText = response.new_volume;
-    });
-  }
+      // Thực hiện AJAX request để cập nhật giá trị volume
+      var ajaxSettings = {
+        "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
+        method: "POST",
+        timeout: 0,
+        headers: {
+          "Content-Type": "application/json"
+        },
+        data: JSON.stringify({
+          type: 2,
+          data: "volume",
+          action: "setup",
+          new_value: parseInt(newVolume)
+        }),
+      };
+
+      $.ajax(ajaxSettings).done(function (response) {
+        // Cập nhật giá trị volume từ phản hồi của server
+        document.getElementById('volume').value = response.new_volume;
+      });
+
+      // Ngăn chặn việc gửi AJAX request khi đang giữ chuột
+      updatee = false;
+    }
+  });
+
+  // Bổ sung sự kiện để đặt lại cờ update khi chuột rời khỏi thanh trượt
+  document.getElementById('volume').addEventListener('mouseleave', function() {
+    updatee = true;
+  });
 </script>
-
-
-
 
 <script>
     // Your JavaScript code here
