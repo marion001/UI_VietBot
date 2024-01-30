@@ -194,7 +194,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     <div class="menu-overlay d-none"></div>
     <!--   Right Side Start  -->
     <div class="right-side d-none d-lg-block">
-      <div id="date"></div><hr/>
+      <div id="tmptoday"></div><hr/>
 	   <body onload="time()">
 	  <b><div id="clock"></div></b>
       <div class="social-box">
@@ -847,44 +847,41 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
     }
   });
 </script>
+   <script>
+        function time() {
+            var today = new Date();
+            var weekday = ["Chủ nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"];
+            var day = weekday[today.getDay()];
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; // Tháng 1 là 0!
+            var yyyy = today.getFullYear();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+            var nowTime = h + ":" + m + ":" + s;
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            var formattedDate = '<font color=blue><b>'+day + '</b></font><br/><font color=blue>' + dd + '/' + mm + '/' + yyyy+'</font>';
 
-<script type="text/javascript">
-    function time() {
-        var today = new Date();
-        var weekday = new Array(7);
-        weekday[0] = "Chủ nhật";
-        weekday[1] = "Thứ Hai";
-        weekday[2] = "Thứ Ba";
-        weekday[3] = "Thứ Tư";
-        weekday[4] = "Thứ Năm";
-        weekday[5] = "Thứ Sáu";
-        weekday[6] = "Thứ Bảy";
-        var day = weekday[today.getDay()];
-        var dd = today.getDate();
-        var mm = today.getMonth() + 1; //January is 0!
-        var yyyy = today.getFullYear();
-        var h = today.getHours();
-        var m = today.getMinutes();
-        var s = today.getSeconds();
-        m = checkTime(m);
-        s = checkTime(s);
-        nowTime = h + ":" + m + ":" + s;
-        if (dd < 10) {
-            dd = '0' + dd
+            var tmptoday = '<span class="date"><b>' + formattedDate + '</b></span>';
+            var tmp = '<span class="date"><b>' + nowTime + '</b></span>';
+
+            var clockElement = document.getElementById("clock");
+            var tmptodayElement = document.getElementById("tmptoday");
+
+            if (clockElement && tmptodayElement) {
+                clockElement.innerHTML = tmp;
+                tmptodayElement.innerHTML = tmptoday;
+
+                setTimeout(time, 1000);
+            }
         }
-        if (mm < 10) {
-            mm = '0' + mm
-        }
-        today = day + ', ' + dd + '/' + mm + '/' + yyyy;
-
-        tmptoday = '<span class="date">' + today + '</span>';
-        tmp = '<span class="date">' + nowTime + '</span>';
-
-        document.getElementById("clock").innerHTML = tmp;
-        document.getElementById("clock1").innerHTML = tmp;
-        document.getElementById("tmptoday").innerHTML = tmptoday;
-
-        clocktime = setTimeout("time()", "1000", "JavaScript");
 
         function checkTime(i) {
             if (i < 10) {
@@ -892,8 +889,13 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
             }
             return i;
         }
-    }
-	
+
+        document.addEventListener("DOMContentLoaded", function() {
+            time();
+        });
+    </script>
+<script type="text/javascript">
+
     // Lấy phần tử <div>, phần tử liên kết và phần tử nút bấm
     const divElement = document.querySelector('.text-center.color-pallet');
     const linkElement = document.querySelector('.btn-success');
