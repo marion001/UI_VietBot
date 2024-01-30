@@ -614,14 +614,14 @@ B4: Go to Application -> Cookies -> "__Secure-1PSID" và "__Secure-1PSIDTS" và 
       <th scope="col" colspan="2"><center><font color=red>Đồng Bộ (Sync)</font></center></th>
     </tr>
     <tr>
-      <th scope="row" title="tích để đồng bộ music media của vietbot với tab media trên web ui">Đồng Bộ Media Với Web UI: </th>
+      <th scope="row" title="tích để đồng bộ music media của vietbot với tab media trên web ui">Đồng Bộ Với Web UI: </th>
       <td><input type="checkbox" name="media_player_sync_ui" title="tích để đồng bộ music media của vietbot với tab media trên web ui" value="true" <?php echo ($sync_media_player) ? 'checked' : ''; ?>></td>
 
 
     </tr>
 
 	    <tr>
-      <th scope="row" title="Mặc định đặt là 1">Độ Trễ Sync (Giây):</th>
+      <th scope="row" title="Mặc định đặt là 1">Thời Gian Trễ Sync (Giây):</th>
       <td><input type="number" placeholder="1" class="form-control" title="Mặc định đặt là 1" name="sync_delay_media_player" min="1" step="1" max="5" value="<?php echo $sync_delay_media_player; ?>"></td>
     </tr>
   </tbody>
