@@ -334,7 +334,7 @@ if (count($fileLists) > 0) {
 
 <!-- Form để hiển thị và chỉnh sửa dữ liệu -->
 <form id="my-form" onsubmit="return vuTuyen();"  method="POST">
-<h5>Bỏ Qua Skill Vietbot</h5>
+<h5>Bỏ Qua Skill Vietbot:</h5>
 
 <div class="row justify-content-center"><div class="col-auto">	 
         <div class="custom-control custom-switch" title="Bật/Tắt để kích hoạt/huỷ kích hoạt">
