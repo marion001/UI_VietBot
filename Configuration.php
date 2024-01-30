@@ -3,9 +3,9 @@
 //Facebook: https://www.facebook.com/TWFyaW9uMDAx
 //Bỏ qua hiển thị lỗi trên màn hình nếu có
 //Mail: vietbotsmartspeaker@gmail.com
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-#@error_reporting(0);
+//ini_set('display_errors', 1);
+//error_reporting(E_ALL);
+@error_reporting(0);
 @date_default_timezone_set('Asia/Ho_Chi_Minh');
 ini_set('memory_limit', '256M');
 // Khởi động session
