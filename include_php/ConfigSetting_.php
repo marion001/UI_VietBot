@@ -190,13 +190,13 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	//$Bot_Mode_Text = $data_config['smart_config']['bot_mode'];
 	if ($data_config['smart_config']['bot_mode'] === 'rapid') {
 		$Bot_Mode = "1";
-		$Bot_Mode_Text = "Tối Ưu Tốc Độ";
+		$Bot_Mode_Text = "Rapid";
 	} elseif ($data_config['smart_config']['bot_mode'] === 'custom') {
 		$Bot_Mode = "2";
-		$Bot_Mode_Text = "Cân Bằng";
+		$Bot_Mode_Text = "Custom Mode";
 	} elseif ($data_config['smart_config']['bot_mode'] === 'full') {
 		$Bot_Mode = "3";
-		$Bot_Mode_Text = "Đầy Đủ Tính Năng";
+		$Bot_Mode_Text = "Full";
 	}
 	//Get Ưu tiên Trợ Lý Ảo/ AI
 	$external_bot_priority_1 = $data_config['smart_answer']['external_bot_priority_1'];
@@ -225,7 +225,7 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	$HOTWORD_ENGINE_KEY = $data_config['smart_wakeup']['hotword_engine']['key'];
 	$HOTWORD_ENGINE_TYPE = $data_config['smart_wakeup']['hotword_engine']['type'];
 	// Tiếp tục hỏi khi trả lời xong
-	$continuous_asking = $data_config['smart_request']['continuous_asking'];
+	//$continuous_asking = $data_config['smart_request']['continuous_asking'];
 	//Đọc trạng thái sau khi khởi động
 	$startup_state_speaking = $data_config['smart_answer']['startup_state_speaking'];
 	$Pre_Answer_Timeout = $data_config['smart_answer']['pre_answer_timeout'];
@@ -626,7 +626,7 @@ chmod($backupFile, 0777);
     }
 	// Lưu lại dữ liệu vào file config.json
 	//Hỏi liên tục\
-	 $data_config['smart_request']['continuous_asking'] = ($_POST['continuous_asking'] === 'true');
+	 //$data_config['smart_request']['continuous_asking'] = ($_POST['continuous_asking'] === 'true');
 	 
 	 //Lưu Chặn Cập Nhật
 	 $data_config['smart_config']['block_updates']['vietbot_program'] = ($_POST['block_updates_vietbot_program'] === 'true');
@@ -1182,7 +1182,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
 </tbody></table>
 </div></div><hr/>
 <!--END thông tin người dùng -->
-<h5>Tùy Chọn Chế Độ Tối Ưu Cho:</h5>
+<h5>Tùy Chọn Chế Độ:</h5>
 <div class="row g-3 d-flex justify-content-center"><div class="col-auto"> 
 
 
@@ -1196,9 +1196,9 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
     <tr>
       <td>
 	          <div class="slider-labels">
-            <span>Tốc độ</span>
-            <span>Tùy chỉnh</span>
-            <span>Tính năng</span>
+            <span title="mode: rapid">Tốc độ</span>
+            <span title="mode: custom">Tùy chỉnh</span>
+            <span title="mode: full">Tính năng</span>
         </div>
 	  <input type="range" class="slider" min="1" max="3" step="1" name="bot_mode_slide" id="slider_bot_mode" value="<?php echo $Bot_Mode; ?>">
 <p class="text-center"><font color=red><span id="currentLevel_bot_mode"><?php echo $Bot_Mode_Text; ?></span></font></p></td>
@@ -1225,7 +1225,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
 <font color=red><span id="slider-value" class="slider-value"><?php echo $value_volume; ?>%</span></font></div> </td></tr></table></div></div></center><hr/>
 <!-- Kết Thúc  Volume --> 
 <!-- mục  Web Interface --> 
-<h5>Web Interface: <i class="bi bi-info-circle-fill" onclick="togglePopupWeb()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5> 
+<h5>Port API: <i class="bi bi-info-circle-fill" onclick="togglePopupWeb()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5> 
 <div class="row g-3 d-flex justify-content-center"><div class="col-auto"> 
 <table class="table table-responsive align-middle"><tbody><tr>
 <th scope="row">Port:</th><td>
@@ -1233,10 +1233,9 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
 </tr></tbody></table></div></div>
 <div id="popupContainerWeb" class="popup-container" onclick="hidePopupWeb()">
 <div id="popupContent" onclick="preventEventPropagationWeb(event)">
-<p><center><b>Web Interface</b></center><br/>
-- <b>Port:</b> cổng port của web server, chatbot<br/>
-- <b>Host Name:</b> <a href="http://<?php echo $HostName; ?>" target="_bank"><?php echo $HostName; ?></a><br/>
-- <b>Ví Dụ:</b> <a href="http://<?php echo $HostName; ?>:<?php echo $GET_Port_Web_Interface; ?>" target="bank">http://<?php echo $HostName; ?>:<?php echo $GET_Port_Web_Interface; ?></a>
+<p><center><b>Cổng Port của API</b></center><br/>
+- <b>Ví Dụ 1:</b> <a href="http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>" target="_bank">http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?></a><br/>
+- <b>Ví Dụ 2:</b> <a href="http://<?php echo $HostName; ?>:<?php echo $GET_Port_Web_Interface; ?>" target="bank">http://<?php echo $HostName; ?>:<?php echo $GET_Port_Web_Interface; ?></a>
 <br/></div></div><hr/>
 <!-- Kết Thúc  Interface -->  
 	<!-- mục  Hotword Engine --> 
@@ -1255,6 +1254,8 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
 - Link Đăng Ký KEY API <a href="https://console.picovoice.ai/" target="_bank">Picovoice</a></p></div></div><hr/>
 <!-- Kết Thúc Hotword Engine -->  
 <!-- Trò Chuyện Liên Tục -->
+
+<!--
 <h5>Continuous Asking: <i class="bi bi-info-circle-fill" onclick="togglePopupTCLT()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
 
 <div id="popupContainerTCLT" class="popup-container" onclick="hidePopupTCLT()">
@@ -1266,9 +1267,10 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
 <div class="row g-3 d-flex justify-content-center"><div class="col-auto">
 			<div class="custom-control custom-switch mt-3" title="Bật để hỏi tiếp sau khi bot trả lời hoặc thực hiện xong 1 hành động nào đó và ngược lại">
                 <input type="hidden" name="continuous_asking" value="false">
-                <input type="checkbox" name="continuous_asking" class="custom-control-input" id="continuous-asking" value="true" <?php echo ($continuous_asking) ? 'checked' : ''; ?>>
+                <input type="checkbox" name="continuous_asking" class="custom-control-input" id="continuous-asking" value="true" <?php //echo ($continuous_asking) ? 'checked' : ''; ?>>
                 <label class="custom-control-label" for="continuous-asking"></label>
             </div></div></div><hr/>
+			-->
 <!-- END Trò Chuyện Liên Tục -->
 <!--Bắt Đầu STT Speak To Text -->  
 <h5> Speech to Text Engine: <i class="bi bi-info-circle-fill" onclick="togglePopupSTT()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5><center>
@@ -3414,7 +3416,7 @@ $(document).ready(function() {
     // JavaScript for slider functionality
     const slider_bot_mode = document.getElementById("slider_bot_mode");
     const currentLevelTextbot_mode = document.getElementById("currentLevel_bot_mode");
-    const levels_bot_mode = ["Tối Ưu Tốc Độ", "Cân Bằng", "Đầy Đủ Tính Năng"];
+    const levels_bot_mode = ["Rapid", "Custom Mode", "Full"];
 
     slider_bot_mode.addEventListener("input", () => {
         const selectedLevelbot_mode = levels_bot_mode[slider_bot_mode.value - 1];
