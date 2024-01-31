@@ -1221,7 +1221,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
 <th scope="col"><center>Card ID:</center></th>
 <th scope="col"><center>Âm lượng:</center></th></tr><tr>
 <td><input type="number" class="form-control" title="Từ 0 Đến 3" title="Từ 0 Đến 3" name="input_number_card_number" size="28" value="<?php echo $GET_Speaker_Amixer_ID; ?>"  min="0" max="3" required></td>
-<td><input type="range" title="Kéo Để Thay Đổi Âm Lượng" id="volume_value" name="volume_value" min="10" max="100" step="1" oninput="updateVolume(this.value)" value="<?php echo $value_volume; ?>" style="width:200px;" oninput="updateSliderValue(this.value)">
+<td><input type="range" title="Kéo Để Thay Đổi Âm Lượng" id="volume_value" name="volume_value" min="10" max="100" step="1" value="<?php echo $value_volume; ?>" style="width:200px;">
 <font color=red><span id="slider-value" class="slider-value"><?php echo $value_volume; ?>%</span></font></div> </td></tr></table></div></div></center><hr/>
 <!-- Kết Thúc  Volume --> 
 <!-- mục  Web Interface --> 
@@ -3728,19 +3728,23 @@ $(document).ready(function() {
 
 
 <script>
-  function updateVolume(newVolume) {
+  var updatee = true;
 
-      // Update the display of the current volume
+  document.getElementById('volume_value').addEventListener('input', function() {
+    if (updatee) {
+      var newVolume = this.value;
+      document.getElementById('slider-value').innerText = newVolume+'%';
+    }
+  });
+
+  document.getElementById('volume_value').addEventListener('mouseup', function() {
+    if (updatee) {
+      var newVolume = this.value;
       document.getElementById('slider-value').innerText = newVolume+'%';
 
-      // Update the volume slider value and the displayed current volume with the new_volume value from the response
-      document.getElementById('volume_value').value = newVolume;
-
-
-
-      // Send the new volume value via Ajax
+      // Thực hiện AJAX request để cập nhật giá trị volume
       var ajaxSettings = {
-        url: "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
+        "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
         method: "POST",
         timeout: 0,
         headers: {
@@ -3750,16 +3754,32 @@ $(document).ready(function() {
           type: 2,
           data: "volume",
           action: "setup",
-          new_value: parseInt(newVolume) // Convert newVolume to an integer
+          new_value: parseInt(newVolume)
         }),
       };
 
       $.ajax(ajaxSettings).done(function (response) {
-        //console.log(response);
+        // Cập nhật giá trị volume từ phản hồi của server
+        document.getElementById('volume_value').value = response.new_volume;
       });
-    
-  }
+
+      // Ngăn chặn việc gửi AJAX request khi đang giữ chuột
+      updatee = false;
+    }
+  });
+
+  // Bổ sung sự kiện để đặt lại cờ update khi chuột rời khỏi thanh trượt
+  document.getElementById('volume_value').addEventListener('mouseleave', function() {
+    updatee = true;
+  });
+
+  // Bổ sung sự kiện để đặt lại cờ update khi chuột nhả ra khỏi trang
+  document.addEventListener('mouseup', function() {
+    updatee = true;
+  });
 </script>
+
+
 
 
 
