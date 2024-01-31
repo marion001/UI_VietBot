@@ -492,6 +492,7 @@ B4: Go to Application -> Cookies -> "__Secure-1PSID" và "__Secure-1PSIDTS" và 
       <div id="popupContainerGGASS" class="popup-container" onclick="hidePopupGGASS()">
     <div id="popupContent" onclick="preventEventPropagationGGASS(event)">
       <center><b>Google Assistant Skill:</b></center><br/>
+	  <center><b>Sử dụng file cấu hình Google cá nhân>/b></center><br/>
 	  - <b>Bật </b> để chạy chế độ Mặc Định (default)<br/>
 	  - <b>Tắt </b> để chạy chế độ Thủ Công (manual)
 </div></div>
