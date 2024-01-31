@@ -867,7 +867,7 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
             if (mm < 10) {
                 mm = '0' + mm;
             }
-            var formattedDate = '<font color=blue><b>'+day + '</b></font><br/><font color=blue>' + dd + '/' + mm + '/' + yyyy+'</font>';
+            var formattedDate = '<font color=red><b>'+day + '</b></font><br/><font color=blue>' + dd + '/' + mm + '<br/>' + yyyy+'</font>';
 
             var tmptoday = '<span class="date"><b>' + formattedDate + '</b></span>';
             var tmp = '<span class="date"><b>' + nowTime + '</b></span>';
