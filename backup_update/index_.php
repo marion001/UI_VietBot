@@ -1094,12 +1094,12 @@ file_put_contents($DuognDanThuMucJson.'/state.json', $output_State_json);
 		$fileName = end($filePathParts);
         $newConfigData['smart_wakeup']['hotword'][] = [
             "type" => "porcupine",
-			"custom_skill" => false,
-            "value" => null,
+			//"custom_skill" => false,
+            //"value" => null,
             "lang" => $selectedLanguage,
             "file_name" => $fileName,
             "sensitive" => 0.3,
-            "say_reply" => false,
+            //"say_reply" => false,
             "command" => null,
             "active" => true
         ];
