@@ -34,7 +34,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            height: 70vh;
+            height: 99vh;
         }
     #chatbox {
         flex-grow: 1;
