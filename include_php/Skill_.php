@@ -86,7 +86,7 @@ chmod($backupFile, 0777);
         if (!empty($name) && !empty($chatId)) {
             $newTelegramData[] = [
                 'name' => $name,
-                'chat_id' => $chatId
+                'chat_id' => intval($chatId)
             ];
         }
     }
@@ -160,6 +160,7 @@ chmod($backupFile, 0777);
     $bypass_all_skill = isset($_POST['bypass_all_skill']) && $_POST['bypass_all_skill'] === 'on' ? true : false;
 	//Chat GPT
 	$ChatGptKey = @$_POST['chatgpt_key'];
+	$ChatGptchatgpt_timeout = @$_POST['chatgpt_timeout'];
 	//Google Brand
 	$Google_bard_Secure1PSID = @$_POST['Secure-1PSID'];
 	$Google_bard_Secure_1PSIDTS = @$_POST['Secure-1PSIDTS'];
@@ -184,6 +185,7 @@ chmod($backupFile, 0777);
     $skillArray['bypass_all_skill'] = $bypass_all_skill;
 	//ChatGPT
     $skillArray['chatgpt']['token'] = $ChatGptKey;
+    $skillArray['chatgpt']['session_timeout'] = intval($ChatGptchatgpt_timeout);
 	
 	//Media Player Sync ($_POST['media_player_sync_ui'] === 'true');
     $skillArray['ui_media_player']['sync_media_player'] = ($_POST['media_player_sync_ui'] === 'true');
@@ -486,8 +488,13 @@ B4: Go to Application -> Cookies -> "__Secure-1PSID" và "__Secure-1PSIDTS" và 
  <table class="table table-responsive table-striped table-bordered align-middle">
 <tbody><tr>
 <th scope="row"> <label for="chatgpt_key">Token ChatGPT:</label></th>
-<td><input type="text" class="form-control" id="chatgpt_key" name="chatgpt_key" placeholder="Nhập Token Của ChatGPT" title="Nhập Token Của ChatGPT" value="<?php echo $skillArray['chatgpt']['token']; ?>"></td>
-</tr></tbody></table></div></div><hr/>
+<td><input type="text" class="form-control" id="chatgpt_key" name="chatgpt_key" placeholder="Nhập Token Của ChatGPT" title="Nhập Token Của ChatGPT" value="<?php echo $skillArray['chatgpt']['token']; ?>"></td><br/>
+
+</tr>
+<tr><th scope="row"> <label for="chatgpt_key">Phiên làm việc (Giây/s):</label></th>
+<td><input type="number" class="form-control" id="chatgpt_timeout" name="chatgpt_timeout" step="100" placeholder="CHat GPT Time Out" title="Chat GPt Time Out" value="<?php echo $skillArray['chatgpt']['session_timeout']; ?>"></td></tr>
+
+</tbody></table></div></div><hr/>
 <h5>Google Assistant: <i class="bi bi-info-circle-fill" onclick="togglePopupGGASS()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
       <div id="popupContainerGGASS" class="popup-container" onclick="hidePopupGGASS()">
     <div id="popupContent" onclick="preventEventPropagationGGASS(event)">
@@ -499,6 +506,7 @@ B4: Go to Application -> Cookies -> "__Secure-1PSID" và "__Secure-1PSIDTS" và 
 <div class="row justify-content-center"><div class="col-auto">	 
         <div class="custom-control custom-switch" title="Bật/Tắt để kích hoạt/huỷ kích hoạt">
             <input type="checkbox" class="custom-control-input" id="gg_ass_Mode" name="gg_ass_Mode" <?php echo $skillArray['gg_ass']['mode'] === 'default' ? 'checked' : ''; ?>>
+			
             <label class="custom-control-label" for="gg_ass_Mode"></label>
 </div></div></div>
 <hr/>
