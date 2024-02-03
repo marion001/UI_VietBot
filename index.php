@@ -71,7 +71,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         }
 		      iframe {
       width: 100%; /* Đặt chiều rộng của iframe là 100% */
-      height: 95vh; /* Đặt chiều cao của iframe làborder: none; /* Loại bỏ viền của iframe */
+      height: 100vh; /* Đặt chiều cao của iframe làborder: none; /* Loại bỏ viền của iframe */
     }
     }
     
@@ -131,7 +131,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
   }
     iframe {
       width: 100%; /* Đặt chiều rộng của iframe là 100% */
-      height: 85vh; /* Đặt chiều cao của iframe là 100% */
+      height: 80vh; /* Đặt chiều cao của iframe là 100% */
       border: none; /* Loại bỏ viền của iframe */
     }
 </style>
