@@ -55,8 +55,8 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         position: fixed;
         top: 10px;
         right: -100%;
-        width: 40%;
-        height: auto;
+        width: 99vh;
+        height: 85vh;
         background-color: #d2d8bb;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         transition: right 0.1s ease;
@@ -65,11 +65,14 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     
     @media (max-width: 768px) {
         /* Media query for mobile devices */
-        
         .right-sidebar {
             width: 100%;
-            /* Width for mobile */
+			height: 100%;
         }
+		      iframe {
+      width: 100%; /* Đặt chiều rộng của iframe là 100% */
+      height: 95vh; /* Đặt chiều cao của iframe làborder: none; /* Loại bỏ viền của iframe */
+    }
     }
     
     .toggle-btnnn {
@@ -126,6 +129,11 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     border-radius: 10px 10px 10px 10px;
     overflow: hidden; /* Để làm tròn góc thì cần che phần dư thừa */
   }
+    iframe {
+      width: 100%; /* Đặt chiều rộng của iframe là 100% */
+      height: 85vh; /* Đặt chiều cao của iframe là 100% */
+      border: none; /* Loại bỏ viền của iframe */
+    }
 </style>
 </head>
 <body>
@@ -616,10 +624,11 @@ if (!isset($_SESSION['root_id'])) {
 </section>
 <!--  Portfolio End  -->
 <!--  Blog Start  -->
+<!--
 <section id="ChatBot" class="section blog bg-gray-400 text-white">
     <iframe src="./include_php/ChatBot.php" width="100%" height="570px"></iframe>
 </section>
-
+-->
 <section id="Google_Drive_Auto_Backup" class="section blog bg-gray-400 text-white">
     <div class="container">
         <h3 class="subtitle">Google Drive Auto Backup</h3>
@@ -752,7 +761,7 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
             <center>   <a onclick="toggleSidebar()" class="cp-toggleee"><i class="bi bi-x-circle-fill" title="Nhấn để đóng"></i></a></center>
 		
 			
-				 <iframe src="./include_php/ChatBot.php" width="100%" height="570px"></iframe>
+				 <iframe src="./include_php/ChatBot.php" frameborder="0" allowfullscreen></iframe>
                
             </div>
         </div>
