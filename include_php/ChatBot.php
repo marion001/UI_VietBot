@@ -20,7 +20,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         justify-content: center;
         /*   align-items: center; */
         /*  height: 100vh;*/
-        
+        font-size: 15px;
         background-color: #d2d8bb;
 		 
     }
