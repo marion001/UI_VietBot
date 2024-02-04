@@ -61,20 +61,33 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         transition: right 0.1s ease;
         z-index: 1;
+		overflow: hidden;
     }
     
     @media (max-width: 768px) {
         /* Media query for mobile devices */
         .right-sidebar {
             width: 100%;
-			height: 100%;
+			height: 85%;
         }
 		      iframe {
       width: 100%; /* Đặt chiều rộng của iframe là 100% */
-      height: 100vh; /* Đặt chiều cao của iframe làborder: none; /* Loại bỏ viền của iframe */
+      height: 95vh; /* Đặt chiều cao của iframe làborder: none; /* Loại bỏ viền của iframe */
     }
     }
     
+	
+    .resize-handle {
+      width: 10px;
+      height: 10px;
+      background-color: #333;
+      position: absolute;
+      cursor: se-resize;
+      bottom: 0;
+      left: 0;
+    }
+	
+	
     .toggle-btnnn {
         cursor: pointer;
         padding: 10px 20px;
@@ -131,7 +144,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
   }
     iframe {
       width: 100%; /* Đặt chiều rộng của iframe là 100% */
-      height: 80vh; /* Đặt chiều cao của iframe là 100% */
+      height: 83vh; /* Đặt chiều cao của iframe là 100% */
       border: none; /* Loại bỏ viền của iframe */
     }
 </style>
@@ -764,6 +777,7 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
 				 <iframe src="./include_php/ChatBot.php" frameborder="0" allowfullscreen></iframe>
                
             </div>
+			 <div class="resize-handle"></div>
         </div>
     </div>
 
@@ -800,6 +814,65 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
 
 
 <script>
+$(document).ready(function() {
+  let isResizing = false;
+  let lastDownX;
+  let lastDownY;
+
+  $(document).mousedown(function(e) {
+    // Kiểm tra xem có đang giữ chuột hay không
+    if ($(e.target).hasClass('resize-handle')) {
+      isResizing = true;
+      lastDownX = e.clientX;
+      lastDownY = e.clientY;
+      e.preventDefault(); // Ngăn chặn sự kiện mousedown mặc định
+    }
+  });
+
+  $(document).mousemove(function(e) {
+    if (isResizing) {
+      let newWidth = $("#sidebar").width() + (lastDownX - e.clientX);
+      let newHeight = $("#sidebar").height() + (e.clientY - lastDownY);
+
+      // Kiểm tra điều kiện tối thiểu
+      newWidth = Math.max(newWidth, 100); // Kích thước tối thiểu cho chiều rộng
+      newHeight = Math.max(newHeight, 100); // Kích thước tối thiểu cho chiều cao
+
+      $("#sidebar").width(newWidth);
+      $("#sidebar").height(newHeight);
+
+      // Cập nhật kích thước của thẻ iframe
+      $("#sidebar iframe").width(newWidth);
+      $("#sidebar iframe").height(newHeight);
+
+      lastDownX = e.clientX;
+      lastDownY = e.clientY;
+    }
+  });
+
+  $(document).mouseup(function() {
+    if (isResizing) {
+      isResizing = false;
+    }
+  });
+
+  $(document).mouseleave(function() {
+    if (isResizing) {
+      isResizing = false;
+    }
+  });
+});
+
+
+</script>
+
+
+<script>
+
+
+
+
+
   $(document).ready(function() {
     // AJAX request for UI version
     $.ajax({
