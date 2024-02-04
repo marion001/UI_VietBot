@@ -492,7 +492,7 @@ B4: Go to Application -> Cookies -> "__Secure-1PSID" và "__Secure-1PSIDTS" và 
 
 </tr>
 <tr><th scope="row"> <label for="chatgpt_key">Phiên làm việc (Giây/s):</label></th>
-<td><input type="number" class="form-control" id="chatgpt_timeout" name="chatgpt_timeout" step="100" placeholder="CHat GPT Time Out" title="Chat GPt Time Out" value="<?php echo $skillArray['chatgpt']['session_timeout']; ?>"></td></tr>
+<td><input type="number" class="form-control" id="chatgpt_timeout" name="chatgpt_timeout" min="3600" step="100" placeholder="CHat GPT Time Out" title="Chat GPt Time Out" value="<?php echo $skillArray['chatgpt']['session_timeout']; ?>"></td></tr>
 
 </tbody></table></div></div><hr/>
 <h5>Google Assistant: <i class="bi bi-info-circle-fill" onclick="togglePopupGGASS()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
