@@ -20,7 +20,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         justify-content: center;
         /*   align-items: center; */
         /*  height: 100vh;*/
-        font-size: 15px;
+         font-size: 15px;
         background-color: #d2d8bb;
 		 
     }
@@ -50,7 +50,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
        background-color: #f0f0f0;
     }
         .chat-form-button {
-		padding-bottom: 10px; 
+		padding-bottom: 30px; 
         background-color: #f0f0f0;
     }
     .chat-input {
