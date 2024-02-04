@@ -49,6 +49,14 @@ $information = array(
 		
 		)
 );
+
+if (isset($_GET['vietbotscan'])) {
+    echo json_encode(array(
+        'information' => $information
+    ));
+	exit();
+} 
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405); // Method Not Allowed
     echo json_encode(array(
