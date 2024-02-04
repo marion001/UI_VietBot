@@ -8,6 +8,8 @@
  */
 include "Configuration.php";
 include "./include_php/Fork_PHP/INFO_OS.php";
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json");
 $version = "1.1";
 
 //$Web_ui_jSon = json_decode(file_get_contents("assets/json/webui_.json"), true);
