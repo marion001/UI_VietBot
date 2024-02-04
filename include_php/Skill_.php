@@ -222,6 +222,7 @@ chmod($backupFile, 0777);
     $skillArray['gg_bard']['Secure-1PSID'] = $Google_bard_Secure1PSID;
     $skillArray['gg_bard']['Secure-1PSIDTS'] = $Google_bard_Secure_1PSIDTS;
     $skillArray['gg_bard']['Secure-1PSIDCC'] = $Google_bard_Secure_1PSIDCC;
+    $skillArray['gg_bard']['cache_timeout'] = intval($_POST['bard_cache_time_out']);
 	// Google Asssitant Mode
     $skillArray['gg_ass']['mode'] = $Google_Assistant_Mode;
 	//Lưu Chế Độ Ưu Tiên
@@ -466,6 +467,13 @@ B4: Go to Application -> Cookies -> "__Secure-1PSID" và "__Secure-1PSIDTS" và 
 <td><input type="text" class="form-control" id="Secure-1PSIDCC" name="Secure-1PSIDCC" placeholder="Nhập Cookie Secure-1PSIDCC Của Google bard" title="Nhập Cookie Secure-1PSIDCC Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure-1PSIDCC']; ?>">
 </td>
 </tr>
+
+<tr>
+<th scope="row">Phiên làm việc (Giây/s):</th>
+<td><input type="number" class="form-control" id="bard_cache_time_out" step="100" min="43200" name="bard_cache_time_out" placeholder="43200" title="Hết thời gian chờ (s)" value="<?php echo $skillArray['gg_bard']['cache_timeout']; ?>">
+</td>
+</tr>
+
 <!--
 <tr><td colspan="2"><center>
 <button class="btn btn-warning" type="button" onclick="sendCookiesBard()">Kiểm Tra Cookie</button>
