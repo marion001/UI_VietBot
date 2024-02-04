@@ -82,7 +82,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
       height: 10px;
       background-color: #333;
       position: absolute;
-      cursor: se-resize;
+      cursor: ne-resize;
       bottom: 0;
       left: 0;
     }
