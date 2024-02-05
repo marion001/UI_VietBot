@@ -56,7 +56,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         top: 10px;
         right: -100%;
         width: 40%;
-        height: auto;
+        height: 83vh;
         background-color: #d2d8bb;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         transition: right 0.1s ease;
@@ -68,7 +68,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         /* Media query for mobile devices */
         .right-sidebar {
             width: 100%;
-			height: 85%;
+			height: 83vh;
         }
 		      iframe {
       width: 40%; /* Đặt chiều rộng của iframe là 100% */
@@ -768,13 +768,14 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
         <!-- Add background overlay element -->
         <div class="background-overlay" onclick="closeSidebar()"></div>
 
-        <div class="right-sidebar" id="sidebar" onclick="event.stopPropagation()">
+       <!-- <div class="right-sidebar" id="sidebar" onclick="event.stopPropagation()"> -->
+        <div class="right-sidebar" id="sidebar">
             <!-- Your sidebar content goes here -->
             <div class="toggle-btnnn-container">
             <center>   <a onclick="toggleSidebar()" class="cp-toggleee"><i class="bi bi-x-circle-fill" title="Nhấn để đóng"></i></a></center>
 		
 			
-				 <iframe src="./include_php/ChatBot.php" frameborder="0" allowfullscreen></iframe>
+				 <iframe id="iframeChatBot" src="./include_php/ChatBot.php" frameborder="0" allowfullscreen></iframe>
                
             </div>
 			 <div class="resize-handle"></div>
@@ -791,10 +792,7 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
     <div class="m-magic-cursor mmc-outer"></div>
 	  <div class="m-magic-cursor mmc-inner"></div>
     <!-- Mouase Magic Cursor End -->
-
-    <!--  JavaScripts  -->
-    <!--  Jquery 3.4.1  
-    <script src="assets/js/jquery-3.6.1.min.js"></script>-->
+    <script src="assets/js/jquery-3.6.1.min.js"></script>
     <!--  Bootstrap Js  -->
     <script src="assets/js/bootstrap.js"></script>
     <!--  Malihu ScrollBar Js  -->
@@ -810,60 +808,60 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
     <!--  Arshia Js  -->
     <script src="assets/js/main.js"></script>
 
-
-
-
 <script>
-$(document).ready(function() {
-  let isResizing = false;
-  let lastDownX;
-  let lastDownY;
+//thay đổi kích thước chatbox
+    $(document).ready(function() {
+        let isResizing = false;
+        let lastDownX;
+        let lastDownY;
 
-  $(document).mousedown(function(e) {
-    // Kiểm tra xem có đang giữ chuột hay không
-    if ($(e.target).hasClass('resize-handle')) {
-      isResizing = true;
-      lastDownX = e.clientX;
-      lastDownY = e.clientY;
-      e.preventDefault(); // Ngăn chặn sự kiện mousedown mặc định
-    }
-  });
+        $(".resize-handle").mousedown(function(e) {
+            isResizing = true;
+            lastDownX = e.clientX;
+            lastDownY = e.clientY;
+        });
 
-  $(document).mousemove(function(e) {
-    if (isResizing) {
-      let newWidth = $("#sidebar").width() + (lastDownX - e.clientX);
-      let newHeight = $("#sidebar").height() + (e.clientY - lastDownY);
+        $(".resize-handle").mouseleave(function(e) {
+            // Nếu chuột rời khỏi vùng resize-handle, cập nhật kích thước của thẻ iframe theo kích thước của thẻ div
+            let newWidth = $("#sidebar").width();
+            let newHeight = $("#sidebar").height();
 
-      // Kiểm tra điều kiện tối thiểu
-      newWidth = Math.max(newWidth, 100); // Kích thước tối thiểu cho chiều rộng
-      newHeight = Math.max(newHeight, 100); // Kích thước tối thiểu cho chiều cao
+            $("#iframeChatBot").width(newWidth);
+            $("#iframeChatBot").height(newHeight);
+        });
 
-      $("#sidebar").width(newWidth);
-      $("#sidebar").height(newHeight);
+        $(document).mousemove(function(e) {
+            if (isResizing) {
+                let newWidth = $("#sidebar").width() + (lastDownX - e.clientX);
+                let newHeight = $("#sidebar").height() + (e.clientY - lastDownY);
 
-      // Cập nhật kích thước của thẻ iframe
-      $("#sidebar iframe").width(newWidth);
-      $("#sidebar iframe").height(newHeight);
+                $("#sidebar").width(newWidth);
+                $("#sidebar").height(newHeight);
 
-      lastDownX = e.clientX;
-      lastDownY = e.clientY;
-    }
-  });
+                if (e.buttons === 1) {
+                    // Nếu chuột đang được giữ, thì cập nhật kích thước của thẻ iframe thành 100px
+                    $("#iframeChatBot").width(100);
+                    $("#iframeChatBot").height(100);
+                    //console.log("Giữ Chuột");
+                }
 
-  $(document).mouseup(function() {
-    if (isResizing) {
-      isResizing = false;
-    }
-  });
+                lastDownX = e.clientX;
+                lastDownY = e.clientY;
+            }
+        }).mouseup(function(e) {
+            if (isResizing) {
+                isResizing = false;
+                //console.log("Nhả chuột");
+                // Nếu chuột đã được giữ khi di chuyển, thì cập nhật kích thước của thẻ iframe theo kích thước của thẻ div
+                let newWidth = $("#sidebar").width();
+                let newHeight = $("#sidebar").height();
+                // Cập nhật kích thước của thẻ iframe thành kích thước của thẻ div
+                $("#iframeChatBot").width(newWidth);
+                $("#iframeChatBot").height(newHeight);
 
-  $(document).mouseleave(function() {
-    if (isResizing) {
-      isResizing = false;
-    }
-  });
-});
-
-
+            }
+        });
+    });
 </script>
 
 
