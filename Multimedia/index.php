@@ -133,6 +133,14 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
             border-radius: 5px;
         }
     </style>
+	<style>
+    @media (max-width: 768px) {
+        .col-sm-6 {
+     flex: 0 0 100%; 
+     max-width: 100%;
+        }
+    }
+</style>
 </head>
 
 <body>
