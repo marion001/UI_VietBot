@@ -1161,7 +1161,7 @@ if ($response === false) {
                 // Convert and display media1_duration in HH:MM:SS format
                 $("#media1-duration").text(formatTimeajax(media_durationInSeconds));
                 $("infomusicplayer").html("Nguồn nhạc: <font color=green>.....</font>");
-                messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + cover_link + ' alt="" /></div><div class="caption"><ul><li><p style="text-align: left;"><b>Yêu Cầu: </b>' + truncateFileName(last_request, 40) + '</p></li><li><p style="text-align: left;"><b>Tên bài hát: </b><font color=blue>' + truncateFileName(song_name, 20) + '</font></p></li><li><p style="text-align: left;"><b>Nguồn Nhạc:</b> ' + nguonnhac + '</li></p></ul></div></div>';
+                messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + cover_link + ' alt="" /></div><div class="caption"><ul><li><p style="text-align: left;"><b>Yêu Cầu: </b>' + truncateFileName(last_request, 40) + '</p></li><li><p style="text-align: left;"><b title="'+song_name+'">Tên bài hát: </b><font color=blue title="'+song_name+'">' + truncateFileName(song_name, 20) + '</font></p></li><li><p style="text-align: left;"><b>Nguồn Nhạc:</b> ' + nguonnhac + '</li></p></ul></div></div>';
                 //thay đổi giá trị volume ở thanh slile
                 if (!hover && update) {
                     if (response.volume == 0) {
