@@ -132,7 +132,8 @@ if (is_dir($directory . '/node_modules')) {
 	
 }
 ?>
-<div class="container">
+<!-- <div class="container"> -->
+<div>
     <div class="row">
         <div class="col-sm-6">
             <form method="post" id="my-form" action="<?php echo $_SERVER['PHP_SELF']; ?>">
