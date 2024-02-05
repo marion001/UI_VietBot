@@ -55,8 +55,8 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         position: fixed;
         top: 10px;
         right: -100%;
-        width: 99vh;
-        height: 85vh;
+        width: 40%;
+        height: auto;
         background-color: #d2d8bb;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         transition: right 0.1s ease;
@@ -71,8 +71,8 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
 			height: 85%;
         }
 		      iframe {
-      width: 100%; /* Đặt chiều rộng của iframe là 100% */
-      height: 95vh; /* Đặt chiều cao của iframe làborder: none; /* Loại bỏ viền của iframe */
+      width: 40%; /* Đặt chiều rộng của iframe là 100% */
+      height: auto; /* Đặt chiều cao của iframe làborder: none; /* Loại bỏ viền của iframe */
     }
     }
     
