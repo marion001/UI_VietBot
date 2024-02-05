@@ -1147,7 +1147,17 @@ window.addEventListener('message', function(event) {
 
 
     </script>
-	
+	<!--
+<script>
+    // Lắng nghe sự kiện message từ iframe con là multimedia
+    window.addEventListener('message', function(event) {
+        // Xử lý dữ liệu nhận được
+        var receivedData = event.data;
+        //console.log('Received data from iframe:', receivedData);
+        console.log(receivedData.volume);
+    });
+</script>
+-->
 </body>
 
 </html>
