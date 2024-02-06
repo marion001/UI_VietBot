@@ -61,33 +61,35 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         transition: right 0.1s ease;
         z-index: 1;
-		overflow: hidden;
+        overflow: hidden;
     }
     
     @media (max-width: 768px) {
         /* Media query for mobile devices */
+        
         .right-sidebar {
             width: 100%;
-			height: 83vh;
+            height: 83vh;
         }
-		      iframe {
-      width: 40%; /* Đặt chiều rộng của iframe là 100% */
-      height: auto; /* Đặt chiều cao của iframe làborder: none; /* Loại bỏ viền của iframe */
-    }
+        iframe {
+            width: 40%;
+            /* Đặt chiều rộng của iframe là 100% */
+            
+            height: auto;
+            /* Đặt chiều cao của iframe làborder: none; /* Loại bỏ viền của iframe */
+        }
     }
     
-	
     .resize-handle {
-      width: 10px;
-      height: 10px;
-      background-color: #333;
-      position: absolute;
-      cursor: ne-resize;
-      bottom: 0;
-      left: 0;
+        width: 10px;
+        height: 10px;
+        background-color: #333;
+        position: absolute;
+        cursor: ne-resize;
+        bottom: 0;
+        left: 0;
     }
-	
-	
+    
     .toggle-btnnn {
         cursor: pointer;
         padding: 10px 20px;
@@ -123,6 +125,8 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     }
     
     a.cp-toggleee {
+		margin-top: 1px;
+        cursor: pointer;
         z-index: 1000;
         transition: all 0.3s ease;
         border-radius: 0.75rem;
@@ -130,6 +134,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         border: 1px solid rgb(255 255 255 / 30%);
         -webkit-backdrop-filter: blur(10px);
     }
+    
     a.cp-toggleeee {
         z-index: 1000;
         transition: all 0.3s ease;
@@ -138,14 +143,72 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         border: 1px solid rgb(255 255 255 / 30%);
         -webkit-backdrop-filter: blur(10px);
     }
-	  .rounded-iframe {
-    border-radius: 10px 10px 10px 10px;
-    overflow: hidden; /* Để làm tròn góc thì cần che phần dư thừa */
-  }
+    
+    .rounded-iframe {
+        border-radius: 10px 10px 10px 10px;
+        overflow: hidden;
+        /* Để làm tròn góc thì cần che phần dư thừa */
+    }
+    
     iframe {
-      width: 100%; /* Đặt chiều rộng của iframe là 100% */
-      height: 83vh; /* Đặt chiều cao của iframe là 100% */
-      border: none; /* Loại bỏ viền của iframe */
+        width: 100%;
+        /* Đặt chiều rộng của iframe là 100% */
+        
+        height: 83vh;
+        /* Đặt chiều cao của iframe là 100% */
+        
+        border: none;
+        /* Loại bỏ viền của iframe */
+    }
+</style>
+<style>
+    .cp-toggleeeee {
+		margin-top: 2px;
+        padding: 3px;
+        /* Thêm padding để tạo khoảng cách giữa nội dung và viền */
+        
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* Căn giữa theo chiều dọc */
+        
+        justify-content: center;
+        /* Căn giữa theo chiều ngang */
+        
+        z-index: 1000;
+        transition: all 0.3s ease;
+        border-radius: 0.75rem;
+        background: rgb(255 255 255 / 20%);
+        border: 1px solid rgb(255 255 255 / 30%);
+        -webkit-backdrop-filter: blur(10px);
+    }
+    
+    .volume_value {
+        cursor: pointer;
+        margin: 33px;
+        transform: rotate(-90deg);
+        width: 90px;
+        margin-top: 35px;
+    }
+    
+    .volume-container {
+        float: right;
+        /* Dịch chuyển về bên phải */
+        
+        margin-left: 10px;
+        /* Khoảng cách giữa div và div bên phải */
+    }
+    
+    .cp-toggleee:hover .bi-chat-dots {
+        color: red;
+    }
+    
+    .cp-toggle:hover .bi-gear {
+        color: red;
+    }
+    
+    .cp-toggleeeee i:hover {
+        color: red;
     }
 </style>
 </head>
@@ -749,17 +812,38 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
             <span class="GG02Bg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
         </div>
     </div>
-    <div class="pallet-button hide" >
+
+    <div class="pallet-button hide">
         <a href="javascript:void(0)" class="cp-toggle"><i class="bi bi-gear" title="Nhấn Để Hiển Thị Cài Đặt"></i></a>
- 		<div>
- <a onclick="toggleSidebar()" class="cp-toggleee"><i class="bi bi-chat-dots" title="Nhấn Để Mở ChatBot"></i></a></div>
+ 		
+ <a onclick="toggleSidebar()" class="cp-toggleee"><i class="bi bi-chat-dots" title="Nhấn Để Mở ChatBot"></i></a>
  
- 			
 
 
-	   
+
  
+	<div id="volume_slide_index" class="cp-toggleeeee">
+	 <b><font color=blue><span id="volume_percentage"><?php echo $state_json->volume; ?></span>%</font></b>   
+
+ 
+ <input type="range" class="volume_value" title="Kéo Để Thay Đổi Âm Lượng" id="volume_value" name="volume_value" min="0" max="100" step="1" value="<?php echo $state_json->volume; ?>">
+	<p class="bi bi-volume-up-fill" title="Âm Lượng"></p>	
+ 
+ 
+ 	  <a class="colorred" onmousedown="startTimerMic()" onmouseup="stopTimerMic()" onclick="handleClickMic()" ontouchstart="startTimerMic()" ontouchend="stopTimerMic()"><i class="bi bi-mic-mute-fill" title="Nhấn nhả để Bật/Tắt mic, nhấn giữ 3s để Bật/Tắt câu phản hồi, nhấn tắt Mic và nhấn giữ 3s để khởi động lại Loa"></i></a>
+	
+
+
+<a class="colorred" onmousedown="startTimer()" onmouseup="stopTimer()" ontouchstart="startTimer()" ontouchend="stopTimer()" onclick="handleClick()">
+   <i class="bi bi-play-circle" title="Nhấn nhả để đánh thức Bot, Nhấn giữ 3s để bật chế độ hội thoại (Hỏi đáp liên tục)"></i>
+</a>
+ 
+ </div>
+	 
+
+	 
 	</div>
+
 	
 </div>
 
@@ -985,6 +1069,15 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
     const buttonnnnElement = document.querySelector('.btn-primary');
     const buttonnnnnElement = document.querySelector('.btn-dark');
 
+	const volume_slide_index = document.getElementById('volume_slide_index');
+
+
+    volume_slide_index.addEventListener('click', function() {
+		//console.log("volume_slide_index");
+        // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
+		divElement.classList.remove('show');
+    });
+
     buttonElement.addEventListener('click', function() {
         // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
         divElement.classList.remove('show');
@@ -1147,17 +1240,255 @@ window.addEventListener('message', function(event) {
 
 
     </script>
-	<!--
+	<script>
+    // Lấy các phần tử DOM cần thiết
+    const volumeValue = document.getElementById('volume_value');
+    const volumePercentage = document.getElementById('volume_percentage');
+
+    // Lắng nghe sự kiện thay đổi giá trị của input range
+    volumeValue.addEventListener('input', updatePercentage);
+
+    // Lắng nghe sự kiện nhả chuột hoặc touchend
+    volumeValue.addEventListener('mouseup', handleMouseUp);
+    volumeValue.addEventListener('touchend', handleMouseUp);
+
+    // Hàm cập nhật giá trị % lên thẻ span và gửi AJAX request
+    function updatePercentage() {
+        const value = volumeValue.value;
+        volumePercentage.textContent = `${value}`;
+    }
+
+    // Hàm xử lý khi nhả chuột hoặc touchend
+    function handleMouseUp() {
+        const value = volumeValue.value;
+        //console.log(value);
+
+        // Gửi AJAX request
+        var settings = {
+            "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+                "Accept": "*/*",
+                "Accept-Language": "vi",
+                "Cache-Control": "no-cache",
+                "Content-Type": "application/json",
+                "Pragma": "no-cache",
+            },
+            "data": JSON.stringify({
+                "type": 2,
+                "data": "volume",
+                "action": "setup",
+                "new_value": Math.round(value)
+            }),
+        };
+
+        $.ajax(settings).done(function (response) {
+            // Cập nhật lại giá trị trả về lên thẻ input và span
+            const newVolume = response.new_volume;
+            const oldVolume = response.old_volume;
+
+            volumeValue.value = newVolume;
+            volumePercentage.textContent = `${newVolume}`;
+
+            //console.log(response);
+        });
+    }
+</script>
+
+	
 <script>
+    // Khởi tạo biến hover và update
+    var hover = false;
+    var update = true;
+
+    // Bắt sự kiện khi con trỏ chuột hover vào thẻ input
+    document.getElementById('volume_value').addEventListener('mouseenter', function() {
+        hover = true;
+        update = false;
+    });
+
+    // Bắt sự kiện khi con trỏ chuột rời khỏi thẻ input
+    document.getElementById('volume_value').addEventListener('mouseleave', function() {
+        hover = false;
+        update = true;
+    });
+
+
+    // Bắt sự kiện khi con trỏ chuột hover vào thẻ input mobile
+    document.getElementById('volume_value').addEventListener('touchstart', function() {
+        hover = true;
+        update = false;
+    });
+    // Bắt sự kiện khi con trỏ chuột rời khỏi thẻ input mobile
+    document.getElementById('volume_value').addEventListener('touchend', function() {
+        hover = false;
+        update = true;
+    });
+
     // Lắng nghe sự kiện message từ iframe con là multimedia
     window.addEventListener('message', function(event) {
+
+        // Bắt sự kiện khi con trỏ chuột hover vào thẻ input
+        document.getElementById('volume_value').addEventListener('mouseenter', function() {
+            update = false; // Dừng cập nhật khi con trỏ chuột hover vào
+            //console.log('Dừng cập nhật tự động');
+        });
+
+        // Bắt sự kiện khi con trỏ chuột rời khỏi thẻ input
+        document.getElementById('volume_value').addEventListener('mouseleave', function() {
+            update = true; // Cho phép cập nhật khi con trỏ chuột rời đi
+            //console.log('Tiếp tục cập nhật tự động');
+        });
+
+        // Bắt sự kiện khi con trỏ chuột hover vào thẻ input trên mobile
+        document.getElementById('volume_value').addEventListener('touchstart', function() {
+            update = false; // Dừng cập nhật khi con trỏ chuột hover vào
+            //console.log('Dừng cập nhật tự động');
+        });
+
+        // Bắt sự kiện khi con trỏ chuột rời khỏi thẻ input trên mobile
+        document.getElementById('volume_value').addEventListener('touchend', function() {
+            update = true; // Cho phép cập nhật khi con trỏ chuột rời đi
+            //console.log('Tiếp tục cập nhật tự động');
+        });
+
         // Xử lý dữ liệu nhận được
         var receivedData = event.data;
         //console.log('Received data from iframe:', receivedData);
-        console.log(receivedData.volume);
+        // Cập nhật giá trị âm lượng và hiển thị
+        //document.getElementById('volume_value').value = receivedData.volume;
+        //document.getElementById('volume_percentage').innerText = receivedData.volume;
+
+        if (!hover && update) {
+
+            // Cập nhật giá trị âm lượng và hiển thị
+            document.getElementById('volume_value').value = receivedData.volume;
+            document.getElementById('volume_percentage').innerText = receivedData.volume;
+        }
+
+        //console.log(receivedData.volume);
     });
 </script>
--->
+
+<script>
+//Nút Mic
+    var holdTimerMic;
+    var isLongPressMic = false;
+
+    function startTimerMic() {
+        // Bắt đầu tính thời gian khi nút được nhấn
+        holdTimerMic = setTimeout(function() {
+            //console.log("Bạn đã nhấn giữ 3 giây");
+			
+            isLongPressMic = true; // Đánh dấu rằng người dùng đã nhấn giữ đủ lâu
+            if (isLongPressMic) {
+                wakeUpBotMic('long');
+				alert("Đã thực thi tác vụ nhấn giữ Mic");
+            }
+
+        }, 3000); // Thời gian tính bằng mili giây (ở đây là 3 giây)
+    }
+
+    function stopTimerMic() {
+        // Hủy tính thời gian khi nút được nhả ra
+        clearTimeout(holdTimerMic);
+    }
+
+    function handleClickMic() {
+        // Thực hiện hành động khi nhấn nút một lần
+        if (!isLongPressMic) {
+            wakeUpBotMic('short');
+			//alert("Đã thực thi tác vụ nhấn nhả Mic");
+        }
+        // Đặt lại biến isLongPressMic về false sau khi nhấn nút
+        isLongPressMic = false;
+    }
+
+    // Đánh thức bot
+    function wakeUpBotMic(actionMic) {
+
+        // Thực hiện các hành động cần thiết khi icon được nhấn
+        // Ví dụ: Gửi yêu cầu AJAX để đánh thức Bot
+        var settingsMic = {
+            "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "data": JSON.stringify({
+                "type": 2,
+                "data": "set_keypad",
+                "keypad": "mic",
+                "action": actionMic
+            }),
+        };
+
+        $.ajax(settingsMic).done(function(response) {
+            //console.log(response);
+        });
+    }
+</script>
+<script>
+//Nút Tam Giác
+    var holdTimer;
+    var isLongPress = false;
+
+    function startTimer() {
+        // Bắt đầu tính thời gian khi nút được nhấn
+        holdTimer = setTimeout(function() {
+            //console.log("Bạn đã nhấn giữ 3 giây");
+			
+            isLongPress = true; // Đánh dấu rằng người dùng đã nhấn giữ đủ lâu
+            if (isLongPress) {
+                wakeUpBot('long');
+				alert("Đã thực thi tác vụ nhấn giữ");
+            }
+
+        }, 3000); // Thời gian tính bằng mili giây (ở đây là 3 giây)
+    }
+
+    function stopTimer() {
+        // Hủy tính thời gian khi nút được nhả ra
+        clearTimeout(holdTimer);
+    }
+
+    function handleClick() {
+        // Thực hiện hành động khi nhấn nút một lần
+        if (!isLongPress) {
+            wakeUpBot('short');
+			//alert("Đã thực thi tác vụ nhấn nhả");
+        }
+        // Đặt lại biến isLongPress về false sau khi nhấn nút
+        isLongPress = false;
+    }
+
+    // Đánh thức bot
+    function wakeUpBot(action) {
+
+        // Thực hiện các hành động cần thiết khi icon được nhấn
+        // Ví dụ: Gửi yêu cầu AJAX để đánh thức Bot
+        var settings = {
+            "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "data": JSON.stringify({
+                "type": 2,
+                "data": "set_keypad",
+                "keypad": "wakeup",
+                "action": action
+            }),
+        };
+
+        $.ajax(settings).done(function(response) {
+            //console.log(response);
+        });
+    }
+</script>
 </body>
 
 </html>
