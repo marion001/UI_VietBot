@@ -210,6 +210,9 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     .cp-toggleeeee i:hover {
         color: red;
     }
+	.colorred {
+		cursor: pointer;
+	}
 </style>
 </head>
 <body>
