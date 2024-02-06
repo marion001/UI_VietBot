@@ -461,6 +461,22 @@ if (!is_dir($DuognDanThuMucJson)) {
                        
 
                     </tr>
+					
+					
+					
+															                    <tr>
+															 <th scope="row">user.json</th>
+                        <td><input type="checkbox" class="form-check-input" name="exclude[]" value="user.json" checked></td>
+                        <th scope="row" title="">-</th>
+                        <td>
+                           - <!-- <input type="checkbox" class="form-check-input" name="exclude[]" value="" checked> -->
+                        </td>
+                       
+
+                    </tr>
+					
+					
+					
 					                                    <tr>
                         <th colspan="4">
                             <center class="text-danger">Sao Lưu</center>
