@@ -65,7 +65,6 @@ function getTimestamp() {
   const userInput = document.getElementById('user-input');
   const deleteAllButton = document.getElementById('delete-all-button');
   const messageTypeCheckbox = document.getElementById('message-type-checkbox');
-
   let typingIndicator;
   let isBotReplying = false;
   let waitMessageTimer; // Biến đếm thời gian chờ hiển thị WAIT_MESSAGE
@@ -80,9 +79,7 @@ function getTimestamp() {
       return;
     }
     const messageType = parseInt(messageTypeCheckbox.value);
-
     // Kiểm tra kết nối tới API trước khi gửi yêu cầu để đưa ra thông báo
-	
     try {
       const response = await axios.get('http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>');
       if (response.status === 200) {
@@ -99,19 +96,12 @@ function getTimestamp() {
     }
 	
 	
-	
 ///////////////////////////
     const url = 'http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>/';
     const headers = {
       Accept: '*/*',
       'Accept-Language': 'vi',
-      Connection: 'keep-alive',
       'Content-Type': 'application/json',
-      DNT: '1',
-      Origin: 'http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>',
-      Referer: 'http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>/',
-      'User-Agent':
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
     };
     const data = {
       type: messageType,
@@ -183,7 +173,7 @@ showTimestampCheckbox.addEventListener('change', () => {
 
 
   const displayMessage = (message, isUserMessage, isTimeoutMessage = false) => {
-	  console.log(message);
+	  //console.log(message);
 	  //Nếu Giá trị là undefined
 	if (typeof message === 'undefined') {
 		//message = 'Nội dung trả về không được xác định';
@@ -210,8 +200,6 @@ showTimestampCheckbox.addEventListener('change', () => {
   //const timestampElement = document.createElement('div');
  // timestampElement.classList.add('message-timestamp');
   //timestampElement.textContent = `[${timestamp}]`; // Bao gồm thời gian
-
-
   const messageContent = document.createElement('div');
   messageContent.classList.add('message-content');
    // Kiểm tra trạng thái của ô kiểm "show-timestamp-checkbox"
@@ -220,9 +208,6 @@ showTimestampCheckbox.addEventListener('change', () => {
   }else {
     messageContent.textContent = message; //nếu không được tích
   }
-	
-	
-
     const deleteButton = document.createElement('button');
     deleteButton.classList.add('delete-button');
     deleteButton.innerHTML = '&times;';
