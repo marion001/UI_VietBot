@@ -227,11 +227,11 @@ if (is_dir($directory . '/node_modules')) {
   <tr>
     <td rowspan="2" colspan="2"><center>
 	
-						<div>
+			<!--			<div>
   <i id="volumeIcon" class="bi bi-volume-up"></i>
   <input type="range" id="volume" name="volume" step="1" min="0" max="100" value="">
   <span id="currentVolume">...</span>%
-</div><br/>
+</div><br/> -->
 	
 	
                         <p>
@@ -1050,6 +1050,9 @@ if ($response === false) {
 
             return formattedHours + ":" + formattedMinutes + ":" + formattedSeconds;
         }
+		
+		
+		/*
         // Khởi tạo biến hover và update
     var hover = false;
     var update = true;
@@ -1077,7 +1080,7 @@ if ($response === false) {
         hover = false;
         update = true;
     });
-
+*/
     // Function to make the API request and handle data
     function fetchData() {
         var selectedOption = $("#select-playback").find('option:selected');
@@ -1091,6 +1094,7 @@ if ($response === false) {
             }
         };
 
+/*
 
         // Bắt sự kiện khi con trỏ chuột hover vào thẻ input
         document.getElementById('volume').addEventListener('mouseenter', function() {
@@ -1116,7 +1120,7 @@ if ($response === false) {
             //console.log('Tiếp tục cập nhật tự động');
         });
 
-
+*/
 
         $.ajax(settings)
             .done(function(response) {
@@ -1164,12 +1168,14 @@ if ($response === false) {
                 $("infomusicplayer").html("Nguồn nhạc: <font color=green>.....</font>");
 				
 				//gửi dữ liệu response  trả về từ ajax  lên trang cha index.php
-                //window.parent.postMessage(response, '*');
+                window.parent.postMessage(response, '*');
 				 
 				 
 				messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + cover_link + ' alt="" /></div><div class="caption"><ul><li><p style="text-align: left;"><b>Yêu Cầu: </b>' + truncateFileName(last_request, 40) + '</p></li><li><p style="text-align: left;"><b title="'+song_name+'">Tên bài hát: </b><font color=blue title="'+song_name+'">' + truncateFileName(song_name, 20) + '</font></p></li><li><p style="text-align: left;"><b>Nguồn Nhạc:</b> ' + nguonnhac + '</li></p></ul></div></div>';
-                //thay đổi giá trị volume ở thanh slile
-                if (!hover && update) {
+              
+			  //thay đổi giá trị volume ở thanh slile
+			  
+              /*  if (!hover && update) {
                     if (response.volume == 0) {
                         volumeIcon.classList = 'bi bi-volume-mute-fill';
                     } else if (response.volume >= 1 && response.volume <= 49) {
@@ -1182,6 +1188,7 @@ if ($response === false) {
                     document.getElementById('volume').value = response.volume;
                     document.getElementById('currentVolume').innerText = response.volume;
                 }
+				*/
                 // Display player state based on playervlc_state
                 var playerStateText = "";
                 var playerStateColor = "";
@@ -1275,6 +1282,7 @@ if ($response === false) {
 
 
 <script>
+/*
     var updatee = true;
 	// Biến để kiểm tra sự kiện touchmove
     var touchMove = false;
@@ -1345,6 +1353,7 @@ if ($response === false) {
             document.getElementById('volume').value = response.new_volume;
         });
     }
+	*/
 </script>
 
 <script>
