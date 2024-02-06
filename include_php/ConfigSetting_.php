@@ -8,10 +8,10 @@
 
 <?php
 	$FileConfigJson = "$DuognDanThuMucJson"."/config.json";
-	$FileVolumeJson = "$DuognDanThuMucJson"."/state.json";
-	$json_volume_data = file_get_contents($FileVolumeJson);
+	//$FileVolumeJson = "$DuognDanThuMucJson"."/state.json";
+	//$json_volume_data = file_get_contents($FileVolumeJson);
     $json_config_data = file_get_contents($FileConfigJson);
-	$data_volume = json_decode($json_volume_data);
+	//$data_volume = json_decode($json_volume_data);
 	$data_config = json_decode($json_config_data, true);
 	$ttsCompany = '';
 	$ttsVoice = '';
@@ -84,7 +84,7 @@ function picovoice_version($noi_dung_tep, $ten_lop, $ten_phuong_thuc) {
 		$hotwords_lang_Porcupine = '/default/porcupine_params.pv';
 	}
 	//Lấy giá trị value trong file json
-	$value_volume = $data_volume->volume;
+	//$value_volume = $data_volume->volume;
 	//lấy giá các trị wakeup_reply
 	$GET_wakeupReply = $data_config['smart_wakeup']['wakeup_reply'];
 	
@@ -655,7 +655,7 @@ chmod($backupFile, 0777);
     $data_config["smart_answer"]["number_characters_to_switch_mode"] = intval($numberCharactersToSwitchMode);
 	//End Chờ xử lý dữ liệu
     // Lấy giá trị từ input
-    $Volume_Value = @$_POST['volume_value'];
+    //$Volume_Value = @$_POST['volume_value'];
 	//$wakeup_reply = @$_POST['wakeup_reply'];
 	$STT_Type = @$_POST['stt_type'];
 	$STT_GG_Ass_Mode = @$_POST['stt_gg_ass_mode'];
@@ -695,9 +695,10 @@ chmod($backupFile, 0777);
 	 if (strcasecmp($TTS_Voice, "null") === 0) {$TTS_Voice_CheckINPUT = null;
     } else {$TTS_Voice_CheckINPUT = $TTS_Voice;}
 	//VOLUME
-	$data_volume->volume = intval($Volume_Value);
-	$new_json_data_volume = json_encode($data_volume, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-	file_put_contents($FileVolumeJson, $new_json_data_volume);
+	//$data_volume->volume = intval($Volume_Value);
+	//$new_json_data_volume = json_encode($data_volume, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+	//file_put_contents($FileVolumeJson, $new_json_data_volume);
+	
 	//Kết thúc lưu giá trị volume
 	// Cập nhật giá trị trong mảng Config.Json
 	 $wakeup_reply = [];
@@ -1215,14 +1216,17 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
 <div id="popupContent" onclick="preventEventPropagationVOLUME(event)">
 <center><b>Sound Card/Volume</b></center>
 - <b>Card ID:</b> Số id của card âm thanh trên hệ thống nhận được<br/>
-- <b>Âm Lượng:</b> Kéo để thay đổi mức âm lượng của loa</b><br/></div></div>
+</div></div>
 <div class="row justify-content-center"><div class="col-auto">
 <table class="table table-responsive table-striped table-bordered align-middle"><tr>
 <th scope="col"><center>Card ID:</center></th>
-<th scope="col"><center>Âm lượng:</center></th></tr><tr>
+<!-- <th scope="col"><center>Âm lượng:</center></th> --></tr><tr>
 <td><input type="number" class="form-control" title="Từ 0 Đến 3" title="Từ 0 Đến 3" name="input_number_card_number" size="28" value="<?php echo $GET_Speaker_Amixer_ID; ?>"  min="0" max="3" required></td>
-<td><input type="range" title="Kéo Để Thay Đổi Âm Lượng" id="volume_value" name="volume_value" min="10" max="100" step="1" value="<?php echo $value_volume; ?>" style="width:200px;">
-<font color=red><span id="slider-value" class="slider-value"><?php echo $value_volume; ?>%</span></font></div> </td></tr></table></div></div></center><hr/>
+<!--
+<td><input type="range" title="Kéo Để Thay Đổi Âm Lượng" id="volume_value" name="volume_value" min="10" max="100" step="1" value="<?php //echo $value_volume; ?>" style="width:200px;">
+<font color=red><span id="slider-value" class="slider-value"><?php //echo $value_volume; ?>%</span></font></div> </td>
+-->
+</tr></table></div></div></center><hr/>
 <!-- Kết Thúc  Volume --> 
 <!-- mục  Web Interface --> 
 <h5>Port API: <i class="bi bi-info-circle-fill" onclick="togglePopupWeb()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5> 
@@ -3726,7 +3730,7 @@ $(document).ready(function() {
 </script>
 
 
-
+<!--
 <script>
   var updatee = true;
 
@@ -3744,7 +3748,7 @@ $(document).ready(function() {
 
       // Thực hiện AJAX request để cập nhật giá trị volume
       var ajaxSettings = {
-        "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
+        "url": "http://<?php //echo $serverIP; ?>:<?php //echo $Port_Vietbot; ?>",
         method: "POST",
         timeout: 0,
         headers: {
@@ -3778,7 +3782,7 @@ $(document).ready(function() {
     updatee = true;
   });
 </script>
-
+-->
 
 
 
