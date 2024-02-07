@@ -1140,7 +1140,7 @@ if ($response === false) {
                 if (media1_positionInSeconds !== -1.0) {
                     $("#selected-time").text(formatTimeajax(media1_positionInSeconds));
                 }
-                if (media_path.startsWith("file:///home/pi/vietbot_offline/src/mp3/")) {
+                if (media_path && media_path.startsWith("file://<?php echo $DuognDanThuMucJson; ?>/mp3/")) {
                     // Giải mã chuỗi URL
                     const decodedString = decodeURIComponent(media_path);
                     // Bỏ phần đường dẫn
@@ -1152,11 +1152,11 @@ if ($response === false) {
                     const truncatedFileName = truncateFileName(fileNameWithoutExtension, maxLength);
                     var nguonnhac = "<font color=green>Local MP3</font>";
                     // console.log('Tên file sau khi giải mã, loại bỏ đường dẫn và mở rộng:', truncatedFileName);
-                } else if (media_path.startsWith("http://vnno-")) {
+                } else if (media_path && media_path.startsWith("http://vnno-")) {
                     var nguonnhac = "<font color=green>ZingMp3</font>";
-                } else if (media_path.startsWith("https://rr")) {
+                } else if (media_path && media_path.startsWith("https://rr")) {
                     var nguonnhac = "<font color=green>Youtube</font>";
-                } else if (media_path.startsWith("file:///home/pi/vietbot_offline/src/tts_saved/")) {
+                } else if (media_path && media_path.startsWith("file://<?php echo $DuognDanThuMucJson; ?>/tts_saved/")) {
                     var nguonnhac = "Không có dữ liệu";
                 } else {
                     var nguonnhac = "<font color=green>.....</font>";
