@@ -1711,15 +1711,15 @@ None (Không Dùng)</label></center>
 <tr>
 <th scope="row" title="Đầu ra tín hiệu điều khiển led mặc định là GPIO 10">LED GPIO: </th>
 <td colspan="2" title="Đầu ra tín hiệu điều khiển led mặc định là GPIO 10">
-<input type="number"  value="<?php echo $LED_GPIO; ?>" placeholder="<?php echo $LED_GPIO; ?>" id="number_led_gpio_output" name="led_gpio" class="disabled-input form-control"></td>
+<input type="number" min="1" max="30" step="1"  value="<?php echo $LED_GPIO; ?>" placeholder="<?php echo $LED_GPIO; ?>" id="number_led_gpio_output" name="led_gpio" class="disabled-input form-control"></td>
 </tr>
 <tr><th scope="row">Số led:</th>
-<td colspan="2"><input type="number"  value="<?php echo $LED_NUMBER_LED; ?>" placeholder="<?php echo $LED_NUMBER_LED; ?>" id="number_led_mode_input" name="number_led" class="disabled-input form-control"></td></tr>
+<td colspan="2"><input type="number" min="1" step="1" value="<?php echo $LED_NUMBER_LED; ?>" placeholder="<?php echo $LED_NUMBER_LED; ?>" id="number_led_mode_input" name="number_led" class="disabled-input form-control"></td></tr>
 <tr><th scope="row">Độ sáng:</th>
-<td colspan="2"><input type="number"  value="<?php echo $LED_BRIGHTNESS; ?>" placeholder="<?php echo $LED_BRIGHTNESS; ?>" id="brightness_mode_input" name="brightness" class="disabled-input form-control" ></td></tr>
+<td colspan="2"><input type="number" min="0" step="1" max="256" value="<?php echo $LED_BRIGHTNESS; ?>" placeholder="<?php echo $LED_BRIGHTNESS; ?>" id="brightness_mode_input" name="brightness" class="disabled-input form-control" ></td></tr>
 
 <tr><th scope="row">Chế độ hiệu ứng:</th>
-<td colspan="1"><input type="number"  value="<?php echo $LED_EFFECT_MODE; ?>" id="effect_mode_input" name="effect_mode" class="disabled-input form-control"></td>
+<td colspan="1"><input type="number" min="1" step="1" value="<?php echo $LED_EFFECT_MODE; ?>" id="effect_mode_input" name="effect_mode" class="disabled-input form-control"></td>
 
 <td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success"  onclick="sendLedSettings('effect_mode_input')" disabled>Test LED</button></td>
 
@@ -1728,19 +1728,19 @@ None (Không Dùng)</label></center>
 </tr>
 
 <tr><th scope="row">Hiệu ứng nghe:</th>
-<td colspan="1"><input type="number"  value="<?php echo $LED_LISTEN_EFFECT; ?>" id="listen_effect_mode_input" name="listen_effect" class="disabled-input form-control"></td>
+<td colspan="1"><input type="number" min="1" step="1" value="<?php echo $LED_LISTEN_EFFECT; ?>" id="listen_effect_mode_input" name="listen_effect" class="disabled-input form-control"></td>
 
 <td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success" onclick="sendLedSettings('listen_effect_mode_input')" disabled>Test LED</button></td>
 
 </tr>
 <tr><th scope="row">Hiệu ứng chờ xử lý</th>
-<td colspan="1"><input type="number"  value="<?php echo $LED_THINK_EFFECT; ?>" id="think_effect_mode_input" name="think_effect" class="disabled-input form-control"></td>
+<td colspan="1"><input type="number" min="1" step="1" value="<?php echo $LED_THINK_EFFECT; ?>" id="think_effect_mode_input" name="think_effect" class="disabled-input form-control"></td>
 
 <td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success" onclick="sendLedSettings('think_effect_mode_input')" disabled>Test LED</button></td>
 
 </tr>
 <tr><th scope="row">Hiệu ứng khi trả lời:</th>
-<td colspan="1"><input type="number"   value="<?php echo $LED_SPEAK_EFFECT; ?>" id="speak_effect_mode_input" name="speak_effect" class="disabled-input form-control"></td>
+<td colspan="1"><input type="number"  min="1" step="1" value="<?php echo $LED_SPEAK_EFFECT; ?>" id="speak_effect_mode_input" name="speak_effect" class="disabled-input form-control"></td>
 
 <td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success" onclick="sendLedSettings('speak_effect_mode_input')" disabled>Test LED</button></td>
 
@@ -1810,7 +1810,7 @@ None (Không Dùng)</label></center>
     foreach ($data_config['smart_config']['button'] as $buttonName => $buttonData) {
 		echo '<tr>';
         echo '<th scope="row">' . $buttonName . ':</th>';
-        echo '<td><center><!-- GPIO --><input type="number" class="form-control" style="width: 70px;" min="3" max="26" title="Cấu Hình Chân Chức Năng Của GPIO" style="width: 40px;" name="button[' . $buttonName . '][gpio]" value="' . $buttonData['gpio'] . '" placeholder="' . $buttonData['gpio'] . '"></center></td>';
+        echo '<td><center><!-- GPIO --><input type="number" class="form-control" style="width: 70px;" min="1" step="1" max="30" title="Cấu Hình Chân Chức Năng Của GPIO" style="width: 40px;" name="button[' . $buttonName . '][gpio]" value="' . $buttonData['gpio'] . '" placeholder="' . $buttonData['gpio'] . '"></center></td>';
         echo '<td><center><!-- Pulled High --><input type="checkbox" title="Tích Để Kéo Nút Nhấn Lên Mức Cao (3.3V), Bỏ Tích Kéo Xuống Mức Thấp GND" name="button[' . $buttonName . '][pulled_high]"' . ($buttonData['pulled_high'] ? ' checked' : '') . '></center></td>';
         echo '<td><center><!-- Active --><input type="checkbox" title="Tích Vào Để Kích Hoạt Chức Năng Của Nút Nhấn, Bỏ Tích Nút Nhấn Sẽ Bị Vô Hiệu" name="button[' . $buttonName . '][active]"' . ($buttonData['active'] ? ' checked' : '') . '></center></td></tr>';
 	}
