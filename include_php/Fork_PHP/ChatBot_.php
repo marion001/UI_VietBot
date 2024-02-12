@@ -33,7 +33,7 @@
 					</span> -->
   <select id="message-type-checkbox" class="form-select">
   <option  selected value="3" title="Chế Độ Hỏi Đáp Ở Chatbox Không Phát Ra Loa">Hỏi Đáp</option>
-  <option  selected value="2" title="Phát Nhạc, Podcast Ra Loa" disabled>PodCast</option>
+  <option  value="2" title="Phát Nhạc, Podcast Ra Loa" disabled>PodCast</option>
   <option value="1" title="TTS Chuyển Văn Bản Thành Giọng Nói Để Đọc Ra Loa">Chỉ Đọc</option>
 </select>
                 </div>
