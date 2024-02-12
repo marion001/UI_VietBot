@@ -56,7 +56,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         top: 10px;
         right: -100%;
         width: 40%;
-        height: 83vh;
+        height: 450px;
         background-color: #d2d8bb;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         transition: right 0.1s ease;
