@@ -6,6 +6,13 @@
 
 
 <script src="../../assets/js/axios_0.21.1.min.js"></script>
+ <link rel="stylesheet" href="../../assets/css/bootstrap-icons.css">
+ <style>
+ .bi-broadcast-pin:hover {
+  color: red;
+  cursor: pointer;
+}
+ </style>
 </head>
 
 <body>
@@ -26,6 +33,7 @@
 					</span> -->
   <select id="message-type-checkbox" class="form-select">
   <option  selected value="3" title="Chế Độ Hỏi Đáp Ở Chatbox Không Phát Ra Loa">Hỏi Đáp</option>
+  <option  selected value="2" title="Phát Nhạc, Podcast Ra Loa" disabled>PodCast</option>
   <option value="1" title="TTS Chuyển Văn Bản Thành Giọng Nói Để Đọc Ra Loa">Chỉ Đọc</option>
 </select>
                 </div>
@@ -71,7 +79,6 @@ function getTimestamp() {
   let responseTimer; // Biến đếm thời gian chờ phản hồi
   chatForm.addEventListener('submit', async (event) => {
     event.preventDefault();
-
     const userMessage = userInput.value;
     userInput.value = '';
 
@@ -130,7 +137,6 @@ function getTimestamp() {
         waitMessageElement.remove();
       }
       }, RESPONSE_TIMEOUT);
-
       const response = await axios.post(url, data, { headers });
       clearTimeout(waitMessageTimer); // Xóa thông báo "Vui lòng chờ thêm..." nếu đã hiển thị
       clearTimeout(responseTimer); // Xóa thông báo "Có vẻ Vietbot đang không phản hồi, vui lòng thử lại!" nếu đã hiển thị
@@ -146,11 +152,43 @@ function getTimestamp() {
 		displayMessage(response.data.answer, false);
 	} else {
 		// Nếu không tồn tại, sử dụng giá trị response.data.response
-		displayMessage(response.data.response, false);
+		const responseString = response.data.response.toString();
+		if (responseString.includes("https://cdn-ocs.ivie")) {
+	//loại bỏ dấu phẩy trước https
+	const modifiedResponse = responseString.replace(/,?\bhttps:\/\/cdn-ocs.ivie.*?\.mp3\b/g, '');
+    // Hiển thị giá trị đã chỉnh sửa
+    //console.log(responseString);
+// Tách chuỗi từ dấu phẩy
+const parts = responseString.split(',');
+
+
+// Kiểm tra xem có ít nhất một phần tử sau khi tách
+if (parts.length > 0) {
+    // Gán phần tử đầu tiên cho biến showlinkpodcast
+    const showlinkpodcast = parts[1].trim(); // Lưu ý rằng ta lấy phần tử thứ hai ở đây
+
+    // Hiển thị message kèm phần tử <i>
+    displayMessage(parts[0] + " | <i class='bi bi-broadcast-pin' onclick='handleBroadcastPinClick()' data-namebaihatpodcast = '"+modifiedResponse+"' data-urlpodcast='" + showlinkpodcast + "' title='Phát nhạc Podcast'></i>", false);
+} else {
+    // Nếu không tìm thấy phần tử sau khi tách chuỗi, hiển thị message mà không có phần tử <i>
+    displayMessage(modifiedResponse, false);
+}
+    //displayMessage(modifiedResponse+" <i class='bi bi-broadcast-pin' onclick='handleBroadcastPinClick()' data-urlpodcast='"+showlinkpodcast+"' title='Phát nhạc Podcast'></i>", false);
+	// Sử dụng phương thức match() với biểu thức chính quy để tìm tất cả các kết quả khớp với mẫu "https"
+
+//else {
+    //console.log("Không tìm thấy bất kỳ link https nào trong nội dung.");
+//}
+	
+} else {
+	displayMessage(response.data.response, false);
+    //console.error("response.data.response không phải là chuỗi.");
+}
+		//displayMessage(response.data.response, false);
+		//console.log("okkkk string");
 	}
     } catch (error) {
       console.error(error);
-
       // Hiển thị thông báo lỗi
 	  //nếu sau 30 giây vẫn đang chờ câu trả lời từ API  thì nó sẽ coi đó là một trường hợp lỗi và thực hiện các hành động để thông báo về lỗi cho người dùng
       setTimeout(() => {
@@ -170,7 +208,6 @@ showTimestampCheckbox.addEventListener('change', () => {
   // Bật/tắt lớp 'hide-timestamp' trên khung chat dựa vào trạng thái của ô kiểm
   chatContainer.classList.toggle('hide-timestamp', !showTimestampCheckbox.checked);
 });
-
 
   const displayMessage = (message, isUserMessage, isTimeoutMessage = false) => {
 	  //console.log(message);
@@ -204,9 +241,11 @@ showTimestampCheckbox.addEventListener('change', () => {
   messageContent.classList.add('message-content');
    // Kiểm tra trạng thái của ô kiểm "show-timestamp-checkbox"
  if (showTimestampCheckbox.checked) {
-	messageContent.textContent = `[${timestamp}] ${message}`; //  Thêm Hàm thời gian vào Chatbox khi được tích
+	//messageContent.textContent = `[${timestamp}] ${message}`; //  Thêm Hàm thời gian vào Chatbox khi được tích
+	messageContent.innerHTML = `[${timestamp}] ${message}`; //  Thêm Hàm thời gian vào Chatbox khi được tích
   }else {
-    messageContent.textContent = message; //nếu không được tích
+    //messageContent.textContent = message; //nếu không được tích
+    messageContent.innerHTML = message; //nếu không được tích
   }
     const deleteButton = document.createElement('button');
     deleteButton.classList.add('delete-button');
@@ -237,7 +276,6 @@ showTimestampCheckbox.addEventListener('change', () => {
       messageElement.classList.add('timeout-message');
     }
   };
-
   const displayTypingIndicator = () => {
     const typingIndicator = document.createElement('div');
     typingIndicator.classList.add('typing-indicator');
@@ -265,6 +303,52 @@ showTimestampCheckbox.addEventListener('change', () => {
   deleteAllButton.addEventListener('click', () => {
     chatbox.innerHTML = '';
   });
+  </script>
+  
+ <script>
+ //Phát nhạc podcast khi nahans vào icon
+    // Định nghĩa hàm để xử lý sự kiện click
+    function handleBroadcastPinClick() {
+        // Lấy giá trị của thuộc tính dữ liệu 'data-urlpodcast' của phần tử
+        var urlPodcast = document.querySelector('.bi-broadcast-pin').dataset.urlpodcast;
+        var tetxNamePodcast = document.querySelector('.bi-broadcast-pin').dataset.namebaihatpodcast;
+//console.log(urlPodcast);
+// Định nghĩa URL và dữ liệu
+const url = "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>/";
+const data = {
+  type: 2,
+  data: "play_music",
+  link_type: "direct",
+  link: urlPodcast
+};
+
+// Gửi yêu cầu AJAX sử dụng Axios
+axios.post(url, data, {
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  timeout: 0
+})
+.then(function (response) {
+  // Xử lý dữ liệu trả về
+  //console.log(response.data.state);
+  // Kiểm tra và xử lý state
+  if (response.data.state === "Success") {
+	state_replace_podcast = response.data.state.replace("Success", "Phát Podcast thành công: <b>" +tetxNamePodcast+ "</b>");
+    displayMessage(state_replace_podcast, false);
+  } else {
+    displayMessage(response.data.state);
+  }
+  
+})
+.catch(function (error) {
+  // Xử lý lỗi nếu có
+  console.error(error);
+});
+    }
 </script>
+
+
+
 </body>
 </html>
