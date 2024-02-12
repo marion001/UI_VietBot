@@ -7,12 +7,6 @@
 
 <script src="../../assets/js/axios_0.21.1.min.js"></script>
  <link rel="stylesheet" href="../../assets/css/bootstrap-icons.css">
- <style>
- .bi-broadcast-pin:hover {
-  color: red;
-  cursor: pointer;
-}
- </style>
 </head>
 
 <body>
@@ -33,11 +27,11 @@
 					</span> -->
   <select id="message-type-checkbox" class="form-select">
   <option  selected value="3" title="Chế Độ Hỏi Đáp Ở Chatbox Không Phát Ra Loa">Hỏi Đáp</option>
-  <option  value="2" title="Phát Nhạc, Podcast Ra Loa" disabled>PodCast</option>
+  <option  value="2" title="Phát Nhạc, Podcast Ra Loa" data-podcastname="play_podcast">PodCast</option>
   <option value="1" title="TTS Chuyển Văn Bản Thành Giọng Nói Để Đọc Ra Loa">Chỉ Đọc</option>
 </select>
                 </div>
-                <input type="text" class="form-control" id="user-input" class="chat-input" placeholder="Nhập tin nhắn..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <input type="text" class="form-control" id="user-input" class="chat-input" placeholder="Nhập văn bản, nội dung, tin nhắn..." aria-label="Recipient's username" aria-describedby="basic-addon2">
 
 
             
@@ -85,6 +79,26 @@ function getTimestamp() {
     if (userMessage.trim() === '') {
       return;
     }
+    // Lấy ra option được chọn trong select box của form
+    const selectedOption = document.querySelector('#message-type-checkbox option:checked');
+    // Kiểm tra xem option đã được chọn hay chưa
+    if (selectedOption) {
+        // Nếu option đã được chọn, kiểm tra xem có thuộc tính data-podcastname không
+        const podcastName = selectedOption.getAttribute('data-podcastname');
+        if (podcastName) {
+            // Nếu có thuộc tính data-podcastname, hiển thị giá trị trong console.log
+            //console.log('Data Podcast Name:', podcastName);
+			userMessageee = podcastName;
+        } else {
+            // Nếu không có thuộc tính data-podcastname, thông báo lỗi hoặc thực hiện hành động khác tùy thuộc vào yêu cầu của bạn
+            //console.log('Option được chọn nhưng không có thuộc tính data-podcastname.');
+			userMessageee = userMessage;
+			
+        }
+    } else {
+        userMessageee = userMessage;
+    }
+	
     const messageType = parseInt(messageTypeCheckbox.value);
     // Kiểm tra kết nối tới API trước khi gửi yêu cầu để đưa ra thông báo
     try {
@@ -112,7 +126,9 @@ function getTimestamp() {
     };
     const data = {
       type: messageType,
-      data: userMessage,
+      //data: userMessage,
+      data: userMessageee,
+	  podcast_name: userMessage,
     };
 
     try {
@@ -234,17 +250,12 @@ showTimestampCheckbox.addEventListener('change', () => {
 
 
   const timestamp = getTimestamp(); // Lấy thời gian
-  //const timestampElement = document.createElement('div');
- // timestampElement.classList.add('message-timestamp');
-  //timestampElement.textContent = `[${timestamp}]`; // Bao gồm thời gian
   const messageContent = document.createElement('div');
   messageContent.classList.add('message-content');
    // Kiểm tra trạng thái của ô kiểm "show-timestamp-checkbox"
  if (showTimestampCheckbox.checked) {
-	//messageContent.textContent = `[${timestamp}] ${message}`; //  Thêm Hàm thời gian vào Chatbox khi được tích
 	messageContent.innerHTML = `[${timestamp}] ${message}`; //  Thêm Hàm thời gian vào Chatbox khi được tích
   }else {
-    //messageContent.textContent = message; //nếu không được tích
     messageContent.innerHTML = message; //nếu không được tích
   }
     const deleteButton = document.createElement('button');
@@ -307,7 +318,6 @@ showTimestampCheckbox.addEventListener('change', () => {
   
  <script>
  //Phát nhạc podcast khi nahans vào icon
-    // Định nghĩa hàm để xử lý sự kiện click
     function handleBroadcastPinClick() {
         // Lấy giá trị của thuộc tính dữ liệu 'data-urlpodcast' của phần tử
         var urlPodcast = document.querySelector('.bi-broadcast-pin').dataset.urlpodcast;
@@ -330,11 +340,8 @@ axios.post(url, data, {
   timeout: 0
 })
 .then(function (response) {
-  // Xử lý dữ liệu trả về
-  //console.log(response.data.state);
-  // Kiểm tra và xử lý state
   if (response.data.state === "Success") {
-	state_replace_podcast = response.data.state.replace("Success", "Phát Podcast thành công: <b>" +tetxNamePodcast+ "</b>");
+	state_replace_podcast = response.data.state.replace("Success", "Đã phát Podcast: <b>" +tetxNamePodcast+ "</b>");
     displayMessage(state_replace_podcast, false);
   } else {
     displayMessage(response.data.state);
