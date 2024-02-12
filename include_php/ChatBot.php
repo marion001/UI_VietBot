@@ -188,6 +188,13 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
             margin-left: 0;
         }
     }
+	 .bi-broadcast-pin {
+  color: blue;
+}
+ .bi-broadcast-pin:hover {
+  color: red;
+  cursor: pointer;
+}
 </style>
 <?php	
 if (isset($Web_UI_Login) && $Web_UI_Login === true) {
