@@ -896,6 +896,8 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
     <script src="assets/js/main.js"></script>
 
 <script>
+//$("#iframeChatBot").width("576px");
+//$("#iframeChatBot").height("450px");
 //thay đổi kích thước chatbox
     $(document).ready(function() {
         let isResizing = false;
@@ -916,7 +918,6 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
             $("#iframeChatBot").width(newWidth);
             $("#iframeChatBot").height(newHeight);
         });
-
         $(document).mousemove(function(e) {
             if (isResizing) {
                 let newWidth = $("#sidebar").width() + (lastDownX - e.clientX);
@@ -953,11 +954,6 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
 
 
 <script>
-
-
-
-
-
   $(document).ready(function() {
     // AJAX request for UI version
     $.ajax({
@@ -1301,6 +1297,7 @@ window.addEventListener('message', function(event) {
 
 	
 <script>
+//Volume Slide
     // Khởi tạo biến hover và update
     var hover = false;
     var update = true;
@@ -1358,10 +1355,6 @@ window.addEventListener('message', function(event) {
 
         // Xử lý dữ liệu nhận được
         var receivedData = event.data;
-        //console.log('Received data from iframe:', receivedData);
-        // Cập nhật giá trị âm lượng và hiển thị
-        //document.getElementById('volume_value').value = receivedData.volume;
-        //document.getElementById('volume_percentage').innerText = receivedData.volume;
 
         if (!hover && update) {
 
