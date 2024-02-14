@@ -443,9 +443,9 @@ if (!is_dir($DuognDanThuMucJson)) {
 
                     </tr>
 					                    <tr>
-                        <th scope="row">custom_skill.py</th>
+                        <th scope="row">main_process_custom.py</th>
                         <td>
-                            <input type="checkbox" class="form-check-input" name="exclude[]" value="custom_skill.py" checked>
+                            <input type="checkbox" class="form-check-input" name="exclude[]" value="main_process_custom.py" checked>
                         </td>
                         <th scope="row">object.json</th>
                         <td><input type="checkbox" class="form-check-input" name="exclude[]" value="object.json"></td>
