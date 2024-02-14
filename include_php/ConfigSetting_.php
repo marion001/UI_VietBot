@@ -1167,7 +1167,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
 <!-- Nút Nhấn Xuống Cuối Trang -->
 <i onclick="scrollToBottom()" class="bi bi-chevron-double-down" id="scrollToTopButtondown"></i>
 <div id="loading-overlay"><img id="loading-icon" src="../assets/img/Loading.gif" alt="Loading...">
-<div id="loading-message">- Đang Thực Hiện<br/>- Bạn Cần Restart Lại VietBot Để Áp Dụng Dữ Liệu Mới</div>
+<div id="loading-message">- Đang Thực Hiện...</div>
 </div>
 <form method="post" id="my-form" onsubmit="return validateInputs();" action="<?php echo $PHP_SELF ?>"> 
 <h5> Thông Tin Người Dùng:</h5><div class="row g-3 d-flex justify-content-center"><div class="col-auto"> 
@@ -1761,22 +1761,22 @@ None (Không Dùng)</label></center>
 <div class="col-auto">
 <center>
 <input type="text" value="LISTEN" id="listen_test_led" class="disabled-input form-control" hidden>
-<button type="button" title="Test hiệu ứng led" class="btn btn-primary" onclick="sendLedSettings('listen_test_led')" disabled>LED Listen</button>
+<button type="button" title="Test hiệu ứng led" class="btn btn-primary" onclick="sendLedSettings('listen_test_led')">LED Listen</button>
 
 
 <input type="text" value="THINK" id="think_test_led" class="disabled-input form-control" hidden>
-<button type="button" title="Test hiệu ứng led" class="btn btn-secondary" onclick="sendLedSettings('think_test_led')" disabled>LED Think</button>
+<button type="button" title="Test hiệu ứng led" class="btn btn-secondary" onclick="sendLedSettings('think_test_led')">LED Think</button>
 
 
 <input type="text" value="SPEAK" id="speak_test_led" class="disabled-input form-control" hidden>
-<button type="button" title="Test hiệu ứng led" class="btn btn-info" onclick="sendLedSettings('speak_test_led')" disabled>LED Speak</button>
+<button type="button" title="Test hiệu ứng led" class="btn btn-info" onclick="sendLedSettings('speak_test_led')">LED Speak</button>
 
 
 <input type="text" value="MUTE" id="mute_test_led" class="disabled-input form-control" hidden>
-<button type="button" title="Test hiệu ứng led" class="btn btn-warning" onclick="sendLedSettings('mute_test_led')" disabled>LED Mute</button>
+<button type="button" title="Test hiệu ứng led" class="btn btn-warning" onclick="sendLedSettings('mute_test_led')">LED Mute</button>
 
 <input type="text" value="OFF" id="stop_test_led_off" class="disabled-input form-control" hidden>
-<button type="button" title="Test hiệu ứng led" class="btn btn-danger" onclick="sendLedSettings('stop_test_led_off')" disabled>Dừng Test LED</button>
+<button type="button" title="Test hiệu ứng led" class="btn btn-danger" onclick="sendLedSettings('stop_test_led_off')">Tắt LED</button>
 </center>
 
 </div></div>
@@ -2658,6 +2658,7 @@ else if (radio.value === "tts_gg_free") {
 				SpeakEffectModeInput.placeholder = "1->8";
 				updateColorPicker();
 				updateColorPickerMuted();
+				
 				//Led API TEST
 				listen_test_led.value = "LISTEN";
 				think_test_led.value = "THINK";
@@ -3634,6 +3635,7 @@ $(document).ready(function() {
       }
       // Lấy giá trị từ input radio
       var ledChonkieuValue = $("input[name='led_chonkieu']:checked").val();
+      //var ledChonkieuValue = "Vietbot AIO Board V2.0";
 	    //console.log(ledChonkieuValue);
         //console.log(effectModeValue);
       // Kiểm tra giá trị của ledChonkieuValue
@@ -3649,14 +3651,15 @@ $(document).ready(function() {
           "Content-Type": "application/json"
         },
         "data": JSON.stringify({
-          "type": 3,
+          "type": 2,
           "data": "set_led",
-          "led_type": ledChonkieuValue,
-          "led_state": effectModeValue
+          //"led_type": ledChonkieuValue,
+          "state": effectModeValue
         }),
       };
-
+		$('#loading-overlay').show();
       $.ajax(settings).done(function (response) {
+		  $('#loading-overlay').hide();
         //console.log(response);
 
         // Kiểm tra trạng thái và hiển thị thông báo tương ứng
@@ -3670,6 +3673,7 @@ $(document).ready(function() {
         }
       })
         .fail(function (jqXHR, textStatus, errorThrown) {
+			$('#loading-overlay').hide();
           // Xử lý lỗi kết nối với API URL
           alert("Không kết nối được với Vietbot, Lỗi: " + textStatus);
         });
