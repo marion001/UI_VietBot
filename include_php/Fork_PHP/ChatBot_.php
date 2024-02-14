@@ -234,6 +234,11 @@ showTimestampCheckbox.addEventListener('change', () => {
 	    //return;
 	}
 	  //Nếu Giá trị là null
+	if (message === "Lỗi: argument of type 'NoneType' is not iterable") {
+		message = 'Không tìm thấy nội dung phù hợp!';
+	    //return;
+	}
+	
 	if (message === null) {
 		message = 'Không nhận được dữ liệu trả về';
 	    //return;
