@@ -140,7 +140,7 @@ if (is_dir($directory . '/node_modules')) {
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th colspan="3" scope="col">
+                            <th colspan="4" scope="col">
                                 <center>Chọn Nguồn Nhạc:</center>
                             </th>
                         </tr>
@@ -163,12 +163,17 @@ if (is_dir($directory . '/node_modules')) {
                                 <input type="radio" id="keyyoutube" name="action" value="Youtube"  onchange="handleRadioChangeLocal()">
                                 <label for="keyyoutube" title="Tìm kiếm trên youtube">YouTube</label>
                              </center></td>
+							                             <td><center>
+                                <!-- Checkbox với giá trị "keyyoutube" -->
+                                <input type="radio" id="PodCastMp3" name="action" value="PodCast"  onchange="handleRadioChangeLocal()">
+                                <label for="PodCastMp3" title="Tìm kiếm PodCast">PodCast</label>
+                             </center></td>
                         </tr>
                         <tr>
-                            <td colspan="3">
+                            <td colspan="4">
                                 <div class="form-group mb-2">
 								<div class="form-group mx-sm-3 mb-2">
-                                  <center>    <input type="text" id="tenbaihatInput" class="form-control" title="Nhập tên bài hát, link Youtube, hoặc link mp3: https://zxc.com/1.mp3" name="tenbaihat" placeholder="Nhập Tên Bài Hát, link.mp3, link youtube" aria-label="Recipient's username" aria-describedby="basic-addon2" oninput="handleInputHTTP()">
+                                  <center>    <input type="text" id="tenbaihatInput" class="form-control" title="Nhập tên bài hát, link Youtube, hoặc link mp3: https://zxc.com/1.mp3" name="tenbaihat" placeholder="Nhập nội dung, tên bài hát, link.mp3, link youtube" aria-label="Recipient's username" aria-describedby="basic-addon2" oninput="handleInputHTTP()">
                                     </center> </div>
                                       <center>  <button class="btn btn-primary" id="TimKiem" type="submit" title="Tìm kiếm bài hát">Tìm Kiếm</button>
                                        
@@ -203,10 +208,10 @@ if (is_dir($directory . '/node_modules')) {
 
 
  <tr>
-<th colspan="3" scope="col"></th></tr>
+<th colspan="4" scope="col"></th></tr>
             <tr>
 			
-                <td colspan="3"><center>
+                <td colspan="4"><center>
 <div id="code-section">
  <div id="infomusicplayer"> </div>
 <b><p id="media1-name"></p></b>
@@ -225,7 +230,7 @@ if (is_dir($directory . '/node_modules')) {
             </tr>
 		
   <tr>
-    <td rowspan="2" colspan="2"><center>
+    <td rowspan="2" colspan="3"><center>
 	
 			<!--			<div>
   <i id="volumeIcon" class="bi bi-volume-up"></i>
@@ -506,6 +511,164 @@ if ($responseYoutube === false) {
         }
     }
 
+}
+}
+}
+
+
+//Lấy Token PodCast
+// Hàm kiểm tra xem token đã hết hạn chưa
+function isTokenExpired($tokenData) {
+    // Lấy thời gian hết hạn từ dữ liệu token
+    $expire_time = $tokenData['expire_time'];
+    // Lấy thời gian hiện tại
+    $current_time = time();
+    // So sánh với thời gian hiện tại
+    return $current_time > $expire_time;
+}
+// Hàm lấy lại token từ API
+function refreshToken() {
+    //echo "Đang lấy lại token...\n";
+    $curl = curl_init();
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => base64_decode("aHR0cHM6Ly91c2Vycy5pdmlldC5jb20vdjEvYXV0aC9sb2dpbg=="),
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'POST',
+      CURLOPT_POSTFIELDS =>'{"email":"'.base64_decode("dmlldGJvdHNtYXJ0c3BlYWtlckBnbWFpbC5jb20=").'","password":"'.base64_decode("VmlldGJvdEAx").'"}',
+      CURLOPT_HTTPHEADER => array(
+        'Host: '.base64_decode("dXNlcnMuaXZpZXQuY29t"),
+        'pragma: no-cache',
+        'cache-control: no-cache',
+        'sec-ch-ua: "Not A(Brand";v="99", "Google Chrome";v="121", "Chromium";v="121"',
+        'accept: application/json, text/plain, */*',
+        'content-type: application/json',
+        'dnt: 1',
+        'sec-ch-ua-mobile: ?0',
+        'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+        'sec-ch-ua-platform: "Windows"',
+        'origin: '.base64_decode("aHR0cHM6Ly9hcHAubWFpa2EuYWk="),
+        'sec-fetch-site: cross-site',
+        'sec-fetch-mode: cors',
+        'sec-fetch-dest: empty',
+        'referer: '.base64_decode("aHR0cHM6Ly9hcHAubWFpa2EuYWkv"),
+        'accept-language: vi'
+      ),
+    ));
+    $response = curl_exec($curl);
+    curl_close($curl);
+    // Trả về phản hồi từ API
+    return $response;
+}
+//END Kiểm tra và lấy token
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'PodCast') {
+	
+$file_path = "$DuognDanUI_HTML/Multimedia/PodCast_Bear.json";
+// Kiểm tra xem tệp tồn tại hay không
+if (!file_exists($file_path)) {
+    // Tạo tệp mới nếu chưa tồn tại
+    $file = fopen($file_path, 'w');
+    fclose($file);
+    chmod($file_path, 0777);
+    //echo "Tệp PodCast_Bear.json đã được tạo và quyền truy cập đã được thay đổi thành 777.";
+}
+	
+    $Data_TenBaiHat = $_POST['tenbaihat'];
+	$NguonNhac = $_POST['action'];
+	// Cập nhật giá trị mới
+    $Data_CFG_ACTION['music_source'] = $NguonNhac;
+    // Ghi lại nội dung tệp JSON
+    $Data_CFG_ACTION_new_music_source = json_encode($Data_CFG_ACTION, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    file_put_contents($cfg_action_json, $Data_CFG_ACTION_new_music_source);
+	
+	if (empty($Data_TenBaiHat)) {
+    echo "<b><font color=red>Hãy nhập tên bài hát, nội dung cần tìm kiếm PodCast</font></b>";
+} else {
+	
+// Đọc dữ liệu token từ file
+$tokenData = json_decode(file_get_contents('PodCast_Bear.json'), true);
+// Kiểm tra xem token đã hết hạn chưa
+if (isTokenExpired($tokenData)) {
+    // Nếu đã hết hạn, lấy lại token từ API
+    $newTokenData = refreshToken();
+    // Cập nhật lại dữ liệu token và thời gian hết hạn mới
+    $tokenData = json_decode($newTokenData, true);
+    // Lấy thời gian hiện tại
+    $current_time = time();
+    // Lấy thời gian hết hạn mới là 6 tiếng sau thời điểm hiện tại
+    $tokenData['expire_time'] = $current_time + $tokenData['data']['expire_time'] - 6 * 3600;
+    // Lưu dữ liệu token vào file
+    file_put_contents('PodCast_Bear.json', json_encode($tokenData));
+    //echo "Token đã được cập nhật và lưu vào file.\n";
+} 
+//else {
+    //echo "Token hiện tại vẫn còn hiệu lực.\n";
+//}
+// Bây giờ bạn có thể sử dụng $tokenData['data']['access_token'] để gửi các yêu cầu API khác
+$access_token = $tokenData['data']['access_token'];
+//Tìm kiếm	
+$curl = curl_init();
+curl_setopt_array($curl, array(
+  CURLOPT_URL => base64_decode("aHR0cHM6Ly9jb3JlLm9jcy5pdmlldC5jb20vdjEvZ3JhcGhxbA=="),
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => '',
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 0,
+  CURLOPT_FOLLOWLOCATION => true,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => 'POST',
+  CURLOPT_POSTFIELDS =>'{"operationName":"Search","query":"query Search($keyword: String!, $category: [String]!, $offset: Int!, $limit: Int!) {\\n  search(\\n    q: $keyword\\n    offset: $offset\\n    limit: $limit\\n    filter: {media: {types: $category}}\\n  ) {\\n    __typename\\n    episode {\\n      __typename\\n      audio\\n      duration\\n      id\\n      is_gcs\\n      published_at\\n      title\\n      media {\\n        __typename\\n        audio\\n        cover\\n        created_at\\n        id\\n        slug\\n        title\\n        total_episode\\n        content_type {\\n          __typename\\n          description\\n          value\\n        }\\n      }\\n      authors\\n      description\\n    }\\n    media {\\n      __typename\\n      cover\\n      created_at\\n      is_list\\n      slug\\n      title\\n      total_episode\\n      type\\n      id\\n      content_type {\\n        __typename\\n        description\\n        value\\n      }\\n    }\\n  }\\n}","variables":{"category":[],"keyword":"'.$Data_TenBaiHat.'","limit":25,"offset":0}}',
+  CURLOPT_HTTPHEADER => array(
+    'Host: '.base64_decode("Y29yZS5vY3MuaXZpZXQuY29t"),
+    'content-type: application/json',
+    'accept: */*',
+    'apollographql-client-version: 3.1.6-347',
+    'authorization: Bearer '.$access_token,
+    'source: ios',
+    'device-type: ios',
+    'accept-language: vi-VN,vi;q=0.9',
+    'x-apollo-operation-type: query',
+    'user-agent: '.base64_decode("TUFJS0EvMzQ3IENGTmV0d29yay8xMzM1LjAuMyBEYXJ3aW4vMjEuNi4w"),
+    'apollographql-client-name: '.base64_decode("Y29tLm9sbGkub21uaS1hcG9sbG8taW9z"),
+    'x-apollo-operation-name: Search'
+  ),
+));
+
+$response = curl_exec($curl);
+
+curl_close($curl);
+
+echo "<br/>Nội Dung Đang Tìm Kiếm: <b><font color=red>" . $_POST['tenbaihat'] . "</font></b> | Nguồn: <font color=red><b>" . $NguonNhac . "</b></font><hr/>";
+
+
+$data = json_decode($response, true);
+
+if(isset($data['data']['search']) && is_array($data['data']['search'])) {
+    foreach($data['data']['search'] as $item) {
+        if(isset($item['episode'])) {
+            $title = $item['episode']['title'];
+            $duration = $item['episode']['duration'];
+            $cover = isset($item['episode']['media']['cover']) ? $item['episode']['media']['cover'] : null;
+            $description = isset($item['episode']['media']['content_type']['description']) ? $item['episode']['media']['content_type']['description'] : null;
+            $audio_PodCast = $item['episode']['audio'];
+                    // Kiểm tra nếu URL không bắt đầu bằng "http" thì thêm "https://"
+                    if(strpos($audio_PodCast, 'http') !== 0) {
+                        $audio_PodCast = 'https://cdn-ocs.iviet.com/' . $audio_PodCast;
+                    }
+			$img_images = "https://cdn-ocs.iviet.com/".$cover;
+			//$audio_PodCast = "https://cdn-ocs.iviet.com/".$item['episode']['audio'];
+			    echo " <div class='image-container'>";
+                echo "<img src='$img_images' class='imagesize' alt='' /> <div class='caption'>";
+                echo '<b>Tên: </b> ' . $title . '<br/><b>Loại nội dung: </b> ' . $description . '<br/>';
+                echo '<b>Thời lượng: </b>' . $duration . ' <br/>';
+                echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-kichthuoc="---" data-song-thoiluong="---" data-song-link_type="direct" data-song-data_type="2" data-song-data_play_music="play_music" data-song-artist="' . $song['artist'] . '" data-song-name="' . $title . '" data-song-images="' . $img_images . '" data-song-id="' . $audio_PodCast . '">Phát PodCast</button>';
+                echo "</div></div><br/>";
+        }
+    }
 }
 }
 }
@@ -848,12 +1011,8 @@ if ($response === false) {
                         }
 
                     }
-
-
                     $('#loading-overlay').hide();
-
                 }
-
             })
 
             .fail(function(jqXHR, textStatus, errorThrown) {
@@ -923,7 +1082,7 @@ if ($response === false) {
                 UpLoadFileMp3.hidden = false;
                 input_tenbaihatInput.disabled = true;
                 input_tenbaihatInput.hidden = true;
-                input_tenbaihatInput.value = "";
+                //input_tenbaihatInput.value = "";
                 button_Playmp3.disabled = true;
                 button_Playmp3.hidden = true;
                 timkiemButton.hidden = false;
@@ -932,7 +1091,7 @@ if ($response === false) {
                 UpLoadFileMp3.hidden = true;
                 input_tenbaihatInput.disabled = false;
                 input_tenbaihatInput.hidden = false;
-                input_tenbaihatInput.value = "";
+                //input_tenbaihatInput.value = "";
                 button_Playmp3.disabled = true;
                 button_Playmp3.hidden = true;
                 timkiemButton.hidden = false;
@@ -1010,6 +1169,9 @@ if ($response === false) {
                 } else if (data && data.music_source === 'Local') {
                     // Thực hiện hành động khác nếu giá trị khác
                     $('#LocalMp3').prop('checked', true);
+                }else if (data && data.music_source === 'PodCast') {
+                    // Thực hiện hành động khác nếu giá trị khác
+                    $('#PodCastMp3').prop('checked', true);
                 }
             },
             error: function(error) {
@@ -1156,7 +1318,10 @@ if ($response === false) {
                     var nguonnhac = "<font color=green>ZingMp3</font>";
                 } else if (media_path && media_path.startsWith("https://rr")) {
                     var nguonnhac = "<font color=green>Youtube</font>";
-                } else if (media_path && media_path.startsWith("file://<?php echo $DuognDanThuMucJson; ?>/tts_saved/")) {
+                //} else if (media_path && (media_path.startsWith("https://d3ct") || media_path.startsWith("https://cdn-ocs.ivie") || media_path.startsWith("https://cdn.vovlive"))) {
+                } else if (media_path && (media_path.startsWith("https://d3ct") || media_path.startsWith("https://cdn") || media_path.startsWith("https://data.voh"))) {
+					var nguonnhac = "<font color=green>PodCast</font>";
+				} else if (media_path && media_path.startsWith("file://<?php echo $DuognDanThuMucJson; ?>/tts_saved/")) {
                     var nguonnhac = "Không có dữ liệu";
                 } else {
                     var nguonnhac = "<font color=green>.....</font>";
@@ -1171,7 +1336,7 @@ if ($response === false) {
                 window.parent.postMessage(response, '*');
 				 
 				 
-				messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + cover_link + ' alt="" /></div><div class="caption"><ul><li><p style="text-align: left;"><b>Yêu Cầu: </b>' + truncateFileName(last_request, 40) + '</p></li><li><p style="text-align: left;"><b title="'+song_name+'">Tên bài hát: </b><font color=blue title="'+song_name+'">' + truncateFileName(song_name, 20) + '</font></p></li><li><p style="text-align: left;"><b>Nguồn Nhạc:</b> ' + nguonnhac + '</li></p></ul></div></div>';
+				messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + cover_link + ' alt="" /></div><div class="caption"><ul><li><p style="text-align: left;"><b>Yêu Cầu: </b>' + truncateFileName(last_request, 40) + '</p></li><li><p style="text-align: left;"><b title="'+song_name+'">Tên: </b><font color=blue title="'+song_name+'">' + truncateFileName(song_name, 20) + '</font></p></li><li><p style="text-align: left;"><b>Nguồn:</b> ' + nguonnhac + '</li></p></ul></div></div>';
               
 			  //thay đổi giá trị volume ở thanh slile
 			  
