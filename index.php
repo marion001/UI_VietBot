@@ -1284,6 +1284,10 @@ window.addEventListener('message', function(event) {
 
         $.ajax(settings).done(function (response) {
             // Cập nhật lại giá trị trả về lên thẻ input và span
+			if (typeof response.new_volume === "undefined") {
+			response.new_volume = "..."
+			}
+			
             const newVolume = response.new_volume;
             const oldVolume = response.old_volume;
 
