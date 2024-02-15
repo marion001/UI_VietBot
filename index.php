@@ -1276,7 +1276,7 @@ window.addEventListener('message', function(event) {
             },
             "data": JSON.stringify({
                 "type": 2,
-                "data": "volume",
+                "data": "set_volume",
                 "action": "setup",
                 "new_value": Math.round(value)
             }),
