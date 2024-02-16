@@ -176,15 +176,15 @@ if (is_dir($directory . '/node_modules')) {
                                 <label for="RadioVOV" title="Tìm kiếm RadioVOV">Radio</label></center>
 						</td>
 						<td colspan="3"><center>
+	
+
+	
 <select class="custom-select" name="SelectRadioVOV" id="SelectRadioVOV">
-    <option value="https://str.vov.gov.vn/vovlive/vov1vov5Vietnamese.sdp_aac/playlist.m3u8" data-name_radio="VOV 1">VOV 1</option>
-    <option value="https://str.vov.gov.vn/vovlive/vov2.sdp_aac/playlist.m3u8" data-name_radio="VOV 2">VOV 2</option>
-    <option value="https://str.vov.gov.vn/vovlive/vov3.sdp_aac/playlist.m3u8" data-name_radio="VOV 3">VOV 3</option>
-    <option value="https://str.vov.gov.vn/vovlive/vov2.sdp_aac/playlist.m3u8" data-name_radio="VOV 6">VOV 6</option>
-    <option value="https://str.vov.gov.vn/vovlive/vovGTHN.sdp_aac/playlist.m3u8" selected data-name_radio="VOV giao thông Hà Nội">VOV giao thông Hà Nội</option>
-    <option value="https://str.vov.gov.vn/vovlive/vovGTHCM.sdp_aac/playlist.m3u8" data-name_radio="VOV giao thông Hồ Chí Minh">VOV giao thông Hồ Chí Minh</option>
+<?php foreach ($Data_Json_Skilll['radio_data'] as $radio_data): ?>
+<option data-name_radio="<?php echo $radio_data['name']; ?>" value="<?php echo $radio_data['link']; ?>"><?php echo $radio_data['name']; ?></option>
+<?php endforeach; ?>
 </select>
-								
+					
                            </center> </td>
 						 
 						
@@ -808,12 +808,13 @@ if ($response === false) {
             var startTime = new Date(); // Lấy thời gian bắt đầu yêu cầu
             var getTimee = formatTime(startTime.getHours()) + ':' + formatTime(startTime.getMinutes()) + ':' + formatTime(startTime.getSeconds());
 
-
             messageElement.innerHTML = '<font color=red>Đang Chuyển Đổi Dữ Liệu...</font>';
             if (!songId) {
                 //alert('Không có dữ liệu cho songId');
-                return; // Dừng thực thi nếu không có dữ liệu đầu vào
-                messageElement.innerHTML = '<font color=red>Không Có Dữ Liệu Bài Hát songId...</font>';
+                messageElement.innerHTML = '<font color=red>Không Có Dữ Liệu Đầu Vào!</font>';
+				$('#loading-overlay').hide();
+				return; // Dừng thực thi nếu không có dữ liệu đầu vào
+				
             }
             //console.log('song id:', songId);
             $.ajax({
@@ -865,6 +866,11 @@ if ($response === false) {
                                     $.ajax(settings_cover_name).done(function(response_cover_name) {
                                         //console.log(response_cover_name);
                                     });
+									//Tải lại trang nếu chứa url vov khi truyền dữ liệu xong
+									if (songId && songId.startsWith("https://str.vov.gov.vn")) {
+									location.reload();
+									}
+									
                                 } else {
                                     //console.log("Thất Bại");
                                     alert("Phát thất bại: " + songName)
@@ -1635,38 +1641,45 @@ if ($response === false) {
 
 </script>
 	
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-		
-		
-	
-		
-		
-		
-        var selectElement = document.getElementById('SelectRadioVOV');
-        var buttonElement = document.getElementById('Play_Radio');
 
-        // Cập nhật giá trị của data-song-id và data-song-name khi trang được tải
-        var selectedOption = selectElement.options[selectElement.selectedIndex];
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var selectElement = document.getElementById('SelectRadioVOV');
+      var buttonElement = document.getElementById('Play_Radio');
+
+      // Cập nhật giá trị của data-song-id và data-song-name khi trang được tải
+      var selectedOption = selectElement.options[selectElement.selectedIndex];
+      var selectedValue = selectedOption.value;
+      var selectedName = selectedOption.getAttribute('data-name_radio');
+
+      buttonElement.setAttribute('data-song-id', selectedValue);
+      buttonElement.setAttribute('data-song-name', selectedName);
+
+      // Thêm sự kiện 'change' vào select
+      selectElement.addEventListener('change', function() {
+        var selectedOption = this.options[this.selectedIndex];
         var selectedValue = selectedOption.value;
         var selectedName = selectedOption.getAttribute('data-name_radio');
-        
+
         buttonElement.setAttribute('data-song-id', selectedValue);
         buttonElement.setAttribute('data-song-name', selectedName);
+      });
 
-        // Thêm sự kiện 'change' vào select
-        selectElement.addEventListener('change', function() {
-            var selectedOption = this.options[this.selectedIndex];
-            var selectedValue = selectedOption.value;
-            var selectedName = selectedOption.getAttribute('data-name_radio');
+      // Thêm sự kiện 'click' vào button
+      buttonElement.addEventListener('click', function() {
+        var songId = buttonElement.getAttribute('data-song-id');
+        var songName = buttonElement.getAttribute('data-song-name');
 
-            buttonElement.setAttribute('data-song-id', selectedValue);
-            buttonElement.setAttribute('data-song-name', selectedName);
-            // Lưu giá trị được chọn vào Local Storage
-            localStorage.setItem('selectedRadio', selectedValue);
-        });
+        
+          //console.log("Button clicked with song ID:", songId);
+          //console.log("Song name:", songName);
+          // Thêm dữ liệu khác nếu cần
+        
+      });
+	  
+	  
     });
-</script>
+  </script>
 
 
 	
