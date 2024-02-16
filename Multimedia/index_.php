@@ -141,7 +141,7 @@ if (is_dir($directory . '/node_modules')) {
                     <thead>
                         <tr>
                             <th colspan="4" scope="col">
-                                <center>Chọn Nguồn Nhạc:</center>
+                                <center>Chọn Nguồn Phát:</center>
                             </th>
                         </tr>
                     </thead>
@@ -169,6 +169,26 @@ if (is_dir($directory . '/node_modules')) {
                                 <label for="PodCastMp3" title="Tìm kiếm PodCast">PodCast</label>
                              </center></td>
                         </tr>
+						<tr>
+						<td>
+						<center>
+						 <input type="radio" id="RadioVOV" name="action" value="RadioVOV"  onchange="handleRadioChangeLocal()">
+                                <label for="RadioVOV" title="Tìm kiếm RadioVOV">Radio</label></center>
+						</td>
+						<td colspan="3"><center>
+<select class="custom-select" name="SelectRadioVOV" id="SelectRadioVOV">
+    <option value="https://str.vov.gov.vn/vovlive/vov1vov5Vietnamese.sdp_aac/playlist.m3u8" data-name_radio="VOV 1">VOV 1</option>
+    <option value="https://str.vov.gov.vn/vovlive/vov2.sdp_aac/playlist.m3u8" data-name_radio="VOV 2">VOV 2</option>
+    <option value="https://str.vov.gov.vn/vovlive/vov3.sdp_aac/playlist.m3u8" data-name_radio="VOV 3">VOV 3</option>
+    <option value="https://str.vov.gov.vn/vovlive/vov2.sdp_aac/playlist.m3u8" data-name_radio="VOV 6">VOV 6</option>
+    <option value="https://str.vov.gov.vn/vovlive/vovGTHN.sdp_aac/playlist.m3u8" selected data-name_radio="VOV giao thông Hà Nội">VOV giao thông Hà Nội</option>
+    <option value="https://str.vov.gov.vn/vovlive/vovGTHCM.sdp_aac/playlist.m3u8" data-name_radio="VOV giao thông Hồ Chí Minh">VOV giao thông Hồ Chí Minh</option>
+</select>
+								
+                           </center> </td>
+						 
+						
+						</tr>
                         <tr>
                             <td colspan="4">
                                 <div class="form-group mb-2">
@@ -178,7 +198,8 @@ if (is_dir($directory . '/node_modules')) {
                                       <center>  <button class="btn btn-primary" id="TimKiem" type="submit" title="Tìm kiếm bài hát">Tìm Kiếm</button>
                                        
                                    
-
+<button type="button" id="Play_Radio" class="ajax-button btn btn-success" data-song-data_type="2" data-song-data_play_music="play_music" data-song-link_type="direct" data-song-images="../assets/img/RADIO1.png" data-song-name="" data-song-id="" value="">Phát Radio</button>
+      
                                         <button type="button" id="submitButton" class="ajax-button btn btn-success" data-song-data_type="2" data-song-data_play_music="play_music" data-song-link_type="direct" data-song-images="../assets/img/NotNhac.png" data-song-name="Không có dữ liệu" data-song-id="" value="" hidden>Play .Mp3</button>
                                     
 
@@ -199,14 +220,9 @@ if (is_dir($directory . '/node_modules')) {
   </div> 
 </div> </form><font color=blue>Chọn tối đa: 20 File, Max 300MB/1 File</font>
 </div>
-
                             </td>
 
                         </tr>
-
-           
-
-
  <tr>
 <th colspan="4" scope="col"></th></tr>
             <tr>
@@ -799,28 +815,6 @@ if ($response === false) {
                 return; // Dừng thực thi nếu không có dữ liệu đầu vào
                 messageElement.innerHTML = '<font color=red>Không Có Dữ Liệu Bài Hát songId...</font>';
             }
-
-            //Gửi thông tin tên bài hát và cover tới vietbot
-            var settings_cover_name = {
-                "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
-                "method": "POST",
-                "timeout": 0,
-                "headers": {
-                    "Content-Type": "application/json"
-                },
-                "data": JSON.stringify({
-                    "type": 2,
-                    "data": "set_song_info",
-                    "song_name": songName,
-                    "cover_link": songImages
-                }),
-            };
-            $.ajax(settings_cover_name).done(function(response_cover_name) {
-                //console.log(response_cover_name);
-            });
-
-
-
             //console.log('song id:', songId);
             $.ajax({
                 url: '../include_php/Ajax/Get_Final_Url_ZingMp3.php?url=' + encodeURIComponent(songId),
@@ -832,7 +826,6 @@ if ($response === false) {
 
                         var finalUrl = response.finalUrl;
                         //console.log('Final URL:', finalUrl);
-
                         // Phần còn lại của đoạn mã xử lý Ajax
                         var settings = {
                             "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
@@ -852,6 +845,31 @@ if ($response === false) {
                         // Gửi yêu cầu Ajax
                         $.ajax(settings)
                             .done(function(response) {
+                                //nếu kết quả trả về thành công thì Gửi thông tin tên bài hát và cover tới vietbot	
+                                if (response.state === "Success") {
+
+                                    var settings_cover_name = {
+                                        "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
+                                        "method": "POST",
+                                        "timeout": <?php echo $Time_Out_MediaPlayer_API; ?>,
+                                        "headers": {
+                                            "Content-Type": "application/json"
+                                        },
+                                        "data": JSON.stringify({
+                                            "type": 2,
+                                            "data": "set_song_info",
+                                            "song_name": songName,
+                                            "cover_link": songImages
+                                        }),
+                                    };
+                                    $.ajax(settings_cover_name).done(function(response_cover_name) {
+                                        //console.log(response_cover_name);
+                                    });
+                                } else {
+                                    //console.log("Thất Bại");
+                                    alert("Phát thất bại: " + songName)
+
+                                }
                                 //var messageElement = document.getElementById("messagee");
                                 var messageinfomusicplayer = document.getElementById("infomusicplayer");
                                 let modifiedStringSuccess = response.state.replace("Success", "Thành Công");
@@ -864,10 +882,6 @@ if ($response === false) {
                                 messageElement.style.display = "block";
                                 messageElement.innerHTML = '<div style="color: green;"><b>' + getTimee + ' - ' + modifiedStringSuccess + ' | ' + elapsedTime + 'ms</b></div>';
                                 messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + songImages + ' alt="" /></div><div class="caption"><ul><li><p style="text-align: left;"><b>Tên bài hát: </b> ' + truncatedFileNamesongName + '</p></li><li><p style="text-align: left;"><b>' + songTenKenhNgheSi + ': </b> ' + songArtist + '</p></li><li><p style="text-align: left;"><b>Kích thước: </b> ' + songKichThuoc + '</p></li></ul></div></div>';
-
-
-
-
                                 if (messageElement) {
                                     // Sử dụng setTimeout để ẩn thẻ sau 5 giây
                                     setTimeout(function() {
@@ -1067,15 +1081,22 @@ if ($response === false) {
 
 
 <script>
+
     // chọn radio
     // điều kiện khi nhập text vào input
     function handleRadioChangeLocal() {
             // Lấy tham chiếu đến radio button và input
             var radio_Local = document.getElementById("LocalMp3");
+            var PodCastMp3 = document.getElementById("PodCastMp3");
+            var keyyoutube = document.getElementById("keyyoutube");
+            var radio_VOV = document.getElementById("RadioVOV");
+            var SelectRadioVOV = document.getElementById("SelectRadioVOV");
             var UpLoadFileMp3 = document.getElementById("UpLoadFileMp3");
             var button_Playmp3 = document.getElementById("submitButton");
             var input_tenbaihatInput = document.getElementById("tenbaihatInput");
+            var keyzingmp3 = document.getElementById("keyzingmp3");
             var timkiemButton = document.getElementById("TimKiem");
+            var Play_Radio = document.getElementById("Play_Radio");
 
             // Nếu radio được chọn, disabled input
             if (radio_Local.checked) {
@@ -1087,15 +1108,56 @@ if ($response === false) {
                 button_Playmp3.hidden = true;
                 timkiemButton.hidden = false;
                 timkiemButton.disabled = false;
-            } else {
+				SelectRadioVOV.hidden = true;
+				Play_Radio.hidden = true;
+				
+            }
+			else if (radio_VOV.checked) {
+				UpLoadFileMp3.hidden = true;
+                input_tenbaihatInput.disabled = true;
+                input_tenbaihatInput.hidden = true;
+				timkiemButton.hidden = true;
+                timkiemButton.disabled = true;
+				SelectRadioVOV.hidden = false;
+				Play_Radio.hidden = false;
+                    
+                } 
+			else if (keyzingmp3.checked) {
+				SelectRadioVOV.hidden = true;
+				UpLoadFileMp3.hidden = true;
+                input_tenbaihatInput.disabled = false;
+                input_tenbaihatInput.hidden = false;
+                timkiemButton.hidden = false;
+                timkiemButton.disabled = false;
+				Play_Radio.hidden = true;
+                } 
+			else if (keyyoutube.checked) {
+				SelectRadioVOV.hidden = true;
+				UpLoadFileMp3.hidden = true;
+                input_tenbaihatInput.disabled = false;
+                input_tenbaihatInput.hidden = false;
+                timkiemButton.hidden = false;
+                timkiemButton.disabled = false;
+				Play_Radio.hidden = true;
+                }
+			else if (PodCastMp3.checked) {
+				SelectRadioVOV.hidden = true;
+				UpLoadFileMp3.hidden = true;
+                input_tenbaihatInput.disabled = false;
+                input_tenbaihatInput.hidden = false;
+                timkiemButton.hidden = false;
+                timkiemButton.disabled = false;
+				Play_Radio.hidden = true;
+                } 
+			else {
                 UpLoadFileMp3.hidden = true;
                 input_tenbaihatInput.disabled = false;
                 input_tenbaihatInput.hidden = false;
-                //input_tenbaihatInput.value = "";
                 button_Playmp3.disabled = true;
                 button_Playmp3.hidden = true;
                 timkiemButton.hidden = false;
                 timkiemButton.disabled = false;
+				Play_Radio.hidden = true;
             }
         }
         //Nhập text vào input
@@ -1155,6 +1217,12 @@ if ($response === false) {
 <script>
     // Hàm thực hiện AJAX để đọc dữ liệu từ tệp JSON
     function readJsonAndCheckCheckbox() {
+		
+		var Play_Radio = document.getElementById("Play_Radio");
+        var SelectRadioVOV = document.getElementById("SelectRadioVOV");
+        var UpLoadFileMp3 = document.getElementById("UpLoadFileMp3");
+        var timkiemButton = document.getElementById("TimKiem");
+        var input_tenbaihatInput = document.getElementById("tenbaihatInput");
         $.ajax({
             url: 'cfg_action.json',
             type: 'GET',
@@ -1163,20 +1231,45 @@ if ($response === false) {
                 // Đánh dấu checked cho checkbox nếu điều kiện được đáp ứng
                 if (data && data.music_source === 'ZingMp3') {
                     $('#keyzingmp3').prop('checked', true);
+					Play_Radio.hidden = true;
+					SelectRadioVOV.hidden = true;
+					UpLoadFileMp3.hidden = true;
                 } else if (data && data.music_source === 'Youtube') {
                     // Thực hiện hành động khác nếu giá trị khác
                     $('#keyyoutube').prop('checked', true);
+					Play_Radio.hidden = true;
+					SelectRadioVOV.hidden = true;
+					UpLoadFileMp3.hidden = true;
+					
                 } else if (data && data.music_source === 'Local') {
                     // Thực hiện hành động khác nếu giá trị khác
                     $('#LocalMp3').prop('checked', true);
+					Play_Radio.hidden = true;
+					SelectRadioVOV.hidden = true;
+					input_tenbaihatInput.hidden = true;
+					UpLoadFileMp3.hidden = false;
+					
+					
+					
                 }else if (data && data.music_source === 'PodCast') {
                     // Thực hiện hành động khác nếu giá trị khác
                     $('#PodCastMp3').prop('checked', true);
+					Play_Radio.hidden = true;
+					SelectRadioVOV.hidden = true;
+					UpLoadFileMp3.hidden = true;
+                }
+				else if (data && data.music_source === 'RadioVOV') {
+                    // Thực hiện hành động khác nếu giá trị khác
+                    $('#RadioVOV').prop('checked', true);
+					UpLoadFileMp3.hidden = true;
                 }
             },
             error: function(error) {
                 //Nếu lỗi json thì mặc định sẽ chọn zingmp3
                 $('#keyzingmp3').prop('checked', true);
+				Play_Radio.hidden = true;
+				SelectRadioVOV.hidden = true;
+				UpLoadFileMp3.hidden = true;
                 //console.error('Failed to read JSON file cfg_action.json:', error);
             }
         });
@@ -1321,7 +1414,9 @@ if ($response === false) {
                 //} else if (media_path && (media_path.startsWith("https://d3ct") || media_path.startsWith("https://cdn-ocs.ivie") || media_path.startsWith("https://cdn.vovlive"))) {
                 } else if (media_path && (media_path.startsWith("https://d3ct") || media_path.startsWith("https://cdn") || media_path.startsWith("https://data.voh"))) {
 					var nguonnhac = "<font color=green>PodCast</font>";
-				} else if (media_path && media_path.startsWith("file://<?php echo $DuognDanThuMucJson; ?>/tts_saved/")) {
+				}else if (media_path && media_path.startsWith("https://str.vov")) {
+                    var nguonnhac = "<font color=green>Radio</font>";
+                } else if (media_path && media_path.startsWith("file://<?php echo $DuognDanThuMucJson; ?>/tts_saved/")) {
                     var nguonnhac = "Không có dữ liệu";
                 } else {
                     var nguonnhac = "<font color=green>.....</font>";
@@ -1334,7 +1429,6 @@ if ($response === false) {
 				
 				//gửi dữ liệu response  trả về từ ajax  lên trang cha index.php
                 window.parent.postMessage(response, '*');
-				 
 				 
 				messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + cover_link + ' alt="" /></div><div class="caption"><ul><li><p style="text-align: left;"><b>Yêu Cầu: </b>' + truncateFileName(last_request, 40) + '</p></li><li><p style="text-align: left;"><b title="'+song_name+'">Tên: </b><font color=blue title="'+song_name+'">' + truncateFileName(song_name, 20) + '</font></p></li><li><p style="text-align: left;"><b>Nguồn:</b> ' + nguonnhac + '</li></p></ul></div></div>';
               
@@ -1536,7 +1630,46 @@ if ($response === false) {
     function preventEventPropagationSync(event) {
         event.stopPropagation();
     }
+	
+
+
 </script>
+	
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+		
+		
+	
+		
+		
+		
+        var selectElement = document.getElementById('SelectRadioVOV');
+        var buttonElement = document.getElementById('Play_Radio');
+
+        // Cập nhật giá trị của data-song-id và data-song-name khi trang được tải
+        var selectedOption = selectElement.options[selectElement.selectedIndex];
+        var selectedValue = selectedOption.value;
+        var selectedName = selectedOption.getAttribute('data-name_radio');
+        
+        buttonElement.setAttribute('data-song-id', selectedValue);
+        buttonElement.setAttribute('data-song-name', selectedName);
+
+        // Thêm sự kiện 'change' vào select
+        selectElement.addEventListener('change', function() {
+            var selectedOption = this.options[this.selectedIndex];
+            var selectedValue = selectedOption.value;
+            var selectedName = selectedOption.getAttribute('data-name_radio');
+
+            buttonElement.setAttribute('data-song-id', selectedValue);
+            buttonElement.setAttribute('data-song-name', selectedName);
+            // Lưu giá trị được chọn vào Local Storage
+            localStorage.setItem('selectedRadio', selectedValue);
+        });
+    });
+</script>
+
+
+	
 <script src="../assets/js/bootstrap.min.js"></script>
 <script src="../assets/js/bootstrap.js"></script>
 </body>
