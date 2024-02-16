@@ -123,7 +123,7 @@ $Page_Load_Time_Countdown = "6"; //Giây
 $Log_Load_Time_Countdown = "2000"; //2000 = 2Giây
 
 //thời gian chờ time out media player api
-$Time_Out_MediaPlayer_API = "4000"; //4000 bằng 4 giây
+$Time_Out_MediaPlayer_API = "10000"; //4000 bằng 4 giây
 
 ///////////////////////////////////////////////////////////////////////////////
 //API webui Config Setting
