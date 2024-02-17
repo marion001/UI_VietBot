@@ -1431,7 +1431,7 @@ if ($response === false) {
                 var playervlc_state = response.player1_state;
                 var media_position = response.media1_position;
                 var cover_link = response.cover_link;
-                var last_request = response.last_request;
+                //var last_request = response.last_request;
 
                 var volumeIcon = document.getElementById('volumeIcon');
 
@@ -1485,7 +1485,7 @@ if ($response === false) {
                 // Convert and display media1_duration in HH:MM:SS format
                 $("#media1-duration").text(formatTimeajax(media_durationInSeconds));
                 $("infomusicplayer").html("Nguồn nhạc: <font color=green>.....</font>");
-                   messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + cover_link + ' alt="" /></div><div class="caption"><ul><li><p style="text-align: left;"><b>Yêu Cầu: </b>' + truncateFileName(last_request, 40) + '</p></li><li><p style="text-align: left;"><b title="'+song_name+'">Tên: </b><font color=blue title="'+song_name+'">' + truncateFileName(song_name, 20) + '</font></p></li><li><p style="text-align: left;"><b>Nguồn:</b> ' + nguonnhac + '</li></p></ul></div></div>';
+                   messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + cover_link + ' alt="" /></div><div class="caption"><ul><li><p style="text-align: left;"><b title="'+song_name+'"></b><font color=blue title="'+song_name+'">' + truncateFileName(song_name, 20) + '</font></p></li><li><p style="text-align: left;"><b>Nguồn:</b> ' + nguonnhac + '</li></p></ul></div></div>';
               
                     }
                     //else {console.log("Không có MediaPlayer trong đường dẫn URL của trang cha.");}
