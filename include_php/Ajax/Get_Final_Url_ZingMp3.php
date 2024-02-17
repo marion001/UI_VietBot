@@ -26,9 +26,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['url'])) {
     $url = $_GET['url'];
 
     // Kiểm tra xem chuỗi đầu vào có chứa 'mp3/' hay không
+	//Local MP3
     if (strpos($url, 'mp3/') !== false) {
         echo json_encode(['finalUrl' => $url]);
-    } elseif (strpos($url, "https://www.youtube.com/watch?v=") !== false) {
+    } 
+	//Youtube
+	elseif (strpos($url, "https://www.youtube.com/watch?v=") !== false) {
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => "https://youtubemp3nodejs-67a7bc8771a0.herokuapp.com/link?url=$url",
@@ -40,9 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['url'])) {
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
         ));
-
         $output = curl_exec($curl);
-
         // Kiểm tra xem có lỗi không
         if ($output === false) {
             // Thực hiện mã sau khi cURL không thành công
@@ -91,12 +92,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['url'])) {
         }
         curl_close($curl);
 
-    } else {
+    }
+	
+	//Zing MP3
+	elseif (strpos($url, "http://api.mp3.zing.vn/api/streaming") !== false){
+		
+	$pattern = "/\/([A-Z0-9]+)\/\d+$/"; // Biểu thức chính quy để tìm chuỗi có dạng "/ABC123/" trong URL
+
+if (preg_match($pattern, $url, $matches)) {
+    $ID = $matches[1]; // Lấy giá trị trong nhóm đầu tiên của kết quả phù hợp
+    //echo $ID; // In ra giá trị "ZWZ9798D"
+}
+//$ID = "ZWZ9798D";
+$VERSION = "1.6.34"; //1.5.4
+$path = "/api/v2/song/get/streaming";
+$SECRET_KEY = "2aa2d1c561e809b267f3638c4a307aab";
+$API_KEY = "88265e23d4284f25963e6eedac8fbfa3";
+$ctime = (string)time();
+$strHash = "ctime={$ctime}id={$ID}version={$VERSION}";
+$hash256 = hash('sha256', $strHash);
+$hmac = hash_hmac('sha512', $path . $hash256, $SECRET_KEY);
+		
+		
+$Curl_URL = "https://zingmp3.vn/api/v2/song/get/streaming?id=$ID&ctime=$ctime&version=$VERSION&sig=$hmac&apiKey=$API_KEY";
+
+$curl = curl_init();
+curl_setopt_array($curl, array(
+  CURLOPT_URL => $Curl_URL,
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => '',
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 0,
+  CURLOPT_FOLLOWLOCATION => true,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => 'GET',
+  CURLOPT_HTTPHEADER => array(
+    'Cookie: zmp3_rqid=MHwxMTmUsICdUngNy4xMjkdUngNTN8WeBnVsWeBHwxNzA4MTU4Njg1OTg4'
+  ),
+));
+
+$response = curl_exec($curl);
+
+curl_close($curl);
+//echo $response;
+$data = json_decode($response, true);
+// Kiểm tra nếu không có lỗi và tồn tại dữ liệu
+if ($data && isset($data['err']) && $data['err'] === 0 && isset($data['data']) && isset($data['data']['128'])) {
+    // Lấy giá trị URL từ trường "128"
+    $url128 = $data['data']['128'];
+    echo json_encode(['finalUrl' => $url128]);
+} else {
+    //echo 'Không thể lấy dữ liệu từ trường "128"';
+	echo json_encode(['finalUrl' => $finalUrl]);
+}
+}
+else {
         // Tiếp tục thực hiện yêu cầu cURL chỉ khi không có 'mp3/' trong đường dẫn
         $finalUrl = getFinalUrl($url);
         echo json_encode(['finalUrl' => $finalUrl]);
     }
-} else {
+} 
+//Xử lý các url khác không phải youtube, zing, local
+else {
     echo json_encode(['error' => 'Yêu cầu không hợp lệ']);
 }
 ?>
