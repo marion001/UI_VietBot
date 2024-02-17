@@ -696,7 +696,7 @@ if(isset($data['data']['search']) && is_array($data['data']['search'])) {
                 echo "<img src='$img_images' class='imagesize' alt='' /> <div class='caption'>";
                 echo '<b>Tên: </b> ' . $title . '<br/><b>Loại nội dung: </b> ' . $description . '<br/>';
                 echo '<b>Thời lượng: </b>' . $duration . ' <br/>';
-                echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-kichthuoc="---" data-song-thoiluong="---" data-song-link_type="direct" data-song-data_type="2" data-song-data_play_music="play_music" data-song-artist="' . $song['artist'] . '" data-song-name="' . $title . '" data-song-images="' . $img_images . '" data-song-id="' . $audio_PodCast . '">Phát PodCast</button>';
+                echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-kichthuoc="---" data-song-thoiluong="---" data-song-link_type="direct" data-song-data_type="2" data-song-data_play_music="play_music" data-song-artist="" data-song-name="' . $title . '" data-song-images="' . $img_images . '" data-song-id="' . $audio_PodCast . '">Phát PodCast</button>';
                 echo "</div></div><br/>";
         }
     }
