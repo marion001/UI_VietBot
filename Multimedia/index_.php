@@ -125,12 +125,16 @@ if (is_dir($directory . '/node_modules')) {
 	install_source_node($DuognDanUI_HTML,$serverIP,$SSH_Port,$SSH_TaiKhoan,$SSH_MatKhau,$E_rror_HOST,$E_rror);
 	
 }
-
-
-
-	
 	
 }
+
+if (isset($_POST['cache_delete'])) {
+	// Xóa tất cả dữ liệu trong cache_search hiện tại
+    $Data_CFG_ACTION['cache_search'] = [];
+	file_put_contents($cfg_action_json, json_encode($Data_CFG_ACTION, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+}
+
+
 ?>
 <!-- <div class="container"> -->
 <div>
@@ -328,7 +332,7 @@ if (!empty($Data_Json_Skilll['radio_data'])) {
     } else {
         $Cache_source_replace = "N/A"; // Nếu giá trị không khớp với các điều kiện trên
     }
-	echo "<br/>Nội dung tìm kiếm trước đó, nguồn: <font color=red><b> {$Data_CFG_ACTION['cache_search'][0]['source']}</b></font><hr/>";
+	echo "<br/>Nội dung tìm kiếm trước đó, nguồn: <font color=red><b> {$Data_CFG_ACTION['cache_search'][0]['source']}</b></font><br/><form method='POST' action=''><button title='Xóa lịch sử tìm kiếm' type='submit' name='cache_delete' class='btn btn-warning'>Xóa Lịch Sử Tìm Kiếm</button></form><hr/>";
     foreach ($Data_CFG_ACTION['cache_search'] as $Cache_Search) {
         $Cache_title = $Cache_Search['title'];
         $Cache_images = $Cache_Search['images'];
