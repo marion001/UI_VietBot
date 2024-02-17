@@ -1287,14 +1287,21 @@ window.addEventListener('message', function(event) {
 			if (typeof response.new_volume === "undefined") {
 			response.new_volume = "..."
 			}
-			
+			if (response.state === "Success") {
+			    var audio = new Audio('assets/audio/tut_tut.mp3');
+				var volumePercentage = Math.round(value) 
+				audio.volume = volumePercentage / 100;
+				audio.play();
+				//console.log("oK");
+			}
+
             const newVolume = response.new_volume;
             const oldVolume = response.old_volume;
 
             volumeValue.value = newVolume;
             volumePercentage.textContent = `${newVolume}`;
 
-            //console.log(response);
+            //console.log(response.state);
         });
     }
 </script>
