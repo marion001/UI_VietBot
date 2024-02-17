@@ -766,7 +766,7 @@ if ($response === false) {
                 echo "<img src='$img_images' class='imagesize' alt='' /> <div class='caption'>";
                 echo '<b>Tên bài hát:</b> ' . $song['name'] . '<br/><b>Nghệ sĩ:</b> ' . $song['artist'] . '<br/>';
                 //echo 'ID bài hát: ' . $song['id'] . ' <br/>';
-                echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-kichthuoc="---" data-song-thoiluong="---" data-song-link_type="zingmp3" data-song-data_type="2" data-song-data_play_music="play_music" data-song-artist="' . $song['artist'] . '" data-song-name="' . $song['name'] . '" data-song-images="' . $img_images . '" data-song-id="' . $originalUrl . '">Phát Nhạc</button>';
+                echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-kichthuoc="---" data-song-thoiluong="---" data-song-link_type="direct" data-song-data_type="2" data-song-data_play_music="play_music" data-song-artist="' . $song['artist'] . '" data-song-name="' . $song['name'] . '" data-song-images="' . $img_images . '" data-song-id="' . $originalUrl . '">Phát Nhạc</button>';
                 //echo "Original URL: $originalUrl<br>";
                 // echo "MP3 128 URL: $finalUrl<br/><br/>";
                 echo "</div></div><br/>";
