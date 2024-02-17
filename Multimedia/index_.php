@@ -177,12 +177,27 @@ if (is_dir($directory . '/node_modules')) {
 						</td>
 						<td colspan="3"><center>
 	
-
-	
 <select class="custom-select" name="SelectRadioVOV" id="SelectRadioVOV">
-<?php foreach ($Data_Json_Skilll['radio_data'] as $radio_data): ?>
-<option data-name_radio="<?php echo $radio_data['name']; ?>" value="<?php echo $radio_data['link']; ?>"><?php echo $radio_data['name']; ?></option>
-<?php endforeach; ?>
+<?php
+// Kiểm tra xem có dữ liệu trong mảng radio_data của tệp skill.JSON hiện tại hay không
+if (!empty($Data_Json_Skilll['radio_data'])) {
+    // Duyệt qua dữ liệu radio từ tệp JSON hiện tại
+    foreach ($Data_Json_Skilll['radio_data'] as $radio_data) {
+        $name_radio = $radio_data['name'];
+        $link_radio = $radio_data['link'];
+        // In ra option cho select
+        echo '<option data-name_radio="' . $name_radio . '" value="' . $link_radio . '">' . $name_radio . '</option>';
+    }
+} else {
+    // Nếu không có dữ liệu trong mảng radio_data của tệp JSON hiện tại, sử dụng dữ liệu từ tệp JSON cfg_action.json
+    foreach ($Data_CFG_ACTION['radio_data'] as $alternative_radio_data) {
+        $name_radio = $alternative_radio_data['name'];
+        $link_radio = $alternative_radio_data['link'];
+        // In ra option cho select
+        echo '<option data-name_radio="' . $name_radio . '" value="' . $link_radio . '">' . $name_radio . '</option>';
+    }
+}
+?>
 </select>
 					
                            </center> </td>
@@ -764,11 +779,9 @@ if ($response === false) {
     //exit; // Dừng xử lý ngay sau khi gửi dữ liệu JSON về trình duyệt
 }
 }
-
 ?>
       </div>
 	</div>
-
   </div>
 </div>
 <!-- Đoạn mã JavaScript của bạn -->
@@ -948,11 +961,6 @@ if ($response === false) {
     function setupAudioControls() {
 
         var messageElement = document.getElementById("messagee");
-
-        //$('#volumeDown').on('click', function() {
-        //sendAudioControlCommand('down', 'volume', 2, 'POST');
-        //});
-
         $('#playButton').on('click', function() {
             sendAudioControlCommand('continue', 'set_player', 2, 'POST');
         });
@@ -964,10 +972,6 @@ if ($response === false) {
         $('#stopButton').on('click', function() {
             sendAudioControlCommand('stop', 'set_player', 2, 'POST');
         });
-        //$('#volumeUp').on('click', function() {
-        //sendAudioControlCommand('up', 'volume', 2, 'POST');
-        //});
-
         function sendAudioControlCommand(action, data, type, method) {
             $('#loading-overlay').show();
             var settings = {
@@ -986,10 +990,6 @@ if ($response === false) {
 
             $.ajax(settings)
                 // Biến để theo dõi trạng thái của checkbox
-
-
-            // ...
-
             .done(function(responseh) {
                 var isCheckboxChecked = $("#run-checkbox").is(":checked");
                 // Kiểm tra nếu checkbox được tích
@@ -1311,37 +1311,6 @@ if ($response === false) {
 
             return formattedHours + ":" + formattedMinutes + ":" + formattedSeconds;
         }
-		
-		
-		/*
-        // Khởi tạo biến hover và update
-    var hover = false;
-    var update = true;
-
-    // Bắt sự kiện khi con trỏ chuột hover vào thẻ input
-    document.getElementById('volume').addEventListener('mouseenter', function() {
-        hover = true;
-        update = false;
-    });
-
-    // Bắt sự kiện khi con trỏ chuột rời khỏi thẻ input
-    document.getElementById('volume').addEventListener('mouseleave', function() {
-        hover = false;
-        update = true;
-    });
-
-
-    // Bắt sự kiện khi con trỏ chuột hover vào thẻ input mobile
-    document.getElementById('volume').addEventListener('touchstart', function() {
-        hover = true;
-        update = false;
-    });
-    // Bắt sự kiện khi con trỏ chuột rời khỏi thẻ input mobile
-    document.getElementById('volume').addEventListener('touchend', function() {
-        hover = false;
-        update = true;
-    });
-*/
     // Function to make the API request and handle data
     function fetchData() {
         var selectedOption = $("#select-playback").find('option:selected');
@@ -1354,34 +1323,6 @@ if ($response === false) {
                 "Content-Type": "application/json"
             }
         };
-
-/*
-
-        // Bắt sự kiện khi con trỏ chuột hover vào thẻ input
-        document.getElementById('volume').addEventListener('mouseenter', function() {
-            update = false; // Dừng cập nhật khi con trỏ chuột hover vào
-            //console.log('Dừng cập nhật tự động');
-        });
-
-        // Bắt sự kiện khi con trỏ chuột rời khỏi thẻ input
-        document.getElementById('volume').addEventListener('mouseleave', function() {
-            update = true; // Cho phép cập nhật khi con trỏ chuột rời đi
-            //console.log('Tiếp tục cập nhật tự động');
-        });
-
-        // Bắt sự kiện khi con trỏ chuột hover vào thẻ input trên mobile
-        document.getElementById('volume').addEventListener('touchstart', function() {
-            update = false; // Dừng cập nhật khi con trỏ chuột hover vào
-            //console.log('Dừng cập nhật tự động');
-        });
-
-        // Bắt sự kiện khi con trỏ chuột rời khỏi thẻ input trên mobile
-        document.getElementById('volume').addEventListener('touchend', function() {
-            update = true; // Cho phép cập nhật khi con trỏ chuột rời đi
-            //console.log('Tiếp tục cập nhật tự động');
-        });
-
-*/
 
         $.ajax(settings)
             .done(function(response) {
@@ -1398,9 +1339,7 @@ if ($response === false) {
                 var state = response.player1_state;
                 var media_durationInSeconds = Math.round(response.media1_duration);
                 var media1_positionInSeconds = media_position === -1.0 ? -1.0 : Math.round(media_position * media_durationInSeconds);
-                if (media1_positionInSeconds !== -1.0) {
-                    $("#selected-time").text(formatTimeajax(media1_positionInSeconds));
-                }
+
                 if (media_path && media_path.startsWith("file://<?php echo $DuognDanThuMucJson; ?>/mp3/")) {
                     // Giải mã chuỗi URL
                     const decodedString = decodeURIComponent(media_path);
@@ -1417,7 +1356,6 @@ if ($response === false) {
                     var nguonnhac = "<font color=green>ZingMp3</font>";
                 } else if (media_path && media_path.startsWith("https://rr")) {
                     var nguonnhac = "<font color=green>Youtube</font>";
-                //} else if (media_path && (media_path.startsWith("https://d3ct") || media_path.startsWith("https://cdn-ocs.ivie") || media_path.startsWith("https://cdn.vovlive"))) {
                 } else if (media_path && (media_path.startsWith("https://d3ct") || media_path.startsWith("https://cdn") || media_path.startsWith("https://data.voh"))) {
 					var nguonnhac = "<font color=green>PodCast</font>";
 				}else if (media_path && media_path.startsWith("https://str.vov")) {
@@ -1427,34 +1365,32 @@ if ($response === false) {
                 } else {
                     var nguonnhac = "<font color=green>.....</font>";
                 }
+
+				
+				//gửi dữ liệu response  trả về từ ajax  lên trang cha index.php để cập nhật volume
+                window.parent.postMessage(response, '*');
+
+                var parentUrl = window.top.location.href;
+                // Tách đường dẫn URL để lấy phần fragment sau dấu #
+                var fragments = parentUrl.split('#');
+                if (fragments.length > 1) {
+                    var fragment = fragments[1];
+                    // Kiểm tra giá trị của fragment
+                    if (fragment === "MediaPlayer") {
+				  if (media1_positionInSeconds !== -1.0) {
+                    $("#selected-time").text(formatTimeajax(media1_positionInSeconds));
+                }
                 $("#time-slider").attr("max", media_durationInSeconds);
                 $("#time-slider").val(media1_positionInSeconds);
                 // Convert and display media1_duration in HH:MM:SS format
                 $("#media1-duration").text(formatTimeajax(media_durationInSeconds));
                 $("infomusicplayer").html("Nguồn nhạc: <font color=green>.....</font>");
-				
-				//gửi dữ liệu response  trả về từ ajax  lên trang cha index.php
-                window.parent.postMessage(response, '*');
-				 
-				messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + cover_link + ' alt="" /></div><div class="caption"><ul><li><p style="text-align: left;"><b>Yêu Cầu: </b>' + truncateFileName(last_request, 40) + '</p></li><li><p style="text-align: left;"><b title="'+song_name+'">Tên: </b><font color=blue title="'+song_name+'">' + truncateFileName(song_name, 20) + '</font></p></li><li><p style="text-align: left;"><b>Nguồn:</b> ' + nguonnhac + '</li></p></ul></div></div>';
+                   messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + cover_link + ' alt="" /></div><div class="caption"><ul><li><p style="text-align: left;"><b>Yêu Cầu: </b>' + truncateFileName(last_request, 40) + '</p></li><li><p style="text-align: left;"><b title="'+song_name+'">Tên: </b><font color=blue title="'+song_name+'">' + truncateFileName(song_name, 20) + '</font></p></li><li><p style="text-align: left;"><b>Nguồn:</b> ' + nguonnhac + '</li></p></ul></div></div>';
               
-			  //thay đổi giá trị volume ở thanh slile
-			  
-              /*  if (!hover && update) {
-                    if (response.volume == 0) {
-                        volumeIcon.classList = 'bi bi-volume-mute-fill';
-                    } else if (response.volume >= 1 && response.volume <= 49) {
-                        volumeIcon.classList = 'bi bi-volume-down-fill';
-                    } else {
-                        volumeIcon.classList = 'bi bi-volume-up-fill';
                     }
-
-                    // Cập nhật giá trị âm lượng và hiển thị
-                    document.getElementById('volume').value = response.volume;
-                    document.getElementById('currentVolume').innerText = response.volume;
+                    //else {console.log("Không có MediaPlayer trong đường dẫn URL của trang cha.");}
                 }
-				*/
-                // Display player state based on playervlc_state
+				
                 var playerStateText = "";
                 var playerStateColor = "";
                 switch (playervlc_state) {
@@ -1497,20 +1433,21 @@ if ($response === false) {
     // Set an interval to call the fetchData function every 3 seconds
     var intervalID;
 
+	//Luôn luôn chạy API khi checkbox được tích
     function startInterval() {
         intervalID = setInterval(function() {
             if (shouldRunCode()) {
-                var parentUrl = window.top.location.href;
+                //var parentUrl = window.top.location.href;
                 // Tách đường dẫn URL để lấy phần fragment sau dấu #
-                var fragments = parentUrl.split('#');
-                if (fragments.length > 1) {
-                    var fragment = fragments[1];
+               // var fragments = parentUrl.split('#');
+                //if (fragments.length > 1) {
+                    //var fragment = fragments[1];
                     // Kiểm tra giá trị của fragment
-                    if (fragment === "MediaPlayer") {
+                   // if (fragment === "MediaPlayer") {
                         fetchData();
-                    }
+                    //}
                     //else {console.log("Không có MediaPlayer trong đường dẫn URL của trang cha.");}
-                }
+               // }
                 //else {console.log("Không có fragment trong đường dẫn URL của trang cha.");}
             }
         }, <?php echo $sync_media_player_sync_delay; ?> * 1000);
@@ -1545,81 +1482,6 @@ if ($response === false) {
     });
 </script>
 
-
-<script>
-/*
-    var updatee = true;
-	// Biến để kiểm tra sự kiện touchmove
-    var touchMove = false;
-
-    document.getElementById('volume').addEventListener('input', function() {
-        if (updatee) {
-            var newVolume = this.value;
-            document.getElementById('currentVolume').innerText = newVolume;
-        }
-    });
-
-    document.getElementById('volume').addEventListener('touchmove', function(event) {
-        touchMove = true;
-        if (updatee) {
-            // Lấy giá trị mới từ vị trí chạm
-            var touch = event.touches[0];
-            var rect = this.getBoundingClientRect();
-            var relativeX = touch.clientX - rect.left;
-            var width = rect.width;
-            var newVolume = (relativeX / width) * 100;
-
-            // Giới hạn giá trị mới trong khoảng 0 đến 100
-            newVolume = Math.max(0, Math.min(100, newVolume));
-
-            // Cập nhật UI
-            document.getElementById('currentVolume').innerText = Math.round(newVolume);
-            this.value = newVolume;
-        }
-    });
-    //bắt sự kiện trên mobile, cảm ứng
-    document.getElementById('volume').addEventListener('touchend', function() {
-        if (updatee && touchMove) {
-            // Thực hiện AJAX request khi người dùng nhả touch ra sau khi di chuyển
-            var newVolume = document.getElementById('volume').value;
-            performAjaxRequest(newVolume);
-            touchMove = false; // Đặt lại biến touchMove
-        }
-    });
-    //bắt sự kiện trên pc, laptop
-    document.getElementById('volume').addEventListener('mouseup', function() {
-        if (updatee) {
-            var newVolume = this.value;
-            document.getElementById('currentVolume').innerText = newVolume;
-            // Thực hiện AJAX request khi người dùng nhả chuột ra
-            performAjaxRequest(newVolume);
-        }
-    });
-
-    // Hàm thực hiện AJAX request
-    function performAjaxRequest(newVolume) {
-        var ajaxSettings = {
-            "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
-            method: "POST",
-            timeout: 0,
-            headers: {
-                "Content-Type": "application/json"
-            },
-            data: JSON.stringify({
-                type: 2,
-                data: "volume",
-                action: "setup",
-                new_value: Math.round(newVolume)
-            }),
-        };
-
-        $.ajax(ajaxSettings).done(function(response) {
-            // Cập nhật giá trị volume từ phản hồi của server
-            document.getElementById('volume').value = response.new_volume;
-        });
-    }
-	*/
-</script>
 
 <script>
     // Your JavaScript code here
