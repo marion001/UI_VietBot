@@ -497,7 +497,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 	
 	
     if (empty($Data_TenBaiHat)) {
-        echo "<b><font color=red>Hãy nhập tên bài hát, nội dung cần tìm kiếm trên Youtube</font></b>";
+		
+		echo "<script>";
+        echo "var messageElementtt = document.getElementById('messagee2');";
+        echo "messageElementtt.innerHTML = '<br/><b><font color=red>Hãy nhập tên bài hát, nội dung cần tìm kiếm trên Youtube</font></b><hr/>';";
+        echo "</script>";
+        //echo "<b><font color=red>Hãy nhập tên bài hát, nội dung cần tìm kiếm trên Youtube</font></b>";
     } else {
 
     
@@ -667,7 +672,12 @@ if (!file_exists($file_path)) {
     file_put_contents($cfg_action_json, $Data_CFG_ACTION_new_music_source);
 	
 	if (empty($Data_TenBaiHat)) {
-    echo "<b><font color=red>Hãy nhập tên bài hát, nội dung cần tìm kiếm PodCast</font></b>";
+		echo "<script>";
+        echo "var messageElementtt = document.getElementById('messagee2');";
+        echo "messageElementtt.innerHTML = '<br/><b><font color=red>Hãy nhập tên bài hát, nội dung cần tìm kiếm PodCast</font></b><hr/>';";
+        echo "</script>";
+		
+    //echo "<b><font color=red>Hãy nhập tên bài hát, nội dung cần tìm kiếm PodCast</font></b>";
 } else {
 	
 // Đọc dữ liệu token từ file
@@ -780,7 +790,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     file_put_contents($cfg_action_json, $Data_CFG_ACTION_new_music_source);
 	
 	if (empty($Data_TenBaiHat)) {
-    echo "<b><font color=red>Hãy nhập tên bài hát, nội dung cần tìm kiếm trên Zing MP3</font></b>";
+		
+		echo "<script>";
+        echo "var messageElementtt = document.getElementById('messagee2');";
+        echo "messageElementtt.innerHTML = '<br/><b><font color=red>Hãy nhập tên bài hát, nội dung cần tìm kiếm trên Zing MP3</font></b><hr/>';";
+        echo "</script>";
+		
+		
+    //echo "<b><font color=red>Hãy nhập tên bài hát, nội dung cần tìm kiếm trên Zing MP3</font></b>";
 } else {
     // Thực hiện các hành động khác nếu $Data_TenBaiHat có giá trị
 	/*
