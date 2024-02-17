@@ -112,14 +112,13 @@ $ctime = (string)time();
 $strHash = "ctime={$ctime}id={$ID}version={$VERSION}";
 $hash256 = hash('sha256', $strHash);
 $hmac = hash_hmac('sha512', $path . $hash256, $SECRET_KEY);
-		
-		
+			
 $Curl_URL = "https://zingmp3.vn/api/v2/song/get/streaming?id=$ID&ctime=$ctime&version=$VERSION&sig=$hmac&apiKey=$API_KEY";
-
+//echo $Curl_URL;
 $curl = curl_init();
 curl_setopt_array($curl, array(
   CURLOPT_URL => $Curl_URL,
-  CURLOPT_RETURNTRANSFER => true,
+ CURLOPT_RETURNTRANSFER => true,
   CURLOPT_ENCODING => '',
   CURLOPT_MAXREDIRS => 10,
   CURLOPT_TIMEOUT => 0,
@@ -127,7 +126,21 @@ curl_setopt_array($curl, array(
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
   CURLOPT_CUSTOMREQUEST => 'GET',
   CURLOPT_HTTPHEADER => array(
-    'Cookie: zmp3_rqid=MHwxMTmUsICdUngNy4xMjkdUngNTN8WeBnVsWeBHwxNzA4MTU4Njg1OTg4'
+    'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+    'Accept-Language: vi',
+    'Cache-Control: max-age=0',
+    'Connection: keep-alive',
+    'Cookie: __zi-legacy=2000.SSZzejyD0jSbZUgxWaGPoJIFlgNCIW6BQ9sqkzu84vrwakgps4HVbtIHux_PG1gIUvwilDnD69DzcQ-z.1; _ga=GA1.2.156620056.1693234136; cto_bundle=X6gGbF9RSHJ2bEllQUlEMzI3ZiUyRmhxbUU3JTJGJTJGNkxlbyUyQiUyRjQxJTJGSDVqRllvVE1zTTBQZEFiczE2V0V6a2JTaTMwUWEydW1jdTIwckk3dERVR29zYnYlMkJja3BhOXpraEZtNEpucG5lM0g3VWdXMElvQWV0SFRBRmJKJTJGMSUyRmE2MDJDRHNjRm1IT0NRQUZ5dHJTZjJkNllaazY2dyUyQkV4RVkzeFdGb3FMWDdkWnhCVnllUTJBJTJCaUhIVVZZenIlMkZuQzQxdThoSiUyRnhYVFpGaTYzU2Q2VG1BeGIwREwxMWRsUWclM0QlM0Q; _ga_0CM5NZ8HKZ=GS1.1.1693234135.1.1.1693234180.0.0.0; zpsid=eMqpTcwdFagwSovHVFve7EnsPaXz_6WRw6XXLXsn2NECUNjJ7FCN0l0G6ICVuKfuZ094H7lYCaEFQtLIVPycH9niB45BXrz6esfHIKsL6sMDPHH5CZ1F; __zi=3000.S8lYxyeD3ezisBkaomyEY6YKkgFCHmw7Rf2wepOtD0.1; zmp3_app_version.1=19109; zmp3_rqid=MHwxMTmUsICdUngNy4xMjkdUngNTN8djEdUngOS4xMDl8MTmUsICwODE3MjAwMjM1MA',
+    'DNT: 1',
+    'Sec-Fetch-Dest: document',
+    'Sec-Fetch-Mode: navigate',
+    'Sec-Fetch-Site: none',
+    'Sec-Fetch-User: ?1',
+    'Upgrade-Insecure-Requests: 1',
+    'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+    'sec-ch-ua: "Not A(Brand";v="99", "Google Chrome";v="121", "Chromium";v="121"',
+    'sec-ch-ua-mobile: ?0',
+    'sec-ch-ua-platform: "Windows"'
   ),
 ));
 
@@ -141,8 +154,11 @@ if ($data && isset($data['err']) && $data['err'] === 0 && isset($data['data']) &
     // Lấy giá trị URL từ trường "128"
     $url128 = $data['data']['128'];
     echo json_encode(['finalUrl' => $url128]);
-} else {
+
+} 
+else {
     //echo 'Không thể lấy dữ liệu từ trường "128"';
+	$finalUrl = getFinalUrl($url);
 	echo json_encode(['finalUrl' => $finalUrl]);
 }
 }
