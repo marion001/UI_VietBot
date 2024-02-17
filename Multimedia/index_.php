@@ -284,13 +284,6 @@ if (!empty($Data_Json_Skilll['radio_data'])) {
                         </button></p> -->
 					
                     </center>
-					
-					
-					
-					
-					
-
-					
 					</td>
 						
    
@@ -320,6 +313,44 @@ if (!empty($Data_Json_Skilll['radio_data'])) {
 
             <div class="custom-div">
 			<div id="messagee2">
+			<?php
+			
+			
+	if (isset($Data_CFG_ACTION['cache_search'][0])) {
+		
+	$source = $Data_CFG_ACTION['cache_search'][0]['source'];
+    if ($source == "Podcast") {
+        $Cache_source_replace = "Loại Nội Dung";
+    } elseif ($source == "ZingMp3") {
+        $Cache_source_replace = "Nghệ Sĩ";
+    } elseif ($source == "Youtube") {
+        $Cache_source_replace = "Tên Kênh";
+    } else {
+        $Cache_source_replace = "N/A"; // Nếu giá trị không khớp với các điều kiện trên
+    }
+	echo "<br/>Nội dung tìm kiếm trước đó, nguồn: <font color=red><b> {$Data_CFG_ACTION['cache_search'][0]['source']}</b></font><hr/>";
+    foreach ($Data_CFG_ACTION['cache_search'] as $Cache_Search) {
+        $Cache_title = $Cache_Search['title'];
+        $Cache_images = $Cache_Search['images'];
+        $Cache_channel_artist_content = $Cache_Search['channel_artist_content'];
+        $Cache_link = $Cache_Search['link'];
+        $Cache_time = $Cache_Search['time'];
+        $Cache_source = $Cache_Search['source'];
+        // In ra option cho select
+            echo " <div class='image-container'>";
+            echo "<img src='$Cache_images' class='imagesize' alt='' /> <div class='caption'>";
+            echo '<b>Tên bài hát:</b><a href="'.$Cache_link.'" target="_bank" style="color: black;" title="Mở trong tab mới"> '.$Cache_title.'</a><br/><b>'.$Cache_source_replace.': </b> '.$Cache_channel_artist_content.'<br/>';
+            echo "<b>Thời Lượng:</b> $Cache_time<br/>";
+			echo '<button class="ajax-button btn btn-success" data-song-data_type="2" data-song-data_play_music="play_music" data-song-tenkenhnghesi="Tên Kênh" data-song-link_type="direct" data-song-artist="'.$Cache_channel_artist_content.'" data-song-images="'.$Cache_images.'" data-song-name="'.$Cache_title.'" data-song-kichthuoc=" ---" data-song-thoiluong=" ---" data-song-id="'.$Cache_link.'" >Phát Nhạc</button>';
+            echo "</div></div><br/>";
+		
+    }
+} else {
+    echo "<br/>Không có nội dung tìm kiếm trước đó.<hr/>";
+}
+
+			?>
+			
 			</div>
 <?php
 $api_Search_Zing = "http://ac.mp3.zing.vn/complete?type=song&num=20&query=";
@@ -523,7 +554,9 @@ if ($responseYoutube === false) {
         
     } else {
         echo "<br/>Tên Bài Hát Đang Tìm Kiếm: <b><font color=red>" . $_POST['tenbaihat'] . "</font></b> | Nguồn Nhạc: <font color=red><b>" . $NguonNhac . "</b></font><hr/>";
-
+	// Xóa tất cả dữ liệu trong cache_search hiện tại
+    $Data_CFG_ACTION['cache_search'] = [];
+	
         foreach ($dataYoutube['items'] as $itemYoutube) {
             $Youtube_title = $itemYoutube['snippet']['title'];
             $Youtube_description = $itemYoutube['snippet']['description'];
@@ -539,7 +572,24 @@ if ($responseYoutube === false) {
             //echo '<b>Link:</b> ' . $Youtube_videoLink . ' <br/>';
             echo '<button class="ajax-button btn btn-success" data-song-data_type="2" data-song-data_play_music="play_music" data-song-tenkenhnghesi="Tên Kênh" data-song-link_type="direct" data-song-artist="' . $Youtube_channelTitle . '" data-song-images="' .$Youtube_images.'" data-song-name="'  . $Youtube_title . '" data-song-kichthuoc=" ---" data-song-thoiluong=" ---" data-song-id="' . $Youtube_videoLink . '" >Phát Nhạc</button>';
             echo "</div></div><br/>";
+			
+			$Data_CFG_ACTION['cache_search'][] = [
+            "title" => $Youtube_title,
+            "images" => $Youtube_images,
+            "channel_artist_content" => $Youtube_channelTitle,
+            "link" => $Youtube_videoLink,
+            "time" => "N/A",
+            "source" => "Youtube"
+        ];
+			
         }
+		    file_put_contents($cfg_action_json, json_encode($Data_CFG_ACTION, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+			
+        echo "<script>";
+        echo "var messageElementtt = document.getElementById('messagee2');";
+        echo "messageElementtt.innerHTML = '';";
+        echo "</script>";
+			
     }
 
 }
@@ -675,10 +725,12 @@ curl_close($curl);
 
 echo "<br/>Nội Dung Đang Tìm Kiếm: <b><font color=red>" . $_POST['tenbaihat'] . "</font></b> | Nguồn: <font color=red><b>" . $NguonNhac . "</b></font><hr/>";
 
-
+	// Xóa tất cả dữ liệu trong cache_search hiện tại
+    $Data_CFG_ACTION['cache_search'] = [];
 $data = json_decode($response, true);
 
 if(isset($data['data']['search']) && is_array($data['data']['search'])) {
+
     foreach($data['data']['search'] as $item) {
         if(isset($item['episode'])) {
             $title = $item['episode']['title'];
@@ -698,8 +750,23 @@ if(isset($data['data']['search']) && is_array($data['data']['search'])) {
                 echo '<b>Thời lượng: </b>' . $duration . ' <br/>';
                 echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-kichthuoc="---" data-song-thoiluong="---" data-song-link_type="direct" data-song-data_type="2" data-song-data_play_music="play_music" data-song-artist="" data-song-name="' . $title . '" data-song-images="' . $img_images . '" data-song-id="' . $audio_PodCast . '">Phát PodCast</button>';
                 echo "</div></div><br/>";
+				
+			$Data_CFG_ACTION['cache_search'][] = [
+            "title" => $title,
+            "images" => $img_images,
+            "channel_artist_content" => $description,
+            "link" => $audio_PodCast,
+            "time" => $duration,
+            "source" => "Podcast"
+        ];
+				
         }
     }
+	file_put_contents($cfg_action_json, json_encode($Data_CFG_ACTION, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+	    echo "<script>";
+        echo "var messageElementtt = document.getElementById('messagee2');";
+        echo "messageElementtt.innerHTML = '';";
+        echo "</script>";
 }
 }
 }
@@ -755,8 +822,10 @@ if ($response === false) {
 		echo "messageElement.innerHTML = '<font color=red><b>Không có dữ liệu trả về trên ZingMp3.</b></font>';";
 		echo "</script>";
     } else {
+		
+	// Xóa tất cả dữ liệu trong cache_search hiện tại
+    $Data_CFG_ACTION['cache_search'] = [];
         echo "Tên Bài Hát Đang Tìm Kiếm: <b><font color=red>" . $_POST['tenbaihat'] . "</font></b><br/>Nguồn Nhạc: <font color=red><b>" . $NguonNhac . "</b></font><hr/>";
-
         if ($data['result'] === true && isset($data['data'][0]['song'])) {
             foreach ($data['data'][0]['song'] as $song) {
                 $ID_MP3 = $song['id'];
@@ -770,7 +839,21 @@ if ($response === false) {
                 //echo "Original URL: $originalUrl<br>";
                 // echo "MP3 128 URL: $finalUrl<br/><br/>";
                 echo "</div></div><br/>";
+			$Data_CFG_ACTION['cache_search'][] = [
+            "title" => $song['name'],
+            "images" => $img_images,
+            "channel_artist_content" => $song['artist'],
+            "link" => $originalUrl,
+            "time" => "N/A",
+            "source" => "ZingMp3"
+			];
+				
             }
+			file_put_contents($cfg_action_json, json_encode($Data_CFG_ACTION, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+		echo "<script>";
+        echo "var messageElementtt = document.getElementById('messagee2');";
+        echo "messageElementtt.innerHTML = '';";
+        echo "</script>";
         } else {
             echo "Không có dữ liệu với từ khóa đang tìm kiếm trên ZingMp3";
         }
