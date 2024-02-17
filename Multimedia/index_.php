@@ -1352,7 +1352,7 @@ if ($response === false) {
                     const truncatedFileName = truncateFileName(fileNameWithoutExtension, maxLength);
                     var nguonnhac = "<font color=green>Local MP3</font>";
                     // console.log('Tên file sau khi giải mã, loại bỏ đường dẫn và mở rộng:', truncatedFileName);
-                } else if (media_path && media_path.startsWith("http://vnno-")) {
+                } else if (media_path && media_path.startsWith("http://vnno-") || media_path.startsWith("https://a128-")) {
                     var nguonnhac = "<font color=green>ZingMp3</font>";
                 } else if (media_path && media_path.startsWith("https://rr")) {
                     var nguonnhac = "<font color=green>Youtube</font>";
