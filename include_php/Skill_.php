@@ -188,7 +188,16 @@ chmod($backupFile, 0777);
     $skillArray['chatgpt']['session_timeout'] = intval($ChatGptchatgpt_timeout);
 	
 	//Media Player Sync ($_POST['media_player_sync_ui'] === 'true');
-    $skillArray['ui_media_player']['sync_media_player'] = ($_POST['media_player_sync_ui'] === 'true');
+    //$skillArray['ui_media_player']['sync_media_player'] = ($_POST['media_player_sync_ui'] === 'true');
+	if (isset($_POST['media_player_sync_ui'])) {
+    // Gán giá trị của 'media_player_sync_ui' vào biến $sync_ui
+		$sync_ui = ($_POST['media_player_sync_ui'] === 'true');
+    // Gán giá trị vào mảng $skillArray
+		$skillArray['ui_media_player']['sync_media_player'] = $sync_ui;
+	} else {
+	// giá trị mặc định là false nếu không có giá trị
+		$skillArray['ui_media_player']['sync_media_player'] = false;
+	}
     $skillArray['ui_media_player']['sync_delay'] = @$_POST['sync_delay_media_player'];
 	//Camera hanet
 	$activeCameraHanet = isset($_POST['activeCameraHanet']) && $_POST['activeCameraHanet'] === 'on' ? true : false;
