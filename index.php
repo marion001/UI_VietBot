@@ -1492,6 +1492,14 @@ window.addEventListener('message', function(event) {
         };
 
         $.ajax(settings).done(function(response) {
+			
+						if (response.response === "Đã kích hoạt nhấn phím Wakeup!") {
+			    var audio = new Audio('assets/audio/ding.mp3');
+				audio.volume = 1;
+				audio.play();
+				//console.log("oK");
+			}
+			
             //console.log(response);
         });
     }
