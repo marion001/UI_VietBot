@@ -1155,7 +1155,14 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
     overflow: auto; /* Thêm thanh cuộn nếu nội dung vượt quá chiều cao tối đa */
     border: 1px solid #ccc; /* Thêm đường viền để thấy rõ chiều cao giới hạn */
 }
-		
+  @media (max-width: 768px) {
+    #scrollToTopButtonup {
+      display: none !important;
+    }
+    #scrollToTopButtondown {
+      display: none !important;
+    }
+  }	
     </style>
    <script src="../assets/js/11.0.18_dist_sweetalert2.all.min.js"></script>
   
