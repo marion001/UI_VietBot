@@ -1646,7 +1646,24 @@ if ($response === false) {
 	  
     });
   </script>
+<script>
+//Không cho kéo thanh slide time line
+var timeSlider = document.getElementById("time-slider");
 
+function disableInput() {
+    timeSlider.disabled = true;
+}
+
+function enableInput() {
+    timeSlider.disabled = false;
+}
+
+timeSlider.addEventListener("mouseenter", disableInput);
+timeSlider.addEventListener("touchstart", disableInput);
+
+timeSlider.addEventListener("mouseleave", enableInput);
+timeSlider.addEventListener("touchend", enableInput);
+</script>
 
 	
 <script src="../assets/js/bootstrap.min.js"></script>
