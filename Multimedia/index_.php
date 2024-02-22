@@ -27,6 +27,21 @@ if (!file_exists($cfg_action_json)) {
     //echo "Tệp $cfg_action_json đã được tạo mới và quyền chmod đã được thiết lập thành 0777.";
 }
 
+$Play_List_json = "$DuognDanUI_HTML/Multimedia/Play_List.json";
+// Kiểm tra xem tệp có tồn tại không
+if (!file_exists($Play_List_json)) {
+    // Nếu không tồn tại, tạo nội dung mặc định
+    $default_content = array(
+        "play_list" => array()
+    );
+    $json_content = json_encode($default_content, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    file_put_contents($Play_List_json, $json_content);
+    chmod($Play_List_json, 0777);
+}
+
+
+
+
 $Data_CFG_ACTION = json_decode(file_get_contents($cfg_action_json), true);
 
 //echo $Data_CFG_ACTION['music_source'];
@@ -221,8 +236,10 @@ if (!empty($Data_Json_Skilll['radio_data'])) {
       
                                         <button type="button" id="submitButton" class="ajax-button btn btn-success" data-song-data_type="2" data-song-data_play_music="play_music" data-song-link_type="direct" data-song-images="../assets/img/NotNhac.png" data-song-name="Không có dữ liệu" data-song-id="" value="" hidden>Play .Mp3</button>
                                     
+<button title="Hiển thị danh sách Play List" type="button" id="play_list" name="play_list" onclick="loadPlayList()" class="btn btn-warning">Play List</button>
 
                                         <a class="btn btn-danger" href="<?php echo $PHP_SELF; ?>" role="button" title="Làm mới lại trang">Làm Mới</a> 
+										
                                    </center>
                                 </div></form>
 								
@@ -471,7 +488,9 @@ $duration = isset($fileInfo['playtime_seconds']) ? round($fileInfo['playtime_sec
            // echo '<b>Thời lượng:</b> ' . formatTimephp($duration) . '<br/>';
             echo '<b>Kích thước:</b> ' . $fileSizeMB . ' MB<br/>';
             echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-data_type="2" data-song-data_play_music="play_music" data-song-kichthuoc="' . $fileSizeMB . ' MB" data-song-thoiluong="' . formatTimephp($duration) . '" data-song-artist=" ---" data-song-images="../assets/img/NotNhac.png" data-song-name="' . basename($mp3File) . '" data-song-link_type="direct" data-song-id="mp3/' . basename($mp3File) . '">Phát Nhạc</button>';
-            echo '<button class="deleteBtn btn btn-danger" data-file="' . basename($mp3File) . '">Xóa File</button>';
+			echo '<button class="deleteBtn btn btn-danger" data-file="' . basename($mp3File) . '">Xóa File</button>';
+            echo '<br/><button title="Thêm Vào Play List" type="button" id="add_play_list" name="add_play_list" onclick="addplaylist(this)" class="btn btn-info" data-title="'.basename($mp3File).'" data-images="../assets/img/NotNhac.png" data-channel_artist_content="'.$fileSizeMB.' MB" data-link="mp3/' . basename($mp3File) . '" data-time="'.formatTimephp($duration).'" data-source="Local">Thêm vào Play List</button>';
+			
             echo "</div></div><br/>";
         }
 
@@ -580,7 +599,9 @@ if ($responseYoutube === false) {
             //echo '<b>Mô tả:</b> ' . $Youtube_description . ' <br/>';
             //echo '<b>Link:</b> ' . $Youtube_videoLink . ' <br/>';
             echo '<button class="ajax-button btn btn-success" data-song-data_type="2" data-song-data_play_music="play_music" data-song-tenkenhnghesi="Tên Kênh" data-song-link_type="direct" data-song-artist="' . $Youtube_channelTitle . '" data-song-images="' .$Youtube_images.'" data-song-name="'  . $Youtube_title . '" data-song-kichthuoc=" ---" data-song-thoiluong=" ---" data-song-id="' . $Youtube_videoLink . '" >Phát Nhạc</button>';
-            echo "</div></div><br/>";
+            echo '<br/><button title="Thêm Vào Play List" type="button" id="add_play_list" name="add_play_list" onclick="addplaylist(this)" class="btn btn-info" data-title="'.$Youtube_title.'" data-images="'.$Youtube_images.'" data-channel_artist_content="'.$Youtube_channelTitle.'" data-link="'.$Youtube_videoLink.'" data-time="N/A" data-source="Youtube">Thêm vào Play List</button>';
+			
+			echo "</div></div><br/>";
 			
 			$Data_CFG_ACTION['cache_search'][] = [
             "title" => $Youtube_title,
@@ -763,7 +784,8 @@ if(isset($data['data']['search']) && is_array($data['data']['search'])) {
                 echo '<b>Tên: </b> ' . $title . '<br/><b>Loại nội dung: </b> ' . $description . '<br/>';
                 echo '<b>Thời lượng: </b>' . $duration . ' <br/>';
                 echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-kichthuoc="---" data-song-thoiluong="---" data-song-link_type="direct" data-song-data_type="2" data-song-data_play_music="play_music" data-song-artist="" data-song-name="' . $title . '" data-song-images="' . $img_images . '" data-song-id="' . $audio_PodCast . '">Phát PodCast</button>';
-                echo "</div></div><br/>";
+                echo '<br/><button title="Thêm Vào Play List" type="button" id="add_play_list" name="add_play_list" onclick="addplaylist(this)" class="btn btn-info" data-title="'.$title.'" data-images="'.$img_images.'" data-channel_artist_content="'.$description.'" data-link="'.$audio_PodCast.'" data-time="'.$duration.'" data-source="Podcast">Thêm vào Play List</button>';
+				echo "</div></div><br/>";
 				
 			$Data_CFG_ACTION['cache_search'][] = [
             "title" => $title,
@@ -857,7 +879,8 @@ if ($response === false) {
                 echo '<b>Tên bài hát:</b> ' . $song['name'] . '<br/><b>Nghệ sĩ:</b> ' . $song['artist'] . '<br/>';
                 //echo 'ID bài hát: ' . $song['id'] . ' <br/>';
                 echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-kichthuoc="---" data-song-thoiluong="---" data-song-link_type="direct" data-song-data_type="2" data-song-data_play_music="play_music" data-song-artist="' . $song['artist'] . '" data-song-name="' . $song['name'] . '" data-song-images="' . $img_images . '" data-song-id="' . $originalUrl . '">Phát Nhạc</button>';
-                //echo "Original URL: $originalUrl<br>";
+                echo '<br/><button title="Thêm Vào Play List" type="button" id="add_play_list" name="add_play_list" onclick="addplaylist(this)" class="btn btn-info" data-title="'.$song['name'].'" data-images="'.$img_images.'" data-channel_artist_content="'.$song['artist'].'" data-link="'.$originalUrl.'" data-time="N/A" data-source="ZingMp3">Thêm vào Play List</button>';
+			   //echo "Original URL: $originalUrl<br>";
                 // echo "MP3 128 URL: $finalUrl<br/><br/>";
                 echo "</div></div><br/>";
 			$Data_CFG_ACTION['cache_search'][] = [
@@ -908,8 +931,10 @@ if ($response === false) {
     }
 
     $(document).ready(function() {
+		
         // Xử lý sự kiện khi nút Ajax được nhấn
-        $('.ajax-button').on('click', function() {
+        //$('.ajax-button').on('click', function() {
+			$(document).on('click', '.ajax-button', function() {
             $('#loading-overlay').show();
             var messageElement = document.getElementById("messagee");
             var songId = $(this).data('song-id');
@@ -1602,9 +1627,6 @@ if ($response === false) {
     function preventEventPropagationSync(event) {
         event.stopPropagation();
     }
-	
-
-
 </script>
 	
 
@@ -1663,9 +1685,164 @@ timeSlider.addEventListener("touchstart", disableInput);
 
 timeSlider.addEventListener("mouseleave", enableInput);
 timeSlider.addEventListener("touchend", enableInput);
+
+</script>
+<script>
+    // Hàm thay đổi giá trị của song.source
+    function changeSourceName(source) {
+        switch (source) {
+            case "ZingMp3":
+                return "Nghệ Sĩ";
+            case "Youtube":
+                return "Kênh";
+            case "Podcast":
+                return "Loại Nội Dung";
+            case "Local":
+                return "Kích Thước";
+            default:
+                return source;
+        }
+    }
+
+    function loadPlayList() {
+        //Get Data PlayList
+        $('#loading-overlay').show();
+        $.ajax({
+            url: "Play_List.json",
+            type: "GET",
+            dataType: "json",
+            success: function(data) {
+                $("#messagee2").html(""); // Xóa thông báo trước đó (nếu có)
+                if (data && data.play_list && data.play_list.length > 0) {
+                    $('#loading-overlay').hide();
+                    $("#messagee2").html("Danh Sách Play List Đã Lưu:<br/><button title='Xóa lịch sử tìm kiếm' type='button' name='delete_all_play_list' onclick='delete_all_play_list()' class='btn btn-warning'>Xóa Toàn Bộ Play List</button><hr/>");
+                    $.each(data.play_list, function(index, song) {
+                        songsourcereplace = changeSourceName(song.source);
+
+                        $("#messagee2").append("<div class='image-container'>" +
+                            "<img src='" + song.images + "' class='imagesize' alt='" + song.title + "'> <div class='caption'>" +
+                            "<b>Tên bài hát: </b><a href='" + song.title + "' target='_bank' style='color: black;' title='Mở trong tab mới'>" + song.title + "</a><br/>" +
+                            "<b>" + songsourcereplace + ": </b>" + song.channel_artist_content + "<br/>" +
+                            "<b>Thời Lượng: </b>" + song.time + "<br/>" +
+                            "<b>Nguồn Phát: </b>" + song.source + "<br/>" +
+                            "<button class='ajax-button btn btn-success' data-song-data_type='2' data-song-data_play_music='play_music' data-song-tenkenhnghesi=' ---' data-song-link_type='direct' data-song-artist='" + song.channel_artist_content + "' data-song-images='" + song.images + "' data-song-name='" + song.title + "' data-song-kichthuoc=' ---' data-song-thoiluong=' ---' data-song-id='" + song.link + "'>Phát Nhạc</button>" +
+                            "<button type='button' class='delete-song btn btn-danger' value='" + song.link + "'>Xóa</button>" +
+                            "</div></div><br>");
+                    });
+                } else {
+                    $('#loading-overlay').hide();
+                    // Hiển thị thông báo nếu không có dữ liệu
+                    $("#messagee2").html("Không có dữ liệu.");
+                }
+            },
+            error: function(xhr, status, error) {
+                $('#loading-overlay').hide();
+                console.log("Error:", error);
+            }
+        });
+    }
+
+    function addplaylist(button) {
+        var title = button.getAttribute("data-title");
+        var images = button.getAttribute("data-images");
+        var channel_artist_content = button.getAttribute("data-channel_artist_content");
+        var link = button.getAttribute("data-link");
+        var time = button.getAttribute("data-time");
+        var source = button.getAttribute("data-source");
+        //console.log(title);
+        var settings_add_playlist = {
+            "url": "Add_Delete_PlayList.php",
+            "method": "POST",
+            "data": {
+                "add_play_list": "add_play_list",
+                "title": title,
+                "images": images,
+                "channel_artist_content": channel_artist_content,
+                "link": link,
+                "time": time,
+                "source": source
+            }
+        };
+        // Sử dụng AJAX để gửi yêu cầu
+        $.ajax(settings_add_playlist).done(function(responseez) {
+            // Xử lý phản hồi từ máy chủ nếu cần
+            if (responseez.success) {
+                // Hiển thị thông báo xóa thành công
+                alert(responseez.message + ": " + title);
+            } else {
+                alert(responseez.message + ": " + title);
+            }
+        });
+    }
+
+    function delete_all_play_list() {
+        var settings = {
+            "url": "Add_Delete_PlayList.php",
+            "method": "POST",
+            "data": {
+                "delete_all_play_list": "delete_all_play_list"
+            }
+        };
+        $.ajax(settings)
+            .done(function(response) {
+                // Xử lý khi xóa thành công
+                if (response.success) {
+                    alert(response.message); // Hiển thị thông báo thành công
+                    loadPlayList(); // Tải lại danh sách phát
+                } else {
+                    alert("Xóa toàn bộ Play List thất bại!");
+                    console.error(response.message); // Hiển thị thông báo lỗi
+                }
+            })
+            .fail(function(xhr, status, error) {
+                // Xử lý khi có lỗi xảy ra trong quá trình gửi yêu cầu
+                console.error("Error:", error);
+            });
+    }
+
+
+    $(document).ready(function() {
+        // Xử lý sự kiện khi nút Xóa bài lẻ trong play list được nhấn
+        $(document).on('click', '.delete-song', function() {
+            $('#loading-overlay').show();
+            var songLinkss = $(this).val();
+            var settingsss = {
+                "url": "Add_Delete_PlayList.php",
+                "method": "POST",
+                "data": {
+                    "song_link": songLinkss
+                }
+            };
+
+            // Gửi yêu cầu Ajax để xóa bài hát
+            $.ajax(settingsss)
+                .done(function(responsess) {
+                    $('#loading-overlay').hide();
+                    // Xử lý khi yêu cầu thành công
+                    console.log(responsess);
+                    if (responsess.success) {
+                        // Hiển thị thông báo xóa thành công
+                        alert("Xóa bài hát thành công: " + responsess.message);
+                        // Tải lại danh sách phát
+                        loadPlayList();
+                    } else {
+                        // Hiển thị thông báo xóa thất bại
+                        alert("Lỗi: " + responsess.message);
+                    }
+                })
+                .fail(function(xhr, status, error) {
+                    $('#loading-overlay').hide();
+                    // Xử lý khi yêu cầu thất bại
+                    console.log("Error:", error);
+                    alert("Xóa bài hát thất bại. Vui lòng thử lại sau.");
+                });
+        });
+    });
 </script>
 
-	
+
+    
+
 <script src="../assets/js/bootstrap.min.js"></script>
 <script src="../assets/js/bootstrap.js"></script>
 </body>
