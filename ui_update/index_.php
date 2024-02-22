@@ -407,12 +407,6 @@ if (isset($_POST['startCheckboxReload'])) {
     $startCheckboxReload = $_POST['startCheckboxReload'];
 }
 
-//sao chép file Play_List.json
-$source_Play_List = "$DuognDanUI_HTML/Multimedia/Play_List.json";
-$destination_Play_List = "$DuognDanUI_HTML/ui_update/dowload_extract/Play_List.json";
-
-$command_Play_List = "cp $source_Play_List $destination_Play_List";
-exec($command_Play_List);
 
 
 
@@ -444,6 +438,12 @@ if ($returnCode === 0) {
 	
 }
 
+//sao chép file Play_List.json
+$source_Play_List = "$DuognDanUI_HTML/Multimedia/Play_List.json";
+$destination_Play_List = "$DuognDanUI_HTML/ui_update/dowload_extract/Play_List.json";
+
+$command_Play_List = "cp $source_Play_List $destination_Play_List";
+exec($command_Play_List);
 
 
 //END sao Lưu
@@ -527,7 +527,7 @@ $command_Play_List_back_del = "rm $destination_Play_List";
 exec($command_Play_List_back);
 exec($command_Play_List_back_del);
 
-//Chmod 777 khi chạy xong backup
+//Chmod 777 khi chạy xong backup 
 $connection = ssh2_connect($serverIP, $SSH_Port);
 if (!$connection) {die($E_rror_HOST);}
 if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {die($E_rror);}
