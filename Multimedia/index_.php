@@ -1481,7 +1481,7 @@ if ($response === false) {
                     const truncatedFileName = truncateFileName(fileNameWithoutExtension, maxLength);
                     var nguonnhac = "<font color=green>Local MP3</font>";
                     // console.log('Tên file sau khi giải mã, loại bỏ đường dẫn và mở rộng:', truncatedFileName);
-                } else if (media_path && media_path.startsWith("http://vnno-") || media_path.startsWith("https://a128-")) {
+                } else if (media_path && media_path.startsWith("http://vnno-") || media_path.startsWith("https://a128-") || media_path.startsWith("http://mp3-s1")) {
                     var nguonnhac = "<font color=green>ZingMp3</font>";
                 } else if (media_path && media_path.startsWith("https://rr")) {
                     var nguonnhac = "<font color=green>Youtube</font>";
@@ -1715,10 +1715,9 @@ timeSlider.addEventListener("touchend", enableInput);
                 $("#messagee2").html(""); // Xóa thông báo trước đó (nếu có)
                 if (data && data.play_list && data.play_list.length > 0) {
                     $('#loading-overlay').hide();
-                    $("#messagee2").html("Danh Sách Play List Đã Lưu:<br/><button title='Xóa lịch sử tìm kiếm' type='button' name='delete_all_play_list' onclick='delete_all_play_list()' class='btn btn-warning'>Xóa Toàn Bộ Play List</button><hr/>");
+                    $("#messagee2").html("Danh Sách Play List Của Bạn:<br/><button title='Xóa lịch sử tìm kiếm' type='button' name='delete_all_play_list' onclick='delete_all_play_list()' class='btn btn-warning'>Xóa Toàn Bộ Play List</button><hr/>");
                     $.each(data.play_list, function(index, song) {
                         songsourcereplace = changeSourceName(song.source);
-
                         $("#messagee2").append("<div class='image-container'>" +
                             "<img src='" + song.images + "' class='imagesize' alt='" + song.title + "'> <div class='caption'>" +
                             "<b>Tên bài hát: </b><a href='" + song.title + "' target='_bank' style='color: black;' title='Mở trong tab mới'>" + song.title + "</a><br/>" +
@@ -1732,7 +1731,7 @@ timeSlider.addEventListener("touchend", enableInput);
                 } else {
                     $('#loading-overlay').hide();
                     // Hiển thị thông báo nếu không có dữ liệu
-                    $("#messagee2").html("Không có dữ liệu.");
+                    $("#messagee2").html("Play List của bạn trống!");
                 }
             },
             error: function(xhr, status, error) {
