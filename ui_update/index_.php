@@ -403,7 +403,7 @@ if (isset($_POST['ui_update'])) {
 
 //$startCheckboxReload = $_POST['startCheckboxReload'];
 if (isset($_POST['startCheckboxReload'])) {
-    // Nếu tồn tại, gán giá trị từ $_POST vào biến
+    // Nếu tồn tại, gán giá trị từ $_POST vào biến 
     $startCheckboxReload = $_POST['startCheckboxReload'];
 }
 
@@ -523,7 +523,9 @@ if ($zip) {
 
 //sao chép lại file Play_List.json
 $command_Play_List_back = "cp $destination_Play_List $source_Play_List";
+$command_Play_List_back_del = "rm $destination_Play_List";
 exec($command_Play_List_back);
+exec($command_Play_List_back_del);
 
 //Chmod 777 khi chạy xong backup
 $connection = ssh2_connect($serverIP, $SSH_Port);
