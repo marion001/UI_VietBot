@@ -407,6 +407,15 @@ if (isset($_POST['startCheckboxReload'])) {
     $startCheckboxReload = $_POST['startCheckboxReload'];
 }
 
+//sao chép file Play_List.json
+$source_Play_List = "$DuognDanUI_HTML/Multimedia/Play_List.json";
+$destination_Play_List = "$DuognDanUI_HTML/ui_update/dowload_extract/Play_List.json";
+
+$command_Play_List = "cp $source_Play_List $destination_Play_List";
+exec($command_Play_List);
+
+
+
 $backupFile = $backupDir . '/ui_backup_' . $timestamp . '.tar.gz';
 $excludeArgs = '--exclude="*.tar.gz" --exclude="backup_update/extract/UI_VietBot-main/*"';
 $tarCommand = 'tar -czvf ' . $backupFile . ' ' . $excludeArgs . ' -C ' . dirname($DuognDanUI_HTML) . ' ' . basename($DuognDanUI_HTML);
@@ -434,6 +443,9 @@ if ($returnCode === 0) {
             echo "</script>";
 	
 }
+
+
+
 //END sao Lưu
 $url = $UI_VietBot.'/archive/master.zip';
 $zipFile = $DuognDanUI_HTML.'/ui_update/dowload_extract/UI_VietBot.zip';
@@ -508,6 +520,11 @@ if ($zip) {
             echo "</script>";
 	
 }
+
+//sao chép lại file Play_List.json
+$command_Play_List_back = "cp $destination_Play_List $source_Play_List";
+exec($command_Play_List_back);
+
 //Chmod 777 khi chạy xong backup
 $connection = ssh2_connect($serverIP, $SSH_Port);
 if (!$connection) {die($E_rror_HOST);}
