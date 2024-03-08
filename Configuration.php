@@ -101,6 +101,11 @@ $Limit_Telegram = "3";
 
 //Giới hạn Phản Hồi Khi Được Đánh Thức
 $Limit_Wakeup_Reply = "7";
+
+
+//giới hạn Cast
+$Limit_Cast = "20";
+
 //Cài Văn Bản Mặc Định Nếu Biến $Limit_Wakeup_Reply bị xóa hết
 $Limit_Wakeup_Reply_Default_Response = "Dạ";
 
