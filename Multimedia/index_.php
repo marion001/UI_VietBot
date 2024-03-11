@@ -131,7 +131,7 @@ if (isset($_POST['install_ytdl_core_node_js'])) {
     stream_set_blocking($stream2, true);
     $stream_out2 = ssh2_fetch_stream($stream2, SSH2_STREAM_STDIO);
     stream_get_contents($stream_out2);
-	echo '<center><a href="index.php"><button type="submit" class="btn btn-danger">Tải Lại Trang</button></a></center>';
+	echo '<br/><br/><center><a href="index.php"><button type="submit" class="btn btn-danger">Tải Lại Trang</button></a></center>';
 	exit();
 }
 
