@@ -140,7 +140,8 @@ $nodeCheck = shell_exec('node -v');
 if (empty($nodeCheck)) {
     //echo 'Node.js chưa được cài đặt.<br>';
 		echo '<br/><br/><center><form method="POST" id="my-form" action="">';
-		echo "<button name='install_lib_node_js' class='btn btn-success'>Cấu Hình Media</button>";
+		echo "nodejs chưa được cài đặt, nhấn vào nút bên dưới để cài hoặc cài thủ công bằng 2 lệnh sau:<br/> <b>sudo apt update</b><br/> và: <b>npm install ytdl-core</b><br/><br/>";
+		echo "<button name='install_lib_node_js' class='btn btn-success'>Cấu Hình nodejs</button>";
 		echo "<a href='$PHP_SELF'><button class='btn btn-primary'>Làm Mới</button></a></center>";
 		echo "</form></center>";
     exit;
@@ -158,6 +159,7 @@ if (is_dir($directory . '/node_modules/ytdl-core')) {
     //echo 'Thư mục ytdl-core không được tìm thấy trong thư mục node_modules.' . PHP_EOL;
 
 			echo '<br/><br/><center><form method="POST" id="my-form" action="">';
+			echo "thư viện ytdl-core chưa được cài đặt, nhấn vào nút bên dưới để cài hoặc cài thủ công bằng lệnh:<br/> <b>npm install ytdl-core</b><br/><br/>";
 		echo "<button name='install_ytdl_core_node_js' class='btn btn-success'>Cấu Hình ytdl-core</button> ";
 		echo " <a href='$PHP_SELF'><button class='btn btn-primary'>Làm Mới</button></a></center>";
 		echo "</form></center>";
