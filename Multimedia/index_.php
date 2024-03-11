@@ -232,9 +232,9 @@ if (!empty($Data_Json_Skilll['radio_data'])) {
                                       <center>  <button class="btn btn-primary" id="TimKiem" type="submit" title="Tìm kiếm bài hát">Tìm Kiếm</button>
                                        
                                    
-<button type="button" id="Play_Radio" class="ajax-button btn btn-success" data-song-data_type="2" data-song-data_play_music="play_music" data-song-link_type="direct" data-song-images="../assets/img/RADIO1.png" data-song-name="" data-song-id="" value="">Phát Radio</button>
+<button type="button" id="Play_Radio" class="ajax-button btn btn-success" data-song-data_type="2" data-song-data_play_music="play_direct_link" data-song-player_type="system" data-song-images="../assets/img/RADIO1.png" data-song-name="" data-song-id="" value="">Phát Radio</button>
       
-                                        <button type="button" id="submitButton" class="ajax-button btn btn-success" data-song-data_type="2" data-song-data_play_music="play_music" data-song-link_type="direct" data-song-images="../assets/img/NotNhac.png" data-song-name="Không có dữ liệu" data-song-id="" value="" hidden>Play .Mp3</button>
+                                        <button type="button" id="submitButton" class="ajax-button btn btn-success" data-song-data_type="2" data-song-data_play_music="play_direct_link" data-song-player_type="system" data-song-images="../assets/img/NotNhac.png" data-song-name="Không có dữ liệu" data-song-id="" value="" hidden>Play .Mp3</button>
                                     
 <button title="Hiển thị danh sách Play List" type="button" id="play_list" name="play_list" onclick="loadPlayList()" class="btn btn-warning">Play List</button>
 
@@ -362,7 +362,7 @@ if (!empty($Data_Json_Skilll['radio_data'])) {
             echo "<img src='$Cache_images' class='imagesize' alt='' /> <div class='caption'>";
             echo '<b>Tên bài hát:</b><a href="'.$Cache_link.'" target="_bank" style="color: black;" title="Mở trong tab mới"> '.$Cache_title.'</a><br/><b>'.$Cache_source_replace.': </b> '.$Cache_channel_artist_content.'<br/>';
             echo "<b>Thời Lượng:</b> $Cache_time<br/>";
-			echo '<button class="ajax-button btn btn-success" data-song-data_type="2" data-song-data_play_music="play_music" data-song-tenkenhnghesi="Tên Kênh" data-song-link_type="direct" data-song-artist="'.$Cache_channel_artist_content.'" data-song-images="'.$Cache_images.'" data-song-name="'.$Cache_title.'" data-song-kichthuoc=" ---" data-song-thoiluong=" ---" data-song-id="'.$Cache_link.'" >Phát Nhạc</button>';
+			echo '<button class="ajax-button btn btn-success" data-song-data_type="2" data-song-data_play_music="play_direct_link" data-song-tenkenhnghesi="Tên Kênh" data-song-player_type="system" data-song-artist="'.$Cache_channel_artist_content.'" data-song-images="'.$Cache_images.'" data-song-name="'.$Cache_title.'" data-song-kichthuoc=" N/A" data-song-thoiluong=" N/A" data-song-id="'.$Cache_link.'" >Phát Nhạc</button>';
             echo "</div></div><br/>";
 		
     }
@@ -487,7 +487,7 @@ $duration = isset($fileInfo['playtime_seconds']) ? round($fileInfo['playtime_sec
             echo '<b>Tên bài hát:</b> ' . basename($mp3File) . '<br/>';
            // echo '<b>Thời lượng:</b> ' . formatTimephp($duration) . '<br/>';
             echo '<b>Kích thước:</b> ' . $fileSizeMB . ' MB<br/>';
-            echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-data_type="2" data-song-data_play_music="play_music" data-song-kichthuoc="' . $fileSizeMB . ' MB" data-song-thoiluong="' . formatTimephp($duration) . '" data-song-artist=" ---" data-song-images="../assets/img/NotNhac.png" data-song-name="' . basename($mp3File) . '" data-song-link_type="direct" data-song-id="mp3/' . basename($mp3File) . '">Phát Nhạc</button>';
+            echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-data_type="2" data-song-data_play_music="play_direct_link" data-song-kichthuoc="' . $fileSizeMB . ' MB" data-song-thoiluong="' . formatTimephp($duration) . '" data-song-artist=" N/A" data-song-images="../assets/img/NotNhac.png" data-song-name="' . basename($mp3File) . '" data-song-player_type="system" data-song-id="mp3/' . basename($mp3File) . '">Phát Nhạc</button>';
 			echo '<button class="deleteBtn btn btn-danger" data-file="' . basename($mp3File) . '">Xóa File</button>';
             echo '<br/><button title="Thêm Vào Play List" type="button" id="add_play_list" name="add_play_list" onclick="addplaylist(this)" class="btn btn-info" data-title="'.basename($mp3File).'" data-images="../assets/img/NotNhac.png" data-channel_artist_content="'.$fileSizeMB.' MB" data-link="mp3/' . basename($mp3File) . '" data-time="'.formatTimephp($duration).'" data-source="Local">Thêm vào Play List</button>';
 			
@@ -598,7 +598,7 @@ if ($responseYoutube === false) {
             echo '<b>Tên bài hát:</b><a href="'.$Youtube_videoLink.'" target="_bank" style="color: black;" title="Mở trong Youtube"> ' . $Youtube_title . '</a><br/><b>Tên Kênh:</b> ' . $Youtube_channelTitle . '<br/>';
             //echo '<b>Mô tả:</b> ' . $Youtube_description . ' <br/>';
             //echo '<b>Link:</b> ' . $Youtube_videoLink . ' <br/>';
-            echo '<button class="ajax-button btn btn-success" data-song-data_type="2" data-song-data_play_music="play_music" data-song-tenkenhnghesi="Tên Kênh" data-song-link_type="direct" data-song-artist="' . $Youtube_channelTitle . '" data-song-images="' .$Youtube_images.'" data-song-name="'  . $Youtube_title . '" data-song-kichthuoc=" ---" data-song-thoiluong=" ---" data-song-id="' . $Youtube_videoLink . '" >Phát Nhạc</button>';
+            echo '<button class="ajax-button btn btn-success" data-song-data_type="2" data-song-data_play_music="play_direct_link" data-song-tenkenhnghesi="Tên Kênh" data-song-player_type="system" data-song-artist="' . $Youtube_channelTitle . '" data-song-images="' .$Youtube_images.'" data-song-name="'  . $Youtube_title . '" data-song-kichthuoc=" N/A" data-song-thoiluong=" N/A" data-song-id="' . $Youtube_videoLink . '" >Phát Nhạc</button>';
             echo '<br/><button title="Thêm Vào Play List" type="button" id="add_play_list" name="add_play_list" onclick="addplaylist(this)" class="btn btn-info" data-title="'.$Youtube_title.'" data-images="'.$Youtube_images.'" data-channel_artist_content="'.$Youtube_channelTitle.'" data-link="'.$Youtube_videoLink.'" data-time="N/A" data-source="Youtube">Thêm vào Play List</button>';
 			
 			echo "</div></div><br/>";
@@ -783,7 +783,7 @@ if(isset($data['data']['search']) && is_array($data['data']['search'])) {
                 echo "<img src='$img_images' class='imagesize' alt='' /> <div class='caption'>";
                 echo '<b>Tên: </b> ' . $title . '<br/><b>Loại nội dung: </b> ' . $description . '<br/>';
                 echo '<b>Thời lượng: </b>' . $duration . ' <br/>';
-                echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-kichthuoc="---" data-song-thoiluong="---" data-song-link_type="direct" data-song-data_type="2" data-song-data_play_music="play_music" data-song-artist="" data-song-name="' . $title . '" data-song-images="' . $img_images . '" data-song-id="' . $audio_PodCast . '">Phát PodCast</button>';
+                echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-kichthuoc="N/A" data-song-thoiluong="N/A" data-song-player_type="system" data-song-data_type="2" data-song-data_play_music="play_direct_link" data-song-artist="" data-song-name="' . $title . '" data-song-images="' . $img_images . '" data-song-id="' . $audio_PodCast . '">Phát PodCast</button>';
                 echo '<br/><button title="Thêm Vào Play List" type="button" id="add_play_list" name="add_play_list" onclick="addplaylist(this)" class="btn btn-info" data-title="'.$title.'" data-images="'.$img_images.'" data-channel_artist_content="'.$description.'" data-link="'.$audio_PodCast.'" data-time="'.$duration.'" data-source="Podcast">Thêm vào Play List</button>';
 				echo "</div></div><br/>";
 				
@@ -878,7 +878,7 @@ if ($response === false) {
                 echo "<img src='$img_images' class='imagesize' alt='' /> <div class='caption'>";
                 echo '<b>Tên bài hát:</b> ' . $song['name'] . '<br/><b>Nghệ sĩ:</b> ' . $song['artist'] . '<br/>';
                 //echo 'ID bài hát: ' . $song['id'] . ' <br/>';
-                echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-kichthuoc="---" data-song-thoiluong="---" data-song-link_type="direct" data-song-data_type="2" data-song-data_play_music="play_music" data-song-artist="' . $song['artist'] . '" data-song-name="' . $song['name'] . '" data-song-images="' . $img_images . '" data-song-id="' . $originalUrl . '">Phát Nhạc</button>';
+                echo '<button class="ajax-button btn btn-success" data-song-tenkenhnghesi="Nghệ Sĩ" data-song-kichthuoc="N/A" data-song-thoiluong="N/A" data-song-player_type="system" data-song-data_type="2" data-song-data_play_music="play_direct_link" data-song-artist="' . $song['artist'] . '" data-song-name="' . $song['name'] . '" data-song-images="' . $img_images . '" data-song-id="' . $originalUrl . '">Phát Nhạc</button>';
                 echo '<br/><button title="Thêm Vào Play List" type="button" id="add_play_list" name="add_play_list" onclick="addplaylist(this)" class="btn btn-info" data-title="'.$song['name'].'" data-images="'.$img_images.'" data-channel_artist_content="'.$song['artist'].'" data-link="'.$originalUrl.'" data-time="N/A" data-source="ZingMp3">Thêm vào Play List</button>';
 			   //echo "Original URL: $originalUrl<br>";
                 // echo "MP3 128 URL: $finalUrl<br/><br/>";
@@ -938,7 +938,7 @@ if ($response === false) {
             $('#loading-overlay').show();
             var messageElement = document.getElementById("messagee");
             var songId = $(this).data('song-id');
-            var link_type = $(this).data('song-link_type');
+            var player_type = $(this).data('song-player_type');
             var data_play_music = $(this).data('song-data_play_music');
             var data_type = $(this).data('song-data_type');
             var songImages = $(this).data('song-images');
@@ -980,8 +980,8 @@ if ($response === false) {
                             "data": JSON.stringify({
                                 "type": data_type,
                                 "data": data_play_music,
-                                "link_type": link_type,
-                                "link": finalUrl
+                                "player_type": player_type,
+                                "direct_link": finalUrl
                             }),
                         };
                         messageElement.innerHTML = '<font color=red>Thực Thi Dữ Liệu Đã Chuyển Đổi...</font>';
@@ -1001,7 +1001,7 @@ if ($response === false) {
                                         "data": JSON.stringify({
                                             "type": 2,
                                             "data": "set_song_info",
-                                            "song_name": songName,
+                                            "song_title": songName,
                                             "cover_link": songImages
                                         }),
                                     };
@@ -1091,15 +1091,15 @@ if ($response === false) {
 
         var messageElement = document.getElementById("messagee");
         $('#playButton').on('click', function() {
-            sendAudioControlCommand('continue', 'set_player', 2, 'POST');
+            sendAudioControlCommand('continue', 'set_sys_player', 2, 'POST');
         });
 
         $('#pauseButton').on('click', function() {
-            sendAudioControlCommand('pause', 'set_player', 2, 'POST');
+            sendAudioControlCommand('pause', 'set_sys_player', 2, 'POST');
         });
 
         $('#stopButton').on('click', function() {
-            sendAudioControlCommand('stop', 'set_player', 2, 'POST');
+            sendAudioControlCommand('stop', 'set_sys_player', 2, 'POST');
         });
         function sendAudioControlCommand(action, data, type, method) {
             $('#loading-overlay').show();
@@ -1445,9 +1445,9 @@ if ($response === false) {
         var selectedOption = $("#select-playback").find('option:selected');
         var get_playback = selectedOption.data('playback');
         var settings = {
-            "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>/?api_type=2&data=long_player",
+            "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>/?api_type=2&data=sys_player",
             "method": "GET",
-            "timeout": 0,
+            //"timeout": 0,
             "headers": {
                 "Content-Type": "application/json"
             }
@@ -1457,15 +1457,15 @@ if ($response === false) {
             .done(function(response) {
                 var messageinfomusicplayer = document.getElementById("infomusicplayer");
                 var media_path = response.media1_path;
-                var playervlc_state = response.player1_state;
+                var playervlc_state = response.sys_player_state;
                 var media_position = response.media1_position;
                 var cover_link = response.cover_link;
                 //var last_request = response.last_request;
 
                 var volumeIcon = document.getElementById('volumeIcon');
 
-                var song_name = response.song_name;
-                var state = response.player1_state;
+                var song_name = response.song_title;
+                var state = response.sys_player_state;
                 var media_durationInSeconds = Math.round(response.media1_duration);
                 var media1_positionInSeconds = media_position === -1.0 ? -1.0 : Math.round(media_position * media_durationInSeconds);
 
@@ -1513,8 +1513,8 @@ if ($response === false) {
                 $("#time-slider").val(media1_positionInSeconds);
                 // Convert and display media1_duration in HH:MM:SS format
                 $("#media1-duration").text(formatTimeajax(media_durationInSeconds));
-                $("infomusicplayer").html("Nguồn nhạc: <font color=green>.....</font>");
-                   messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + cover_link + ' alt="" /></div><div class="caption"><ul><li><p style="text-align: left;"><b title="'+song_name+'"></b><font color=blue title="'+song_name+'">' + truncateFileName(song_name, 20) + '</font></p></li><li><p style="text-align: left;"><b>Nguồn:</b> ' + nguonnhac + '</li></p></ul></div></div>';
+                $("#infomusicplayer").html("Nguồn nhạc: <font color=green>.....</font>");
+                messageinfomusicplayer.innerHTML = '<div class="image-container"><div class="rounded-image"><img src=' + cover_link + ' alt="" /></div><div class="caption"><ul><li><p style="text-align: left;"><b title="'+song_name+'"></b><font color=blue title="'+song_name+'">' + truncateFileName(song_name, 20) + '</font></p></li><li><p style="text-align: left;"><b>Nguồn:</b> ' + nguonnhac + '</li></p></ul></div></div>';
               
                     }
                     //else {console.log("Không có MediaPlayer trong đường dẫn URL của trang cha.");}
@@ -1724,7 +1724,7 @@ timeSlider.addEventListener("touchend", enableInput);
                             "<b>" + songsourcereplace + ": </b>" + song.channel_artist_content + "<br/>" +
                             "<b>Thời Lượng: </b>" + song.time + "<br/>" +
                             "<b>Nguồn Phát: </b>" + song.source + "<br/>" +
-                            "<button class='ajax-button btn btn-success' data-song-data_type='2' data-song-data_play_music='play_music' data-song-tenkenhnghesi=' ---' data-song-link_type='direct' data-song-artist='" + song.channel_artist_content + "' data-song-images='" + song.images + "' data-song-name='" + song.title + "' data-song-kichthuoc=' ---' data-song-thoiluong=' ---' data-song-id='" + song.link + "'>Phát Nhạc</button>" +
+                            "<button class='ajax-button btn btn-success' data-song-data_type='2' data-song-data_play_music='play_direct_link' data-song-tenkenhnghesi=' N/A' data-song-player_type='system' data-song-artist='" + song.channel_artist_content + "' data-song-images='" + song.images + "' data-song-name='" + song.title + "' data-song-kichthuoc=' N/A' data-song-thoiluong=' N/A' data-song-id='" + song.link + "'>Phát Nhạc</button>" +
                             "<button type='button' class='delete-song btn btn-danger' value='" + song.link + "'>Xóa</button>" +
                             "</div></div><br>");
                     });
