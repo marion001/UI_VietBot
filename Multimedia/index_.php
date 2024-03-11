@@ -1468,32 +1468,36 @@ if ($response === false) {
                 var state = response.sys_player_state;
                 var media_durationInSeconds = Math.round(response.media1_duration);
                 var media1_positionInSeconds = media_position === -1.0 ? -1.0 : Math.round(media_position * media_durationInSeconds);
-
-                if (media_path && media_path.startsWith("file://<?php echo $DuognDanThuMucJson; ?>/mp3/")) {
-                    // Giải mã chuỗi URL
-                    const decodedString = decodeURIComponent(media_path);
-                    // Bỏ phần đường dẫn
-                    const fileNameWithoutPath = decodedString.split('/').pop();
-                    // Bỏ phần mở rộng
-                    const fileNameWithoutExtension = fileNameWithoutPath.replace(/\..+$/, '');
-                    // Giới hạn tên file tối đa 20 ký tự và ngắt tại khoảng trắng
-                    const maxLength = 25;
-                    const truncatedFileName = truncateFileName(fileNameWithoutExtension, maxLength);
-                    var nguonnhac = "<font color=green>Local MP3</font>";
-                    // console.log('Tên file sau khi giải mã, loại bỏ đường dẫn và mở rộng:', truncatedFileName);
-                } else if (media_path && media_path.startsWith("http://vnno-") || media_path.startsWith("https://a128-") || media_path.startsWith("http://mp3-s1")) {
-                    var nguonnhac = "<font color=green>ZingMp3</font>";
-                } else if (media_path && media_path.startsWith("https://rr")) {
-                    var nguonnhac = "<font color=green>Youtube</font>";
-                } else if (media_path && (media_path.startsWith("https://d3ct") || media_path.startsWith("https://cdn") || media_path.startsWith("https://data.voh"))) {
-					var nguonnhac = "<font color=green>PodCast</font>";
-				}else if (media_path && media_path.startsWith("https://str.vov")) {
-                    var nguonnhac = "<font color=green>Radio</font>";
-                } else if (media_path && media_path.startsWith("file://<?php echo $DuognDanThuMucJson; ?>/tts_saved/")) {
-                    var nguonnhac = "Không có dữ liệu";
-                } else {
-                    var nguonnhac = "<font color=green>.....</font>";
-                }
+var nguonnhac;
+if (!media_path || media_path === null) {
+    nguonnhac = "N/A";
+	song_name = "Tên: N/A";
+	cover_link = "../assets/img/media_null.png";
+} else if (media_path.startsWith("file://<?php echo $DuongDanThuMucJson; ?>/mp3/")) {
+    // Giải mã chuỗi URL
+    const decodedString = decodeURIComponent(media_path);
+    // Bỏ phần đường dẫn
+    const fileNameWithoutPath = decodedString.split('/').pop();
+    // Bỏ phần mở rộng
+    const fileNameWithoutExtension = fileNameWithoutPath.replace(/\..+$/, '');
+    // Giới hạn tên file tối đa 20 ký tự và ngắt tại khoảng trắng
+    const maxLength = 25;
+    const truncatedFileName = truncateFileName(fileNameWithoutExtension, maxLength);
+    nguonnhac = "<font color=green>Local MP3</font>";
+    // console.log('Tên file sau khi giải mã, loại bỏ đường dẫn và mở rộng:', truncatedFileName);
+} else if (media_path.startsWith("http://vnno-") || media_path.startsWith("https://a128-") || media_path.startsWith("http://mp3-s1")) {
+    nguonnhac = "<font color=green>ZingMp3</font>";
+} else if (media_path.startsWith("https://rr")) {
+    nguonnhac = "<font color=green>Youtube</font>";
+} else if (media_path.startsWith("https://str.vov")) {
+    nguonnhac = "<font color=green>Radio</font>";
+} else if (media_path.startsWith("https://d3ct") || media_path.startsWith("https://cdn") || media_path.startsWith("https://data.voh")) {
+    nguonnhac = "<font color=green>PodCast</font>";
+} else if (media_path.startsWith("file://<?php echo $DuongDanThuMucJson; ?>/tts_saved/")) {
+    nguonnhac = "tts_saved";
+} else {
+    nguonnhac = "<font color=green>N/A</font>";
+}
 
 				
 				//gửi dữ liệu response  trả về từ ajax  lên trang cha index.php để cập nhật volume
@@ -1529,7 +1533,7 @@ if ($response === false) {
                         break;
                     case "State.Playing":
                     case "State.Opening":
-                        playerStateText = "Đang phát nhạc";
+                        playerStateText = "Đang phát";
                         playerStateColor = "green";
                         break;
                     case "State.Paused":
@@ -1541,7 +1545,7 @@ if ($response === false) {
                         playerStateColor = "red";
                         break;
                     default:
-                        playerStateText = "Trạng thái không xác định";
+                        playerStateText = "Không có dữ liệu";
                         playerStateColor = "black";
                 }
                 $("#player-state").text("Trạng thái: " + playerStateText).css("color", playerStateColor);
