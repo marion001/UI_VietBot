@@ -116,7 +116,6 @@ function getTimestamp() {
       return;
     }
 	
-	
 ///////////////////////////
     const url = 'http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>/';
     const headers = {
@@ -126,9 +125,12 @@ function getTimestamp() {
     };
     const data = {
       type: messageType,
-      //data: userMessage,
+      //ChatBox + TTS
       data: userMessageee,
-	  podcast_name: userMessage,
+	  
+	  //PodCasst
+	  name: userMessage,
+	  player_type: "system"
     };
 
     try {
