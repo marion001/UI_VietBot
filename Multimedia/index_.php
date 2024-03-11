@@ -118,7 +118,22 @@ if (isset($_POST['install_lib_node_js'])) {
 install_source_node($DuognDanUI_HTML,$serverIP,$SSH_Port,$SSH_TaiKhoan,$SSH_MatKhau,$E_rror_HOST,$E_rror);
 
 }
-
+if (isset($_POST['install_ytdl_core_node_js'])) {
+		$connection = ssh2_connect($serverIP, $SSH_Port);
+    if (!$connection) {
+        die($E_rror_HOST);
+    }
+    if (!ssh2_auth_password($connection, $SSH_TaiKhoan, $SSH_MatKhau)) {
+        die($E_rror);
+    }
+	//cập nhật nguồn trước khi cài thư viện node js
+    $stream2 = ssh2_exec($connection, 'npm install ytdl-core');
+    stream_set_blocking($stream2, true);
+    $stream_out2 = ssh2_fetch_stream($stream2, SSH2_STREAM_STDIO);
+    stream_get_contents($stream_out2);
+	echo '<center><a href="index.php"><button type="submit" class="btn btn-danger">Tải Lại Trang</button></a></center>';
+	exit();
+}
 
 // Kiểm tra xem Node.js đã được cài đặt chưa
 $nodeCheck = shell_exec('node -v');
@@ -131,10 +146,27 @@ if (empty($nodeCheck)) {
     exit;
 } else {
     //echo 'Node.js đã được cài đặt. Phiên bản: ' . $nodeCheck . '<br>';
-$directory = '/home/pi';
+$directory = $PATH_USER_ROOT;
 // Kiểm tra xem thư mục node_modules tồn tại hay không
 if (is_dir($directory . '/node_modules')) {
     //echo 'Thư mục node_modules tồn tại.<br>';
+	
+
+if (is_dir($directory . '/node_modules/ytdl-core')) {
+    //echo 'Thư mục ytdl-core đã được tìm thấy trong thư mục node_modules.' . PHP_EOL;
+} else {
+    //echo 'Thư mục ytdl-core không được tìm thấy trong thư mục node_modules.' . PHP_EOL;
+
+			echo '<br/><br/><center><form method="POST" id="my-form" action="">';
+		echo "<button name='install_ytdl_core_node_js' class='btn btn-success'>Cấu Hình ytdl-core</button> ";
+		echo " <a href='$PHP_SELF'><button class='btn btn-primary'>Làm Mới</button></a></center>";
+		echo "</form></center>";
+    exit;
+	
+}
+
+
+	
 } else {
     //echo 'Thư mục node_modules không tồn tại.<br>';
 	install_source_node($DuognDanUI_HTML,$serverIP,$SSH_Port,$SSH_TaiKhoan,$SSH_MatKhau,$E_rror_HOST,$E_rror);
