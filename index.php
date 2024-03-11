@@ -1276,7 +1276,7 @@ window.addEventListener('message', function(event) {
             },
             "data": JSON.stringify({
                 "type": 2,
-                "data": "set_volume",
+                "data": "set_system_volume",
                 "action": "setup",
                 "new_value": Math.round(value)
             }),
@@ -1345,7 +1345,7 @@ window.addEventListener('message', function(event) {
             update = false; // Dừng cập nhật khi con trỏ chuột hover vào
             //console.log('Dừng cập nhật tự động');
         });
-
+ 
         // Bắt sự kiện khi con trỏ chuột rời khỏi thẻ input
         document.getElementById('volume_value').addEventListener('mouseleave', function() {
             update = true; // Cho phép cập nhật khi con trỏ chuột rời đi
