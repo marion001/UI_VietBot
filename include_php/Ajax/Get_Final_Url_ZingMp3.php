@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['url'])) {
     } 
 	//Youtube
 	elseif (strpos($url, "https://www.youtube.com/watch?v=") !== false) {
+	/*
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => "https://youtubemp3nodejs-67a7bc8771a0.herokuapp.com/link?url=$url",
@@ -44,8 +45,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['url'])) {
             CURLOPT_CUSTOMREQUEST => 'GET',
         ));
         $output = curl_exec($curl);
+		*/
+		$output = false;
         // Kiểm tra xem có lỗi không
         if ($output === false) {
+			
             // Thực hiện mã sau khi cURL không thành công
             $command = "node $DuognDanUI_HTML/include_php/Ajax/Youtube_MP3_Link_Play.js " . escapeshellarg($url);
 			//$command = "python3 $DuognDanUI_HTML/include_php/Ajax/Youtube_MP3_Link_Play.py " . escapeshellarg($url);
@@ -63,7 +67,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['url'])) {
             $output = rtrim($output, "\n");
             // In kết quả sau khi thực hiện các bước thay thế
             echo json_encode(['finalUrl' => $output]);
-        } else {
+			
+        }
+		else {
             // Kiểm tra xem dữ liệu trả về có chứa "https://" không
             if (strpos($output, "https://") === false) {
                 // Nếu không có "https://", thực hiện các lệnh khác
