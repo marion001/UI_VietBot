@@ -615,7 +615,7 @@ if ($responseYoutube === false) {
 		
         
     } else {
-        echo "<br/>Tên Bài Hát Đang Tìm Kiếm: <b><font color=red>" . $_POST['tenbaihat'] . "</font></b> | Nguồn Nhạc: <font color=red><b>" . $NguonNhac . "</b></font><hr/>";
+        echo "<br/><hr/>Tên Bài Hát Đang Tìm Kiếm: <b><font color=red>" . $_POST['tenbaihat'] . "</font></b> | Nguồn Nhạc: <font color=red><b>" . $NguonNhac . "</b></font><br/><br/>";
 	// Xóa tất cả dữ liệu trong cache_search hiện tại
     $Data_CFG_ACTION['cache_search'] = [];
 	
@@ -902,7 +902,7 @@ if ($response === false) {
 		
 	// Xóa tất cả dữ liệu trong cache_search hiện tại
     $Data_CFG_ACTION['cache_search'] = [];
-        echo "Tên Bài Hát Đang Tìm Kiếm: <b><font color=red>" . $_POST['tenbaihat'] . "</font></b><br/>Nguồn Nhạc: <font color=red><b>" . $NguonNhac . "</b></font><hr/>";
+        echo "<br/><hr/>Tên Bài Hát Đang Tìm Kiếm: <b><font color=red>" . $_POST['tenbaihat'] . "</font></b><br/>Nguồn Nhạc: <font color=red><b>" . $NguonNhac . "</b></font><br/><br/>";
         if ($data['result'] === true && isset($data['data'][0]['song'])) {
             foreach ($data['data'][0]['song'] as $song) {
                 $ID_MP3 = $song['id'];
@@ -1753,7 +1753,7 @@ timeSlider.addEventListener("touchend", enableInput);
                 $("#messagee2").html(""); // Xóa thông báo trước đó (nếu có)
                 if (data && data.play_list && data.play_list.length > 0) {
                     $('#loading-overlay').hide();
-                    $("#messagee2").html("Danh Sách Play List Của Bạn:<br/><button title='Xóa lịch sử tìm kiếm' type='button' name='delete_all_play_list' onclick='delete_all_play_list()' class='btn btn-warning'>Xóa Toàn Bộ Play List</button><hr/>");
+                    $("#messagee2").html("Danh Sách Play List Của Bạn:<br/><button title='Xóa lịch sử tìm kiếm' type='button' name='delete_all_play_list' onclick='delete_all_play_list()' class='btn btn-warning'>Xóa Toàn Bộ Play List</button><br/><br/>");
                     $.each(data.play_list, function(index, song) {
                         songsourcereplace = changeSourceName(song.source);
                         $("#messagee2").append("<div class='image-container'>" +
@@ -1766,6 +1766,7 @@ timeSlider.addEventListener("touchend", enableInput);
                             "<button type='button' class='delete-song btn btn-danger' value='" + song.link + "'>Xóa</button>" +
                             "</div></div><br>");
                     });
+					
                 } else {
                     $('#loading-overlay').hide();
                     // Hiển thị thông báo nếu không có dữ liệu
