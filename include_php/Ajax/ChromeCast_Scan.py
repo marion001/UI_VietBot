@@ -8,16 +8,16 @@ chromecasts, browser = pychromecast.get_chromecasts()
 chromecasts_info = []
 
 # Lặp qua từng thiết bị Chromecast và thêm thông tin của chúng vào danh sách
-for cc in chromecasts:
+for data in chromecasts:
     chromecast_info = {
-        "name": cc.name,
-        "model": cc.model_name,
-        "uuid": str(cc.uuid),
-        "manufacturer": cc.cast_info.manufacturer,
-        "ip_address": cc.cast_info.host,
-        "cast_type": cc.cast_info.cast_type,
-        "port": cc.cast_info.port,
-        "friendly_name": cc.cast_info.friendly_name
+        "name": data.name,
+        "model_name": data.model_name,
+        "uuid": str(data.uuid),
+        "manufacturer": data.cast_info.manufacturer,
+        "ip_address": data.cast_info.host,
+        "cast_type": data.cast_info.cast_type,
+        "port": data.cast_info.port,
+        "friendly_name": data.cast_info.friendly_name
     }
     chromecasts_info.append(chromecast_info)
 
