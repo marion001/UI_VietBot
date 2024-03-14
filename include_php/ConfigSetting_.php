@@ -164,8 +164,17 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 		$Speed_TTS = $data_config['smart_answer']['tts']['speed'];
 		$Speed_TTS_MacDinh = $data_config['smart_answer']['tts']['speed'];
 	}
-	//echo $GET_TTS_Token_Key;
+
+
+	//Get Config Cấu hình loa
 	$GET_Speaker_Amixer_ID = $data_config['smart_config']['speaker']['amixer_id'];
+	//$GET_Speaker_Type = $data_config['smart_config']['speaker']['type'];
+	$GET_Speaker_System_Amixer_ID = $data_config['smart_config']['speaker']['system']['amixer_id'];
+	
+	//Get Config Cấu hình Mic
+	//$GET_Mic_Type = $data_config['smart_config']['mic']['type'];
+	$GET_Mic_id = $data_config['smart_config']['mic']['id'];
+	//
 	$GET_Port_Web_Interface = $data_config['smart_config']['web_interface']['port'];
 	//$GET_HostName_Web_Interface = $data_config['smart_config']['web_interface']['hostname'];
 	//my_user
@@ -653,6 +662,15 @@ chmod($backupFile, 0777);
     $preAnswerList = array_slice($preAnswerList, 0, $Limit_Pre_Answer);
     $data_config["smart_answer"]["pre_answer"] = array_values($preAnswerList);
     $data_config["smart_answer"]["number_characters_to_switch_mode"] = intval($numberCharactersToSwitchMode);
+	//Lưu giá trị mic
+	//$data_config["smart_config"]["mic"]["type"] = $_POST["alse_mic_type"];
+	$data_config["smart_config"]["mic"]["id"] = intval($_POST["alsa_mic_id"]);
+	//Lưu giá trị của Loa Speaker
+	$data_config["smart_config"]["speaker"]["amixer_id"] = intval($_POST["amixer_speaker_id"]);
+	//$data_config["smart_config"]["speaker"]["type"] = $_POST["amixer_speaker_type"];
+	$data_config["smart_config"]["speaker"]["system"]["amixer_id"] = intval($_POST["amixer_speaker_system_id"]);
+	
+	
 	//End Chờ xử lý dữ liệu
     // Lấy giá trị từ input
     //$Volume_Value = @$_POST['volume_value'];
@@ -668,7 +686,7 @@ chmod($backupFile, 0777);
 	//$TTS_Token_Key = @$_POST['token_key_tts'];
 	if (strcasecmp(@$_POST['token_key_tts'], "") === 0) {$TTS_Token_Key = null;
     } else {$TTS_Token_Key = @$_POST['token_key_tts'];}
-	$GET_CARD_Speaker_Amixer_ID = @$_POST['input_number_card_number'];
+	//$GET_CARD_Speaker_Amixer_ID = @$_POST['input_number_card_number'];
 	$Port_Input_Number = @$_POST['port_input_number'];
 	//$HostName_Input = @$_POST['hostname_input'];
 	//Led Config
@@ -762,7 +780,7 @@ chmod($backupFile, 0777);
     } else {$console_ouputrepl = @$_POST['logging_type'];}
 	$data_config['smart_config']['logging_type'] = $console_ouputrepl;
 	//speaker, card id
-	$data_config['smart_config']['speaker']['amixer_id'] = intval($GET_CARD_Speaker_Amixer_ID);
+	//$data_config['smart_config']['speaker']['amixer_id'] = intval($GET_CARD_Speaker_Amixer_ID);
 	//web_interface
 	$data_config['smart_config']['web_interface']['port'] = intval($Port_Input_Number);
 	//$data_config['smart_config']['web_interface']['hostname'] = $HostName_Input;
@@ -1218,22 +1236,47 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
 </div>
 <hr/>
 	<!-- mục  Volume --> 
-<h5> Sound Card/Volume:  <i class="bi bi-info-circle-fill" onclick="togglePopupVOLUME()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5> <center>   
+<h5> Cấu Hình Mic/Loa:  <i class="bi bi-info-circle-fill" onclick="togglePopupVOLUME()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>  
 <div id="popupContainerVOLUME" class="popup-container" onclick="hidePopupVOLUME()">
 <div id="popupContent" onclick="preventEventPropagationVOLUME(event)">
 <center><b>Sound Card/Volume</b></center>
 - <b>Card ID:</b> Số id của card âm thanh trên hệ thống nhận được<br/>
 </div></div>
-<div class="row justify-content-center"><div class="col-auto">
-<table class="table table-responsive table-striped table-bordered align-middle"><tr>
-<th scope="col"><center>Card ID:</center></th>
-<!-- <th scope="col"><center>Âm lượng:</center></th> --></tr><tr>
-<td><input type="number" class="form-control" title="Từ 0 Đến 3" title="Từ 0 Đến 3" name="input_number_card_number" size="28" value="<?php echo $GET_Speaker_Amixer_ID; ?>"  min="0" max="3" required></td>
-<!--
-<td><input type="range" title="Kéo Để Thay Đổi Âm Lượng" id="volume_value" name="volume_value" min="10" max="100" step="1" value="<?php //echo $value_volume; ?>" style="width:200px;">
-<font color=red><span id="slider-value" class="slider-value"><?php //echo $value_volume; ?>%</span></font></div> </td>
--->
-</tr></table></div></div></center><hr/>
+<div class="row g-3 d-flex justify-content-center"><div class="col-auto">
+
+<table class="table table-responsive table-bordered align-middle">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col"><center>ID</center></th>
+      <th scope="col"><center>System ID</center></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Mic</th>
+      <td><input type="number" id="alsa_mic_id" name="alsa_mic_id" size="28" class="form-control" value="<?php echo $GET_Mic_id; ?>" readonly></td>
+      <td><center>N/A</center></td>
+    </tr>
+    <tr>
+      <th scope="row">Loa</th>
+      <td><input type="number" id="amixer_speaker_id" name="amixer_speaker_id" size="28" class="form-control" value="<?php echo $GET_Speaker_Amixer_ID; ?>" ></td>
+      <td><input type="number" id="amixer_speaker_system_id" name="amixer_speaker_system_id" size="28" class="form-control" value="<?php echo $GET_Speaker_System_Amixer_ID; ?>" ></td>
+    </tr>
+    <tr>
+      <td colspan="2"><center><input type="button" id="scan_alsa_mic" class="btn btn-warning" value="Scan Mic"></center></td>
+      <td colspan="2"><center><input type="button" id="scan_amixer_speaker" class="btn btn-warning" value="Scan Loa"></center></td>
+    </tr>
+	
+	
+  </tbody>
+
+  
+</table>
+  <div id="ketqua_scan_mic_loa"></div>
+  
+
+</div></div><hr/>
 <!-- Kết Thúc  Volume --> 
 <!-- mục  Web Interface --> 
 <h5>Port API: <i class="bi bi-info-circle-fill" onclick="togglePopupWeb()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5> 
@@ -3738,6 +3781,68 @@ $(document).ready(function() {
             console.error('Không có đường dẫn được cung cấp.');
         }
     }
+</script>
+<script>
+    $(document).on("click", "[data-action='apply']", function() {
+        // Lấy giá trị từ data attribute của nút "Áp Dụng"
+        var micId = $(this).data("alsa_mic_id");
+        var micTypeName = $(this).data("alsa_mic_type");
+        
+        // Đẩy giá trị vào thẻ input có id là alsa_mic_id và alse_mic_type
+        $("#alsa_mic_id").val(micId);
+       // $("#alse_mic_type").val(micTypeName);
+    });
+
+    document.getElementById("scan_alsa_mic").addEventListener("click", function() {
+        $('#loading-overlay').show();
+
+        // Gửi yêu cầu AJAX sử dụng jQuery
+        $.ajax({
+            url: "Ajax/Mic_Scan.php",
+            type: "GET",
+            //data: { key: hotwordEngineKey },
+            success: function(response) {
+                // Kiểm tra nếu dữ liệu trả về là null
+                if (response === "") {
+                    alert("Không có dữ liệu trả về, kiểm tra lại Token không hợp lệ hoặc tài khoản picovoice đã bị khóa");
+                } else {
+                    // Chuyển đổi chuỗi JSON thành đối tượng JSON
+                    var jsonResponse = JSON.parse(response);
+
+                    var html = '';
+                    
+                    html += '<table class="table table-responsive table-bordered align-middle"><thead>';
+                    html += '<tr><th scope="col" colspan="3"><center>Danh Sách Microphone Được Tìm Thấy</center></th></tr><tr>';
+                    html += '  <th scope="col"><center>ID</center></th>';
+                    html += '  <th scope="col"><center>Tên</center></th>';
+                    html += '  <th scope="col" colspan="3"><center>Hành Động</center></th>';
+                    html += '</tr>';
+                    html += ' </thead><tbody>';
+
+                    // Lặp qua các đối tượng trong mảng jsonResponse và tạo các hàng trong bảng
+                    jsonResponse.forEach(function(mic) {
+                        html += '<tr>';
+                        html += '<td><input class="form-control" type="number" value="' + mic.mic_id + '" readonly></td>';
+                        html += '<td><input class="form-control" type="text" value="' + mic.mic_type_name + '" readonly></td>';
+                        html += '<td><center><button type="button" class="btn btn-success" data-action="apply" data-alsa_mic_id="' + mic.mic_id + '" data-alsa_mic_type="' + mic.mic_type_name + '">Chọn</button></center></td>';
+                        html += '<td colspan="2"><center><button type="button" class="btn btn-primary" disabled>Test Mic</button></center></td>';
+                        html += '</tr>';
+                    });
+
+                    html += '</tbody></table>';
+
+                    // Hiển thị bảng trong thẻ có id là 'ketqua_scan_mic_loa'
+                    $('#ketqua_scan_mic_loa').html(html);
+                }
+                $('#loading-overlay').hide();
+            },
+            error: function(xhr, status, error) {
+                // Xử lý lỗi nếu có
+                alert("Đã xảy ra lỗi: " + error);
+                $('#loading-overlay').hide();
+            }
+        });
+    });
 </script>
 
 
