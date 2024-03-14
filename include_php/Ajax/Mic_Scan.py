@@ -1,9 +1,6 @@
-import os
 import json
 import pyaudio
 
-# Thiết lập biến môi trường để tắt thông báo của ALSA
-os.environ['PYAUDIOALSADEBUG'] = '0'
 
 def list_audio_input_devices():
     p = pyaudio.PyAudio()
