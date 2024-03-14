@@ -11,8 +11,8 @@ def list_audio_input_devices():
         device_info = p.get_device_info_by_index(idx)
         if device_info["maxInputChannels"] > 0:
             input_devices.append({
-                "index": idx,
-                "name": device_info["name"],
+                "mic_id": idx,
+                "mic_type_name": device_info["name"],
                 "hostApi": device_info["hostApi"],
                 "hostApiId": p.get_host_api_info_by_index(device_info["hostApi"])["index"],
                 "maxInputChannels": device_info["maxInputChannels"],
