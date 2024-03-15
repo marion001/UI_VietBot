@@ -223,12 +223,18 @@ if (isset($_POST['cache_delete'])) {
                              </center></td>
                         </tr>
 						<tr>
+						
+						<td>
+						<center>
+						 <input type="radio" id="ChromeCast" name="action" value="ChromeCast"  onchange="handleRadioChangeLocal()" disabled>
+                                <label for="ChromeCast" title="Tìm kiếm ChromeCast">Chrome Cast</label></center>
+						</td>
 						<td>
 						<center>
 						 <input type="radio" id="RadioVOV" name="action" value="RadioVOV"  onchange="handleRadioChangeLocal()">
                                 <label for="RadioVOV" title="Tìm kiếm RadioVOV">Radio</label></center>
 						</td>
-						<td colspan="3"><center>
+						<td colspan="2"><center>
 	
 <select class="custom-select" name="SelectRadioVOV" id="SelectRadioVOV">
 <?php
