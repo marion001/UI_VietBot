@@ -236,6 +236,13 @@ if (isset($data_config['smart_config']['mic']['identifier_name'])) {
 	
 	//Led
 	$LED_TYPE = $data_config['smart_config']['led']['type'];
+// Kiểm tra nếu giá trị là null, thì thay thế bằng "Null"
+if ($LED_TYPE === null) {
+    $LED_TYPE_Replace = "None";
+} else {
+    // Nếu không phải null, hiển thị giá trị
+    $LED_TYPE_Replace = $LED_TYPE;
+}
 	$LED_NUMBER_LED = $data_config['smart_config']['led']['number_led'];
 	$LED_GPIO = $data_config['smart_config']['led']['led_gpio'];
 	$LED_EFFECT_MODE = $data_config['smart_config']['led']['effect_mode'];
@@ -2429,8 +2436,8 @@ else if (radio.value === "tts_gg_free") {
                 NumberModeLed.type = "text";
                 NumberModeLed.value = "";
                 NumberLedGPIO.type = "number";
-                NumberLedGPIO.value = "<?php echo $LED_GPIO; ?>";
-				NumberLedGPIO.placeholder = "<?php echo $LED_GPIO; ?>";
+                NumberLedGPIO.value = "<?php echo $LED_GPIO = ($LED_GPIO == 0) ? 10 : $LED_GPIO; ?>";
+				NumberLedGPIO.placeholder = "<?php echo $LED_GPIO = ($LED_GPIO == 0) ? 10 : $LED_GPIO; ?>";
 				EffectModeInput.type = "text";
 				EffectModeInput.value = "";
 				BrightnessModeInput.type = "text";
@@ -2461,9 +2468,10 @@ else if (radio.value === "tts_gg_free") {
                 NumberModeLed.value = "";
 				EffectModeInput.type = "number";
                 NumberLedGPIO.type = "number";
-                NumberLedGPIO.value = "<?php echo $LED_GPIO; ?>";
-				NumberLedGPIO.placeholder = "<?php echo $LED_GPIO; ?>";
-				EffectModeInput.value = "<?php echo $LED_EFFECT_MODE; ?>";
+                NumberLedGPIO.value = "<?php echo $LED_GPIO = ($LED_GPIO == 0) ? 10 : $LED_GPIO; ?>";
+				NumberLedGPIO.placeholder = "<?php echo $LED_GPIO = ($LED_GPIO == 0) ? 10 : $LED_GPIO; ?>";
+				//EffectModeInput.value = "<?php echo $LED_EFFECT_MODE; ?>";
+				EffectModeInput.value = "<?php echo $LED_EFFECT_MODE = ($LED_EFFECT_MODE == 0) ? 1 : $LED_EFFECT_MODE; ?>";
 				EffectModeInput.min = "1";
 				EffectModeInput.max = "2";
 				EffectModeInput.placeholder = "1->2"
@@ -2495,38 +2503,46 @@ else if (radio.value === "tts_gg_free") {
 				disabledInputs["effect_mode_input"].disabled = true;
 				disabledInputs["effect_mode_input"].required = false;
 				NumberModeLed.type = "number";
-				NumberModeLed.value = "<?php echo $LED_NUMBER_LED; ?>";
+				//NumberModeLed.value = "<?php echo $LED_NUMBER_LED; ?>";
+				NumberModeLed.value = "<?php echo $LED_NUMBER_LED = ($LED_NUMBER_LED == 0) ? 12 : $LED_NUMBER_LED; ?>";
                 NumberLedGPIO.type = "number";
-                NumberLedGPIO.value = "<?php echo $LED_GPIO; ?>";
-				NumberLedGPIO.placeholder = "<?php echo $LED_GPIO; ?>";
+                NumberLedGPIO.value = "<?php echo $LED_GPIO = ($LED_GPIO == 0) ? 10 : $LED_GPIO; ?>";
+				NumberLedGPIO.placeholder = "<?php echo $LED_GPIO = ($LED_GPIO == 0) ? 10 : $LED_GPIO; ?>";
 				NumberModeLed.min = "0";
-				NumberModeLed.placeholder = "16";
+				NumberModeLed.placeholder = "<?php echo $LED_NUMBER_LED = ($LED_NUMBER_LED == 0) ? 12 : $LED_NUMBER_LED; ?>";
 				EffectModeInput.type = "text";
-				EffectModeInput.value = "<?php echo $LED_EFFECT_MODE; ?>";
+				EffectModeInput.value = "0";
 				EffectModeInput.placeholder = ""
 				BrightnessModeInput.type = "number";
-				BrightnessModeInput.value = "<?php echo $LED_BRIGHTNESS; ?>";
+				//BrightnessModeInput.value = "<?php echo $LED_BRIGHTNESS; ?>";
+				BrightnessModeInput.value = "<?php echo $LED_BRIGHTNESS = ($LED_BRIGHTNESS == 0) ? 210 : $LED_BRIGHTNESS; ?>";
 				BrightnessModeInput.min = "0";
-				BrightnessModeInput.placeholder = "150";
+				BrightnessModeInput.max = "210";
+				BrightnessModeInput.placeholder = "210";
 				WakeupColorModeInput.type = "text";
-				WakeupColorModeInput.value = "<?php echo $LED_WAKEUP_COLOR; ?>";
+				//WakeupColorModeInput.value = "<?php echo $LED_WAKEUP_COLOR; ?>";
+				WakeupColorModeInput.value = "<?php echo $LED_WAKEUP_COLOR = ($LED_WAKEUP_COLOR == 0) ? '00ff04' : $LED_WAKEUP_COLOR; ?>";
 				MutedColorModeInput.type = "text";
-				MutedColorModeInput.value = "<?php echo $LED_MUTED_COLOR; ?>";
+				//MutedColorModeInput.value = "<?php echo $LED_MUTED_COLOR; ?>";
+				MutedColorModeInput.value = "<?php echo $LED_MUTED_COLOR = ($LED_MUTED_COLOR == 0) ? 'ff0000' : $LED_MUTED_COLOR; ?>";
 				//ListenEffectModeInput.value = "";
 				ListenEffectModeInput.type = "number";
-				ListenEffectModeInput.value = "<?php echo $LED_LISTEN_EFFECT; ?>";
+				//ListenEffectModeInput.value = "<?php echo $LED_LISTEN_EFFECT; ?>";
+				ListenEffectModeInput.value = "<?php echo $LED_LISTEN_EFFECT = ($LED_LISTEN_EFFECT == 0) ? 1 : $LED_LISTEN_EFFECT; ?>";
 				ListenEffectModeInput.min = "1";
 				ListenEffectModeInput.max = "3";
 				ListenEffectModeInput.placeholder = "1->3";
 				//ThinkEffectModeInput.value = "";
 				ThinkEffectModeInput.type = "number";
-				ThinkEffectModeInput.value = "<?php echo $LED_THINK_EFFECT; ?>";
+				//ThinkEffectModeInput.value = "<?php echo $LED_THINK_EFFECT; ?>";
+				ThinkEffectModeInput.value = "<?php echo $LED_THINK_EFFECT = ($LED_THINK_EFFECT == 0) ? 2 : $LED_THINK_EFFECT; ?>";
 				ThinkEffectModeInput.min = "1";
 				ThinkEffectModeInput.max = "3";
 				ThinkEffectModeInput.placeholder = "1->3";
 				//SpeakEffectModeInput.value = "";
 				SpeakEffectModeInput.type = "number";
-				SpeakEffectModeInput.value = "<?php echo $LED_SPEAK_EFFECT; ?>";
+				//SpeakEffectModeInput.value = "<?php echo $LED_SPEAK_EFFECT; ?>";
+				SpeakEffectModeInput.value = "<?php echo $LED_SPEAK_EFFECT = ($LED_SPEAK_EFFECT == 0) ? 3 : $LED_SPEAK_EFFECT; ?>";
 				SpeakEffectModeInput.min = "1";
 				SpeakEffectModeInput.max = "3";
 				SpeakEffectModeInput.placeholder = "1->3";
@@ -2556,15 +2572,18 @@ else if (radio.value === "tts_gg_free") {
 				EffectModeInput.value = "";
 				EffectModeInput.placeholder = ""
                 NumberLedGPIO.type = "number";
-                NumberLedGPIO.value = "<?php echo $LED_GPIO; ?>";
-				NumberLedGPIO.placeholder = "<?php echo $LED_GPIO; ?>";
+                //NumberLedGPIO.value = "<?php echo $LED_GPIO; ?>";
+                NumberLedGPIO.value = "<?php echo $LED_GPIO = ($LED_GPIO == 0) ? 10 : $LED_GPIO; ?>";
+				NumberLedGPIO.placeholder = "<?php echo $LED_GPIO = ($LED_GPIO == 0) ? 10 : $LED_GPIO; ?>";
 				BrightnessModeInput.value = "";
 				BrightnessModeInput.placeholder = "";
 				WakeupColorModeInput.type = "text"; 
-				WakeupColorModeInput.value = "<?php echo $LED_WAKEUP_COLOR; ?>"; 
+				//WakeupColorModeInput.value = "<?php echo $LED_WAKEUP_COLOR; ?>"; 
+				WakeupColorModeInput.value = "<?php echo $LED_WAKEUP_COLOR = ($LED_WAKEUP_COLOR == 0) ? '00ff04' : $LED_WAKEUP_COLOR; ?>"; 
 				WakeupColorModeInput.pattern = "[a-zA-Z0-9]*"; 
 				MutedColorModeInput.type = "text"; 
-				MutedColorModeInput.value = "<?php echo $LED_MUTED_COLOR; ?>"; 
+				//MutedColorModeInput.value = "<?php echo $LED_MUTED_COLOR; ?>"; 
+				MutedColorModeInput.value = "<?php echo $LED_MUTED_COLOR = ($LED_MUTED_COLOR == 0) ? 'ff0000' : $LED_MUTED_COLOR; ?>"; 
 				MutedColorModeInput.pattern = "[a-zA-Z0-9]*"; 
 				ListenEffectModeInput.value = "";
 				ListenEffectModeInput.placeholder = "";
@@ -2593,38 +2612,46 @@ else if (radio.value === "tts_gg_free") {
 			disabledInputs["effect_mode_input"].disabled = true;
 			disabledInputs["effect_mode_input"].required = false;
 				NumberModeLed.type = "number";
-				NumberModeLed.value = "<?php echo $LED_NUMBER_LED; ?>";
+				//NumberModeLed.value = "<?php echo $LED_NUMBER_LED; ?>";
+				NumberModeLed.value = "<?php echo $LED_NUMBER_LED = ($LED_NUMBER_LED == 0) ? 10 : $LED_NUMBER_LED; ?>";
                 NumberLedGPIO.type = "number";
-                NumberLedGPIO.value = "<?php echo $LED_GPIO; ?>";
-				NumberLedGPIO.placeholder = "<?php echo $LED_GPIO; ?>";
+                NumberLedGPIO.value = "<?php echo $LED_GPIO = ($LED_GPIO == 0) ? 10 : $LED_GPIO; ?>";
+				NumberLedGPIO.placeholder = "<?php echo $LED_GPIO = ($LED_GPIO == 0) ? 10 : $LED_GPIO; ?>";
 				NumberModeLed.min = "0";
 				NumberModeLed.placeholder = "16";
 				EffectModeInput.type = "text";
-				EffectModeInput.value = "<?php echo $LED_EFFECT_MODE; ?>";
+				EffectModeInput.value = "0";
 				EffectModeInput.placeholder = ""
 				BrightnessModeInput.type = "number";
-				BrightnessModeInput.value = "<?php echo $LED_BRIGHTNESS; ?>";
+				//BrightnessModeInput.value = "<?php echo $LED_BRIGHTNESS; ?>";
+				BrightnessModeInput.value = "<?php echo $LED_BRIGHTNESS = ($LED_BRIGHTNESS == 0) ? 210 : $LED_BRIGHTNESS; ?>";
 				BrightnessModeInput.min = "0";
-				BrightnessModeInput.placeholder = "150";
+				BrightnessModeInput.max = "210";
+				BrightnessModeInput.placeholder = "210";
 				WakeupColorModeInput.type = "text";
-				WakeupColorModeInput.value = "<?php echo $LED_WAKEUP_COLOR; ?>";
+				//WakeupColorModeInput.value = "<?php echo $LED_WAKEUP_COLOR; ?>";
+				WakeupColorModeInput.value = "<?php echo $LED_WAKEUP_COLOR = ($LED_WAKEUP_COLOR == 0) ? '00ff04' : $LED_WAKEUP_COLOR; ?>";
 				MutedColorModeInput.type = "text";
-				MutedColorModeInput.value = "<?php echo $LED_MUTED_COLOR; ?>";
+				//MutedColorModeInput.value = "<?php echo $LED_MUTED_COLOR; ?>";
+				MutedColorModeInput.value = "<?php echo $LED_MUTED_COLOR = ($LED_MUTED_COLOR == 0) ? 'ff0000' : $LED_MUTED_COLOR; ?>";
 				//ListenEffectModeInput.value = "";
 				ListenEffectModeInput.type = "number";
-				ListenEffectModeInput.value = "<?php echo $LED_LISTEN_EFFECT; ?>";
+				//ListenEffectModeInput.value = "<?php echo $LED_LISTEN_EFFECT; ?>";
+				ListenEffectModeInput.value = "<?php echo $LED_LISTEN_EFFECT = ($LED_LISTEN_EFFECT == 0) ? 1 : $LED_LISTEN_EFFECT; ?>";
 				ListenEffectModeInput.min = "1";
 				ListenEffectModeInput.max = "4";
 				ListenEffectModeInput.placeholder = "1->4";
 				//ThinkEffectModeInput.value = "";
 				ThinkEffectModeInput.type = "number";
-				ThinkEffectModeInput.value = "<?php echo $LED_THINK_EFFECT; ?>";
+				//ThinkEffectModeInput.value = "<?php echo $LED_THINK_EFFECT; ?>";
+				ThinkEffectModeInput.value = "<?php echo $LED_THINK_EFFECT = ($LED_THINK_EFFECT == 0) ? 2 : $LED_THINK_EFFECT; ?>";
 				ThinkEffectModeInput.min = "1";
 				ThinkEffectModeInput.max = "4";
 				ThinkEffectModeInput.placeholder = "1->4";
 				//SpeakEffectModeInput.value = "";
 				SpeakEffectModeInput.type = "number";
-				SpeakEffectModeInput.value = "<?php echo $LED_SPEAK_EFFECT; ?>";
+				//SpeakEffectModeInput.value = "<?php echo $LED_SPEAK_EFFECT; ?>";
+				SpeakEffectModeInput.value = "<?php echo $LED_SPEAK_EFFECT = ($LED_SPEAK_EFFECT == 0) ? 3 : $LED_SPEAK_EFFECT; ?>";
 				SpeakEffectModeInput.min = "1";
 				SpeakEffectModeInput.max = "4";
 				SpeakEffectModeInput.placeholder = "1->4";
@@ -2643,8 +2670,8 @@ else if (radio.value === "tts_gg_free") {
                 NumberModeLed.type = "text";
                 NumberModeLed.value = "";
                 NumberLedGPIO.type = "number";
-                NumberLedGPIO.value = "<?php echo $LED_GPIO; ?>";
-				NumberLedGPIO.placeholder = "<?php echo $LED_GPIO; ?>";
+                NumberLedGPIO.value = "0";
+				NumberLedGPIO.placeholder = "10";
                 NumberModeLed.placeholder = "";
 				EffectModeInput.type = "text";
 				EffectModeInput.value = "";
@@ -2686,42 +2713,71 @@ else if (radio.value === "tts_gg_free") {
 				for (var i = 0; i < disabledInputs.length; i++) {
 				disabledInputs[i].required = true;
 			}
+				//Số Lượng Led
 				NumberModeLed.type = "number";
-				NumberModeLed.value = "<?php echo $LED_NUMBER_LED; ?>";
+				//NumberModeLed.value = "<?php echo $LED_NUMBER_LED; ?>";
+				NumberModeLed.value = "<?php echo $LED_NUMBER_LED = ($LED_NUMBER_LED == 0) ? 12 : $LED_NUMBER_LED; ?>";
+				NumberModeLed.placeholder = "<?php echo $LED_NUMBER_LED = ($LED_NUMBER_LED == 0) ? 12 : $LED_NUMBER_LED; ?>";
+				
+				//Chân GPIO LED
                 NumberLedGPIO.type = "number";
-                NumberLedGPIO.value = "<?php echo $LED_GPIO; ?>";
-				NumberLedGPIO.placeholder = "<?php echo $LED_GPIO; ?>";
-				NumberModeLed.placeholder = "16";
+                //NumberLedGPIO.value = "<?php echo $LED_GPIO; ?>";
+                NumberLedGPIO.value = "<?php echo $LED_GPIO = ($LED_GPIO == 0) ? 10 : $LED_GPIO; ?>";
+				NumberLedGPIO.placeholder = "<?php echo $LED_GPIO = ($LED_GPIO == 0) ? 10 : $LED_GPIO; ?>";
+				
+				//Chế độ hiệu ứng
 				EffectModeInput.type = "number";
-				EffectModeInput.value = "<?php echo $LED_EFFECT_MODE; ?>";
+				//EffectModeInput.value = "<?php echo $LED_EFFECT_MODE; ?>";
+				EffectModeInput.value = "<?php echo $LED_EFFECT_MODE = ($LED_EFFECT_MODE == 0) ? 1 : $LED_EFFECT_MODE; ?>";
 				EffectModeInput.min = "1";
 				EffectModeInput.max = "2";
 				EffectModeInput.placeholder = "1->2"
+				
+				//độ sáng led
 				BrightnessModeInput.type = "number";
-				BrightnessModeInput.value = "<?php echo $LED_BRIGHTNESS; ?>";
-				BrightnessModeInput.placeholder = "150";
+				//BrightnessModeInput.value = "<?php echo $LED_BRIGHTNESS; ?>";
+				BrightnessModeInput.value = "<?php echo $LED_BRIGHTNESS = ($LED_BRIGHTNESS == 0) ? 210 : $LED_BRIGHTNESS; ?>";
+				BrightnessModeInput.placeholder = "210";
 				BrightnessModeInput.min = "0";
+				BrightnessModeInput.max = "210";
+				
+				//màu khi được đánh thức
 				WakeupColorModeInput.type = "text"; 
-				WakeupColorModeInput.value = "<?php echo $LED_WAKEUP_COLOR; ?>"; 
+				//WakeupColorModeInput.value = "<?php echo $LED_WAKEUP_COLOR; ?>"; 
+				WakeupColorModeInput.value = "<?php echo $LED_WAKEUP_COLOR = ($LED_WAKEUP_COLOR == 0) ? '00ff04' : $LED_WAKEUP_COLOR; ?>"; 
 				WakeupColorModeInput.pattern = "[a-zA-Z0-9]*"; 
+				WakeupColorModeInput.placeholder = "00ff04"; 
+				
+				//màu khi tắt mic
 				MutedColorModeInput.type = "text"; 
-				MutedColorModeInput.value = "<?php echo $LED_MUTED_COLOR; ?>"; 
+				//MutedColorModeInput.value = "<?php echo $LED_MUTED_COLOR; ?>"; 
+				MutedColorModeInput.value = "<?php echo $LED_MUTED_COLOR = ($LED_MUTED_COLOR == 0) ? 'ff0000' : $LED_MUTED_COLOR; ?>"; 
 				MutedColorModeInput.pattern = "[a-zA-Z0-9]*"; 
+				MutedColorModeInput.placeholder = "ff0000"; 
+				
+				//hiệu ứng nghe
 				//ListenEffectModeInput.value = "";
 				ListenEffectModeInput.type = "number";
-				ListenEffectModeInput.value = "<?php echo $LED_LISTEN_EFFECT; ?>";
+				//ListenEffectModeInput.value = "<?php echo $LED_LISTEN_EFFECT; ?>";
+				ListenEffectModeInput.value = "<?php echo $LED_LISTEN_EFFECT = ($LED_LISTEN_EFFECT == 0) ? 1 : $LED_LISTEN_EFFECT; ?>";
 				ListenEffectModeInput.min = "1";
 				ListenEffectModeInput.max = "8";
 				ListenEffectModeInput.placeholder = "1->8";
+				
+				//hiệu ứng chờ xử lý
 				//ThinkEffectModeInput.value = "";
 				ThinkEffectModeInput.type = "number";
-				ThinkEffectModeInput.value = "<?php echo $LED_THINK_EFFECT; ?>";
+				//ThinkEffectModeInput.value = "<?php echo $LED_THINK_EFFECT; ?>";
+				ThinkEffectModeInput.value = "<?php echo $LED_THINK_EFFECT = ($LED_THINK_EFFECT == 0) ? 2 : $LED_THINK_EFFECT; ?>";
 				ThinkEffectModeInput.min = "1";
 				ThinkEffectModeInput.max = "8";
 				ThinkEffectModeInput.placeholder = "1->8";
+				
+				//Hiệu Ứng khi trả lời
 				//SpeakEffectModeInput.value = "";
 				SpeakEffectModeInput.type = "number";
-				SpeakEffectModeInput.value = "<?php echo $LED_SPEAK_EFFECT; ?>";
+				//SpeakEffectModeInput.value = "<?php echo $LED_SPEAK_EFFECT; ?>";
+				SpeakEffectModeInput.value = "<?php echo $LED_SPEAK_EFFECT = ($LED_SPEAK_EFFECT == 0) ? 3 : $LED_SPEAK_EFFECT; ?>";
 				SpeakEffectModeInput.min = "1";
 				SpeakEffectModeInput.max = "8";
 				SpeakEffectModeInput.placeholder = "1->8";
@@ -3313,6 +3369,98 @@ $(document).ready(function() {
         // Gọi hàm để disable radio buttons khi trang được load
     disableRadioButtons();
 </script>
+
+<script>
+
+    // Disable các input khi trang được tải lần đầu của chọn kiểu led 
+    function disableLedInputXX() {
+            // Lấy dữ liệu JSON từ file PHP (điều này cần được thực hiện thông qua AJAX trong ứng dụng thực tế)
+            // Để đơn giản, ta chỉ sử dụng biến jsonData để lưu dữ liệu JSON trong ví dụ này.
+            var led_GET_TYPe = "<?php echo $LED_TYPE_Replace; ?>";
+			//console.log(led_GET_TYPe);
+            // Kiểm tra nếu giá trị trong JSON là "tts_edge" thì disable các radio button có id tương ứng
+            if (led_GET_TYPe === "None") {
+                document.getElementById("number_led_gpio_output").disabled = true;
+                document.getElementById("number_led_mode_input").disabled = true;
+                document.getElementById("brightness_mode_input").disabled = true;
+                document.getElementById("effect_mode_input").disabled = true;
+                document.getElementById("listen_effect_mode_input").disabled = true;
+                document.getElementById("think_effect_mode_input").disabled = true;
+                document.getElementById("speak_effect_mode_input").disabled = true;
+                document.getElementById("wakeup_color_mode_input").disabled = true;
+                document.getElementById("muted_color_mode_input").disabled = true;
+                document.getElementById("color_pickerwakeup_color").disabled = true;
+                document.getElementById("color_pickermuted_color").disabled = true;
+            } else if (led_GET_TYPe === "WS2812") {
+                document.getElementById("effect_mode_input").disabled = true;
+            } else if (led_GET_TYPe === "ReSpeaker Mic Array v2.0") {
+				//document.getElementById("number_led_gpio_output").disabled = true;
+                document.getElementById("number_led_mode_input").disabled = true;
+                document.getElementById("brightness_mode_input").disabled = true;
+                document.getElementById("effect_mode_input").disabled = true;
+                document.getElementById("listen_effect_mode_input").disabled = true;
+                document.getElementById("think_effect_mode_input").disabled = true;
+                document.getElementById("speak_effect_mode_input").disabled = true;
+            } else if (led_GET_TYPe === "APA102") {
+                document.getElementById("effect_mode_input").disabled = true;
+            } else if (led_GET_TYPe === "ReSpeaker 4-Mics Pi HAT") {
+				//document.getElementById("number_led_gpio_output").disabled = true;
+                document.getElementById("number_led_mode_input").disabled = true;
+                document.getElementById("brightness_mode_input").disabled = true;
+                document.getElementById("listen_effect_mode_input").disabled = true;
+                document.getElementById("think_effect_mode_input").disabled = true;
+                document.getElementById("speak_effect_mode_input").disabled = true;
+                document.getElementById("wakeup_color_mode_input").disabled = true;
+                document.getElementById("muted_color_mode_input").disabled = true;
+                document.getElementById("color_pickerwakeup_color").disabled = true;
+                document.getElementById("color_pickermuted_color").disabled = true;
+			} else if (led_GET_TYPe === "ReSpeaker 2-Mics Pi HAT") {
+                //document.getElementById("number_led_gpio_output").disabled = true;
+                document.getElementById("number_led_mode_input").disabled = true;
+                document.getElementById("brightness_mode_input").disabled = true;
+                document.getElementById("effect_mode_input").disabled = true;
+                document.getElementById("listen_effect_mode_input").disabled = true;
+                document.getElementById("think_effect_mode_input").disabled = true;
+                document.getElementById("speak_effect_mode_input").disabled = true;
+                document.getElementById("wakeup_color_mode_input").disabled = true;
+                document.getElementById("muted_color_mode_input").disabled = true;
+                document.getElementById("color_pickerwakeup_color").disabled = true;
+                document.getElementById("color_pickermuted_color").disabled = true;
+			} 
+			/*else if (led_GET_TYPe === "Vietbot AIO Board V2.0") {
+				document.getElementById("number_led_gpio_output").disabled = false;
+                document.getElementById("number_led_mode_input").disabled = false;
+                document.getElementById("brightness_mode_input").disabled = false;
+                document.getElementById("effect_mode_input").disabled = false;
+                document.getElementById("listen_effect_mode_input").disabled = false;
+                document.getElementById("think_effect_mode_input").disabled = false;
+                document.getElementById("speak_effect_mode_input").disabled = false;
+                document.getElementById("wakeup_color_mode_input").disabled = false;
+                document.getElementById("muted_color_mode_input").disabled = false;
+                document.getElementById("color_pickerwakeup_color").disabled = false;
+                document.getElementById("color_pickermuted_color").disabled = false;
+			}
+			*/
+			else {
+				// Trường hợp còn lại (không phải), sẽ enable lại các radio button
+				document.getElementById("number_led_gpio_output").disabled = false;
+                document.getElementById("number_led_mode_input").disabled = false;
+                document.getElementById("brightness_mode_input").disabled = false;
+                document.getElementById("effect_mode_input").disabled = false;
+                document.getElementById("listen_effect_mode_input").disabled = false;
+                document.getElementById("think_effect_mode_input").disabled = false;
+                document.getElementById("speak_effect_mode_input").disabled = false;
+                document.getElementById("wakeup_color_mode_input").disabled = false;
+                document.getElementById("muted_color_mode_input").disabled = false;
+                document.getElementById("color_pickerwakeup_color").disabled = false;
+                document.getElementById("color_pickermuted_color").disabled = false;
+			}
+        }
+        // Disable các input khi trang được tải lần đầu của chọn kiểu led 
+    disableLedInputXX();
+</script>
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         updateColorPicker();
@@ -3367,9 +3515,8 @@ $(document).ready(function() {
         colorInput.value = selectedColor.substring(1); // Bỏ dấu # từ giá trị màu
     }
 </script>
-
-
 <script>
+//Test, Nghe thử âm thanh trước khi lưu config
     const audio = document.getElementById('audioPlayer');
     const audioSource = document.getElementById('audioSource');
     const songSelect_start = document.getElementById('songSelect_start');
@@ -3576,29 +3723,6 @@ $(document).ready(function() {
                 }
             });
         }
-        /*
-            // Thêm sự kiện xử lý khi form tải lên được submit
-            $("#uploadForm").submit(function(e) {
-                e.preventDefault(); // Ngăn chặn form submit mặc định
-
-                var formData = new FormData(this); // Lấy dữ liệu từ form
-
-                $.ajax({
-                    type: "POST",
-                    url: "Fork_PHP/hotword_ppn_upload.php",
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        alert(response); // Hiển thị thông báo từ server
-                        showFiles(); // Cập nhật danh sách file sau khi tải lên
-                    },
-                    error: function() {
-                        alert("Lỗi trong quá trình xử lý yêu cầu.");
-                    }
-                });
-            });
-        	*/
 
     // Hàm xử lý khi nút "Tải lên" được nhấn
     function uploadFiles() {
