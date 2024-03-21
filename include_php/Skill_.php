@@ -161,10 +161,8 @@ chmod($backupFile, 0777);
 	//Chat GPT
 	$ChatGptKey = @$_POST['chatgpt_key'];
 	$ChatGptchatgpt_timeout = @$_POST['chatgpt_timeout'];
-	//Google Brand
-	$Google_bard_Secure1PSID = @$_POST['Secure-1PSID'];
-	$Google_bard_Secure_1PSIDTS = @$_POST['Secure-1PSIDTS'];
-	$Google_bard_Secure_1PSIDCC = @$_POST['Secure-1PSIDCC'];
+	//Google Gemini
+	$Google_Gemini = @$_POST['Api_Key'];
 	
 	
 	//Telegram
@@ -228,10 +226,9 @@ chmod($backupFile, 0777);
 	
 	
 	//Google Brand
-    $skillArray['gg_bard']['Secure-1PSID'] = $Google_bard_Secure1PSID;
-    $skillArray['gg_bard']['Secure-1PSIDTS'] = $Google_bard_Secure_1PSIDTS;
-    $skillArray['gg_bard']['Secure-1PSIDCC'] = $Google_bard_Secure_1PSIDCC;
-    $skillArray['gg_bard']['cache_timeout'] = intval($_POST['bard_cache_time_out']);
+    $skillArray['google_ai']['api_key'] = $Google_Gemini;
+
+    $skillArray['google_ai']['cache_timeout'] = intval($_POST['bard_cache_time_out']);
 	// Google Asssitant Mode
     $skillArray['gg_ass']['mode'] = $Google_Assistant_Mode;
 	//Lưu Chế Độ Ưu Tiên
@@ -446,40 +443,25 @@ if (count($fileLists) > 0) {
 	
 	
 <hr/>
-<h5>Google Bard: <i class="bi bi-info-circle-fill" onclick="togglePopupggbard()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
+<h5>Google Gemini: <i class="bi bi-info-circle-fill" onclick="togglePopupggbard()" title="Nhấn Để Tìm Hiểu Thêm"></i></h5>
       <div id="popupContainerggbard" class="popup-container" onclick="hidePopupggbard()">
     <div id="popupContent" onclick="preventEventPropagationggbard(event)">
-      <center><b>Hướng Dẫn Lấy Session Authentication</b></center><br/>
-- Đi tới: <a href="https://bard.google.com/" target="_bank">https://bard.google.com/</a> và đăng nhập tài khoản google<br/>
-B1: Nhấn Vào <b>Dùng thử Bard</b> -> kéo hết điều khoản và sử dụng và chọn <b>Tôi Đồng Ý</b><br/>
-B2: khi hiện lên thông báo: <b>Bard là một thử nghiệm</b> Nhấn vào <b>Tiếp Tục</b><br/>
-B3: Nhấn F12 cho bảng điều khiển hoặc (nhấn chuột phải chọn Kiểm Tra Phần Tử)<br/>
-B4: Go to Application -> Cookies -> "__Secure-1PSID" và "__Secure-1PSIDTS" và "__Secure-1PSIDCC"
- 
+      <center><b>Hướng Dẫn Lấy API KEy Google Gemini</b></center><br/>
+- Đi tới: <a href="https://aistudio.google.com/app/apikey" target="_bank">https://aistudio.google.com/app/apikey</a> và đăng nhập tài khoản google
 </div> </div>
 <div class="row justify-content-center"><div class="col-auto">	 
  <table class="table table-responsive table-striped table-bordered align-middle">
 <tbody>
-<tr><th scope="row" colspan="2"><center><font color=red>Cookie Google Bard</font></center></th>
+<tr><th scope="row" colspan="2"><center><font color=red>Google Gemini</font></center></th>
 </tr>
-<tr><th scope="row">Secure-1PSID:</th>
-<td><input type="text" class="form-control" id="Secure-1PSID" name="Secure-1PSID" placeholder="Nhập Cookie Secure-1PSID Của Google bard" title="Nhập Cookie Secure-1PSID Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure-1PSID']; ?>">
-</td>
-</tr><tr>
-<th scope="row">Secure-1PSIDTS:</th>
-<td><input type="text" class="form-control" id="Secure-1PSIDTS" name="Secure-1PSIDTS" placeholder="Nhập Cookie Secure-1PSIDTS Của Google bard" title="Nhập Cookie Secure-1PSIDTS Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure-1PSIDTS']; ?>">
-</td>
-</tr>
-
-<tr>
-<th scope="row">Secure-1PSIDCC:</th>
-<td><input type="text" class="form-control" id="Secure-1PSIDCC" name="Secure-1PSIDCC" placeholder="Nhập Cookie Secure-1PSIDCC Của Google bard" title="Nhập Cookie Secure-1PSIDCC Của Google bard" value="<?php echo $skillArray['gg_bard']['Secure-1PSIDCC']; ?>">
+<tr><th scope="row">API KEY:</th>
+<td><input type="text" class="form-control" id="Api_Key" name="Api_Key" placeholder="Nhập API KEY Của Google bard" title="Nhập Api Key Của Google bard" value="<?php echo $skillArray['google_ai']['api_key']; ?>">
 </td>
 </tr>
 
 <tr>
 <th scope="row">Phiên làm việc (Giây/s):</th>
-<td><input type="number" class="form-control" id="bard_cache_time_out" step="100" min="43200" name="bard_cache_time_out" placeholder="43200" title="Hết thời gian chờ (s)" value="<?php echo $skillArray['gg_bard']['cache_timeout']; ?>">
+<td><input type="number" class="form-control" id="bard_cache_time_out" step="100" min="43200" name="bard_cache_time_out" placeholder="43200" title="Hết thời gian chờ (s)" value="<?php echo $skillArray['google_ai']['cache_timeout']; ?>">
 </td>
 </tr>
 
@@ -550,7 +532,7 @@ B4: Go to Application -> Cookies -> "__Secure-1PSID" và "__Secure-1PSIDTS" và 
       <td>    
 	  <select class="custom-select" name="priority1" id="priority1">
         <option value="">-- Chọn Trợ Lý/AI 1 --</option>
-        <option value="gg_bard" <?php if ($external_bot_priority_1 === "gg_bard") echo "selected"; ?>>Google Bard</option>
+        <option value="google_ai" <?php if ($external_bot_priority_1 === "google_ai") echo "selected"; ?>>Google Gemini</option>
         <option value="gg_ass" <?php if ($external_bot_priority_1 === "gg_ass") echo "selected"; ?>>Google Assistant</option>
         <option value="chatGPT" <?php if ($external_bot_priority_1 === "chatGPT") echo "selected"; ?>>Chat GPT</option>
     </select></td>
@@ -561,7 +543,7 @@ B4: Go to Application -> Cookies -> "__Secure-1PSID" và "__Secure-1PSIDTS" và 
       <td>    
 	  <select class="custom-select" name="priority2" id="priority2">
         <option value="">-- Chọn Trợ Lý/AI 2 --</option>
-        <option value="gg_bard" <?php if ($external_bot_priority_2 === "gg_bard") echo "selected"; ?>>Google Bard</option>
+        <option value="google_ai" <?php if ($external_bot_priority_2 === "google_ai") echo "selected"; ?>>Google Gemini</option>
         <option value="gg_ass" <?php if ($external_bot_priority_2 === "gg_ass") echo "selected"; ?>>Google Assistant</option>
         <option value="chatGPT" <?php if ($external_bot_priority_2 === "chatGPT") echo "selected"; ?>>Chat GPT</option>
     </select></td>
@@ -572,7 +554,7 @@ B4: Go to Application -> Cookies -> "__Secure-1PSID" và "__Secure-1PSIDTS" và 
       <td>    
 	  <select class="custom-select" name="priority3" id="priority3" onchange="vuTuyen()">
         <option value="">-- Chọn Trợ Lý/AI 3 --</option>
-        <option value="gg_bard" <?php if ($external_bot_priority_3 === "gg_bard") echo "selected"; ?>>Google Bard</option>
+        <option value="google_ai" <?php if ($external_bot_priority_3 === "google_ai") echo "selected"; ?>>Google Gemini</option>
         <option value="gg_ass" <?php if ($external_bot_priority_3 === "gg_ass") echo "selected"; ?>>Google Assistant</option>
         <option value="chatGPT" <?php if ($external_bot_priority_3 === "chatGPT") echo "selected"; ?>>Chat GPT</option>
     </select></td>
