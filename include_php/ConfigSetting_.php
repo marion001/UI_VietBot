@@ -1419,10 +1419,10 @@ HPDA</label>
 - Chuyển văn bản thành giọng nói
 </div></div>
 <center><b>Bạn Đang Dùng TTS: </b><b><font color="red"><?php echo $GET_TTS_Type_Replacee; ?></font></b></center>
-
+<!--
 <label><input title="Chưa hỗ trợ tts này" type="radio" name="tts_vietbot" disabled>
 <font color="blue" title="Chưa hỗ trợ tts này">Vietbot</font></label>&nbsp;
-
+-->
 <label><input type="radio" onclick="disableRadio()" name="tts_company" value="tts_gg_cloud" <?php if ($GET_TTS_Type === 'tts_gg_cloud') echo 'checked'; ?> onchange="showTokenInputTTS(this)" required>
 Google Cloud</label>&nbsp;<label>
 <input type="radio" onclick="disableRadio()" name="tts_company" value="tts_gg_free" <?php if ($GET_TTS_Type === 'tts_gg_free') echo 'checked'; ?> onchange="showTokenInputTTS(this)" required>
