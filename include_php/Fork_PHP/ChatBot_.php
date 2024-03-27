@@ -228,6 +228,8 @@ showTimestampCheckbox.addEventListener('change', () => {
 });
 
   const displayMessage = (message, isUserMessage, isTimeoutMessage = false) => {
+	  
+	  let messageTypePrefix = isUserMessage ? "<?php echo $MYUSERNAME; ?>: " : "Vietbot: ";
 	  //console.log(message);
 	  //Nếu Giá trị là undefined
 	if (typeof message === 'undefined') {
@@ -259,12 +261,23 @@ showTimestampCheckbox.addEventListener('change', () => {
   const timestamp = getTimestamp(); // Lấy thời gian
   const messageContent = document.createElement('div');
   messageContent.classList.add('message-content');
+  
+  /*
    // Kiểm tra trạng thái của ô kiểm "show-timestamp-checkbox"
  if (showTimestampCheckbox.checked) {
 	messageContent.innerHTML = `[${timestamp}] ${message}`; //  Thêm Hàm thời gian vào Chatbox khi được tích
   }else {
     messageContent.innerHTML = message; //nếu không được tích
   }
+  */
+  
+      // Thêm tiền tố với loại tin nhắn (BOT hoặc HUMAN) và thời gian vào nội dung tin nhắn
+    if (showTimestampCheckbox.checked) {
+        messageContent.innerHTML = `<strong>[${timestamp}] ${messageTypePrefix}</strong>${message}`;
+    } else {
+        messageContent.innerHTML = `<strong>${messageTypePrefix}</strong>${message}`;
+    }
+  
     const deleteButton = document.createElement('button');
     deleteButton.classList.add('delete-button');
     deleteButton.innerHTML = '&times;';
