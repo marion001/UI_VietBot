@@ -900,6 +900,13 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
 //$("#iframeChatBot").height("450px");
 //thay đổi kích thước chatbox
     $(document).ready(function() {
+		
+	// Cập nhật kích thước của iframe khi trang được tải lần đầu tiên
+    let newWidth = $("#sidebar").width();
+    let newHeight = $("#sidebar").height();
+    $("#iframeChatBot").width(newWidth);
+    $("#iframeChatBot").height(newHeight);
+	//End
         let isResizing = false;
         let lastDownX;
         let lastDownY;
