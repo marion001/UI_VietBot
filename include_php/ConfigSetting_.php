@@ -1013,8 +1013,8 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
 <style>
     body, html {
         background-color: #dbe0c9;
-		overflow-x: hidden; /* Ẩn thanh cuộn ngang */
-		max-width: 100%; /* Ngăn cuộn ngang trang */
+		/* overflow-x: hidden;  Ẩn thanh cuộn ngang */
+		/* max-width: 100%; Ngăn cuộn ngang trang */
     }
     
     .slider {
@@ -4145,7 +4145,7 @@ $(document).ready(function() {
                         html += '<td><center><font color=red>' + chromecast.ip_address + '</font></center></td>';
                         html += '<td><center><font color=red>' + chromecast.model_name + '</font></center></td>';
                         html += '<td><center><font color=red>' + chromecast.cast_type + '</font></center></td>';
-                        html += '<td><center><input class="form-control chrome_cast_name_call_scan" type="text" value="' + chromecast.name + '"></center></td>';
+                        html += '<td><center><input class="form-control chrome_cast_name_call_scan" style="width: 120px;" type="text" value="' + chromecast.name + '"></center></td>';
                         html += '<td><center><button type="button" class="btn btn-success" data-action="apply_scan_chromecast" data-chromecast_name_call="' + chromecast.name + '" data-chromecast_name="' + chromecast.name + '">Chọn</button></center></td>';
                         html += '</tr>';
                     });
