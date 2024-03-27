@@ -455,7 +455,7 @@ if (count($fileLists) > 0) {
 <tr><th scope="row" colspan="2"><center><font color=red>Google Gemini</font></center></th>
 </tr>
 <tr><th scope="row">API KEY:</th>
-<td><input type="text" class="form-control" id="Api_Key" name="Api_Key" placeholder="Nhập API KEY Của Google bard" title="Nhập Api Key Của Google bard" value="<?php echo $skillArray['google_ai']['api_key']; ?>">
+<td><input type="text" class="form-control" id="Api_Key" name="Api_Key" placeholder="Nhập API KEY Của Google Gemini" title="Nhập Api Key Của Google Gemini" value="<?php echo $skillArray['google_ai']['api_key']; ?>">
 </td>
 </tr>
 
@@ -464,7 +464,9 @@ if (count($fileLists) > 0) {
 <td><input type="number" class="form-control" id="bard_cache_time_out" step="100" min="43200" name="bard_cache_time_out" placeholder="43200" title="Hết thời gian chờ (s)" value="<?php echo $skillArray['google_ai']['cache_timeout']; ?>">
 </td>
 </tr>
-
+<tr>
+<td colspan="2"><center><input type="button" id="check_key_google_gemini" class="btn btn-warning" value="Kiểm Tra Token"></center></td>
+</tr>
 <!--
 <tr><td colspan="2"><center>
 <button class="btn btn-warning" type="button" onclick="sendCookiesBard()">Kiểm Tra Cookie</button>
@@ -1586,6 +1588,59 @@ if (count($fileLists) > 0) {
         }
     </script>
 	-->
+	
+<script>
+document.getElementById("check_key_google_gemini").addEventListener("click", function() {
+    $('#loading-overlay').show();
+    var googleGeminiKey = document.getElementById("Api_Key").value;
+    if (!googleGeminiKey) {
+        alert("Vui lòng nhập key Google Gemini.");
+        return;
+    }
+    var settings = {
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + googleGeminiKey,
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+            "contents": [{
+                "parts": [{
+                    "text": "chào bạn"
+                }]
+            }]
+        }),
+    };
+
+$.ajax(settings)
+    .done(function(response) {
+        if (response && response.candidates && response.candidates.length > 0) {
+            var content = response.candidates[0].content;
+            if (content && content.parts && content.parts.length > 0) {
+                var text = content.parts[0].text;
+                if (text) {
+                    alert("Key Google Gemini Hợp Lệ.\n\n" +text);
+                }
+            }
+        } else {
+            alert("Không có dữ liệu phản hồi hợp lệ.");
+        }
+        $('#loading-overlay').hide();
+    })
+    .fail(function(xhr, status, error) {
+        if (xhr.responseJSON && xhr.responseJSON.error) {
+            var errorMessage = xhr.responseJSON.error.message;
+            alert("Lỗi: " + errorMessage);
+        } else {
+            alert("Đã xảy ra lỗi: " + error);
+        }
+        $('#loading-overlay').hide();
+    });
+});
+</script>
+
+	
 <script>
     // Hàm để cuộn lên đầu trang
     function scrollToTop() {
