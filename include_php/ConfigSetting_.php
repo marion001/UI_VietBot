@@ -195,6 +195,8 @@ if (isset($data_config['smart_config']['mic']['identifier_name'])) {
 	//my_user
 	$MY_USER_NAME = $data_config['smart_config']['user_info']['name'];
 	
+	
+	
 	//console_ouput
 	if ($data_config['smart_config']['logging_type'] === null) {
 		$Get_Console_Ouput = "Null";
@@ -209,6 +211,11 @@ if (isset($data_config['smart_config']['mic']['identifier_name'])) {
 	$Welcome_Mode = $data_config['smart_answer']['sound']['welcome']['mode'];
 	$Welcome_Path = $data_config['smart_answer']['sound']['welcome']['path'];
 	$Welcome_Text = $data_config['smart_answer']['sound']['welcome']['text'];
+	
+	//Get Chrome Cast
+	$GET_chrome_cast_name = $data_config['smart_config']['speaker']['cast']['name'];
+	$GET_chrome_cast_name_call = $data_config['smart_config']['speaker']['cast']['call_name'];
+	
 	
 	//bot_mode "Tối Ưu Tốc Độ", "Cân Bằng", "Đầy Đủ Tính Năng"
 	//$Bot_Mode_Text = $data_config['smart_config']['bot_mode'];
@@ -354,7 +361,6 @@ if ($LED_TYPE === null) {
 
 $remotePath = "/home/pi/.local/lib/python3.9/site-packages/";
 $pattern = '/^pvporcupine-(\d+\.\d+\.\d+)\.dist-info$/m';
-//$pattern = '/^pvporcupine-(\d+\.\d+\.\d+)\.dist-info$/m';
 // Thực hiện lệnh ls để lấy danh sách thư mục
 $connection = ssh2_connect($serverIP, $SSH_Port);
 if (!$connection) {die($E_rror_HOST);}
@@ -786,6 +792,10 @@ chmod($backupFile, 0777);
 	$data_config['smart_answer']['tts']['type'] = $TTS_Company;
 	$data_config['smart_answer']['tts']['token'] = $TTS_Token_Key;
 	$data_config['smart_answer']['tts']['voice_name'] = $TTS_Voice_CheckINPUT;
+	
+	//Chrome Cast Scan
+	$data_config['smart_config']['speaker']['cast']['name'] = @$_POST['chrome_cast_name'];;
+	$data_config['smart_config']['speaker']['cast']['call_name'] = @$_POST['chrome_cast_name_call'];;
 	
 	if (@$_POST['speed_tts'] === "0") {
 		$data_config['smart_answer']['tts']['speed'] = null;
@@ -1471,6 +1481,41 @@ Microsoft EDGE</label>
 Tốc Độ: <input type="range" name="speed_tts" id="slider_tts" title="Phù Hợp Nhất Từ 0.5-1.5" min="0" max="1.5" step="0.1" value="<?php echo $Speed_TTS; ?>" class="slider" oninput="updateSliderValueTTS(this.value)"><font color=red><span id="slider-tts" class="slider-tts"><?php echo $Speed_TTS_MacDinh; ?></span></font>
 </center><hr/>
 <!-- -->
+<h5>Chrome Cast:</h5> 
+
+
+<div class="row g-3 d-flex justify-content-center"><div class="col-auto">
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col"><center>Tên Thiết Bị</center></th>
+      <th scope="col"><center>Gán Tên Để Gọi</center></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><input type="text" id="chrome_cast_name" name="chrome_cast_name" class="form-control" value="<?php echo $GET_chrome_cast_name; ?>" readonly></td>
+      <td><input type="text" id="chrome_cast_name_call" name="chrome_cast_name_call" class="form-control" value="<?php echo $GET_chrome_cast_name_call; ?>"></td>
+    </tr>
+    <tr>
+
+	  <td colspan="2"><center><input type="button" id="scan_chrome_cast" class="btn btn-warning" value="Scan Chrome Cast"></center></td>
+    </tr>
+	
+	
+  </tbody>
+
+  
+</table>
+  <div id="ketqua_scan_chrome_cast"></div>
+  
+
+</div></div>
+
+
+<hr/>
+
 <h5>Log:</h5> 
 <div class="row g-3 d-flex justify-content-center"><div class="col-auto"> 
 <table class="table table-bordered">
@@ -1795,31 +1840,31 @@ None (Không Dùng)</label></center>
 <td colspan="2"><input type="number" min="0" step="1" max="256" value="<?php echo $LED_BRIGHTNESS; ?>" placeholder="<?php echo $LED_BRIGHTNESS; ?>" id="brightness_mode_input" name="brightness" class="disabled-input form-control" ></td></tr>
 
 <tr><th scope="row">Chế độ hiệu ứng:</th>
-<td colspan="1"><input type="number" min="1" step="1" value="<?php echo $LED_EFFECT_MODE; ?>" id="effect_mode_input" name="effect_mode" class="disabled-input form-control"></td>
-
+<td colspan="2"><input type="number" min="1" step="1" value="<?php echo $LED_EFFECT_MODE; ?>" id="effect_mode_input" name="effect_mode" class="disabled-input form-control"></td>
+<!--
 <td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success"  onclick="sendLedSettings('effect_mode_input')" disabled>Test LED</button></td>
-
+-->
 
 
 </tr>
 
 <tr><th scope="row">Hiệu ứng nghe:</th>
-<td colspan="1"><input type="number" min="1" step="1" value="<?php echo $LED_LISTEN_EFFECT; ?>" id="listen_effect_mode_input" name="listen_effect" class="disabled-input form-control"></td>
-
+<td colspan="2"><input type="number" min="1" step="1" value="<?php echo $LED_LISTEN_EFFECT; ?>" id="listen_effect_mode_input" name="listen_effect" class="disabled-input form-control"></td>
+<!--
 <td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success" onclick="sendLedSettings('listen_effect_mode_input')" disabled>Test LED</button></td>
-
+-->
 </tr>
 <tr><th scope="row">Hiệu ứng chờ xử lý</th>
-<td colspan="1"><input type="number" min="1" step="1" value="<?php echo $LED_THINK_EFFECT; ?>" id="think_effect_mode_input" name="think_effect" class="disabled-input form-control"></td>
-
+<td colspan="2"><input type="number" min="1" step="1" value="<?php echo $LED_THINK_EFFECT; ?>" id="think_effect_mode_input" name="think_effect" class="disabled-input form-control"></td>
+<!--
 <td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success" onclick="sendLedSettings('think_effect_mode_input')" disabled>Test LED</button></td>
-
+-->
 </tr>
 <tr><th scope="row">Hiệu ứng khi trả lời:</th>
-<td colspan="1"><input type="number"  min="1" step="1" value="<?php echo $LED_SPEAK_EFFECT; ?>" id="speak_effect_mode_input" name="speak_effect" class="disabled-input form-control"></td>
-
+<td colspan="2"><input type="number"  min="1" step="1" value="<?php echo $LED_SPEAK_EFFECT; ?>" id="speak_effect_mode_input" name="speak_effect" class="disabled-input form-control"></td>
+<!--
 <td colspan="1"><button type="button" title="Test hiệu ứng led" class="btn btn-success" onclick="sendLedSettings('speak_effect_mode_input')" disabled>Test LED</button></td>
-
+-->
 </tr>
 <tr><th scope="row">Màu khi được đánh thức:</th>
 
@@ -3949,7 +3994,7 @@ $(document).ready(function() {
             success: function(response) {
                 // Kiểm tra nếu dữ liệu trả về là null
                 if (response === "") {
-                    alert("Không có dữ liệu trả về, kiểm tra lại Token không hợp lệ hoặc tài khoản picovoice đã bị khóa");
+                    alert("Không có dữ liệu trả về từ Mic_Scan.php");
                 } else {
                     // Chuyển đổi chuỗi JSON thành đối tượng JSON
                     var jsonResponse = JSON.parse(response);
@@ -3970,7 +4015,7 @@ $(document).ready(function() {
                         html += '<td><center><font color=red>' + mic.mic_id + '</font></center></td>';
                         html += '<td><center><font color=red>' + mic.mic_type_name + '</font></center></td>';
                         html += '<td><center><button type="button" class="btn btn-success" data-action="apply_scan_mic" data-alsa_mic_id="' + mic.mic_id + '" data-alsa_mic_namexx="' + mic.mic_type_name + '">Chọn</button></center></td>';
-                        html += '<td colspan="2"><center><button type="button" class="btn btn-primary" disabled>Test Mic</button></center></td>';
+                        //html += '<td colspan="2"><center><button type="button" class="btn btn-primary" disabled>Test Mic</button></center></td>';
                         html += '</tr>';
                     });
 
@@ -4017,7 +4062,7 @@ $(document).ready(function() {
             success: function(response) {
                 // Kiểm tra nếu dữ liệu trả về là null
                 if (response === "") {
-                    alert("Không có dữ liệu trả về, kiểm tra lại Token không hợp lệ hoặc tài khoản picovoice đã bị khóa");
+                    alert("Không có dữ liệu trả về từ Speaker_Scan.php");
                 } else {
                     // Chuyển đổi chuỗi JSON thành đối tượng JSON
                     var jsonResponse = JSON.parse(response);
@@ -4038,7 +4083,7 @@ $(document).ready(function() {
                         html += '<td><center><font color=red>' + speaker.amixer_scontrols_id + '</font></center></td>';
                         html += '<td><center><font color=red>' + speaker.amixer_scontrols_name + '</font></center></td>';
                         html += '<td><center><button type="button" class="btn btn-success" data-action="apply_scan_speaker" data-amixer_scontrols_id="' + speaker.amixer_scontrols_id + '" data-amixer_scontrols_name="' + speaker.amixer_scontrols_name + '">Chọn</button></center></td>';
-                        html += '<td colspan="2"><center><button type="button" class="btn btn-primary" disabled>Test Loa</button></center></td>';
+                        //html += '<td colspan="2"><center><button type="button" class="btn btn-primary" disabled>Test Loa</button></center></td>';
                         html += '</tr>';
                     });
 
@@ -4058,6 +4103,65 @@ $(document).ready(function() {
     });
 </script>
 
+<script>
+    // Sự kiện click trên nút "Áp dụng"
+    $(document).on("click", "[data-action='apply_scan_chromecast']", function() {
+        var chromeCastName = $(this).data("chromecast_name");
+        var chromeCastNameCall = $(this).data("chromecast_name_call");
+        var inputValuechromecast_name_call = $(this).closest('tr').find('.chrome_cast_name_call_scan').val();
+        
+        $("#chrome_cast_name").val(chromeCastName);
+        $("#chrome_cast_name_call").val(inputValuechromecast_name_call);
+        $("#select_chrome_cast_ok").html('Đã chọn ChromeCast: <b><font color=red>'+chromeCastName+'</font></b>, gán tên là: <b><font color=red>'+inputValuechromecast_name_call+'</font></b>');
+    });
+
+    // Sự kiện click trên nút "Quét Chrome Cast"
+    $("#scan_chrome_cast").on("click", function() {
+        $('#loading-overlay').show();
+
+        // Gửi yêu cầu AJAX sử dụng jQuery
+        $.ajax({
+            url: "Ajax/ChromeCast_Scan.php",
+            type: "GET",
+            success: function(response) {
+                if (response === "") {
+                    alert("Không có dữ liệu trả về từ ChromeCast_Scan.php");
+                } else {
+                    var jsonResponse = JSON.parse(response);
+                    var html = '';
+                    
+                    html += '<table class="table table-bordered"><thead>';
+                    html += '<tr><th scope="col" colspan="6"><center><font color=blue>Danh Sách Chrome Cast Được Phát Hiện</font><br/><p id="select_chrome_cast_ok"></p></center></th></tr><tr>';
+                    html += '  <th scope="col"><center>Tên</center></th>';
+                    html += '  <th scope="col"><center>IP</center></th>';
+                    html += '  <th scope="col" colspan="2"><center>Kiểu Loại</center></th>';
+                    html += '  <th scope="col"><center>Gán Tên Để Gọi</center></th>';
+                    html += '  <th scope="col"><center>Hành Động</center></th>';
+                    html += '</tr>';
+                    html += ' </thead><tbody>';
+                    jsonResponse.forEach(function(chromecast) {
+                        html += '<tr>';
+                        html += '<td><center><font color=red><b>' + chromecast.name + '</b></font></center></td>';
+                        html += '<td><center><font color=red>' + chromecast.ip_address + '</font></center></td>';
+                        html += '<td><center><font color=red>' + chromecast.model_name + '</font></center></td>';
+                        html += '<td><center><font color=red>' + chromecast.cast_type + '</font></center></td>';
+                        html += '<td><center><input class="form-control chrome_cast_name_call_scan" type="text" value="' + chromecast.name + '"></center></td>';
+                        html += '<td><center><button type="button" class="btn btn-success" data-action="apply_scan_chromecast" data-chromecast_name_call="' + chromecast.name + '" data-chromecast_name="' + chromecast.name + '">Chọn</button></center></td>';
+                        html += '</tr>';
+                    });
+
+                    html += '</tbody></table>';
+                    $('#ketqua_scan_chrome_cast').html(html);
+                }
+                $('#loading-overlay').hide();
+            },
+            error: function(xhr, status, error) {
+                alert("Đã xảy ra lỗi: " + error);
+                $('#loading-overlay').hide();
+            }
+        });
+    });
+</script>
 
 
 
