@@ -170,8 +170,8 @@ foreach ($keywordsTTS as $keywordTTS => $replacementTTS) {
 	$GET_Speaker_Amixer_ID = $data_config['smart_config']['speaker']['amixer_id'];
 	//$GET_Speaker_Identifier_Name = $data_config['smart_config']['speaker']['identifier_name'];
 	
-if (isset($data_config['smart_config']['speaker']['identifier_name'])) {
-    $GET_Speaker_Identifier_Name = $data_config['smart_config']['speaker']['identifier_name'];
+if (isset($data_config['smart_config']['speaker']['system']['identifier_name'])) {
+    $GET_Speaker_Identifier_Name = $data_config['smart_config']['speaker']['system']['identifier_name'];
 } else {
     // Xử lý trường hợp phần tử 'identifier_name' không tồn tại
     $GET_Speaker_Identifier_Name = "N/A";
@@ -695,7 +695,7 @@ chmod($backupFile, 0777);
 	$data_config["smart_config"]["mic"]["id"] = intval($_POST["alsa_mic_id"]);
 	//Lưu giá trị của Loa Speaker
 	$data_config["smart_config"]["speaker"]["amixer_id"] = intval($_POST["amixer_speaker_id"]);
-	$data_config["smart_config"]["speaker"]["identifier_name"] = $_POST["amixer_speaker_name"];
+	$data_config["smart_config"]["speaker"]["system"]["identifier_name"] = $_POST["amixer_speaker_name"];
 	$data_config["smart_config"]["speaker"]["system"]["amixer_id"] = intval($_POST["amixer_speaker_system_id"]);
 	
 	
@@ -1280,9 +1280,9 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col"><center>ID</center></th>
-      <th scope="col"><center>Tên</center></th>
       <th scope="col"><center>System ID</center></th>
+      <th scope="col"><center>Tên</center></th>
+      <th scope="col"><center>#ID</center></th>
     </tr>
   </thead>
   <tbody>
@@ -1294,10 +1294,12 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx -->
     </tr>
     <tr>
       <th scope="row">Loa</th>
-      <td><input type="number" id="amixer_speaker_id" name="amixer_speaker_id" class="form-control" value="<?php echo $GET_Speaker_Amixer_ID; ?>" readonly></td>
+	  <td><input type="number" id="amixer_speaker_system_id" name="amixer_speaker_system_id" class="form-control" value="<?php echo $GET_Speaker_System_Amixer_ID; ?>" readonly></td>
+      
       <td><input type="text" id="amixer_speaker_name" name="amixer_speaker_name" class="form-control" value="<?php echo $GET_Speaker_Identifier_Name; ?>" readonly></td>
-	  <td><input type="number" id="amixer_speaker_system_id" name="amixer_speaker_system_id" class="form-control" value="<?php echo $GET_Speaker_System_Amixer_ID; ?>" ></td>
-    </tr>
+
+	  <td><input type="number" id="amixer_speaker_id" name="amixer_speaker_id" class="form-control" value="<?php echo $GET_Speaker_Amixer_ID; ?>" readonly></td>   
+   </tr>
     <tr>
       <td colspan="2"><center><input type="button" id="scan_alsa_mic" class="btn btn-warning" value="Scan Mic"></center></td>
 
