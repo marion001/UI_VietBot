@@ -229,7 +229,7 @@ showTimestampCheckbox.addEventListener('change', () => {
 
   const displayMessage = (message, isUserMessage, isTimeoutMessage = false) => {
 	  
-	  let messageTypePrefix = isUserMessage ? "<?php echo $MYUSERNAME; ?>: " : "Vietbot: ";
+	  let messageTypePrefix = isUserMessage ? ": " : "Vietbot: ";
 	  //console.log(message);
 	  //Nếu Giá trị là undefined
 	if (typeof message === 'undefined') {
@@ -273,7 +273,7 @@ showTimestampCheckbox.addEventListener('change', () => {
   
       // Thêm tiền tố với loại tin nhắn (BOT hoặc HUMAN) và thời gian vào nội dung tin nhắn
     if (showTimestampCheckbox.checked) {
-        messageContent.innerHTML = `<strong>[${timestamp}] ${messageTypePrefix}</strong>${message}`;
+        messageContent.innerHTML = `<strong>[${timestamp}]${messageTypePrefix}</strong>${message}`;
     } else {
         messageContent.innerHTML = `<strong>${messageTypePrefix}</strong>${message}`;
     }
