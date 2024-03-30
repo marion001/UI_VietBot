@@ -85,6 +85,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     }
     
     .bot-message .message-content {
+		text-align: left;
         background-color: #cfbaba;
 		    font-family: Arial, sans-serif;
     font-size: 15px;
