@@ -229,7 +229,7 @@ showTimestampCheckbox.addEventListener('change', () => {
 
   const displayMessage = (message, isUserMessage, isTimeoutMessage = false) => {
 	  
-	  let messageTypePrefix = isUserMessage ? ": " : "Vietbot: ";
+	  let messageTypePrefix = isUserMessage ? " " : "Vietbot: ";
 	  //console.log(message);
 	  //Nếu Giá trị là undefined
 	if (typeof message === 'undefined') {
@@ -271,13 +271,53 @@ showTimestampCheckbox.addEventListener('change', () => {
   }
   */
   
-      // Thêm tiền tố với loại tin nhắn (BOT hoặc HUMAN) và thời gian vào nội dung tin nhắn
-    if (showTimestampCheckbox.checked) {
-        messageContent.innerHTML = `<strong>[${timestamp}]${messageTypePrefix}</strong>${message}`;
-    } else {
-        messageContent.innerHTML = `<strong>${messageTypePrefix}</strong>${message}`;
+// Hàm để hiển thị từng chữ cái của nội dung tin nhắn một cách tuần tự
+function typeWriter(element, text, index) {
+    if (index < text.length) {
+        element.innerHTML += text.charAt(index);
+        index++;
+        setTimeout(() => typeWriter(element, text, index), 50); // Thay đổi thời gian hiển thị tại đây
     }
-  
+}
+//Hiển thị tin nhắn lên html
+// Kiểm tra xem ô kiểm hiển thị thời gian được chọn hay không
+//nếu quá 250 ký tự
+const maxlengthMessage = 250;
+if (showTimestampCheckbox.checked) {
+    // Nếu ô kiểm được chọn
+    if (!isUserMessage) {
+        // Nếu tin nhắn là từ bot
+        if (message.length > maxlengthMessage) {
+            // Nếu tin nhắn không dài hơn 250 ký tự, hiển thị tin nhắn mà không sử dụng typeWriter
+            messageContent.innerHTML = '<b>[' + timestamp + ']' + messageTypePrefix + '</b>' + message;
+        } else {
+            // Nếu tin nhắn dài hơn 250 ký tự, không sử dụng typeWriter
+            messageContent.innerHTML = '<b>[' + timestamp + ']' + messageTypePrefix + '</b>';
+            typeWriter(messageContent, message, 0); // Gọi hàm typeWriter để hiển thị tin nhắn từ bot
+        }
+    } else {
+        // Nếu tin nhắn là từ người dùng, hiển thị tin nhắn với thời gian
+        messageContent.innerHTML = '<b>[' + timestamp + ']' + messageTypePrefix + '</b>' + message;
+    }
+} else {
+    // Nếu ô kiểm không được chọn
+    if (!isUserMessage) {
+        // Nếu tin nhắn là từ bot
+        if (message.length > maxlengthMessage) {
+            // Nếu tin nhắn không dài hơn 250 ký tự, hiển thị tin nhắn mà không sử dụng typeWriter
+            messageContent.innerHTML = '<b>' + messageTypePrefix + '</b>' + message;
+        } else {
+            // Nếu tin nhắn dài hơn 250 ký tự, không sử dụng typeWriter
+            messageContent.innerHTML = '<b>' + messageTypePrefix + '</b>';
+            typeWriter(messageContent, message, 0); // Gọi hàm typeWriter để hiển thị tin nhắn từ bot
+        }
+    } else {
+        // Nếu tin nhắn là từ người dùng, hiển thị tin nhắn với thời gian
+        messageContent.innerHTML = '<b>' + messageTypePrefix + '</b>' + message;
+    }
+}
+
+
     const deleteButton = document.createElement('button');
     deleteButton.classList.add('delete-button');
     deleteButton.innerHTML = '&times;';
