@@ -80,10 +80,14 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     
     .user-message .message-content {
         background-color: #89b8e7;
+		    font-family: Arial, sans-serif;
+    font-size: 15px;
     }
     
     .bot-message .message-content {
         background-color: #cfbaba;
+		    font-family: Arial, sans-serif;
+    font-size: 15px;
     }
     
     .typing-indicator {
@@ -195,6 +199,8 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
   color: red;
   cursor: pointer;
 }
+
+
 </style>
 <?php	
 if (isset($Web_UI_Login) && $Web_UI_Login === true) {
