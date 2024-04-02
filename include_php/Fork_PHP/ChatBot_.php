@@ -13,7 +13,7 @@
     <br/>
     <div class="chat-container">
         <div class="chat-wrapper">
-            <div id="message-content" class="message-content">Chào <?php echo $MYUSERNAME; ?> mình là loa thông minh Vietbot!</div>
+            <div id="message-content" class="message-content bg-primary text-white">Chào <?php echo $MYUSERNAME; ?> mình là loa thông minh Vietbot!</div>
         </div>
 
         <div id="chatbox" class="container-fluid"></div>
