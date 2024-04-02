@@ -74,8 +74,7 @@
 
     // Tải session từ localStorage nếu có
     let chatSession = JSON.parse(localStorage.getItem('chatSession')) || [];
-    console.log(chatSession);
-
+    //console.log(chatSession);
     // Hiển thị tin nhắn từ session đã lưu khi tải trang
     chatSession.forEach(function(message) {
         const messageElement = document.createElement('div');
@@ -315,35 +314,40 @@
                 if (message.length > maxlengthMessage) {
                     // Nếu tin nhắn không dài hơn 250 ký tự, hiển thị tin nhắn mà không sử dụng typeWriter
                     messageContent.innerHTML = '<b>[' + timestamp + ']' + messageTypePrefix + '</b>' + message;
-                    // Lưu session vào localStorage
-                    chatSession.push({
-                        sender: 'Bot',
-                        message: '<b>[' + timestamp + ']' + messageTypePrefix + '</b>' + message
-                    });
-                    localStorage.setItem('chatSession', JSON.stringify(chatSession));
-
+				// Lưu session vào localStorage nếu tin nhắn không chứa chuỗi "Vui lòng chờ thêm"
+				if (!message.includes('Vui lòng chờ thêm')) {
+					chatSession.push({
+						sender: 'Bot',
+						message: '<b>[' + timestamp + ']' + messageTypePrefix + '</b>' + message
+					});
+					localStorage.setItem('chatSession', JSON.stringify(chatSession));
+				}
                 } else {
                     // Nếu tin nhắn dài hơn 250 ký tự, không sử dụng typeWriter
                     messageContent.innerHTML = '<b>[' + timestamp + ']' + messageTypePrefix + '</b>';
                     typeWriter(messageContent, message, 0); // Gọi hàm typeWriter để hiển thị tin nhắn từ bot
-                    // Lưu session vào localStorage
-                    chatSession.push({
-                        sender: 'Bot',
-                        message: '<b>[' + timestamp + ']' + messageTypePrefix + '</b>' + message
-                    });
-                    localStorage.setItem('chatSession', JSON.stringify(chatSession));
+				// Lưu session vào localStorage nếu tin nhắn không chứa chuỗi "Vui lòng chờ thêm"
+				if (!message.includes('Vui lòng chờ thêm')) {
+					chatSession.push({
+						sender: 'Bot',
+						message: '<b>[' + timestamp + ']' + messageTypePrefix + '</b>' + message
+					});
+					localStorage.setItem('chatSession', JSON.stringify(chatSession));
+				}
                 }
             } else {
                 // Nếu tin nhắn là từ người dùng, hiển thị tin nhắn với thời gian
                 messageContent.innerHTML = '<b>[' + timestamp + ']' + messageTypePrefix + '</b>' + message;
+				// Lưu session vào localStorage nếu tin nhắn không chứa chuỗi "Vui lòng chờ thêm"
+				if (!message.includes('Vui lòng chờ thêm')) {
                 // Lưu session vào localStorage
-                chatSession.push({
-                    sender: 'Bạn',
-                    message: '<b>[' + timestamp + ']' + messageTypePrefix + '</b>' + message
-                });
-                localStorage.setItem('chatSession', JSON.stringify(chatSession));
-
-            }
+					chatSession.push({
+						sender: 'Bạn',
+						message: '<b>[' + timestamp + ']' + messageTypePrefix + '</b>' + message
+					});
+					localStorage.setItem('chatSession', JSON.stringify(chatSession));
+				}
+			}
         } else {
             // Nếu ô kiểm không được chọn
             if (!isUserMessage) {
@@ -351,35 +355,37 @@
                 if (message.length > maxlengthMessage) {
                     // Nếu tin nhắn không dài hơn 250 ký tự, hiển thị tin nhắn mà không sử dụng typeWriter
                     messageContent.innerHTML = '<b>' + messageTypePrefix + '</b>' + message;
-
+				if (!message.includes('Vui lòng chờ thêm')) {
                     chatSession.push({
                         sender: 'Bot',
                         message: '<b>' + messageTypePrefix + '</b>' + message
                     });
                     localStorage.setItem('chatSession', JSON.stringify(chatSession));
-
+				}
                 } else {
                     // Nếu tin nhắn dài hơn 250 ký tự, không sử dụng typeWriter
                     messageContent.innerHTML = '<b>' + messageTypePrefix + '</b>';
                     typeWriter(messageContent, message, 0); // Gọi hàm typeWriter để hiển thị tin nhắn từ bot
-
+				if (!message.includes('Vui lòng chờ thêm')) {
                     chatSession.push({
                         sender: 'Bot',
                         message: '<b>' + messageTypePrefix + '</b>' + message
                     });
                     localStorage.setItem('chatSession', JSON.stringify(chatSession));
-
+                }
                 }
             } else {
                 // Nếu tin nhắn là từ người dùng, hiển thị tin nhắn với thời gian
                 messageContent.innerHTML = '<b>' + messageTypePrefix + '</b>' + message;
 
                 // Lưu session vào localStorage
+			if (!message.includes('Vui lòng chờ thêm')) {
                 chatSession.push({
                     sender: 'Bạn',
                     message: '<b>' + messageTypePrefix + '</b>' + message
                 });
                 localStorage.setItem('chatSession', JSON.stringify(chatSession));
+            }
             }
         }
         const deleteButton = document.createElement('button');
