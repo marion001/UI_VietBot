@@ -47,11 +47,11 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     .chat-form {
         display: flex;
       /*  padding: 10px; */ 
-       background-color: #f0f0f0;
+       background-color: rgba(0,0,0,.03);
     }
         .chat-form-button {
 		padding-bottom: 30px; 
-        background-color: #f0f0f0;
+        background-color: rgba(0,0,0,.03);
     }
     .chat-input {
         flex-grow: 1;
@@ -76,17 +76,18 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         padding: 5px;
         margin: 5px;
         border-radius: 5px;
+		
     }
     
     .user-message .message-content {
-        background-color: #89b8e7;
+        background-color: #e2e3e5;
 		    font-family: Arial, sans-serif;
     font-size: 15px;
     }
     
     .bot-message .message-content {
 		text-align: left;
-        background-color: #cfbaba;
+        background-color: #d1ecf1;
 		    font-family: Arial, sans-serif;
     font-size: 15px;
     }
@@ -154,7 +155,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     }
     
     .chat-wrapper {
-        background-color: #f0f0f0;
+        background-color: rgba(0,0,0,.03);
      /*   padding: 10px; */
     }
     
@@ -162,7 +163,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         padding: 5px;
         margin: 5px;
         border-radius: 5px;
-        background-color: #cfbaba;
+/*        background-color: #cfbaba; */
         text-align: center;
     }
     
@@ -179,7 +180,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         .chat-form {
             flex-direction: column;
             padding: 5px;
-            background-color: #f0f0f0;
+            background-color: rgba(0,0,0,.03);
         }
         .chat-input {
             margin-right: 0;
