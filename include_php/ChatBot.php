@@ -86,6 +86,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     }
     
     .bot-message .message-content {
+		
 		text-align: left;
         background-color: #d1ecf1;
 		    font-family: Arial, sans-serif;
@@ -201,7 +202,9 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
   color: red;
   cursor: pointer;
 }
-
+.vietbot-code {
+    white-space: pre-wrap; /* Bảo toàn dạng văn bản ban đầu và cho phép tự động xuống dòng */
+}
 
 </style>
 <?php	
