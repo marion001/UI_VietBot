@@ -90,7 +90,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
 		text-align: left;
         background-color: #d1ecf1;
 		    font-family: Arial, sans-serif;
-    font-size: 15px;
+    font-size: 16px;
     }
     
     .typing-indicator {
