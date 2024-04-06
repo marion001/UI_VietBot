@@ -214,6 +214,23 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
 		cursor: pointer;
 	}
 </style>
+<style>
+  #statusIndicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-block;
+   margin-bottom: 2px; 
+  }
+    .statusLine {
+    border-bottom: 2px dashed black;
+    width: 100%;
+    margin-bottom: 5px; /* Khoảng cách giữa chấm và đường ngang */
+  }
+  .online { background-color: #00FF33; }
+  .offline { background-color: red; }
+  .check_online_offline { background-color: #FF9900; }
+</style>
 </head>
 <body>
 	    <!-- Preloader -->
@@ -817,6 +834,8 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
     </div>
 
     <div class="pallet-button hide">
+	
+	
         <a href="javascript:void(0)" class="cp-toggle"><i class="bi bi-gear" title="Nhấn Để Hiển Thị Cài Đặt"></i></a>
  		
  <a onclick="toggleSidebar()" class="cp-toggleee"><i class="bi bi-chat-dots" title="Nhấn Để Mở ChatBot"></i></a>
@@ -826,12 +845,15 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
 
  
 	<div id="volume_slide_index" class="cp-toggleeeee">
+	  <div id="statusIndicator" title="Đang Kiểm Tra Trạng Thái Vietbot" class="check_online_offline"></div><div class="statusLine"></div>
+	
 	 <b><font color=blue><span id="volume_percentage"><?php echo $state_json->volume; ?></span>%</font></b>   
 
  
  <input type="range" class="volume_value" title="Kéo Để Thay Đổi Âm Lượng" id="volume_value" name="volume_value" min="0" max="100" step="1" value="<?php echo $state_json->volume; ?>">
 	<p class="bi bi-volume-up-fill" title="Âm Lượng"></p>	
- 
+	
+
  <!--
  	  <a class="colorred" onmousedown="startTimerMic()" onmouseup="stopTimerMic()" onclick="handleClickMic()" ontouchstart="startTimerMic()" ontouchend="stopTimerMic()"><i class="bi bi-mic-mute-fill" title="Nhấn nhả để Bật/Tắt mic, nhấn giữ 3s để Bật/Tắt câu phản hồi, nhấn tắt Mic và nhấn giữ 3s để khởi động lại Loa"></i></a>
 	-->
@@ -840,7 +862,7 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
 <a class="colorred" onmousedown="startTimer()" onmouseup="stopTimer()" ontouchstart="startTimer()" ontouchend="stopTimer()" onclick="handleClick()">
    <i class="bi bi-play-circle" title="Nhấn nhả để đánh thức Bot, Nhấn giữ 3s để bật chế độ hội thoại (Hỏi đáp liên tục)"></i>
 </a>
- 
+
  </div>
 	 
 
@@ -1510,6 +1532,45 @@ window.addEventListener('message', function(event) {
             //console.log(response);
         });
     }
+	
+	
+</script>
+<script>
+$(document).ready(function() {
+	var statusIndicator = document.getElementById('statusIndicator');
+	  statusIndicator.addEventListener('click', function() {
+    alert(this.title);
+  });
+  function updateStatus(status) {
+    
+    //var statusText = document.getElementById('statusText');
+
+    if (status === 'online') {
+      statusIndicator.className = 'online';
+	   statusIndicator.title = "Viebot Đang Online";
+      //statusText.innerText = 'Đang online';
+    } else {
+      statusIndicator.className = 'offline';
+      statusIndicator.title = 'Vietbot Đang Offline';
+      //statusText.innerText = 'Đã ngắt kết nối';
+    }
+  }
+
+  function ping() {
+    $.ajax({
+      url: "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
+      method: "GET",
+      success: function(response) {
+        updateStatus('online');
+      },
+      error: function(xhr, status, error) {
+        updateStatus('offline');
+      }
+    });
+  }
+
+  setInterval(ping, 10000); // Gửi ping mỗi 10 giây
+});
 </script>
 </body>
 
