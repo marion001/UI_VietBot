@@ -73,6 +73,19 @@ include "../Configuration.php";
     // Tải session từ localStorage nếu có
     let chatSession = JSON.parse(localStorage.getItem('chatSession')) || [];
 	let containsWord = false;
+            // Tạo một đối tượng JSON với các từ cần kiểm tra
+            let wordsToCheck = {
+                "code": true,
+                "viết": true,
+                "encode": true,
+                "decode": true,
+                "tạo": true,
+                "cách": true,
+                "hướng dẫn": true,
+                "lập trình": true,
+                "mã hóa": true,
+                "giải mã": true
+            };
     //console.log(chatSession);
     // Hiển thị tin nhắn từ session đã lưu khi tải trang
     chatSession.forEach(function(message) {
@@ -201,19 +214,7 @@ include "../Configuration.php";
                 return;
             }
 
-            // Tạo một đối tượng JSON với các từ cần kiểm tra
-            const wordsToCheck = {
-                "code": true,
-                "viết": true,
-                "encode": true,
-                "decode": true,
-                "tạo": true,
-                "cách": true,
-                "hướng dẫn": true,
-                "lập trình": true,
-                "mã hóa": true,
-                "giải mã": true
-            };
+
 
             // Chuyển đổi userMessageee thành chữ thường để kiểm tra xem có chứa từ code, viết, dễ dàng hơn
             var lowercaseMessage = userMessageee.toLowerCase();
@@ -411,7 +412,7 @@ include "../Configuration.php";
                 if (index < text.length) {
                     element.innerHTML += text.charAt(index);
                     index++;
-                    setTimeout(() => typeWriter(element, text, index), 50); // Thay đổi thời gian hiển thị tại đây
+                    setTimeout(() => typeWriter(element, text, index), 30); // Thay đổi thời gian hiển thị tại đây
                 }
             }
             //Hiển thị tin nhắn lên html
