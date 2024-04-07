@@ -23,7 +23,7 @@ include "../Configuration.php";
 					</span> -->
                     <select id="message-type-checkbox" class="form-select">
                         <option selected value="3" title="Chế Độ Hỏi Đáp Ở Chatbox Không Phát Ra Loa">Hỏi Đáp</option>
-                        <option value="Gemini" title="Áp Dụng Trợ Lý Ảo">AI</option>
+                        <option value="Gemini" title="Áp Dụng Trợ Lý Ảo">AI Beta</option>
                         <option value="2" title="Phát Nhạc, Podcast Ra Loa" data-podcastname="play_podcast">PodCast</option>
                         <option value="1" title="TTS Chuyển Văn Bản Thành Giọng Nói Để Đọc Ra Loa">Chỉ Đọc</option>
 
@@ -41,9 +41,9 @@ include "../Configuration.php";
 
         <center>
             <div class="btn-group-toggle chat-form-button" data-toggle="buttons">
-                <label class="btn btn-secondary">
+              <!--  <label class="btn btn-secondary">
                     <input type="checkbox" checked autocomplete="off" id="show-timestamp-checkbox"> Hiển thị thời gian
-                </label>
+                </label> -->
                 <button id="delete-all-button" class="btn btn-danger">Xóa tất cả tin nhắn</button>
             </div>
         </center>
@@ -72,6 +72,7 @@ include "../Configuration.php";
     let responseTimer; // Biến đếm thời gian chờ phản hồi
     // Tải session từ localStorage nếu có
     let chatSession = JSON.parse(localStorage.getItem('chatSession')) || [];
+	let containsWord = false;
     //console.log(chatSession);
     // Hiển thị tin nhắn từ session đã lưu khi tải trang
     chatSession.forEach(function(message) {
@@ -207,6 +208,7 @@ include "../Configuration.php";
                 "encode": true,
                 "decode": true,
                 "tạo": true,
+                "cách": true,
                 "hướng dẫn": true,
                 "lập trình": true,
                 "mã hóa": true,
@@ -216,7 +218,7 @@ include "../Configuration.php";
             // Chuyển đổi userMessageee thành chữ thường để kiểm tra xem có chứa từ code, viết, dễ dàng hơn
             var lowercaseMessage = userMessageee.toLowerCase();
             // Kiểm tra xem userMessageee có chứa từ trong danh sách từ cần kiểm tra không
-            let containsWord = false;
+
             for (const word in wordsToCheck) {
                 if (lowercaseMessage.includes(word)) {
                     containsWord = true;
@@ -226,6 +228,7 @@ include "../Configuration.php";
             // Kiểm tra xem userMessageee có chứa từ "code", "viết" hoặc "lập trình" không
             //if (lowercaseMessage.includes("code") || lowercaseMessage.includes("viết") || lowercaseMessage.includes("lập trình") || lowercaseMessage.includes("giải mã") || lowercaseMessage.includes("mã hóa")) {
             if (containsWord) {
+				//Gemini xử lý
                 //console.log("Tin nhắn của người dùng chứa từ 'code', 'viết' hoặc 'lập trình'.");
                 //console.log(userMessage);
                 //displayMessage(userMessage, true);
@@ -247,7 +250,6 @@ include "../Configuration.php";
                         }]
                     }]
                 })
-
                 .then(function(response) {
                         clearTimeout(waitMessageTimer); // Xóa thông báo "Vui lòng chờ thêm..." nếu đã hiển thị
                         //clearTimeout(responseTimer); // Xóa thông báo "Có vẻ Vietbot đang không phản hồi, vui lòng thử lại!" nếu đã hiển thị
@@ -279,7 +281,6 @@ include "../Configuration.php";
                         displayMessage(errorMessage, false);
                     });
             }
-
             //Vietbot Xử lý
             else {
                 //console.log("Tin nhắn của người dùng không chứa từ 'code', 'viết' hoặc 'lập trình'.");
@@ -353,14 +354,14 @@ include "../Configuration.php";
             }
         }
     });
-
+/*
     const showTimestampCheckbox = document.getElementById('show-timestamp-checkbox');
     // Thêm một trình nghe sự kiện để xử lý sự thay đổi của ô kiểm
     showTimestampCheckbox.addEventListener('change', () => {
         // Bật/tắt lớp 'hide-timestamp' trên khung chat dựa vào trạng thái của ô kiểm
         chatContainer.classList.toggle('hide-timestamp', !showTimestampCheckbox.checked);
     });
-
+*/
     const displayMessage = (message, isUserMessage, isTimeoutMessage = false) => {
         var botSelectorr = document.querySelector('#message-type-checkbox').value;
         var botSelectorr_rep; // Khai báo biến botSelectorr_rep ở đây
@@ -417,7 +418,7 @@ include "../Configuration.php";
             // Kiểm tra xem ô kiểm hiển thị thời gian được chọn hay không
             //nếu quá 250 ký tự
         const maxlengthMessage = 250;
-        if (showTimestampCheckbox.checked) {
+        //if (showTimestampCheckbox.checked) {
             // Nếu ô kiểm được chọn
             if (!isUserMessage) {
                 // Nếu tin nhắn là từ bot
@@ -433,8 +434,23 @@ include "../Configuration.php";
                         localStorage.setItem('chatSession', JSON.stringify(chatSession));
                     }
                 } else {
-                    // Nếu tin nhắn ngắn hơn 250 ký tự, sử dụng typeWriter
-                    messageContent.innerHTML = '<b>[' + timestamp + ']' + messageTypePrefix + '</b><pre class="vietbot-code">' + message + '</pre>';
+                    // Nếu tin nhắn ngắn hơn 250 ký tự, và không chứa các từ trong biến containsWord sử dụng typeWriter
+					if (!containsWord) {
+						console.log(containsWord);
+				messageContent.innerHTML = '<b>[' + timestamp + ']' + messageTypePrefix + '</b>';
+                    typeWriter(messageContent, message, 0); // Gọi hàm typeWriter để hiển thị tin nhắn từ bot
+                    // Lưu session vào localStorage nếu tin nhắn không chứa chuỗi "Vui lòng chờ thêm"
+                    if (!message.includes('Vui lòng chờ thêm')) {
+                        chatSession.push({
+                            sender: 'Bot',
+                            message: '<b>[' + timestamp + ']' + messageTypePrefix + '</b><pre class="vietbot-code">' + message + '</pre>'
+                        });
+                        localStorage.setItem('chatSession', JSON.stringify(chatSession));
+                    }
+					} 
+					//nếu tin nhắn có chứa containsWord thì hiển thị luôn
+					else {
+					messageContent.innerHTML = '<b>[' + timestamp + ']' + messageTypePrefix + '</b><pre class="vietbot-code">' + message + '</pre>';
                     typeWriter(messageContent, 0, 0); // Gọi hàm typeWriter để hiển thị tin nhắn từ bot
                     // Lưu session vào localStorage nếu tin nhắn không chứa chuỗi "Vui lòng chờ thêm"
                     if (!message.includes('Vui lòng chờ thêm')) {
@@ -444,6 +460,8 @@ include "../Configuration.php";
                         });
                         localStorage.setItem('chatSession', JSON.stringify(chatSession));
                     }
+						
+					}
                 }
             } else {
                 // Nếu tin nhắn là từ người dùng, hiển thị tin nhắn với thời gian
@@ -458,47 +476,7 @@ include "../Configuration.php";
                     localStorage.setItem('chatSession', JSON.stringify(chatSession));
                 }
             }
-        } else {
-            // Nếu ô kiểm không được chọn
-            if (!isUserMessage) {
-                // Nếu tin nhắn là từ bot
-                if (message.length > maxlengthMessage) {
-                    // Nếu tin nhắn không dài hơn 250 ký tự, hiển thị tin nhắn mà không sử dụng typeWriter
-                    messageContent.innerHTML = '<b>' + messageTypePrefix + '</b><pre class="vietbot-code">' + message + '</pre>';
-                    // Lưu session vào localStorage nếu tin nhắn không chứa chuỗi "Vui lòng chờ thêm"
-                    if (!message.includes('Vui lòng chờ thêm')) {
-                        chatSession.push({
-                            sender: 'Bot',
-                            message: '<b>' + messageTypePrefix + '</b><pre class="vietbot-code">' + message + '</pre>'
-                        });
-                        localStorage.setItem('chatSession', JSON.stringify(chatSession));
-                    }
-                } else {
-                    // Nếu tin nhắn dưới 250 ký tự, sử dụng typeWriter
-                    messageContent.innerHTML = '<b>' + messageTypePrefix + '</b><pre class="vietbot-code">' + message + '</pre>';
-                    // Gọi hàm typeWriter để hiển thị tin nhắn từ bot
-                    typeWriter(messageContent, 0, 0);
-                    if (!message.includes('Vui lòng chờ thêm')) {
-                        chatSession.push({
-                            sender: 'Bot',
-                            message: '<b>' + messageTypePrefix + '</b><pre class="vietbot-code">' + message + '</pre>'
-                        });
-                        localStorage.setItem('chatSession', JSON.stringify(chatSession));
-                    }
-                }
-            } else {
-                // Nếu tin nhắn là từ người dùng, hiển thị tin nhắn với thời gian
-                messageContent.innerHTML = '<b>' + messageTypePrefix + '</b><pre class="vietbot-code">' + message + '</pre>';
-                // Lưu session vào localStorage
-                if (!message.includes('Vui lòng chờ thêm')) {
-                    chatSession.push({
-                        sender: 'Bạn',
-                        message: '<b>' + messageTypePrefix + '</b><pre class="vietbot-code">' + message + '</pre>'
-                    });
-                    localStorage.setItem('chatSession', JSON.stringify(chatSession));
-                }
-            }
-        }
+        //} 
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('delete-button');
         deleteButton.innerHTML = '&times;';
