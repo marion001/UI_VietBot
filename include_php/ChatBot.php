@@ -90,7 +90,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
 		text-align: left;
         background-color: #d1ecf1;
 		    font-family: Arial, sans-serif;
-    font-size: 16px;
+    font-size: 15px;
     }
     
     .typing-indicator {
@@ -203,6 +203,8 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
   cursor: pointer;
 }
 .vietbot-code {
+	font-size: 15px;
+	font-family: Arial, sans-serif;
     white-space: pre-wrap; /* Bảo toàn dạng văn bản ban đầu và cho phép tự động xuống dòng */
 }
 
