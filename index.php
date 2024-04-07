@@ -1324,11 +1324,13 @@ window.addEventListener('message', function(event) {
 				//console.log("oK");
 			}
 
-            const newVolume = response.new_volume;
-            const oldVolume = response.old_volume;
-
-            volumeValue.value = newVolume;
-            volumePercentage.textContent = `${newVolume}`;
+            //const newVolume = response.new_volume;
+            //const oldVolume = response.old_volume;
+	
+            volumeValue.value = Math.round(value);
+			//document.getElementById('volume_value').value = receivedData.volume;
+            //volumePercentage.textContent = `${newVolume}`;
+            volumePercentage.textContent = Math.round(value);
 
             //console.log(response.state);
         });
@@ -1400,6 +1402,7 @@ window.addEventListener('message', function(event) {
 
             // Cập nhật giá trị âm lượng và hiển thị
             document.getElementById('volume_value').value = receivedData.volume;
+			//console.log(receivedData.volume);
             document.getElementById('volume_percentage').innerText = receivedData.volume;
         }
 
