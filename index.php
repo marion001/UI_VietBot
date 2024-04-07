@@ -215,21 +215,19 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
 	}
 </style>
 <style>
-  #statusIndicator {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    display: inline-block;
-   margin-bottom: 2px; 
+  .halfCircle {
+    width: 20px; /* Đặt kích thước cho hình tròn */
+    height: 20px; /* Đặt kích thước cho hình tròn */
+    border-radius: 50%; /* Đảm bảo hình tròn */
+    overflow: hidden; /* Ẩn bất kỳ phần nào vượt ra khỏi hình tròn */
+	margin-bottom: 2px;
   }
     .statusLine {
     border-bottom: 2px dashed black;
     width: 100%;
     margin-bottom: 5px; /* Khoảng cách giữa chấm và đường ngang */
   }
-  .online { background-color: #00FF33; }
-  .offline { background-color: red; }
-  .check_online_offline { background-color: #FF9900; }
+
 </style>
 </head>
 <body>
@@ -845,7 +843,7 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
 
  
 	<div id="volume_slide_index" class="cp-toggleeeee">
-	  <div id="statusIndicator" title="Đang Kiểm Tra Trạng Thái Vietbot" class="check_online_offline"></div><div class="statusLine"></div>
+	  <div class="halfCircle" id="circle" title="Đang Kiểm Tra Trạng Thái Vietbot"></div><div class="statusLine"></div>
 	
 	 <b><font color=blue><span id="volume_percentage"><?php echo $state_json->volume; ?></span>%</font></b>   
 
@@ -1525,7 +1523,7 @@ window.addEventListener('message', function(event) {
 
         $.ajax(settings).done(function(response) {
 			
-						if (response.response === "Đã kích hoạt nhấn phím Wakeup!") {
+			if (response.response === "Đã kích hoạt nhấn phím Wakeup!") {
 			    var audio = new Audio('assets/audio/ding.mp3');
 				audio.volume = 1;
 				audio.play();
@@ -1539,41 +1537,58 @@ window.addEventListener('message', function(event) {
 	
 </script>
 <script>
-$(document).ready(function() {
-	var statusIndicator = document.getElementById('statusIndicator');
-	  statusIndicator.addEventListener('click', function() {
+
+document.addEventListener("DOMContentLoaded", function() {
+    var halfCircle = document.getElementById("circle");
+    	  halfCircle.addEventListener('click', function() {
     alert(this.title);
   });
-  function updateStatus(status) {
-    
-    //var statusText = document.getElementById('statusText');
+  
+   halfCircle.style.background = "linear-gradient(to bottom, #FF9933 50%, #FF9933 50%)";
+  
+    // Hàm cập nhật trạng thái với linear gradient
+function updateStatusWithGradient(services_status, api_status, services_message, api_message) {
+    var color_services_status, color_api_status;
 
-    if (status === 'online') {
-      statusIndicator.className = 'online';
-	   statusIndicator.title = "Viebot Đang Online";
-      //statusText.innerText = 'Đang online';
-    } else {
-      statusIndicator.className = 'offline';
-      statusIndicator.title = 'Vietbot Đang Offline';
-      //statusText.innerText = 'Đã ngắt kết nối';
+    if (api_status === 'online') {
+        color_api_status = "#66FF00";
+    } else if (api_status === 'offline') {
+        color_api_status = "#FF0000";
+    } else { 
+        color_api_status = "#FFFF00";
     }
-  }
+    
+    if (services_status === 'online') {
+        color_services_status = "#66FF00";
+    } else if (services_status === 'offline') {
+        color_services_status = "#FF0000";
+    } else { 
+        color_services_status = "#FFFF00";
+    }
+    
+    halfCircle.style.background = "linear-gradient(to bottom, " + color_services_status + " 50%, " + color_api_status + " 50%)";
+    halfCircle.title = ' - '+services_message + '\n - ' + api_message;
+}
+    function ping() {
+        $.ajax({
+            url: "include_php/Ajax/Check_Vietbot_Services.php",
+            method: "GET",
+            success: function(response) {
+                var jsonresponse = JSON.parse(response);
+                updateStatusWithGradient(jsonresponse.services.status, jsonresponse.api.status, jsonresponse.services.message, jsonresponse.api.message);
+            },
+            error: function(xhr, status, error) {
+                //updateStatusWithGradient('error_ajax', 'Xảy ra lỗi trong quá trình ajax, mã lỗi: ' + error);
+				halfCircle.style.background = "linear-gradient(to bottom, #FF3300 50%, #FF3300 50%)";
+				halfCircle.title = 'Xảy ra lỗi trong quá trình ajax, mã lỗi: ' + error;
+            }
+        });
+    }
 
-  function ping() {
-    $.ajax({
-      url: "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
-      method: "GET",
-      success: function(response) {
-        updateStatus('online');
-      },
-      error: function(xhr, status, error) {
-        updateStatus('offline');
-      }
-    });
-  }
-
-  setInterval(ping, 10000); // Gửi ping mỗi 10 giây
+    // Gửi yêu cầu ping mỗi 10 giây
+    setInterval(ping, 10000);
 });
+
 </script>
 </body>
 
