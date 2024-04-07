@@ -223,7 +223,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
 	margin-bottom: 2px;
   }
     .statusLine {
-    border-bottom: 2px dashed black;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
     width: 100%;
     margin-bottom: 5px; /* Khoảng cách giữa chấm và đường ngang */
   }
