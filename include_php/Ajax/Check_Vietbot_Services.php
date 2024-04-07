@@ -39,7 +39,7 @@ curl_setopt($ch, CURLOPT_HEADER, 0);
 $response = curl_exec($ch);
 // Kiểm tra nếu có lỗi trong quá trình gửi yêu cầu
 if(curl_errno($ch)) {
-    $error_message = 'Kết nối tới API Vietbot không thành công, mã lỗi: ' . curl_error($ch);
+    $error_message = 'Lỗi kết nối tới API Vietbot, mã lỗi: ' . curl_error($ch);
     //echo 'Error: ' . $error_message;
     
     // Gán thông báo lỗi vào mảng $result['api']
@@ -54,8 +54,8 @@ if(curl_errno($ch)) {
         $result['api']['message'] = "Kết nối tới API Vietbot thành công";
         $result['api']['status'] = "online";
     } else {
-        $error_message = "Kết nối tới API Vietbot không thành công, mã lỗi: $http_code";
-        echo 'Error: ' . $error_message;
+        $error_message = "Lỗi kết nối tới API Vietbot, mã lỗi: $http_code";
+        //echo 'Error: ' . $error_message;
         
         // Gán thông báo lỗi vào mảng $result['api']
         $result['api']['message'] = $error_message;
