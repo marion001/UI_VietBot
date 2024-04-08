@@ -536,6 +536,10 @@ include "../Configuration.php";
         clearChatSession();
         location.reload();
     });
+	 function clearChatSession() {
+    localStorage.removeItem('chatSession');
+}
+
 </script>
 </body>
 
