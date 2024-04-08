@@ -12,6 +12,11 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 $version = "1.1";
 
+
+$Vietbot_Version = $dataVersionVietbot->vietbot_version->latest;
+$Webui_Version = $dataVersionUI->ui_version->latest;
+$Image_Version = $dataVersionVietbot->image_version->latest;
+$IMG_Vietbot = "https://drive.google.com/drive/folders/1c-I3fmMwNrbcWhXvCeuiyt-I5yH5gF8b";
 //$Web_ui_jSon = json_decode(file_get_contents("assets/json/webui_.json"), true);
 
 //$Enable_API = $Web_ui_jSon['enable_api'];
@@ -28,7 +33,6 @@ if (!empty($modelInfo)) {
     $infomodel = null;
 }
 
-
 $information = array(
 		'username' => $MYUSERNAME,
 		'current_user' => $GET_current_USER,
@@ -36,7 +40,7 @@ $information = array(
 		'server_ip' => $serverIP,
 		'info_model' => $infomodel,
 		'php_uname' => php_uname(),
-        'api_version' => $version,
+        'img_vietbot' => $IMG_Vietbot,
         'github_vietbot_offline' => $GitHub_VietBot_OFF,
         'ui_vietbot' => $UI_VietBot,
         'api_webui_guide' => "https://github.com/marion001/UI_VietBot/blob/main/README_HomeAssistant.md",
@@ -44,6 +48,10 @@ $information = array(
         'author' => 'Vũ Tuyển',
         'last_update_time' =>  date("H:i"),
 		'enable_api' => $Enable_API,
+		'api_version' => $version,
+        'image_version' => $Image_Version,
+        'vietbot_version' => $Vietbot_Version,
+        'webui_version' => $Webui_Version,
 		'query_instructions' => array(
 		'command' => 'restart, linux command (ls, sudo, sudo reboot, dir, v..v...), ',
 		'query' => 'info',
