@@ -40,6 +40,9 @@ include "../Configuration.php";
             </div>
         </center>
     </div>
+	
+<audio id="audioElementTTS" hidden></audio>
+
 <script>
     function getTimestamp() {
         const now = new Date();
@@ -282,7 +285,45 @@ include "../Configuration.php";
                         waitMessageElement.remove();
 
                     }
-                    displayMessage(response.data.response, false);
+					
+
+//Kiểm tra điều kiện để đẩy thông tin kết quả ra chatbox
+// Kiểm tra điều kiện để đẩy thông tin kết quả ra chatbox
+if (response.data.state === "OK") {
+    // Gửi yêu cầu GET bằng Axios
+    axios.get("Ajax/Get_TTS_Saved.php")
+        .then(response_tts => {
+            // Xử lý phản hồi từ máy chủ
+            if (response_tts.data) {
+                // Dữ liệu từ phản hồi được lưu trong response.data
+                //console.log('Dữ liệu từ phản hồi:', response_tts.data);
+                let tts_response  = response_tts.data;
+                // Hiển thị thông điệp trong chatbox
+				
+				phanhoi = response.data.response + " <i id='playerSTT' title='Nghe: "+tts_response.tts_file+"' data-url_local_tts='"+tts_response.tts_strippedPath+"' onclick='playerTTS(this)' class='bi bi-play-circle'></i> <a href='"+tts_response.download_link+"' title='Tải xuống: "+tts_response.tts_file+"' target='_bank'><i class='bi bi-download'></i></a>";
+				
+                displayMessage(phanhoi, false);
+                // Hiển thị download link trong console
+                //console.log(tts_response.download_link);
+                // Hiển thị download link trong chatbox (nếu cần)
+                // displayMessage(tts_response.download_link, false);
+            } else {
+                console.log('Không có dữ liệu từ phản hồi. Get_TTS_Saved.php');
+				displayMessage(response.data.response, false);
+            }
+        })
+        .catch(error => {
+            // Xử lý lỗi nếu có
+            console.error('Lỗi khi gửi yêu cầu GET Get_TTS_Saved.php:', error);
+			displayMessage(response.data.response, false);
+        });
+} else {
+    //console.log("tts thất bại");
+    displayMessage(response.data.response, false);
+}
+
+                    
+                    
                 })
                 .catch(function(error) {
                     // Xóa thông báo "Vui lòng chờ thêm..." nếu đã hiển thị
@@ -507,7 +548,7 @@ include "../Configuration.php";
             } */
 function typeWriter(element, text, index) {
     if (index < text.length) {
-        // Kiểm tra xem ký tự hiện tại là ký tự ``` hay không
+        // Kiểm tra xem ký tự hiện tại là ký tự ```
         if (text.charAt(index) === "`") {
             var endIndex = text.indexOf("```", index + 1); // Tìm vị trí của ký tự ``` kế tiếp
             if (endIndex !== -1) {
@@ -516,17 +557,26 @@ function typeWriter(element, text, index) {
                 index = endIndex + 3; // Cập nhật index
             } else {
                 // Nếu không tìm thấy ký tự ``` kế tiếp, chỉ hiển thị ký tự `
-               // element.innerHTML += "`";
-                element.innerHTML += text.charAt(index);
+                element.innerHTML += "`";
                 index++;
             }
         } else {
-            element.innerHTML += text.charAt(index);
-            index++;
+            // Kiểm tra xem chuỗi text có chứa "</a>" không
+            if (text.includes("</a>") || text.includes("</i>")) {
+                // Nếu có, hiển thị toàn bộ chuỗi và kết thúc hàm
+                element.innerHTML += text;
+                return;
+            } else {
+                // Nếu không chứa "</a>", tiếp tục hiển thị từng ký tự
+                element.innerHTML += text.charAt(index);
+                index++;
+            }
         }
-        setTimeout(() => typeWriter(element, text, index), 30); // Thay đổi thời gian hiển thị tại đây
+        // Gọi đệ quy để tiếp tục hiển thị
+        setTimeout(() => typeWriter(element, text, index), 30);
     }
 }
+
 
             //Hiển thị tin nhắn lên html
             // Kiểm tra xem ô kiểm hiển thị thời gian được chọn hay không
@@ -653,7 +703,37 @@ function typeWriter(element, text, index) {
     function clearChatSession() {
         localStorage.removeItem('chatSession');
     }
+	
+
 </script>
+<script>
+    function playerTTS(element) {
+        var url = element.getAttribute('data-url_local_tts');
+        var audio = document.getElementById('audioElementTTS');
+        if (audio) {
+            if (audio.paused) {
+                const xhr = new XMLHttpRequest();
+                xhr.open('GET', 'Ajax/Listen.php?song=' + url, true);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        const base64Audio = xhr.responseText;
+                        audio.src = "data:audio/mpeg;base64," + base64Audio;
+                        audio.load();
+                        audio.play();
+                    }
+                };
+                xhr.send();
+            } else {
+                audio.pause();
+                audio.currentTime = 0;
+            }
+        } else {
+            console.error('Phần tử audio không được tìm thấy.');
+        }
+    }
+</script>
+
+
 </body>
 
 </html>
