@@ -65,23 +65,21 @@ include "../Configuration.php";
     // Tải session từ localStorage nếu có
     let chatSession = JSON.parse(localStorage.getItem('chatSession')) || [];
     let containsWord = false;
-    // Tạo một đối tượng JSON với các từ cần kiểm tra
-    let wordsToCheck = {
-        "code": true,
-        "viết": true,
-        "encode": true,
-        "decode": true,
-        "tạo": true,
-        "đun": true,
-        "nấu": true,
-        "xào": true,
-        "hầm": true,
-        "chiên": true,
-        "hướng dẫn": true,
-        "lập trình": true,
-        "mã hóa": true,
-        "giải mã": true
-    };
+	// Tạo một mảng chứa các từ khóa cần kiểm tra
+	let keywordsToCheck = [ "code",
+						"viết",
+						"encode",
+						"decode",
+						"tạo",
+						"đun",
+						"nấu",
+						"xào",
+						"hầm",
+						"chiên",
+						"hướng dẫn",
+						"lập trình",
+						"mã hóa",
+						"giải mã"];
     //console.log(chatSession);
     // Hiển thị tin nhắn từ session đã lưu khi tải trang
     chatSession.forEach(function(message) {
@@ -323,13 +321,9 @@ include "../Configuration.php";
             }
             // Chuyển đổi userMessageee thành chữ thường để kiểm tra xem có chứa từ code, viết, dễ dàng hơn
             var lowercaseMessage = userMessage.toLowerCase();
-            // Kiểm tra xem userMessageee có chứa từ trong danh sách từ cần kiểm tra không
-            for (const word in wordsToCheck) {
-                if (lowercaseMessage.includes(word)) {
-                    containsWord = true;
-                    break;
-                }
-            }
+			// Kiểm tra xem userMessageee có chứa các từ khóa cần kiểm tra không
+			var containsWord = keywordsToCheck.some(keyword => lowercaseMessage.includes(keyword));
+
             // Kiểm tra xem userMessageee có chứa từ "code", "viết" hoặc "lập trình" không
             //nếu tin nhắn gửi đi chứa các từ đã cho thì quăng cho gemini xử lý
             //if (lowercaseMessage.includes("code") || lowercaseMessage.includes("viết") || lowercaseMessage.includes("lập trình") || lowercaseMessage.includes("giải mã") || lowercaseMessage.includes("mã hóa")) {
@@ -383,8 +377,8 @@ include "../Configuration.php";
                         displayMessage(errorMessage, false);
                     });
             }
-            //Vietbot Xử lý
-            else {
+            //Vietbot Xử lý nếu không có chứa từ khóa
+            else if (!containsWord){
                 //console.log("Tin nhắn của người dùng không chứa từ 'code', 'viết' hoặc 'lập trình'.");
                 //Bắt đầu xử lý Api Chatbox
                 ///////////////////////////
@@ -448,7 +442,11 @@ include "../Configuration.php";
                         }
                     }, 30000);
                 }
-            }
+            } else {
+				displayMessage(userMessage, true);
+				displayMessage("Ngoại lệ, đã bị chặn bởi dev", false);
+				
+			}
         } else {
             displayMessage(userMessage, true);
             displayMessage("Trường hợp lựa chọn ngoại lệ, đã bị chặn bởi dev", false);
@@ -500,13 +498,36 @@ include "../Configuration.php";
         const messageContent = document.createElement('div');
         messageContent.classList.add('message-content');
         // Hàm để hiển thị từng chữ cái của nội dung tin nhắn một cách tuần tự
-        function typeWriter(element, text, index) {
+       /* function typeWriter(element, text, index) {
                 if (index < text.length) {
                     element.innerHTML += text.charAt(index);
                     index++;
                     setTimeout(() => typeWriter(element, text, index), 30); // Thay đổi thời gian hiển thị tại đây
                 }
+            } */
+function typeWriter(element, text, index) {
+    if (index < text.length) {
+        // Kiểm tra xem ký tự hiện tại là ký tự ``` hay không
+        if (text.charAt(index) === "`") {
+            var endIndex = text.indexOf("```", index + 1); // Tìm vị trí của ký tự ``` kế tiếp
+            if (endIndex !== -1) {
+                // Hiển thị nội dung code với định dạng mong muốn
+                element.innerHTML += "<code style='font-size: 17px;'><pre>" + text.substring(index, endIndex + 3) + "</pre></code>";
+                index = endIndex + 3; // Cập nhật index
+            } else {
+                // Nếu không tìm thấy ký tự ``` kế tiếp, chỉ hiển thị ký tự `
+               // element.innerHTML += "`";
+                element.innerHTML += text.charAt(index);
+                index++;
             }
+        } else {
+            element.innerHTML += text.charAt(index);
+            index++;
+        }
+        setTimeout(() => typeWriter(element, text, index), 30); // Thay đổi thời gian hiển thị tại đây
+    }
+}
+
             //Hiển thị tin nhắn lên html
             // Kiểm tra xem ô kiểm hiển thị thời gian được chọn hay không
             //nếu quá 250 ký tự
