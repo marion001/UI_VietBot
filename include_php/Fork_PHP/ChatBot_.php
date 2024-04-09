@@ -6,6 +6,7 @@ include "../Configuration.php";
 <script src="../../assets/js/axios_0.21.1.min.js"></script>
 <link rel="stylesheet" href="../../assets/css/bootstrap-icons.css">
 </head>
+
 <body>
     <br/>
     <div class="chat-container">
@@ -18,37 +19,28 @@ include "../Configuration.php";
         <form id="chat-form" class="chat-form">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-
-                    <!--	<span class="input-group-text" id="basic-addon1">Chỉ đọc: &nbsp;<input title="Chỉ đọc nội dung văn bản bạn đã nhập ra loa và sẽ không hiển thị trong giao diện chatbox" type="checkbox" class="form-check-input" id="message-type-checkbox">
-					</span> -->
                     <select id="message-type-checkbox" class="form-select">
-                        <option selected value="3" title="Chế Độ Hỏi Đáp Ở Chatbox Không Phát Ra Loa">Hỏi Đáp</option>
+                        <option selected value="VietbotChatBox" title="Chế Độ Hỏi Đáp Ở Chatbox Không Phát Ra Loa">Hỏi Đáp</option>
                         <option value="Gemini" title="Áp Dụng Trợ Lý Ảo">AI Beta</option>
-                        <option value="2" title="Phát Nhạc, Podcast Ra Loa" data-podcastname="play_podcast">PodCast</option>
-                        <option value="1" title="TTS Chuyển Văn Bản Thành Giọng Nói Để Đọc Ra Loa">Chỉ Đọc</option>
+                        <option value="VietbotPodcast" title="Phát Nhạc, Podcast Ra Loa">PodCast</option>
+                        <option value="VietbotTTS" title="TTS Chuyển Văn Bản Thành Giọng Nói Để Đọc Ra Loa">Chỉ Đọc</option>
 
                     </select>
                 </div>
                 <input type="text" class="form-control" id="user-input" class="chat-input" placeholder="Nhập văn bản, nội dung, tin nhắn..." aria-label="Recipient's username" aria-describedby="basic-addon2">
-
-
 
                 <div class="input-group-append">
                     <button type="submit" class="btn btn-success">Gửi</button>
                 </div>
             </div>
         </form>
-
         <center>
             <div class="btn-group-toggle chat-form-button" data-toggle="buttons">
-              <!--  <label class="btn btn-secondary">
-                    <input type="checkbox" checked autocomplete="off" id="show-timestamp-checkbox"> Hiển thị thời gian
-                </label> -->
                 <button id="delete-all-button" class="btn btn-danger">Xóa tất cả tin nhắn</button>
             </div>
         </center>
     </div>
- <script>
+<script>
     function getTimestamp() {
         const now = new Date();
         const hours = now.getHours().toString().padStart(2, '0');
@@ -65,27 +57,31 @@ include "../Configuration.php";
     const chatForm = document.getElementById('chat-form');
     const userInput = document.getElementById('user-input');
     const deleteAllButton = document.getElementById('delete-all-button');
-    const messageTypeCheckbox = document.getElementById('message-type-checkbox');
+    //const messageTypeCheckbox = document.getElementById('message-type-checkbox');
     let typingIndicator;
     let isBotReplying = false;
     let waitMessageTimer; // Biến đếm thời gian chờ hiển thị WAIT_MESSAGE
     let responseTimer; // Biến đếm thời gian chờ phản hồi
     // Tải session từ localStorage nếu có
     let chatSession = JSON.parse(localStorage.getItem('chatSession')) || [];
-	let containsWord = false;
-            // Tạo một đối tượng JSON với các từ cần kiểm tra
-            let wordsToCheck = {
-                "code": true,
-                "viết": true,
-                "encode": true,
-                "decode": true,
-                "tạo": true,
-                "cách": true,
-                "hướng dẫn": true,
-                "lập trình": true,
-                "mã hóa": true,
-                "giải mã": true
-            };
+    let containsWord = false;
+    // Tạo một đối tượng JSON với các từ cần kiểm tra
+    let wordsToCheck = {
+        "code": true,
+        "viết": true,
+        "encode": true,
+        "decode": true,
+        "tạo": true,
+        "đun": true,
+        "nấu": true,
+        "xào": true,
+        "hầm": true,
+        "chiên": true,
+        "hướng dẫn": true,
+        "lập trình": true,
+        "mã hóa": true,
+        "giải mã": true
+    };
     //console.log(chatSession);
     // Hiển thị tin nhắn từ session đã lưu khi tải trang
     chatSession.forEach(function(message) {
@@ -120,29 +116,10 @@ include "../Configuration.php";
         //console.log(botSelector);
         const selectedOption = document.querySelector('#message-type-checkbox option:checked');
         // Kiểm tra xem option đã được chọn hay chưa
-        if (selectedOption) {
-            // Nếu option đã được chọn, kiểm tra xem có thuộc tính data-podcastname không
-            const podcastName = selectedOption.getAttribute('data-podcastname');
-            if (podcastName) {
-                // Nếu có thuộc tính data-podcastname, hiển thị giá trị trong console.log
-                //console.log('Data Podcast Name:', podcastName);
-                userMessageee = podcastName;
-            } else {
-                // Nếu không có thuộc tính data-podcastname, thông báo lỗi hoặc thực hiện hành động khác tùy thuộc vào yêu cầu của bạn
-                //console.log('Option được chọn nhưng không có thuộc tính data-podcastname.');
-                userMessageee = userMessage;
-
-            }
-        } else {
-            userMessageee = userMessage;
-        }
-
-        const messageType = parseInt(messageTypeCheckbox.value);
+        // const messageType = parseInt(messageTypeCheckbox.value);
         //Nếu select được chọn là: Google gemini
         if (botSelector === 'Gemini') {
-            //console.log(userMessage);
             displayMessage(userMessage, true);
-
             isBotReplying = true;
             typingIndicator = displayTypingIndicator();
             // Đặt thời gian hiển thị thông báo "Vui lòng chờ thêm..."
@@ -164,7 +141,6 @@ include "../Configuration.php";
 
             .then(function(response) {
                     clearTimeout(waitMessageTimer); // Xóa thông báo "Vui lòng chờ thêm..." nếu đã hiển thị
-                    //clearTimeout(responseTimer); // Xóa thông báo "Có vẻ Vietbot đang không phản hồi, vui lòng thử lại!" nếu đã hiển thị
                     isBotReplying = false;
                     removeTypingIndicator();
                     // Xóa thông báo "Vui lòng chờ thêm..." nếu tồn tại trong chatbox
@@ -180,7 +156,6 @@ include "../Configuration.php";
                 })
                 .catch(function(error) {
                     clearTimeout(waitMessageTimer); // Xóa thông báo "Vui lòng chờ thêm..." nếu đã hiển thị
-                    //clearTimeout(responseTimer); // Xóa thông báo "Có vẻ Vietbot đang không phản hồi, vui lòng thử lại!" nếu đã hiển thị
                     isBotReplying = false;
                     removeTypingIndicator();
                     // Xóa thông báo "Vui lòng chờ thêm..." nếu tồn tại trong chatbox
@@ -192,11 +167,144 @@ include "../Configuration.php";
                     var errorMessage = 'Đã xảy ra lỗi: ' + error;
                     displayMessage(errorMessage, false);
                 });
+        } else if (botSelector === 'VietbotPodcast') {
+            displayMessage(userMessage, true);
+            isBotReplying = true;
+            typingIndicator = displayTypingIndicator();
+            // Đặt thời gian hiển thị thông báo "Vui lòng chờ thêm..."
+            waitMessageTimer = setTimeout(() => {
+                if (isBotReplying) {
+                    displayMessage(WAIT_MESSAGE, false, true);
+                }
+            }, WAIT_MESSAGE_TIMEOUT);
+            //End thông báo vui lòng chờ thêm
+            // Đặt thời gian hiển thị thông báo "Có vẻ Vietbot đang không phản hồi, vui lòng thử lại!"
+            responseTimer = setTimeout(() => {
+                if (isBotReplying) {
+                    displayMessage(TIMEOUT_MESSAGE, false, true);
+                    removeTypingIndicator();
+                    isBotReplying = false;
+                }
+                const waitMessageElement = chatbox.querySelector('.timeout-message');
+                if (waitMessageElement) {
+                    waitMessageElement.remove();
+                }
+            }, RESPONSE_TIMEOUT);
+            const url = 'http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>';
+            const data = {
+                type: 2,
+                data: "play_podcast",
+                name: userMessage,
+                player_type: "system"
+            };
 
+            axios.post(url, data, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(function(response) {
+                    //console.log(response);
+                    // Xóa thông báo "Vui lòng chờ thêm..." nếu đã hiển thị
+                    clearTimeout(waitMessageTimer);
+                    // Xóa thông báo "có vẻ vietbot đang không phản hồi" nếu đã hiển thị
+                    clearTimeout(responseTimer);
+                    isBotReplying = false;
+                    removeTypingIndicator();
+                    // Xóa thông báo "Vui lòng chờ thêm..." nếu tồn tại trong chatbox
+                    const waitMessageElement = chatbox.querySelector('.timeout-message');
+                    if (waitMessageElement) {
+                        waitMessageElement.remove();
 
+                    }
+                    displayMessage(response.data.response, false);
+
+                })
+                .catch(function(error) {
+                    // Xóa thông báo "Vui lòng chờ thêm..." nếu đã hiển thị
+                    clearTimeout(waitMessageTimer);
+                    // Xóa thông báo "có vẻ vietbot đang không phản hồi" nếu đã hiển thị
+                    clearTimeout(responseTimer);
+                    isBotReplying = false;
+                    removeTypingIndicator();
+                    // Xóa thông báo "Vui lòng chờ thêm..." nếu tồn tại trong chatbox
+                    const waitMessageElement = chatbox.querySelector('.timeout-message');
+                    if (waitMessageElement) {
+                        waitMessageElement.remove();
+                    }
+                    // Hiển thị thông báo lỗi vào chatbox
+                    var errorMessage = 'Đã xảy ra lỗi: ' + error;
+                    displayMessage(errorMessage, false);
+                });
+        } else if (botSelector === 'VietbotTTS') {
+            displayMessage(userMessage, true);
+            isBotReplying = true;
+            typingIndicator = displayTypingIndicator();
+            // Đặt thời gian hiển thị thông báo "Vui lòng chờ thêm..."
+            waitMessageTimer = setTimeout(() => {
+                if (isBotReplying) {
+                    displayMessage(WAIT_MESSAGE, false, true);
+                }
+            }, WAIT_MESSAGE_TIMEOUT);
+            //End thông báo vui lòng chờ thêm
+            // Đặt thời gian hiển thị thông báo "Có vẻ Vietbot đang không phản hồi, vui lòng thử lại!"
+            responseTimer = setTimeout(() => {
+                if (isBotReplying) {
+                    displayMessage(TIMEOUT_MESSAGE, false, true);
+                    removeTypingIndicator();
+                    isBotReplying = false;
+                }
+                const waitMessageElement = chatbox.querySelector('.timeout-message');
+                if (waitMessageElement) {
+                    waitMessageElement.remove();
+                }
+            }, RESPONSE_TIMEOUT);
+            const url = 'http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>';
+            const data = {
+                type: 1,
+                data: userMessage
+            };
+
+            axios.post(url, data, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(function(response) {
+                    //console.log(response.data.response);
+                    // Xóa thông báo "Vui lòng chờ thêm..." nếu đã hiển thị
+                    clearTimeout(waitMessageTimer);
+                    // Xóa thông báo "có vẻ vietbot đang không phản hồi" nếu đã hiển thị
+                    clearTimeout(responseTimer);
+                    isBotReplying = false;
+                    removeTypingIndicator();
+                    // Xóa thông báo "Vui lòng chờ thêm..." nếu tồn tại trong chatbox
+                    const waitMessageElement = chatbox.querySelector('.timeout-message');
+                    if (waitMessageElement) {
+                        waitMessageElement.remove();
+
+                    }
+                    displayMessage(response.data.response, false);
+                })
+                .catch(function(error) {
+                    // Xóa thông báo "Vui lòng chờ thêm..." nếu đã hiển thị
+                    clearTimeout(waitMessageTimer);
+                    // Xóa thông báo "Vui lòng chờ thêm..." nếu đã hiển thị
+                    clearTimeout(responseTimer);
+                    isBotReplying = false;
+                    removeTypingIndicator();
+                    // Xóa thông báo "Vui lòng chờ thêm..." nếu tồn tại trong chatbox
+                    const waitMessageElement = chatbox.querySelector('.timeout-message');
+                    if (waitMessageElement) {
+                        waitMessageElement.remove();
+                    }
+                    // Hiển thị thông báo lỗi vào chatbox
+                    var errorMessage = 'Đã xảy ra lỗi: ' + error;
+                    displayMessage(errorMessage, false);
+                });
         }
         //Vietbot Xử lý Chatbox
-        else {
+        else if (botSelector === 'VietbotChatBox') {
             //Ngoài Lệ Ném Cho Trợ Vietbot Xử Lý
             try {
                 // Kiểm tra kết nối tới API trước khi gửi yêu cầu để đưa ra thông báo
@@ -213,13 +321,9 @@ include "../Configuration.php";
                 displayMessage(ERROR_MESSAGE_CONNECTION, false, true);
                 return;
             }
-
-
-
             // Chuyển đổi userMessageee thành chữ thường để kiểm tra xem có chứa từ code, viết, dễ dàng hơn
-            var lowercaseMessage = userMessageee.toLowerCase();
+            var lowercaseMessage = userMessage.toLowerCase();
             // Kiểm tra xem userMessageee có chứa từ trong danh sách từ cần kiểm tra không
-
             for (const word in wordsToCheck) {
                 if (lowercaseMessage.includes(word)) {
                     containsWord = true;
@@ -227,12 +331,11 @@ include "../Configuration.php";
                 }
             }
             // Kiểm tra xem userMessageee có chứa từ "code", "viết" hoặc "lập trình" không
+            //nếu tin nhắn gửi đi chứa các từ đã cho thì quăng cho gemini xử lý
             //if (lowercaseMessage.includes("code") || lowercaseMessage.includes("viết") || lowercaseMessage.includes("lập trình") || lowercaseMessage.includes("giải mã") || lowercaseMessage.includes("mã hóa")) {
             if (containsWord) {
-				//Gemini xử lý
+                //nếu tin nhắn gửi đi chứa các từ đã cho thì quăng cho gemini xử lý
                 //console.log("Tin nhắn của người dùng chứa từ 'code', 'viết' hoặc 'lập trình'.");
-                //console.log(userMessage);
-                //displayMessage(userMessage, true);
                 isBotReplying = true;
                 typingIndicator = displayTypingIndicator();
                 // Đặt thời gian hiển thị thông báo "Vui lòng chờ thêm..."
@@ -245,13 +348,13 @@ include "../Configuration.php";
                 url_api_gemini = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=<?php echo $key_Gemini; ?>';
 
                 axios.post(url_api_gemini, {
-                    contents: [{
-                        parts: [{
-                            text: userMessage
+                        contents: [{
+                            parts: [{
+                                text: userMessage
+                            }]
                         }]
-                    }]
-                })
-                .then(function(response) {
+                    })
+                    .then(function(response) {
                         clearTimeout(waitMessageTimer); // Xóa thông báo "Vui lòng chờ thêm..." nếu đã hiển thị
                         //clearTimeout(responseTimer); // Xóa thông báo "Có vẻ Vietbot đang không phản hồi, vui lòng thử lại!" nếu đã hiển thị
                         isBotReplying = false;
@@ -262,9 +365,7 @@ include "../Configuration.php";
                             waitMessageElement.remove();
                         }
 
-                        // Thêm tin nhắn từ bot vào chatSession
                         var botGeminiMessage = response.data.candidates[0].content.parts[0].text;
-                        //console.log(botGeminiMessage);
                         displayMessage(botGeminiMessage, false);
                     })
                     .catch(function(error) {
@@ -294,13 +395,8 @@ include "../Configuration.php";
                     'Content-Type': 'application/json',
                 };
                 const data = {
-                    type: messageType,
-                    //ChatBox + TTS
-                    data: userMessageee,
-
-                    //PodCasst
-                    name: userMessage,
-                    player_type: "system"
+                    type: 3,
+                    data: userMessage
                 };
                 try {
                     isBotReplying = true;
@@ -353,31 +449,27 @@ include "../Configuration.php";
                     }, 30000);
                 }
             }
+        } else {
+            displayMessage(userMessage, true);
+            displayMessage("Trường hợp lựa chọn ngoại lệ, đã bị chặn bởi dev", false);
+            //console.log("Trường hợp lựa chọn ngoại lệ, không có trong code");
         }
     });
-/*
-    const showTimestampCheckbox = document.getElementById('show-timestamp-checkbox');
-    // Thêm một trình nghe sự kiện để xử lý sự thay đổi của ô kiểm
-    showTimestampCheckbox.addEventListener('change', () => {
-        // Bật/tắt lớp 'hide-timestamp' trên khung chat dựa vào trạng thái của ô kiểm
-        chatContainer.classList.toggle('hide-timestamp', !showTimestampCheckbox.checked);
-    });
-*/
     const displayMessage = (message, isUserMessage, isTimeoutMessage = false) => {
         var botSelectorr = document.querySelector('#message-type-checkbox').value;
         var botSelectorr_rep; // Khai báo biến botSelectorr_rep ở đây
         if (botSelectorr === 'Gemini') {
             // Gán giá trị cho botSelectorr_rep nếu botSelectorr là 'Gemini'
             botSelectorr_rep = "Vietbot AI";
-        } else if (botSelectorr === '2') {
+        } else if (botSelectorr === 'VietbotPodcast') {
             botSelectorr_rep = "Vietbot->PodCast";
-        } else if (botSelectorr === '1') {
+        } else if (botSelectorr === 'VietbotTTS') {
             botSelectorr_rep = "Vietbot->TTS";
+        } else if (botSelectorr === 'VietbotChatBox') {
+            botSelectorr_rep = "Vietbot";
         } else {
             botSelectorr_rep = "Vietbot";
         }
-        //console.log(botSelectorr_rep);
-
         let messageTypePrefix = isUserMessage ? " " : botSelectorr_rep + ': ';
         //console.log(message);
         //Nếu Giá trị là undefined
@@ -420,25 +512,25 @@ include "../Configuration.php";
             //nếu quá 250 ký tự
         const maxlengthMessage = 250;
         //if (showTimestampCheckbox.checked) {
-            // Nếu ô kiểm được chọn
-            if (!isUserMessage) {
-                // Nếu tin nhắn là từ bot
-                if (message.length > maxlengthMessage) {
-                    // Nếu tin nhắn dài hơn 250 ký tự, hiển thị tin nhắn mà không sử dụng typeWriter
-                    messageContent.innerHTML = '<b>[' + timestamp + ']' + messageTypePrefix + '</b><pre class="vietbot-code">' + message + '</pre>';
-                    // Lưu session vào localStorage nếu tin nhắn không chứa chuỗi "Vui lòng chờ thêm"
-                    if (!message.includes('Vui lòng chờ thêm')) {
-                        chatSession.push({
-                            sender: 'Bot',
-                            message: '<b>[' + timestamp + ']' + messageTypePrefix + '</b> <pre class="vietbot-code">' + message + '</pre>'
-                        });
-                        localStorage.setItem('chatSession', JSON.stringify(chatSession));
-                    }
-                } else {
-                    // Nếu tin nhắn ngắn hơn 250 ký tự, và không chứa các từ trong biến containsWord sử dụng typeWriter
-					if (!containsWord) {
-						console.log(containsWord);
-				messageContent.innerHTML = '<b>[' + timestamp + ']' + messageTypePrefix + '</b>';
+        // Nếu ô kiểm được chọn
+        if (!isUserMessage) {
+            // Nếu tin nhắn là từ bot
+            if (message.length > maxlengthMessage) {
+                // Nếu tin nhắn dài hơn 250 ký tự, hiển thị tin nhắn mà không sử dụng typeWriter
+                messageContent.innerHTML = '<b>[' + timestamp + ']' + messageTypePrefix + '</b><pre class="vietbot-code">' + message + '</pre>';
+                // Lưu session vào localStorage nếu tin nhắn không chứa chuỗi "Vui lòng chờ thêm"
+                if (!message.includes('Vui lòng chờ thêm')) {
+                    chatSession.push({
+                        sender: 'Bot',
+                        message: '<b>[' + timestamp + ']' + messageTypePrefix + '</b> <pre class="vietbot-code">' + message + '</pre>'
+                    });
+                    localStorage.setItem('chatSession', JSON.stringify(chatSession));
+                }
+            } else {
+                // Nếu tin nhắn ngắn hơn 250 ký tự, và không chứa các từ trong biến containsWord sử dụng typeWriter
+                if (!containsWord) {
+                    //console.log(containsWord);
+                    messageContent.innerHTML = '<b>[' + timestamp + ']' + messageTypePrefix + '</b>';
                     typeWriter(messageContent, message, 0); // Gọi hàm typeWriter để hiển thị tin nhắn từ bot
                     // Lưu session vào localStorage nếu tin nhắn không chứa chuỗi "Vui lòng chờ thêm"
                     if (!message.includes('Vui lòng chờ thêm')) {
@@ -448,10 +540,10 @@ include "../Configuration.php";
                         });
                         localStorage.setItem('chatSession', JSON.stringify(chatSession));
                     }
-					} 
-					//nếu tin nhắn có chứa containsWord thì hiển thị luôn
-					else {
-					messageContent.innerHTML = '<b>[' + timestamp + ']' + messageTypePrefix + '</b><pre class="vietbot-code">' + message + '</pre>';
+                }
+                //nếu tin nhắn có chứa containsWord thì hiển thị luôn
+                else {
+                    messageContent.innerHTML = '<b>[' + timestamp + ']' + messageTypePrefix + '</b><pre class="vietbot-code">' + message + '</pre>';
                     typeWriter(messageContent, 0, 0); // Gọi hàm typeWriter để hiển thị tin nhắn từ bot
                     // Lưu session vào localStorage nếu tin nhắn không chứa chuỗi "Vui lòng chờ thêm"
                     if (!message.includes('Vui lòng chờ thêm')) {
@@ -461,22 +553,22 @@ include "../Configuration.php";
                         });
                         localStorage.setItem('chatSession', JSON.stringify(chatSession));
                     }
-						
-					}
-                }
-            } else {
-                // Nếu tin nhắn là từ người dùng, hiển thị tin nhắn với thời gian
-                messageContent.innerHTML = '<b>[' + timestamp + ']' + messageTypePrefix + '</b>' + message;
-                // Lưu session vào localStorage nếu tin nhắn không chứa chuỗi "Vui lòng chờ thêm"
-                if (!message.includes('Vui lòng chờ thêm')) {
-                    // Lưu session vào localStorage
-                    chatSession.push({
-                        sender: 'Bạn',
-                        message: '<b>[' + timestamp + ']' + messageTypePrefix + '</b>' + message
-                    });
-                    localStorage.setItem('chatSession', JSON.stringify(chatSession));
+
                 }
             }
+        } else {
+            // Nếu tin nhắn là từ người dùng, hiển thị tin nhắn với thời gian
+            messageContent.innerHTML = '<b>[' + timestamp + ']' + messageTypePrefix + '</b>' + message;
+            // Lưu session vào localStorage nếu tin nhắn không chứa chuỗi "Vui lòng chờ thêm"
+            if (!message.includes('Vui lòng chờ thêm')) {
+                // Lưu session vào localStorage
+                chatSession.push({
+                    sender: 'Bạn',
+                    message: '<b>[' + timestamp + ']' + messageTypePrefix + '</b>' + message
+                });
+                localStorage.setItem('chatSession', JSON.stringify(chatSession));
+            }
+        }
         //} 
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('delete-button');
@@ -536,10 +628,10 @@ include "../Configuration.php";
         clearChatSession();
         location.reload();
     });
-	 function clearChatSession() {
-    localStorage.removeItem('chatSession');
-}
 
+    function clearChatSession() {
+        localStorage.removeItem('chatSession');
+    }
 </script>
 </body>
 
