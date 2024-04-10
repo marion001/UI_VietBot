@@ -32,7 +32,7 @@ function downloadFile($filePath) {
         exit;
     } else {
         // File not found
-        echo "File not found.";
+        echo "File $filePath không tồn tại để tải xuống";
     }
 }
 
@@ -51,7 +51,6 @@ function uploadToDefaultFolder($fileName, $tempFilePath, $DuognDanThuMucJson) {
 // Hàm để tải lên tệp vào thư mục welcome
 function uploadToWelcomeFolder($fileName, $tempFilePath, $DuognDanThuMucJson) {
     $uploadDir = $DuognDanThuMucJson.'/sound/welcome/';
-	echo $uploadDir;
     $uploadFile = $uploadDir . basename($fileName);
     if (move_uploaded_file($tempFilePath, $uploadFile)) {
 		chmod($uploadFile, 0777);
@@ -111,9 +110,9 @@ if (isset($_GET['folder'])) {
     // Kiểm tra nếu tệp tồn tại và xóa nếu có
     $filePath = $dir . '/' . $file;
     if (deleteFile($filePath)) {
-        echo "Tệp $file đã được xóa thành công.";
+        echo "File <b>$file</b> đã được xóa thành công.";
     } else {
-        echo "Không thể xóa tệp $file.";
+        echo "Không thể xóa file: <b>$file</b>";
     }
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Kiểm tra nếu có tệp được tải lên
@@ -124,12 +123,12 @@ if (isset($_GET['folder'])) {
         $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
         if ($fileExtension == 'mp3' || $fileExtension == 'wav') {
             if (uploadToDefaultFolder($fileName, $tempFilePath, $DuognDanThuMucJson)) {
-                echo "Tệp $fileName đã được tải lên thành công vào thư mục default.";
+                echo "File <b>$fileName</b> đã được tải lên thành công";
             } else {
-                echo "Đã xảy ra lỗi khi tải lên tệp vào thư mục default.";
+                echo "Đã xảy ra lỗi khi tải lên file: <b>$fileName</b>";
             }
         } else {
-            echo "Chỉ cho phép tải lên các tệp .mp3 và .wav.";
+            echo "Chỉ cho phép tải lên các file có định dạng .mp3 và .wav.";
         }
     } elseif (isset($_FILES["file_welcome"]) && $_FILES["file_welcome"]["error"] == UPLOAD_ERR_OK) {
         $fileName = $_FILES["file_welcome"]["name"];
@@ -138,19 +137,19 @@ if (isset($_GET['folder'])) {
         if ($fileExtension == 'mp3' || $fileExtension == 'wav') {
             if (uploadToWelcomeFolder($fileName, $tempFilePath, $DuognDanThuMucJson)) {
 
-                echo "Tệp $fileName đã được tải lên thành công vào thư mục welcome.";
+                echo "File <b>$fileName</b> đã được tải lên thành công";
             } else {
-                echo "Đã xảy ra lỗi khi tải lên tệp vào thư mục welcome.";
+                echo "Đã xảy ra lỗi khi tải lên file: <b>$fileName</b>";
             }
         } else {
-            echo "Chỉ cho phép tải lên các tệp .mp3 và .wav.";
+            echo "Chỉ cho phép tải lên các file có định dạng .mp3 và .wav.";
         }
     } else {
-        echo "Vui lòng chọn một tệp để tải lên.";
+        echo "Vui lòng chọn một file để tải lên.";
     }
 } else {
     // Nếu không có tham số "folder" hoặc "delete_file" được truyền vào, thông báo lỗi
-    echo json_encode(array("error" => "Tham số 'folder' hoặc 'delete_file' không được cung cấp."));
+    echo json_encode(array("error" => "Cần thực hiện Truy Vấn"));
 }
 //echo $DuognDanThuMucJson;
 ?>
