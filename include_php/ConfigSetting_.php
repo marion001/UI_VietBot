@@ -1601,20 +1601,35 @@ Tốc Độ: <input type="range" name="speed_tts" id="slider_tts" title="Phù H�
   </center></td></tr>
   
   <tr>
-  <td><center>-</center>
-  </td> 
-<td> 
+
+<td colspan="2"> <center>
+
+<button type="button" class="btn btn-primary" onclick="soundNotifyWelcome()">Danh Sách</button>
+
  <audio id="audioPlayer" controls>
   <source id="audioSource" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
-<center><input type="button" id="playButtonWelcome" class="btn btn-warning" title="Nghe Thử Âm Thanh Khi Loa Khởi Động" value="Nghe Thử"></center></td></td>  <tr>
-  
-  
- <!-- <tr id="text-inputt">
-  <td><b>Đọc địa chỉ ip:</b> <input type="checkbox"  name="welcome_ip" value=", | địa chỉ ai pi của mình là: <?php //echo $serverIP; ?>" <?php /* if ($Welcome_Text === $Welcome_Text_ip.', | địa chỉ ai pi của mình là: '.$serverIP) echo 'checked'; */ ?>>
-</td></tr> -->
+<input type="button" id="playButtonWelcome" class="btn btn-warning" title="Nghe Thử Âm Thanh Khi Loa Khởi Động" value="Nghe Thử">
+</center>
+</td>
+
+</tr>
+<tr>
+<td colspan="2"><center><font color=blue><div id="MessNotifyWelcome"></div></font></center></td>
+</tr>
+
+<tr>
+<td colspan="2"><center>
+ <div id="NotifyWelcome"></div>
+ </center>
+ </td>
+</tr>
+
+
+
   </tbody>
+
   <?php 
 // Lấy danh sách các tệp tin .mp3 trong thư mục
 $mp3Files = glob($directorySound . '*.mp3');
@@ -1663,6 +1678,19 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
 </td>
 </tr>
 
+<tr>
+<td colspan="2">
+<center><button type="button" class="btn btn-primary" onclick="soundNotifyDefault()">Danh Sách</button></center>
+</td>
+</tr>
+<tr>
+<td colspan="2"><center><font color=blue><div id="MessNotifyDefault"></div></font></center></td>
+</tr>
+<tr>
+<td colspan="2">
+<center><div id="NotifyDefault"></div></center>
+</td>
+</tr>
 
 <tbody></table></div></div><hr/>
 
@@ -1717,34 +1745,7 @@ $mp3Files = array_filter($mp3Files, function($mp3File) {
         </div>
     </td>
 </tr>
-<!--
-<tr>
-    <th scope="row">
-        <label for="say_reply" title="Bật/Tắt Phản Hồi Của Bot Khi Được Đánh Thức" class="form-label">
-            <center>Phản Hồi Lại:</center>
-        </label>
-    </th>
-    <td>
-        <div>
-            <center>
-                <input type="checkbox" id="say_reply" name="say_reply" title="Tích vào để kích hoạt" class="form-check-input">
-            </center>
-        </div>
-    </td>
-</tr>
--->
-<!--
-<tr>
-    <th scope="row"><label for="custom_skill">Dùng Cho Custom Skill:</label></th>
-    <td>
-        <div>
-            <center>
-                <input type="checkbox" id="custom_skill" name="custom_skill" title="Tích vào để kích hoạt" class="form-check-input">
-            </center>
-        </div>
-    </td>
-</tr> 
--->
+
 <tr>
     <th scope="row">
         <label for="sensitive" title="Độ Nhạy Sensitive" class="form-label">
@@ -4165,61 +4166,178 @@ $(document).ready(function() {
     });
 </script>
 
-
-
-<!--
 <script>
-  var updatee = true;
-
-  document.getElementById('volume_value').addEventListener('input', function() {
-    if (updatee) {
-      var newVolume = this.value;
-      document.getElementById('slider-value').innerText = newVolume+'%';
-    }
-  });
-
-  document.getElementById('volume_value').addEventListener('mouseup', function() {
-    if (updatee) {
-      var newVolume = this.value;
-      document.getElementById('slider-value').innerText = newVolume+'%';
-
-      // Thực hiện AJAX request để cập nhật giá trị volume
-      var ajaxSettings = {
-        "url": "http://<?php //echo $serverIP; ?>:<?php //echo $Port_Vietbot; ?>",
-        method: "POST",
-        timeout: 0,
-        headers: {
-          "Content-Type": "application/json"
+//Hiển thị list danh sách các file âm thanh trong thư mục welcome
+function soundNotifyWelcome() {
+    // Gửi yêu cầu AJAX để lấy danh sách file và hiển thị trên giao diện
+    $.ajax({
+        url: "Ajax/Sound_Notify.php?folder=welcome",
+        method: "GET",
+        dataType: "json",
+        success: function(response) {
+			//$("#MessNotifyWelcome").html("Danh Sách File âm thanh Khi Khởi Động");
+            var fileListHtml = ""; // Khởi tạo biến chứa HTML của danh sách file
+            fileListHtml += "<tr><td><center><font color=red><b>Tên</b></font></center></td><td colspan='2'><center><font color=red><b>Hành Động</b></font></center></td></tr>"; // Thêm dòng tiêu đề của bảng
+            // Duyệt qua từng tên file trong mảng response và tạo HTML tương ứng
+            $.each(response, function(index, value) {
+                fileListHtml += "<tr><td><font color=red>" + value + "</font></td><td><button type='button' class='btn btn-danger' onclick='soundNotifyDelFile(\"welcome/" + value + "\")'>Xóa</button></td><td><button type='button' class='btn btn-primary' onclick='soundNotifyDownFile(\"welcome/" + value + "\")'>Tải Xuống</button></td></tr>";
+            });
+            // Thêm form tải lên file vào danh sách
+			fileListHtml += "<tr><td colspan='3'><form id='uploadForm' enctype='multipart/form-data'>";
+			fileListHtml += '<div class="input-group"><div class="custom-file col-xs-2">';
+			fileListHtml += "<input type='file' multiple class='form-control' name='file_welcome' id='file_welcome' accept='audio/mpeg, audio/wav'></div>";
+			fileListHtml += ' <div class="input-group-append">';
+			fileListHtml += '<button type="button" class="btn btn-primary" id="uploadButton" title="Tải lên file .mp3, .wav">Tải lên</button> </div></div></form></td></tr>';
+            
+			// Hiển thị danh sách file trong thẻ có id là NotifyWelcome
+            $("#NotifyWelcome").html(fileListHtml);
+            // Sự kiện click cho nút "Tải lên"
+            $("#uploadButton").click(function() {
+                // Lấy dữ liệu từ form
+                var formData = new FormData($('#uploadForm')[0]);
+                // Gửi yêu cầu AJAX để tải lên file
+                $.ajax({
+                    url: "Ajax/Sound_Notify.php",
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function(data) {
+						
+						soundNotifyWelcome();
+						$("#MessNotifyWelcome").html(data);
+                        // Xử lý dữ liệu trả về nếu cần
+                       // console.log(data);
+                    },
+                    error: function(xhr, status, error) {
+						$("#MessNotifyWelcome").html("Yêu cầu AJAX không thành công: "+status+', '+error);
+						alert("Yêu cầu AJAX không thành công: "+status+', '+error);
+                    }
+                });
+            });
         },
-        data: JSON.stringify({
-          type: 2,
-          data: "volume",
-          action: "setup",
-          new_value: parseInt(newVolume)
-        }),
-      };
+        error: function(xhr, status, error) {
+			$("#MessNotifyWelcome").html("Yêu cầu AJAX không thành công: "+status+', '+error);
+			alert("Yêu cầu AJAX không thành công: "+status+', '+error);
+        }
+    });
+}
 
-      $.ajax(ajaxSettings).done(function (response) {
-        // Cập nhật giá trị volume từ phản hồi của server
-        document.getElementById('volume_value').value = response.new_volume;
-      });
+//Hiển thị list danh sách các file âm thanh trong thư mục default
+function soundNotifyDefault() {
+    // Gửi yêu cầu AJAX để lấy danh sách file và hiển thị trên giao diện
+    $.ajax({
+        url: "Ajax/Sound_Notify.php?folder=default",
+        method: "GET",
+        dataType: "json",
+        success: function(response) {
+			//$("#MessNotifyDefault").html("Danh Sách File âm thanh Phản Hồi");
+            var fileListHtml = ""; // Khởi tạo biến chứa HTML của danh sách file
+            fileListHtml += "<tr><td><center><font color=red><b>Tên</b></font></center></td><td colspan='2'><center><font color=red><b>Hành Động</b></font></center></td></tr>"; // Thêm dòng tiêu đề của bảng
+            // Duyệt qua từng tên file trong mảng response và tạo HTML tương ứng
+            $.each(response, function(index, value) {
+                fileListHtml += "<tr><td><font color=red>" + value + "</font></td><td><button type='button' class='btn btn-danger' onclick='soundNotifyDelFile(\"default/" + value + "\")'>Xóa</button></td><td><button type='button' class='btn btn-primary' onclick='soundNotifyDownFile(\"default/" + value + "\")'>Tải Xuống</button></td></tr>";
+            });
+            // Thêm form tải lên file vào danh sách
+			fileListHtml += "<tr><td colspan='3'><form id='uploadFormdefault' enctype='multipart/form-data'>";
+			fileListHtml += '<div class="input-group"><div class="custom-file col-xs-2">';
+			fileListHtml += "<input type='file' multiple class='form-control' name='file_default' id='file_default' accept='audio/mpeg, audio/wav'></div>";
+			fileListHtml += ' <div class="input-group-append">';
+			fileListHtml += '<button type="button" class="btn btn-primary" id="uploadButtondefault" title="Tải lên file .mp3, .wav">Tải lên</button> </div></div></form></td></tr>';
+            
+			// Hiển thị danh sách file trong thẻ có id là NotifyDefault
+            $("#NotifyDefault").html(fileListHtml);
+            // Sự kiện click cho nút "Tải lên"
+            $("#uploadButtondefault").click(function() {
+                // Lấy dữ liệu từ form
+                var formData = new FormData($('#uploadFormdefault')[0]);
+                // Gửi yêu cầu AJAX để tải lên file
+                $.ajax({
+                    url: "Ajax/Sound_Notify.php",
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function(data) {
+						
+						soundNotifyDefault();
+						
+						$("#MessNotifyDefault").html(data);
+                        // Xử lý dữ liệu trả về nếu cần
+                       // console.log(data);
+                    },
+                    error: function(xhr, status, error) {
+						alert("Yêu cầu AJAX không thành công: "+status+', '+error);
+                    }
+                });
+            });
+        },
+        error: function(xhr, status, error) {
+			alert("Yêu cầu AJAX không thành công: "+status+', '+error);
+			$("#MessNotifyDefault").html("Yêu cầu AJAX không thành công: "+status+', '+error);
+        }
+    });
+}
 
-      // Ngăn chặn việc gửi AJAX request khi đang giữ chuột
-      updatee = false;
+function soundNotifyDelFile(fileName) {
+    // Hiển thị hộp thoại xác nhận trước khi xóa
+    var parts = fileName.split("/");
+    var result_fileName = parts[parts.length - 1];
+    var resultSound = fileName.substring(0, fileName.lastIndexOf("/"));
+    var notiGET = ""; // Khởi tạo notiGET
+
+    if (resultSound === "default") {
+        notiGET = "#MessNotifyDefault";
+		reloadSoundNoti = soundNotifyDefault;
+    } else if (resultSound === "welcome") {
+        notiGET = "#MessNotifyWelcome";
+		reloadSoundNoti = soundNotifyWelcome;
+    } else {
+        notiGET = ""; // Trường hợp không xác định, có thể thêm xử lý tương ứng tại đây
     }
-  });
 
-  // Bổ sung sự kiện để đặt lại cờ update khi chuột rời khỏi thanh trượt
-  document.getElementById('volume_value').addEventListener('mouseleave', function() {
-    updatee = true;
-  });
+    if (confirm("Bạn có chắc chắn muốn xóa tệp '" + result_fileName + "' không?")) {
+        var settings = {
+            "url": "Ajax/Sound_Notify.php?delete_file=" + fileName,
+            "method": "GET",
+            "timeout": 0,
+        };
 
-  // Bổ sung sự kiện để đặt lại cờ update khi chuột nhả ra khỏi trang
-  document.addEventListener('mouseup', function() {
-    updatee = true;
-  });
+        $.ajax(settings)
+            .done(function(response) {
+                reloadSoundNoti();
+                if (notiGET) {
+                    $(notiGET).html(response); // Chỉ hiển thị nếu notiGET đã được xác định
+                }
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                // Xử lý thông báo thất bại ở đây
+                alert("Xóa File '" + result_fileName + "' không thành công: " + errorThrown);
+            });
+    }
+}
+
+
+
+function soundNotifyDownFile(fileName) {
+    // Tạo một yếu tố <a> ẩn để tải xuống tệp
+    var linksoundNotifyDownFile = document.createElement("a");
+    linksoundNotifyDownFile.href = "Ajax/Sound_Notify.php?download_file=" + fileName;
+    linksoundNotifyDownFile.style.display = "none"; // Ẩn yếu tố <a>
+    // Thêm yếu tố <a> vào trang
+    document.body.appendChild(linksoundNotifyDownFile);
+
+    // Kích hoạt sự kiện click trên yếu tố <a> để bắt đầu tải xuống
+    linksoundNotifyDownFile.click();
+    // Sau khi tải xuống xong, loại bỏ yếu tố <a> khỏi trang
+    document.body.removeChild(linksoundNotifyDownFile);
+}
+
+
 </script>
--->
+
 
 
 
