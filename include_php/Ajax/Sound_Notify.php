@@ -59,6 +59,59 @@ function uploadToWelcomeFolder($fileName, $tempFilePath, $DuognDanThuMucJson) {
         return false;
     }
 }
+// Hàm đổi tên file
+function sanitizeFileName($fileName) {
+    // Chuyển đổi tiếng Việt có dấu thành không dấu
+    $fileName = removeVietnameseAccents($fileName);
+    // Xóa dấu và ký tự đặc biệt (ngoại trừ dấu gạch dưới và dấu chấm)
+    $fileName = preg_replace("/[^a-zA-Z0-9._]/", "_", $fileName);
+    // Thay thế khoảng trắng bằng dấu "_"
+    $fileName = str_replace(" ", "_", $fileName);
+    // Xóa các dấu phân cách liên tiếp
+    $fileName = preg_replace("/_+/", "_", $fileName);
+    // Xóa ký tự "_" ở đầu và cuối chuỗi
+    $fileName = trim($fileName, "_");
+    return $fileName;
+}
+
+// Hàm loại bỏ dấu tiếng Việt
+function removeVietnameseAccents($str) {
+    $accents = array(
+        'à', 'á', 'ạ', 'ả', 'ã', 'â', 'ầ', 'ấ', 'ậ', 'ẩ', 'ẫ', 'ă', 'ằ', 'ắ', 'ặ', 'ẳ', 'ẵ',
+        'è', 'é', 'ẹ', 'ẻ', 'ẽ', 'ê', 'ề', 'ế', 'ệ', 'ể', 'ễ',
+        'ì', 'í', 'ị', 'ỉ', 'ĩ',
+        'ò', 'ó', 'ọ', 'ỏ', 'õ', 'ô', 'ồ', 'ố', 'ộ', 'ổ', 'ỗ', 'ơ', 'ờ', 'ớ', 'ợ', 'ở', 'ỡ',
+        'ù', 'ú', 'ụ', 'ủ', 'ũ', 'ư', 'ừ', 'ứ', 'ự', 'ử', 'ữ',
+        'ỳ', 'ý', 'ỵ', 'ỷ', 'ỹ',
+        'đ',
+        'À', 'Á', 'Ạ', 'Ả', 'Ã', 'Â', 'Ầ', 'Ấ', 'Ậ', 'Ẩ', 'Ẫ', 'Ă', 'Ằ', 'Ắ', 'Ặ', 'Ẳ', 'Ẵ',
+        'È', 'É', 'Ẹ', 'Ẻ', 'Ẽ', 'Ê', 'Ề', 'Ế', 'Ệ', 'Ể', 'Ễ',
+        'Ì', 'Í', 'Ị', 'Ỉ', 'Ĩ',
+        'Ò', 'Ó', 'Ọ', 'Ỏ', 'Õ', 'Ô', 'Ồ', 'Ố', 'Ộ', 'Ổ', 'Ỗ', 'Ơ', 'Ờ', 'Ớ', 'Ợ', 'Ở', 'Ỡ',
+        'Ù', 'Ú', 'Ụ', 'Ủ', 'Ũ', 'Ư', 'Ừ', 'Ứ', 'Ự', 'Ử', 'Ữ',
+        'Ỳ', 'Ý', 'Ỵ', 'Ỷ', 'Ỹ',
+        'Đ'
+    );
+    $noAccents = array(
+        'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a',
+        'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e',
+        'i', 'i', 'i', 'i', 'i',
+        'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o',
+        'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u',
+        'y', 'y', 'y', 'y', 'y',
+        'd',
+        'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A',
+        'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E',
+        'I', 'I', 'I', 'I', 'I',
+        'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',
+        'U', 'U', 'U', 'U', 'U', 'U', 'U', 'U', 'U', 'U', 'U',
+        'Y', 'Y', 'Y', 'Y', 'Y',
+        'D'
+    );
+    return str_replace($accents, $noAccents, $str);
+}
+
+
 
 // Kiểm tra xem có tham số "folder" có được truyền vào hay không
 if (isset($_GET['folder'])) {
@@ -115,10 +168,14 @@ if (isset($_GET['folder'])) {
         echo "Không thể xóa file: <b>$file</b>";
     }
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
+	
+	
+	
     // Kiểm tra nếu có tệp được tải lên
     // Kiểm tra xem người dùng đã chọn tệp hay chưa
     if (isset($_FILES["file_default"]) && $_FILES["file_default"]["error"] == UPLOAD_ERR_OK) {
-        $fileName = $_FILES["file_default"]["name"];
+      //  $fileName = $_FILES["file_default"]["name"];
+        $fileName = sanitizeFileName($_FILES["file_default"]["name"]);
         $tempFilePath = $_FILES["file_default"]["tmp_name"];
         $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
         if ($fileExtension == 'mp3' || $fileExtension == 'wav') {
@@ -131,7 +188,8 @@ if (isset($_GET['folder'])) {
             echo "Chỉ cho phép tải lên các file có định dạng .mp3 và .wav.";
         }
     } elseif (isset($_FILES["file_welcome"]) && $_FILES["file_welcome"]["error"] == UPLOAD_ERR_OK) {
-        $fileName = $_FILES["file_welcome"]["name"];
+        //$fileName = $_FILES["file_welcome"]["name"];
+        $fileName = sanitizeFileName($_FILES["file_welcome"]["name"]);
         $tempFilePath = $_FILES["file_welcome"]["tmp_name"];
         $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
         if ($fileExtension == 'mp3' || $fileExtension == 'wav') {
