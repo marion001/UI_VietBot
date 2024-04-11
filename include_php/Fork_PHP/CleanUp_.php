@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Kiểm tra xem thư mục có tồn tại không
         if (!is_dir($dir)) {
-            echo "<center>Đường dẫn thư mục không tồn tại.</center>";
+            echo "<center><b><font color=red>Đường dẫn thư mục không tồn tại.</font></b></center>";
         } else {
             // Hàm để tính tổng dung lượng của tất cả các tệp trong thư mục
             function getDirectorySize($path) {
@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if (is_file($filePath)) {
                         $fileSize = filesize($filePath);
                         $fileTime = filectime($filePath);
-                        $fileList .= "$file (" . formatSizeUnits($fileSize) . " - Tạo lúc: " . date("H:i:s d/m/Y", $fileTime) . ")\n";
+                        $fileList .= "$file (" . formatSizeUnits($fileSize) . " - Tạo lúc: " . date("H:i:s d/m/Y", $fileTime) . ")\n\n";
                     }
                 }
             }
@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     } else {
         // Nếu không có dữ liệu, bạn có thể thông báo lỗi hoặc thực hiện hành động khác
-        echo "<center>Không có thư mục được chọn.</center>";
+        echo "<center><b><font color=red>Hãy chọn thư mục.</font></b></center>";
     }
 }
 
@@ -79,7 +79,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		<div class="input-group">
 		<select class="custom-select" id="directory" name="directory">
 	<option value="">Chọn nơi cần dọn dẹp</option>
-		<option value="/home/pi/vietbot_offline/src/tts_saved">tts_saved</option>
+		<option value="<?php echo $DuognDanThuMucJson; ?>/tts_saved">tts_saved</option>
+		<option value="<?php echo $DuognDanThuMucJson; ?>/__pycache__">__pycache__</option>
 		<input type="submit" class="btn btn-warning" title="Hiển thị các file, tệp tin" value="Load File"> 
 		</div>
 
@@ -97,8 +98,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<center><textarea class='form-control' style='width: 95%; height: 340px;' class='text-info form-control bg-dark' readonly='' rows='10' cols='50'>$fileList</textarea></center>";
         echo "</div>";
         echo "<div>";
-        echo "<center>Tổng số tệp trong thư mục ".basename($dir)." là: " . count($files) . " File<br>";
-        echo "Có tổng dung lượng là: " . formatSizeUnits($directorySize)."</center>";
+        echo "<center>Tổng số tệp trong thư mục ".basename($dir)." là: <b>" . count($files) . " File</b><br>";
+        echo "Có tổng dung lượng là: <b>" . formatSizeUnits($directorySize)."</b></center>";
         echo "</div>";
         echo "<form method='post'>";
         echo "<input type='hidden' name='directory' value='$dir'>";
