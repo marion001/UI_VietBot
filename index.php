@@ -216,6 +216,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
 </style>
 <style>
   .halfCircle {
+	  cursor: pointer;
     width: 20px; /* Đặt kích thước cho hình tròn */
     height: 20px; /* Đặt kích thước cho hình tròn */
     border-radius: 50%; /* Đảm bảo hình tròn */
