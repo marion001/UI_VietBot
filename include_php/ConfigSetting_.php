@@ -1633,6 +1633,7 @@ Tốc Độ: <input type="range" name="speed_tts" id="slider_tts" title="Phù H�
   <?php 
 // Lấy danh sách các tệp tin .mp3 trong thư mục
 $mp3Files = glob($directorySound . '*.mp3');
+  $mp3Files = array_merge($mp3Files, glob($directorySound . '*.wav'));
 // Lọc tệp tin "tut_tut.mp3" ra khỏi danh sách
 $mp3Files = array_filter($mp3Files, function($mp3File) {
     return basename($mp3File) !== 'tut_tut.mp3';
