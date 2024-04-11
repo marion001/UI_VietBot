@@ -49,11 +49,11 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
 		</center>";
 		exit();
 }
-	include "Fork_PHP/CleanUp_.php";
+	include "Fork_PHP/CleanUpCache_.php";
 	
 	} else {
 	   
-	   include "Fork_PHP/CleanUp_.php";
+	   include "Fork_PHP/CleanUpCache_.php";
 	   
 	   
 	}
