@@ -207,6 +207,12 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     white-space: pre-wrap; /* Bảo toàn dạng văn bản ban đầu và cho phép tự động xuống dòng */
 }
 
+    #openPage {
+        position: fixed;
+        bottom: 20px; /* Khoảng cách từ bottom */
+        right: 20px; /* Khoảng cách từ right */
+    }
+
 </style>
 <?php	
 if (isset($Web_UI_Login) && $Web_UI_Login === true) {
