@@ -733,7 +733,7 @@ if (!isset($_SESSION['root_id'])) {
 </section>
 <section id="Clean_Up" class="section blog bg-gray-400 text-white">
     <div class="container">
-        <h3 class="subtitle">Google Drive Auto Backup</h3>
+        <h3 class="subtitle">Dọn Dẹp Cache</h3>
 			<div class="rounded-iframe">
      <iframe src="./include_php/CleanUp.php" width="100%" height="570px"></iframe>
 		</div>
