@@ -4170,12 +4170,14 @@ $(document).ready(function() {
 <script>
 //Hiển thị list danh sách các file âm thanh trong thư mục welcome
 function soundNotifyWelcome() {
+	$('#loading-overlay').show();
     // Gửi yêu cầu AJAX để lấy danh sách file và hiển thị trên giao diện
     $.ajax({
         url: "Ajax/Sound_Notify.php?folder=welcome",
         method: "GET",
         dataType: "json",
         success: function(response) {
+			$('#loading-overlay').hide();
 			//$("#MessNotifyWelcome").html("Danh Sách File âm thanh Khi Khởi Động");
             var fileListHtml = ""; // Khởi tạo biến chứa HTML của danh sách file
             fileListHtml += "<tr><td><center><font color=red><b>Tên</b></font></center></td><td colspan='2'><center><font color=red><b>Hành Động</b></font></center></td></tr>"; // Thêm dòng tiêu đề của bảng
@@ -4194,6 +4196,7 @@ function soundNotifyWelcome() {
             $("#NotifyWelcome").html(fileListHtml);
             // Sự kiện click cho nút "Tải lên"
             $("#uploadButton").click(function() {
+				$('#loading-overlay').show();
                 // Lấy dữ liệu từ form
                 var formData = new FormData($('#uploadForm')[0]);
                 // Gửi yêu cầu AJAX để tải lên file
@@ -4205,13 +4208,14 @@ function soundNotifyWelcome() {
                     cache: false,
                     processData: false,
                     success: function(data) {
-						
+						$('#loading-overlay').hide();
 						soundNotifyWelcome();
 						$("#MessNotifyWelcome").html(data);
                         // Xử lý dữ liệu trả về nếu cần
                        // console.log(data);
                     },
                     error: function(xhr, status, error) {
+						$('#loading-overlay').hide();
 						$("#MessNotifyWelcome").html("Yêu cầu AJAX không thành công: "+status+', '+error);
 						alert("Yêu cầu AJAX không thành công: "+status+', '+error);
                     }
@@ -4219,6 +4223,7 @@ function soundNotifyWelcome() {
             });
         },
         error: function(xhr, status, error) {
+			$('#loading-overlay').hide();
 			$("#MessNotifyWelcome").html("Yêu cầu AJAX không thành công: "+status+', '+error);
 			alert("Yêu cầu AJAX không thành công: "+status+', '+error);
         }
@@ -4227,12 +4232,14 @@ function soundNotifyWelcome() {
 
 //Hiển thị list danh sách các file âm thanh trong thư mục default
 function soundNotifyDefault() {
+	$('#loading-overlay').show();
     // Gửi yêu cầu AJAX để lấy danh sách file và hiển thị trên giao diện
     $.ajax({
         url: "Ajax/Sound_Notify.php?folder=default",
         method: "GET",
         dataType: "json",
         success: function(response) {
+			$('#loading-overlay').hide();
 			//$("#MessNotifyDefault").html("Danh Sách File âm thanh Phản Hồi");
             var fileListHtml = ""; // Khởi tạo biến chứa HTML của danh sách file
             fileListHtml += "<tr><td><center><font color=red><b>Tên</b></font></center></td><td colspan='2'><center><font color=red><b>Hành Động</b></font></center></td></tr>"; // Thêm dòng tiêu đề của bảng
@@ -4251,6 +4258,7 @@ function soundNotifyDefault() {
             $("#NotifyDefault").html(fileListHtml);
             // Sự kiện click cho nút "Tải lên"
             $("#uploadButtondefault").click(function() {
+				$('#loading-overlay').show();
                 // Lấy dữ liệu từ form
                 var formData = new FormData($('#uploadFormdefault')[0]);
                 // Gửi yêu cầu AJAX để tải lên file
@@ -4262,7 +4270,7 @@ function soundNotifyDefault() {
                     cache: false,
                     processData: false,
                     success: function(data) {
-						
+						$('#loading-overlay').hide();
 						soundNotifyDefault();
 						
 						$("#MessNotifyDefault").html(data);
@@ -4270,12 +4278,14 @@ function soundNotifyDefault() {
                        // console.log(data);
                     },
                     error: function(xhr, status, error) {
+						$('#loading-overlay').hide();
 						alert("Yêu cầu AJAX không thành công: "+status+', '+error);
                     }
                 });
             });
         },
         error: function(xhr, status, error) {
+			$('#loading-overlay').hide();
 			alert("Yêu cầu AJAX không thành công: "+status+', '+error);
 			$("#MessNotifyDefault").html("Yêu cầu AJAX không thành công: "+status+', '+error);
         }
@@ -4283,6 +4293,7 @@ function soundNotifyDefault() {
 }
 
 function soundNotifyDelFile(fileName) {
+	
     // Hiển thị hộp thoại xác nhận trước khi xóa
     var parts = fileName.split("/");
     var result_fileName = parts[parts.length - 1];
@@ -4300,6 +4311,7 @@ function soundNotifyDelFile(fileName) {
     }
 
     if (confirm("Bạn có chắc chắn muốn xóa tệp '" + result_fileName + "' không?")) {
+		$('#loading-overlay').show();
         var settings = {
             "url": "Ajax/Sound_Notify.php?delete_file=" + fileName,
             "method": "GET",
@@ -4308,12 +4320,14 @@ function soundNotifyDelFile(fileName) {
 
         $.ajax(settings)
             .done(function(response) {
+				$('#loading-overlay').hide();
                 reloadSoundNoti();
                 if (notiGET) {
                     $(notiGET).html(response); // Chỉ hiển thị nếu notiGET đã được xác định
                 }
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
+				$('#loading-overlay').hide();
                 // Xử lý thông báo thất bại ở đây
                 alert("Xóa File '" + result_fileName + "' không thành công: " + errorThrown);
             });
@@ -4323,6 +4337,7 @@ function soundNotifyDelFile(fileName) {
 
 
 function soundNotifyDownFile(fileName) {
+	$('#loading-overlay').show();
     // Tạo một yếu tố <a> ẩn để tải xuống tệp
     var linksoundNotifyDownFile = document.createElement("a");
     linksoundNotifyDownFile.href = "Ajax/Sound_Notify.php?download_file=" + fileName;
@@ -4334,6 +4349,7 @@ function soundNotifyDownFile(fileName) {
     linksoundNotifyDownFile.click();
     // Sau khi tải xuống xong, loại bỏ yếu tố <a> khỏi trang
     document.body.removeChild(linksoundNotifyDownFile);
+	$('#loading-overlay').hide();
 }
 
 
