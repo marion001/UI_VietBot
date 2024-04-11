@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	<option value="">Chọn nơi cần dọn dẹp</option>
 		<option value="<?php echo $DuognDanThuMucJson; ?>/tts_saved">tts_saved</option>
 		<option value="<?php echo $DuognDanThuMucJson; ?>/__pycache__">__pycache__</option>
-		<input type="submit" class="btn btn-warning" title="Hiển thị các file, tệp tin" value="Load File"> 
+		<input type="submit" class="btn btn-warning" title="Hiển thị các file, tệp tin" value="Load"> 
 		</div>
 
 		
