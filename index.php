@@ -731,7 +731,13 @@ if (!isset($_SESSION['root_id'])) {
      <iframe src="./GoogleDrive/index.php" width="100%" height="570px"></iframe>
 		</div>
 </section>
-
+<section id="Clean_Up" class="section blog bg-gray-400 text-white">
+    <div class="container">
+        <h3 class="subtitle">Google Drive Auto Backup</h3>
+			<div class="rounded-iframe">
+     <iframe src="./include_php/CleanUp.php" width="100%" height="570px"></iframe>
+		</div>
+</section>
 <section id="MediaPlayer" class="section blog bg-gray-400 text-white">
     <div class="container">
         <h3 class="subtitle">Media Player</h3>
@@ -806,6 +812,8 @@ if (!isset($_SESSION['root_id'])) {
         <a class="btn btn-success" href="#UI_update" role="button" title="Nhấn Để Kiểm Tra, Cập Nhật Giao Diện">Cập Nhật Giao Diện</a>
         
 		
+		
+		
 		<?php	
 if (isset($Web_UI_Login) && $Web_UI_Login === true) {
 	echo '<a class="btn btn-info" href="#PasswordChange" role="button" title="Đổi Mật Khẩu">Đổi Mật Khẩu Web UI</a>';
@@ -822,6 +830,8 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
 	   <a href="#CFG_WifiManager" role="button" class="btn btn-primary"><i class="bi bi-wifi" title="Cài Đặt,Cấu Hình Wifi"></i></a>
 	   <a href="#Google_Drive_Auto_Backup" role="button" class="btn btn-dark" title="Google Drive Backup"><img src="assets/img/drive.png" title="Google Drive Backup"></a>
 	   <a class="btn btn-secondary" href="./Help_Support/index.php" role="button" target="_bank" title="Hướng Dẫn / Sử Dụng Vietbot"><i class="bi bi-question-square-fill" title="Hướng Dẫn / Sử Dụng Vietbot"></i></a>
+	
+	   	   <a href="#Clean_Up" role="button" class="btn btn-primary"><i class="bi bi-trash"></i></a>
 	   <div class="colors text-center">
             <span class="WhiteBg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
             <span class="01Bg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
