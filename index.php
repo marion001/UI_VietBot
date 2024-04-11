@@ -831,7 +831,7 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
 	   <a href="#Google_Drive_Auto_Backup" role="button" class="btn btn-dark" title="Google Drive Backup"><img src="assets/img/drive.png" title="Google Drive Backup"></a>
 	   <a class="btn btn-secondary" href="./Help_Support/index.php" role="button" target="_bank" title="Hướng Dẫn / Sử Dụng Vietbot"><i class="bi bi-question-square-fill" title="Hướng Dẫn / Sử Dụng Vietbot"></i></a>
 	
-	   	   <a href="#Clean_Up" role="button" class="btn btn-primary"><i class="bi bi-trash"></i></a>
+	   	   <a href="#Clean_Up" role="button" class="btn btn-light"><i class="bi bi-trash"></i></a>
 	   <div class="colors text-center">
             <span class="WhiteBg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
             <span class="01Bg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
@@ -1105,6 +1105,7 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
     const buttonnnElement = document.querySelector('.btn-info');
     const buttonnnnElement = document.querySelector('.btn-primary');
     const buttonnnnnElement = document.querySelector('.btn-dark');
+    const buttonnnnnnElement = document.querySelector('.btn-light');
 
 	const volume_slide_index = document.getElementById('volume_slide_index');
 
@@ -1148,7 +1149,13 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
         divElement.classList.add('hide');
 		});
 		}
-	
+		if (buttonnnnnnElement) {
+  	    buttonnnnnnElement.addEventListener('click', function() {
+        // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
+        divElement.classList.remove('show');
+        divElement.classList.add('hide');
+		});
+		}
 
     // Gắn sự kiện click vào liên kết
     linkElement.addEventListener('click', function() {
