@@ -5,6 +5,7 @@ include "../Configuration.php";
 ?>
 <script src="../../assets/js/axios_0.21.1.min.js"></script>
 <link rel="stylesheet" href="../../assets/css/bootstrap-icons.css">
+
 </head>
 
 <body>
@@ -37,6 +38,9 @@ include "../Configuration.php";
         <center>
             <div class="btn-group-toggle chat-form-button" data-toggle="buttons">
                 <button id="delete-all-button" class="btn btn-danger">Xóa tất cả tin nhắn</button>
+				
+				<i id="openPage" title="Mở trong tab mới" class="bi bi-chevron-double-up" style="cursor: pointer;"></i>
+
             </div>
         </center>
     </div>
@@ -733,7 +737,15 @@ function typeWriter(element, text, index) {
     }
 </script>
 
-
+<script>
+document.getElementById('openPage').addEventListener('click', function() {
+    // URL của trang mới bạn muốn mở
+    var newPageURL = "ChatBot.php";
+    
+    // Mở trang mới với URL được chỉ định và tên của trang đó
+    window.open(newPageURL, "_blank");
+});
+</script>
 </body>
 
 </html>
