@@ -13,7 +13,7 @@ header("Content-Type: application/json");
 $version = "1.1";
 
 
-$Vietbot_Version = $dataVersionVietbot->vietbot_version->latest;
+$Vietbot_Version_Local = $dataVersionVietbot->vietbot_version->latest;
 $Webui_Version = $dataVersionUI->ui_version->latest;
 $Image_Version = $dataVersionVietbot->image_version->latest;
 $IMG_Vietbot = "https://drive.google.com/drive/folders/1c-I3fmMwNrbcWhXvCeuiyt-I5yH5gF8b";
@@ -38,6 +38,7 @@ $information = array(
 		'current_user' => $GET_current_USER,
 		'hostname' => $HostName,
 		'server_ip' => $serverIP,
+		'gggg' => $Vietbot_Version,
 		'info_model' => $infomodel,
 		'php_uname' => php_uname(),
         'img_vietbot' => $IMG_Vietbot,
@@ -50,7 +51,7 @@ $information = array(
 		'enable_api' => $Enable_API,
 		'api_version' => $version,
         'image_version' => $Image_Version,
-        'vietbot_version' => $Vietbot_Version,
+        'vietbot_version' => $Vietbot_Version_Local,
         'webui_version' => $Webui_Version,
 		'query_instructions' => array(
 		'command' => 'restart, linux command (ls, sudo, sudo reboot, dir, v..v...), ',
@@ -253,14 +254,14 @@ if ($query === "info") {
 	$VBremoteJsonData = file_get_contents($Vietbot_Version);
 	$VBremoteData = json_decode($VBremoteJsonData, true);
 	
-	$VBlocalFile = $DuognDanThuMucJson.'/version.json';
-	$VBlocalJsonData = file_get_contents($VBlocalFile);
-	$VBlocalData = json_decode($VBlocalJsonData, true);
+	//$VBlocalFile = $DuognDanThuMucJson.'/version.json';
+	//$VBlocalJsonData = file_get_contents($VBlocalFile);
+	//$VBlocalData = json_decode($VBlocalJsonData, true);
 	
 	$VBremoteValue = $VBremoteData['vietbot_version']['latest'];
-	$VBlocalValue = $VBlocalData['vietbot_version']['latest'];
+	//$VBlocalValue = $VBlocalData['vietbot_version']['latest'];
 	
-	if ($VBremoteValue !== $VBlocalValue) {
+	if ($VBremoteValue !== $Vietbot_Version_Local) {
 	$VB_update = true;
 	$VB_new_version = $VBremoteValue;
 	$VB_update_command = $VBremoteData['update_command'];
@@ -283,7 +284,7 @@ if ($query === "info") {
             'output_api' => null,
 			'info_vietbot' => array(
 				'vietbot_version' => array(
-					'current_version' => $VBlocalValue,
+					'current_version' => $Vietbot_Version_Local,
 					'new_version' => $VB_new_version,
 					'check_for_updates' => $VB_update,
 					'content' => array(
