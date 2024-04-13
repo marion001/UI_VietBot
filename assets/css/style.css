@@ -2269,10 +2269,10 @@ body {
   background-color: #e5e7ed;
 }
 .middle-line:before{
-  background-color: #000;
+  background-color: #FF0000;
 }
 .middle-line:after{
-  background-color: #bbb;
+  background-color: #000000;
 }
 /*------------------------- OVERLAY MENU -------------------------*/
 a.menu-arrow {
