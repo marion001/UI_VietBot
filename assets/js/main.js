@@ -485,18 +485,18 @@ function sidebarMenu() {
 
     // To Contact Button
     $(".to-contact").on('click', function() {
-        console.log("asdadada");
+        //console.log("asdadada");
         var func = animateRandom();
 
         $(".menu > li a").removeClass("active");
         $('.menu > li:last-child a').addClass('active');
         if($window.width()<992){
-            console.log("first");
+            //console.log("first");
             $("#main > section.active").addClass(func[1]).removeClass("active");
             $('#main > section:last-child').addClass('active ' + func[0]);
         }
         else{
-            console.log("last");
+            //console.log("last");
 
             $("#main > section.active").removeClass("active");
             $('#main > section:last-child').addClass('active ');
@@ -946,7 +946,7 @@ function ColorPallet() {
         
         // Kiểm tra nếu color-pallet đã được hiển thị thì ẩn đi, ngược lại thì hiển thị
         $("#color-switcher .color-pallet").toggleClass('show');
-        console.log("show");
+        //console.log("show");
     });
 
     // Ngăn chặn sự lan truyền của sự kiện click từ các phần tử khác trong .pallet-button
