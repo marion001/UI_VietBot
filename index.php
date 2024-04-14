@@ -687,11 +687,8 @@ if (!isset($_SESSION['root_id'])) {
                 <h3 class="subtitle">Config/Cấu Hình</h3>
 					<div class="rounded-iframe">
 <iframe id="show_LoadConfig" width="100%" height="470px"></iframe>
-					
-              <!---  <iframe src="./include_php/ConfigSetting.php" width="100%" height="470px"></iframe> -->
             </div>
             </div>
-            <!--  Resume  -->
         </div>
     </div>
 </section>
@@ -793,86 +790,76 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
 ?>	
 
 
-	   <a href="#CFG_WifiManager" role="button" class="btn btn-primary"><i id="load_Wifi" class="bi bi-wifi" title="Cài Đặt,Cấu Hình Wifi"></i></a>
-	   <a href="#Google_Drive_Auto_Backup" role="button" class="btn btn-dark" title="Google Drive Backup"><img id="load_GDriver" src="assets/img/drive.png" title="Google Drive Backup"></a>
-	   <a class="btn btn-secondary" href="./Help_Support/index.php" role="button" target="_bank" title="Hướng Dẫn / Sử Dụng Vietbot"><i class="bi bi-question-square-fill" title="Hướng Dẫn / Sử Dụng Vietbot"></i></a>
-	
-	   	      	   <a href="#Clean_Up" role="button" title="Dọn dẹp cache" class="btn btn-light"><i id="load_ClearCache" title="Dọn dẹp cache" class="bi bi-trash"></i></a>
-	   <div class="colors text-center">
-            <span class="WhiteBg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
-            <span class="01Bg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
-            <span class="03Bg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
-            <span class="BlackBg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
-            <span class="GG01Bg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
-            <span class="GG02Bg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
-        </div>
-    </div>
-
-    <div class="pallet-button hide">
-	
-	
-        <a href="javascript:void(0)" class="cp-toggle"><i class="bi bi-gear" title="Nhấn Để Hiển Thị Cài Đặt"></i></a>
- 		
- <a onclick="toggleSidebar()" class="cp-toggleee"><i class="bi bi-chat-dots" title="Nhấn Để Mở ChatBot"></i></a>
- 
-
-
-
- 
-	<div id="volume_slide_index" class="cp-toggleeeee">
-	  <div class="halfCircle" id="circle" title="Đang Kiểm Tra Trạng Thái Vietbot"></div><div class="statusLine"></div>
-	
-	 <b><font color=blue><span id="volume_percentage"><?php echo $state_json->volume; ?></span>%</font></b>   
-
- 
- <input type="range" class="volume_value" title="Kéo Để Thay Đổi Âm Lượng" id="volume_value" name="volume_value" min="0" max="100" step="1" value="<?php echo $state_json->volume; ?>">
-	<p class="bi bi-volume-up-fill" title="Âm Lượng"></p>	
-
-<a class="colorred" onmousedown="startTimer()" onmouseup="stopTimer()" ontouchstart="startTimer()" ontouchend="stopTimer()" onclick="handleClick()">
-   <i class="bi bi-play-circle" title="Nhấn nhả để đánh thức Bot, Nhấn giữ 3s để bật chế độ hội thoại (Hỏi đáp liên tục)"></i>
+<a href="#CFG_WifiManager" role="button" class="btn btn-primary"><i id="load_Wifi" class="bi bi-wifi" title="Cài Đặt,Cấu Hình Wifi"></i></a>
+<a href="#Google_Drive_Auto_Backup" role="button" class="btn btn-dark" title="Google Drive Backup"><img id="load_GDriver" src="assets/img/drive.png" title="Google Drive Backup">
 </a>
- </div>
-	</div>
+<a class="btn btn-secondary" href="./Help_Support/index.php" role="button" target="_bank" title="Hướng Dẫn / Sử Dụng Vietbot"><i class="bi bi-question-square-fill" title="Hướng Dẫn / Sử Dụng Vietbot"></i></a>
+
+<a href="#Clean_Up" role="button" title="Dọn dẹp cache" class="btn btn-light"><i id="load_ClearCache" title="Dọn dẹp cache" class="bi bi-trash"></i></a>
+<div class="colors text-center">
+    <span class="WhiteBg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
+    <span class="01Bg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
+    <span class="03Bg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
+    <span class="BlackBg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
+    <span class="GG01Bg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
+    <span class="GG02Bg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
+</div>
+</div>
+<div class="pallet-button hide">
+    <a href="javascript:void(0)" class="cp-toggle"><i class="bi bi-gear" title="Nhấn Để Hiển Thị Cài Đặt"></i></a>
+    <a onclick="toggleSidebar()" class="cp-toggleee"><i class="bi bi-chat-dots" title="Nhấn Để Mở ChatBot"></i></a>
+    <div id="volume_slide_index" class="cp-toggleeeee">
+        <div class="halfCircle" id="circle" title="Đang Kiểm Tra Trạng Thái Vietbot"></div>
+        <div class="statusLine"></div>
+        <b><font color=blue><span id="volume_percentage"><?php echo $state_json->volume; ?></span>%</font></b>
+        <input type="range" class="volume_value" title="Kéo Để Thay Đổi Âm Lượng" id="volume_value" name="volume_value" min="0" max="100" step="1" value="<?php echo $state_json->volume; ?>">
+        <p class="bi bi-volume-up-fill" title="Âm Lượng"></p>
+        <a class="colorred" onmousedown="startTimer()" onmouseup="stopTimer()" ontouchstart="startTimer()" ontouchend="stopTimer()" onclick="handleClick()">
+            <i class="bi bi-play-circle" title="Nhấn nhả để đánh thức Bot, Nhấn giữ 3s để bật chế độ hội thoại (Hỏi đáp liên tục)"></i>
+        </a>
+    </div>
+</div>
 </div>
 
-    <div class="contentt">
-        <!-- Content of your website goes here -->
-        <!-- Add background overlay element -->
-        <div class="background-overlay" onclick="closeSidebar()"></div>
+<div class="contentt">
+    <!-- Content of your website goes here -->
+    <!-- Add background overlay element -->
+    <div class="background-overlay" onclick="closeSidebar()"></div>
 
-       <!-- <div class="right-sidebar" id="sidebar" onclick="event.stopPropagation()"> -->
-        <div class="right-sidebar" id="sidebar">
-            <!-- Your sidebar content goes here -->
-            <div class="toggle-btnnn-container">
-            <center>   <a onclick="toggleSidebar()" class="cp-toggleee"><i class="bi bi-x-circle-fill" title="Nhấn để đóng"></i></a></center>
-		
-			
-				 <iframe id="iframeChatBot" src="./include_php/ChatBot.php" frameborder="0" allowfullscreen></iframe>
-               
-            </div>
-			 <div class="resize-handle"></div>
+    <!-- <div class="right-sidebar" id="sidebar" onclick="event.stopPropagation()"> -->
+    <div class="right-sidebar" id="sidebar">
+        <!-- Your sidebar content goes here -->
+        <div class="toggle-btnnn-container">
+            <center> <a onclick="toggleSidebar()" class="cp-toggleee"><i class="bi bi-x-circle-fill" title="Nhấn để đóng"></i></a>
+            </center>
+
+
+            <iframe id="iframeChatBot" src="./include_php/ChatBot.php" frameborder="0" allowfullscreen></iframe>
+
         </div>
+        <div class="resize-handle"></div>
     </div>
+</div>
 <div class="blinking-container" id="updateMessage"></div>
-    <!-- Mouase Magic Cursor Start -->
-    <div class="m-magic-cursor mmc-outer"></div>
-	  <div class="m-magic-cursor mmc-inner"></div>
-    <!-- Mouase Magic Cursor End -->
-    <script src="assets/js/jquery-3.6.1.min.js"></script>
-    <!--  Bootstrap Js  -->
-    <script src="assets/js/bootstrap.js"></script>
-    <!--  Malihu ScrollBar Js  -->
-    <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
-    <!--  CountTo Js  -->
-    <script src="assets/js/jquery.countTo.js"></script>
-    <!--  Swiper Js  -->
-    <script src="assets/js/owl.carousel.min.js"></script>
-    <!--  Isotope Js  -->
-    <script src="assets/js/isotope.pkgd.min.js"></script>
-    <!--  Magnific Popup Js  -->
-    <script src="assets/js/jquery.magnific-popup.min.js"></script>
-    <!--  Arshia Js  -->
-    <script src="assets/js/main.js"></script>
+<!-- Mouase Magic Cursor Start -->
+<div class="m-magic-cursor mmc-outer"></div>
+<div class="m-magic-cursor mmc-inner"></div>
+<!-- Mouase Magic Cursor End -->
+<script src="assets/js/jquery-3.6.1.min.js"></script>
+<!--  Bootstrap Js  -->
+<script src="assets/js/bootstrap.js"></script>
+<!--  Malihu ScrollBar Js  -->
+<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<!--  CountTo Js  -->
+<script src="assets/js/jquery.countTo.js"></script>
+<!--  Swiper Js  -->
+<script src="assets/js/owl.carousel.min.js"></script>
+<!--  Isotope Js  -->
+<script src="assets/js/isotope.pkgd.min.js"></script>
+<!--  Magnific Popup Js  -->
+<script src="assets/js/jquery.magnific-popup.min.js"></script>
+<!--  Arshia Js  -->
+<script src="assets/js/main.js"></script>
 
 
 <script>
@@ -901,7 +888,7 @@ window.addEventListener("load", function() {
     checkHash("#Clean_Up", "show_LoadClearCache", "include_php/CleanUpCache.php");
     checkHash("#vietbot_update", "show_LoadUpdateVietbot", "backup_update/index.php");
     checkHash("#UI_update", "show_LoadUpdateUI", "ui_update/index.php");
-    checkHash("#MediaPlayer", "show_LoadMediaPlayer", "./Multimedia/index.php");
+    checkHash("#MediaPlayer", "show_LoadMediaPlayer", "Multimedia/index.php");
     checkHash("#PasswordChange", "show_LoadChangePassword", "include_php/Fork_PHP/ChangePassword.php");
 });
 // Gọi hàm để kiểm tra hash khi hash thay đổi
@@ -914,6 +901,7 @@ window.addEventListener("hashchange", function() {
     checkHash("#Clean_Up", "show_LoadClearCache", "include_php/CleanUpCache.php");
     checkHash("#vietbot_update", "show_LoadUpdateVietbot", "backup_update/index.php");
     checkHash("#UI_update", "show_LoadUpdateUI", "ui_update/index.php");
+    checkHash("#MediaPlayer", "show_LoadMediaPlayer", "Multimedia/index.php");
     checkHash("#PasswordChange", "show_LoadChangePassword", "include_php/Fork_PHP/ChangePassword.php");
 });
 </script>
