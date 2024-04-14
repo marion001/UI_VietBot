@@ -333,8 +333,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
           <a href="./"><img src="assets/img/VietBot128.png" alt="/" title="Nhấn Để Về Trang Chủ"></a>
         </div>
       <h1 class="mt-1" style="font-size: 14px;"><?php echo $MYUSERNAME; ?></h1>
-		<!--	<a class="download-cv btn btn-warning d-none d-lg-inline-block" href="" style="opacity: 1; font-size: 16px; padding: 10px 30px;" title="Comback_Soon">Comback_Soon</a>
-      -->
+
 	  </div>
       <div class="menu-align">
         <ul class="list-group menu text-center " id="menu">
@@ -347,20 +346,20 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
 
           <li class="list-group-item">
             <a href="#config">
-              <i class="bi bi-gear-wide-connected" title="Cấu Hình/Config"></i>
+              <i id="load_Config" class="bi bi-gear-wide-connected" title="Cấu Hình/Config"></i>
               <span>Config</span>
             </a>
           </li>
 		  
 		            <li class="list-group-item">
             <a href="#Skill">
-              <i class="bi bi-stars" title="Skill"></i>
+              <i id="load_Skill" class="bi bi-stars" title="Skill"></i>
               <span>Skill</span>
             </a>
           </li>
           <li class="list-group-item">
             <a href="#LogServiceCMD1">
-              <i class="bi bi-terminal-plus" title="Log/Service/Debug/Command"></i>
+              <i id="load_Debug" class="bi bi-terminal-plus" title="Log/Service/Debug/Command"></i>
               <span>Debug</span>
             </a>
           </li>
@@ -368,7 +367,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
 		  
 		 		  		          <li class="list-group-item">
             <a href="#MediaPlayer" class="custom-btn">
-              <i class="bi bi-disc" title="Media Player"></i>
+              <i id="load_MediaPlayer" class="bi bi-disc" title="Media Player"></i>
               <span>Media</span>
             </a>
           </li>    
@@ -383,10 +382,6 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         
          
         </ul>
-      <!--  <div class="menu-footer">
-          <a class="download-cv primary-button mt-3 mb-4 d-lg-none" href="" title="Comback_Soon">Comback_Soon</a>
-        </div> -->
-	
       </div>
     </div>
     <!--  Left Side End  -->
@@ -511,11 +506,14 @@ if (!isset($_SESSION['root_id'])) {
 
         <input type="password" id="passwordd" class="input-group-text" name="password" required><br>
 		<input type="checkbox" id="showPasswordd">
-		<label for="showPasswordd">Hiển Thị Mật Khẩu</label> | <a style="color:Yellow" href="#ForgotPassword"><b>Quên mật khẩu</b></a>
+		<label for="showPasswordd">Hiển Thị Mật Khẩu</label> | <a style="color:Yellow" href="include_php/Fork_PHP/ForgotPassword.php" target="_blank"><b>Quên mật khẩu</b></a>
 		<br/>
         <input type="submit" class="btn btn-success" value="Đăng nhập">
 		<a href='<?php echo $PHP_SELF; ?>'><button type='button' class='btn btn-danger'>Tải Lại</button></a>
-        <?php endif; ?>
+        <?php endif;
+
+
+		?>
         </form>
 		</center>
 
@@ -533,25 +531,9 @@ if (!isset($_SESSION['root_id'])) {
 	   
 	}
 ?>	
-		
-
-
-
-
-	
-	<!--  	</div> -->
-
       </section>
-
-
-
-
-      <!--  About Start  -->
       <section id="about" class="section about bg-gray-400 text-black">
         <div class="container">
-		
-
-          <!--  Count up  -->
           <div id="count-up" class="count-up text-center box-border">
 
             <div class="row">
@@ -704,7 +686,9 @@ if (!isset($_SESSION['root_id'])) {
             <div class="boxes">
                 <h3 class="subtitle">Config/Cấu Hình</h3>
 					<div class="rounded-iframe">
-                <iframe src="./include_php/ConfigSetting.php" width="100%" height="470px"></iframe>
+<iframe id="show_LoadConfig" width="100%" height="470px"></iframe>
+					
+              <!---  <iframe src="./include_php/ConfigSetting.php" width="100%" height="470px"></iframe> -->
             </div>
             </div>
             <!--  Resume  -->
@@ -714,35 +698,31 @@ if (!isset($_SESSION['root_id'])) {
 <!--  Resume End  -->
 <!--  Portfolio Start  -->
 <section id="LogServiceCMD1" class="section portfolio bg-gray-400 text-white">
- <!--   <iframe src="./include_php/Fork_PHP/Shell.php" width="100%" height="470px"></iframe> -->
-<iframe src="./include_php/LogServiceCMD.php" width="100%" height="430px"></iframe>
+
+<iframe id="show_LoadDebug" width="100%" height="470px"></iframe>
+
 </section>
-<!--  Portfolio End  -->
-<!--  Blog Start  -->
-<!--
-<section id="ChatBot" class="section blog bg-gray-400 text-white">
-    <iframe src="./include_php/ChatBot.php" width="100%" height="570px"></iframe>
-</section>
--->
 <section id="Google_Drive_Auto_Backup" class="section blog bg-gray-400 text-white">
     <div class="container">
         <h3 class="subtitle">Google Drive Auto Backup</h3>
 			<div class="rounded-iframe">
-     <iframe src="./GoogleDrive/index.php" width="100%" height="570px"></iframe>
+   <iframe id="show_LoadGDriver" width="100%" height="470px"></iframe>
+
 		</div>
 </section>
 <section id="Clean_Up" class="section blog bg-gray-400 text-white">
     <div class="container">
         <h3 class="subtitle">Dọn Dẹp Cache</h3>
 			<div class="rounded-iframe">
-     <iframe src="./include_php/CleanUpCache.php" width="100%" height="570px"></iframe>
+   <iframe id="show_LoadClearCache" width="100%" height="470px"></iframe>
 		</div>
 </section>
 <section id="MediaPlayer" class="section blog bg-gray-400 text-white">
     <div class="container">
         <h3 class="subtitle">Media Player</h3>
 			<div class="rounded-iframe">
-     <iframe src="./Multimedia/index.php" width="100%" height="570px"></iframe>
+  <!--   <iframe src="./Multimedia/index.php" width="100%" height="570px"></iframe> -->
+    <iframe id="show_LoadMediaPlayer" width="100%" height="470px"></iframe>
 		</div>
 </section>
 
@@ -751,50 +731,38 @@ if (!isset($_SESSION['root_id'])) {
     <div class="container">
         <h3 class="subtitle">Cập Nhật Chương Trình</h3>
 			<div class="rounded-iframe">
-        <iframe src="./backup_update/index.php" width="100%" height="570px"></iframe>
+         <iframe id="show_LoadUpdateVietbot" width="100%" height="470px"></iframe>
 		</div>
 </section>
 <section id="UI_update" class="section blog bg-gray-400 text-white">
     <div class="container">
         <h3 class="subtitle">Cập Nhật Giao Diện</h3>
 			<div class="rounded-iframe">
-        <iframe src="./ui_update/index.php" width="100%" height="570px"></iframe>
+        <iframe id="show_LoadUpdateUI" width="100%" height="470px"></iframe>
 	</div>
 </section>
 <section id="PasswordChange" class="section blog bg-gray-400 text-white">
     <div class="container">
         <h3 class="subtitle">Thay Đổi Mật Khẩu</h3>
 			<div class="rounded-iframe">
-        <iframe src="./include_php/Fork_PHP/ChangePassword.php" width="100%" height="570px"></iframe>
+        <iframe id="show_LoadChangePassword" width="100%" height="470px"></iframe
 	</div>
 </section>
 <section id="Skill" class="section blog bg-gray-400 text-white">
     <div class="container">
         <h3 class="subtitle">Cấu hình skill</h3>
 			<div class="rounded-iframe">
-        <iframe src="./include_php/Skill.php" width="100%" height="570px"></iframe>
+        <iframe id="show_LoadSkill" width="100%" height="470px"></iframe>
 	</div>
 </section>
 
 <section id="CFG_WifiManager" class="section contact w-100 bg-gray-400 text-white">
     <div class="container">
         <h3 class="subtitle">Cấu Hình Wifi</h3>
-<iframe src="./WifiManager/index.php" width="100%" height="570px"></iframe>
-    </div>
-</section>
-
-<!-- Contact Start -->
-<section id="ForgotPassword" class="section contact w-100 bg-gray-400 text-white">
-    <div class="container">
-        <h3 class="subtitle">Quên Mật Khẩu</h3>
-		<div class="rounded-iframe">
-        <iframe src="./include_php/Fork_PHP/ForgotPassword.php" width="100%" height="470px"></iframe>
-</div>
+<iframe id="show_LoadWifi" width="100%" height="470px"></iframe>
 
     </div>
 </section>
-<!--  Contact End  -->
-
 </main>
 
 <!--  Navbar Button Mobile Start -->
@@ -808,30 +776,41 @@ if (!isset($_SESSION['root_id'])) {
 <div id="color-switcher" class="color-switcher">
 
     <div class="text-center color-pallet hide">
-        <a class="btn btn-danger" href="#vietbot_update" role="button" title="Nhấn Để Kiểm Tra, Cập Nhật Phầm Mềm">Cập Nhật Chương Trình</a>
-        <a class="btn btn-success" href="#UI_update" role="button" title="Nhấn Để Kiểm Tra, Cập Nhật Giao Diện">Cập Nhật Giao Diện</a>
-        
-		
-		
-		
+        <a class="btn btn-danger" href="#vietbot_update" id="load_UpdateVietbot" role="button" title="Nhấn Để Kiểm Tra, Cập Nhật Phầm Mềm">Cập Nhật Chương Trình</a>
+        <a class="btn btn-success" href="#UI_update" id="load_UpdateUI" role="button" title="Nhấn Để Kiểm Tra, Cập Nhật Giao Diện">Cập Nhật Giao Diện</a>
 		<?php	
 if (isset($Web_UI_Login) && $Web_UI_Login === true) {
-	echo '<a class="btn btn-info" href="#PasswordChange" role="button" title="Đổi Mật Khẩu">Đổi Mật Khẩu Web UI</a>';
+	echo '<a class="btn btn-info" href="#PasswordChange" id="load_ChangePassword" role="button" title="Đổi Mật Khẩu">Đổi Mật Khẩu Web UI</a>';
 	echo '<form action="" id="my-form" method="post">
          <button class="btn btn-warning" type="submit" name="logout" title="Đăng Xuất">Đăng Xuất Hệ Thống</button>
         </form>';
-	} else {
+		
+		echo "
+<script>
+document.getElementById('load_ChangePassword').addEventListener('click', function() {
+    $('#loading-overlay').show();
+    var iframe = document.getElementById('show_LoadChangePassword');
+    iframe.src = 'include_php/Fork_PHP/ChangePassword.php';
+    iframe.onload = function() {
+        $('#loading-overlay').hide(); // Ẩn loadding khi iframe đã tải xong
+    };
+});
+</script>
+";
+	} 
+	/* else {
 		//nếu trong config là false thì sẽ ẩn
-	   echo '<!-- <a class="btn btn-info" href="#PasswordChange" role="button" title="Đổi Mật Khẩu">Đổi Mật Khẩu Web UI</a> -->';
+	   echo '<!-- <a class="btn btn-info" href="#PasswordChange" id="load_ChangePassword" role="button" title="Đổi Mật Khẩu">Đổi Mật Khẩu Web UI</a> -->';
 	}
+	*/
 ?>	
-        <!--  <h6 class="text-center theme-skin-title">Đổi Màu Giao Diện</h6> -->
 
-	   <a href="#CFG_WifiManager" role="button" class="btn btn-primary"><i class="bi bi-wifi" title="Cài Đặt,Cấu Hình Wifi"></i></a>
-	   <a href="#Google_Drive_Auto_Backup" role="button" class="btn btn-dark" title="Google Drive Backup"><img src="assets/img/drive.png" title="Google Drive Backup"></a>
+
+	   <a href="#CFG_WifiManager" role="button" class="btn btn-primary"><i id="load_Wifi" class="bi bi-wifi" title="Cài Đặt,Cấu Hình Wifi"></i></a>
+	   <a href="#Google_Drive_Auto_Backup" role="button" class="btn btn-dark" title="Google Drive Backup"><img id="load_GDriver" src="assets/img/drive.png" title="Google Drive Backup"></a>
 	   <a class="btn btn-secondary" href="./Help_Support/index.php" role="button" target="_bank" title="Hướng Dẫn / Sử Dụng Vietbot"><i class="bi bi-question-square-fill" title="Hướng Dẫn / Sử Dụng Vietbot"></i></a>
 	
-	   	      	   <a href="#Clean_Up" role="button" title="Dọn dẹp cache" class="btn btn-light"><i title="Dọn dẹp cache" class="bi bi-trash"></i></a>
+	   	      	   <a href="#Clean_Up" role="button" title="Dọn dẹp cache" class="btn btn-light"><i id="load_ClearCache" title="Dọn dẹp cache" class="bi bi-trash"></i></a>
 	   <div class="colors text-center">
             <span class="WhiteBg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
             <span class="01Bg" id="colorss" title="Nhấn Để Đổi Màu Giao Diện"></span>
@@ -861,24 +840,12 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
  
  <input type="range" class="volume_value" title="Kéo Để Thay Đổi Âm Lượng" id="volume_value" name="volume_value" min="0" max="100" step="1" value="<?php echo $state_json->volume; ?>">
 	<p class="bi bi-volume-up-fill" title="Âm Lượng"></p>	
-	
-
- <!--
- 	  <a class="colorred" onmousedown="startTimerMic()" onmouseup="stopTimerMic()" onclick="handleClickMic()" ontouchstart="startTimerMic()" ontouchend="stopTimerMic()"><i class="bi bi-mic-mute-fill" title="Nhấn nhả để Bật/Tắt mic, nhấn giữ 3s để Bật/Tắt câu phản hồi, nhấn tắt Mic và nhấn giữ 3s để khởi động lại Loa"></i></a>
-	-->
-
 
 <a class="colorred" onmousedown="startTimer()" onmouseup="stopTimer()" ontouchstart="startTimer()" ontouchend="stopTimer()" onclick="handleClick()">
    <i class="bi bi-play-circle" title="Nhấn nhả để đánh thức Bot, Nhấn giữ 3s để bật chế độ hội thoại (Hỏi đáp liên tục)"></i>
 </a>
-
  </div>
-	 
-
-	 
 	</div>
-
-	
 </div>
 
     <div class="contentt">
@@ -899,13 +866,7 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
 			 <div class="resize-handle"></div>
         </div>
     </div>
-
-
-
 <div class="blinking-container" id="updateMessage"></div>
-
-
-
     <!-- Mouase Magic Cursor Start -->
     <div class="m-magic-cursor mmc-outer"></div>
 	  <div class="m-magic-cursor mmc-inner"></div>
@@ -926,9 +887,98 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
     <!--  Arshia Js  -->
     <script src="assets/js/main.js"></script>
 
+
 <script>
-//$("#iframeChatBot").width("576px");
-//$("#iframeChatBot").height("450px");
+//Config Setting
+document.getElementById("load_Config").addEventListener("click", function() {
+    $('#loading-overlay').show();
+    // Lấy tham chiếu đến phần tử iframe
+    var iframe = document.getElementById("show_LoadConfig");
+
+    // Đặt src của iframe để tải nội dung từ trang web mong muốn
+    iframe.src = "include_php/ConfigSetting.php"; // Thay đổi URL thành URL của trang bạn muốn tải
+
+    // Bắt sự kiện khi iframe đã tải xong
+    iframe.onload = function() {
+        $('#loading-overlay').hide(); // Ẩn loadding khi iframe đã tải xong
+    };
+});
+//Debug CMD LOG
+document.getElementById("load_Debug").addEventListener("click", function() {
+    $('#loading-overlay').show();
+    var iframe = document.getElementById("show_LoadDebug");
+    iframe.src = "include_php/LogServiceCMD.php";
+    iframe.onload = function() {
+        $('#loading-overlay').hide(); // Ẩn loadding khi iframe đã tải xong
+    };
+});
+//Skill
+document.getElementById("load_Skill").addEventListener("click", function() {
+    $('#loading-overlay').show();
+    var iframe = document.getElementById("show_LoadSkill");
+    iframe.src = "include_php/Skill.php";
+    iframe.onload = function() {
+        $('#loading-overlay').hide(); // Ẩn loadding khi iframe đã tải xong
+    };
+});
+//Wifi
+document.getElementById("load_Wifi").addEventListener("click", function() {
+    $('#loading-overlay').show();
+    var iframe = document.getElementById("show_LoadWifi");
+    iframe.src = "WifiManager/index.php";
+    iframe.onload = function() {
+        $('#loading-overlay').hide(); // Ẩn loadding khi iframe đã tải xong
+    };
+});
+//Google Driver
+document.getElementById("load_GDriver").addEventListener("click", function() {
+    $('#loading-overlay').show();
+    var iframe = document.getElementById("show_LoadGDriver");
+    iframe.src = "GoogleDrive/index.php";
+    iframe.onload = function() {
+        $('#loading-overlay').hide(); // Ẩn loadding khi iframe đã tải xong
+    };
+});
+//Dọn Dẹp Cache
+document.getElementById("load_ClearCache").addEventListener("click", function() {
+    $('#loading-overlay').show();
+    var iframe = document.getElementById("show_LoadClearCache");
+    iframe.src = "include_php/CleanUpCache.php";
+    iframe.onload = function() {
+        $('#loading-overlay').hide(); // Ẩn loadding khi iframe đã tải xong
+    };
+});
+//Update Vietbot
+document.getElementById("load_UpdateVietbot").addEventListener("click", function() {
+    $('#loading-overlay').show();
+    var iframe = document.getElementById("show_LoadUpdateVietbot");
+    iframe.src = "backup_update/index.php";
+    iframe.onload = function() {
+        $('#loading-overlay').hide(); // Ẩn loadding khi iframe đã tải xong
+    };
+});
+//Update Dao Diện UI
+document.getElementById("load_UpdateUI").addEventListener("click", function() {
+    $('#loading-overlay').show();
+    var iframe = document.getElementById("show_LoadUpdateUI");
+    iframe.src = "ui_update/index.php";
+    iframe.onload = function() {
+        $('#loading-overlay').hide(); // Ẩn loadding khi iframe đã tải xong
+    };
+});
+
+//Media Player
+document.getElementById("load_MediaPlayer").addEventListener("click", function() {
+    $('#loading-overlay').show();
+    var iframe = document.getElementById("show_LoadMediaPlayer");
+    iframe.src = "./Multimedia/index.php";
+    iframe.onload = function() {
+        $('#loading-overlay').hide(); // Ẩn loadding khi iframe đã tải xong
+    };
+});
+</script>
+
+<script>
 //thay đổi kích thước chatbox
     $(document).ready(function() {
 		
@@ -1608,6 +1658,10 @@ function updateStatusWithGradient(services_status, api_status, services_message,
 });
 
 </script>
+
+
+
+
 </body>
 
 </html>
