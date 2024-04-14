@@ -1,10 +1,10 @@
 <?php
 include "Configuration.php";
 include "./include_php/Fork_PHP/INFO_OS.php";
-//$jsonDatazXZzz = file_get_contents("assets/json/List_Lat_Lon_Huyen_VN.json");
-//$dataVTGETtt = json_decode($jsonDatazXZzz);
-//$latitude = $dataVTGETtt->$wards_Tinh->latitude;
-//$longitude = $dataVTGETtt->$wards_Tinh->longitude;
+$jsonDatazXZzz = file_get_contents("assets/json/List_Lat_Lon_Huyen_VN.json");
+$dataVTGETtt = json_decode($jsonDatazXZzz);
+$latitude = $dataVTGETtt->$wards_Tinh->latitude;
+$longitude = $dataVTGETtt->$wards_Tinh->longitude;
 ?>
 <!DOCTYPE html>
 <html lang="vi" class="max-width-d">
@@ -252,13 +252,13 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
 });
 </script>
 
-<!--
+
 
     <script>
     $(document).ready(function() {
-        var apiKey = "<?php //echo $apiKeyWeather; ?>";
-        var lat = "<?php //echo $latitude ?>"; // Latitude
-        var lon = "<?php //echo $longitude ?>"; // Longitude
+        var apiKey = "<?php echo $apiKeyWeather; ?>";
+        var lat = "<?php echo $latitude ?>"; // Latitude
+        var lon = "<?php echo $longitude ?>"; // Longitude
 
         function getWeather() {
             var apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
@@ -293,7 +293,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         getWeather();
     });
     </script>
-	-->
+	
     <div class="menu-overlay d-none"></div>
     <!--   Right Side Start  -->
     <div class="right-side d-none d-lg-block">
@@ -346,20 +346,20 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
 
           <li class="list-group-item">
             <a href="#config">
-              <i id="load_Config" class="bi bi-gear-wide-connected" title="Cấu Hình/Config"></i>
+              <i class="bi bi-gear-wide-connected" title="Cấu Hình/Config"></i>
               <span>Config</span>
             </a>
           </li>
 		  
 		            <li class="list-group-item">
             <a href="#Skill">
-              <i id="load_Skill" class="bi bi-stars" title="Skill"></i>
+              <i class="bi bi-stars" title="Skill"></i>
               <span>Skill</span>
             </a>
           </li>
           <li class="list-group-item">
             <a href="#LogServiceCMD1">
-              <i id="load_Debug" class="bi bi-terminal-plus" title="Log/Service/Debug/Command"></i>
+              <i class="bi bi-terminal-plus" title="Log/Service/Debug/Command"></i>
               <span>Debug</span>
             </a>
           </li>
@@ -367,7 +367,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
 		  
 		 		  		          <li class="list-group-item">
             <a href="#MediaPlayer" class="custom-btn">
-              <i id="load_MediaPlayer" class="bi bi-disc" title="Media Player"></i>
+              <i class="bi bi-disc" title="Media Player"></i>
               <span>Media</span>
             </a>
           </li>    
@@ -390,19 +390,19 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
       <!--  Hero Start  -->
       <section id="hero" style="width: 0px;left: 0px;" class="bg-primary text-white section hero w-100">
 	  <h1><center>Xin Chào: <?php echo $MYUSERNAME; ?></center></h1>
-	  	  				<!--		<div class="d-flex flex-row-reverse">
+	  	  					<!--	<div class="d-flex flex-row-reverse">
 							  <div class="p-2"><?php //echo "$wards_Duong $wards_Lang $wards_Huyen $wards_Tinh"; ?></div></div> -->
-<!--							<div class="d-flex flex-row">
+							<div class="d-flex flex-row">
 				<div class="p-2"><div id="tmptoday"></div></div>  <div class="p-2"><div id="clock1"></div></div></div>
 <div class="d-flex flex-row">
   <div class="p-2"><div class="d-flex flex-row"> <div id="temperature" class="h1"></div> <img id="weather-icon" src="" alt="Weather Icon"></div></div>
   <div class="d-flex flex-column">
-  <div class="d-flex flex-row"><?php //echo "$wards_Tinh".",<div id='country'></div>"; ?></div>
+  <div class="d-flex flex-row"><?php echo "$wards_Tinh".",<div id='country'></div>"; ?></div>
  <div class="d-flex flex-row">Độ ẩm: &nbsp;<div id="humidity"></div></div>
  <div class="d-flex flex-row"> Tốc độ gió: &nbsp;<div id="wind-speed"></div></div>
 </div>
 </div>
-<div class="info"> -->
+<div class="info">
 <?php
 
 // Đường dẫn tới tệp JSON
@@ -776,27 +776,14 @@ if (!isset($_SESSION['root_id'])) {
 <div id="color-switcher" class="color-switcher">
 
     <div class="text-center color-pallet hide">
-        <a class="btn btn-danger" href="#vietbot_update" id="load_UpdateVietbot" role="button" title="Nhấn Để Kiểm Tra, Cập Nhật Phầm Mềm">Cập Nhật Chương Trình</a>
-        <a class="btn btn-success" href="#UI_update" id="load_UpdateUI" role="button" title="Nhấn Để Kiểm Tra, Cập Nhật Giao Diện">Cập Nhật Giao Diện</a>
+        <a class="btn btn-danger" href="#vietbot_update" role="button" title="Nhấn Để Kiểm Tra, Cập Nhật Phầm Mềm">Cập Nhật Chương Trình</a>
+        <a class="btn btn-success" href="#UI_update" role="button" title="Nhấn Để Kiểm Tra, Cập Nhật Giao Diện">Cập Nhật Giao Diện</a>
 		<?php	
 if (isset($Web_UI_Login) && $Web_UI_Login === true) {
-	echo '<a class="btn btn-info" href="#PasswordChange" id="load_ChangePassword" role="button" title="Đổi Mật Khẩu">Đổi Mật Khẩu Web UI</a>';
+	echo '<a class="btn btn-info" href="#PasswordChange" role="button" title="Đổi Mật Khẩu">Đổi Mật Khẩu Web UI</a>';
 	echo '<form action="" id="my-form" method="post">
          <button class="btn btn-warning" type="submit" name="logout" title="Đăng Xuất">Đăng Xuất Hệ Thống</button>
         </form>';
-		
-		echo "
-<script>
-document.getElementById('load_ChangePassword').addEventListener('click', function() {
-    $('#loading-overlay').show();
-    var iframe = document.getElementById('show_LoadChangePassword');
-    iframe.src = 'include_php/Fork_PHP/ChangePassword.php';
-    iframe.onload = function() {
-        $('#loading-overlay').hide(); // Ẩn loadding khi iframe đã tải xong
-    };
-});
-</script>
-";
 	} 
 	/* else {
 		//nếu trong config là false thì sẽ ẩn
@@ -889,94 +876,48 @@ document.getElementById('load_ChangePassword').addEventListener('click', functio
 
 
 <script>
-//Config Setting
-document.getElementById("load_Config").addEventListener("click", function() {
+// Hàm chung để load iframe
+function loadIframe(iframeId, src) {
     $('#loading-overlay').show();
-    // Lấy tham chiếu đến phần tử iframe
-    var iframe = document.getElementById("show_LoadConfig");
-
-    // Đặt src của iframe để tải nội dung từ trang web mong muốn
-    iframe.src = "include_php/ConfigSetting.php"; // Thay đổi URL thành URL của trang bạn muốn tải
-
-    // Bắt sự kiện khi iframe đã tải xong
+    var iframe = document.getElementById(iframeId);
+    iframe.src = src;
     iframe.onload = function() {
         $('#loading-overlay').hide(); // Ẩn loadding khi iframe đã tải xong
     };
+}
+// Hàm kiểm tra hash cho từng trường hợp
+function checkHash(hash, iframeId, src) {
+    if (window.location.hash === hash) {
+        loadIframe(iframeId, src);
+    }
+}
+// Gọi hàm để kiểm tra hash khi trang được tải
+window.addEventListener("load", function() {
+    checkHash("#config", "show_LoadConfig", "include_php/ConfigSetting.php");
+    checkHash("#LogServiceCMD1", "show_LoadDebug", "include_php/LogServiceCMD.php");
+    checkHash("#Skill", "show_LoadSkill", "include_php/Skill.php");
+    checkHash("#CFG_WifiManager", "show_LoadWifi", "WifiManager/index.php");
+    checkHash("#Google_Drive_Auto_Backup", "show_LoadGDriver", "GoogleDrive/index.php");
+    checkHash("#Clean_Up", "show_LoadClearCache", "include_php/CleanUpCache.php");
+    checkHash("#vietbot_update", "show_LoadUpdateVietbot", "backup_update/index.php");
+    checkHash("#UI_update", "show_LoadUpdateUI", "ui_update/index.php");
+    checkHash("#MediaPlayer", "show_LoadMediaPlayer", "./Multimedia/index.php");
+    checkHash("#PasswordChange", "show_LoadChangePassword", "include_php/Fork_PHP/ChangePassword.php");
 });
-//Debug CMD LOG
-document.getElementById("load_Debug").addEventListener("click", function() {
-    $('#loading-overlay').show();
-    var iframe = document.getElementById("show_LoadDebug");
-    iframe.src = "include_php/LogServiceCMD.php";
-    iframe.onload = function() {
-        $('#loading-overlay').hide(); // Ẩn loadding khi iframe đã tải xong
-    };
-});
-//Skill
-document.getElementById("load_Skill").addEventListener("click", function() {
-    $('#loading-overlay').show();
-    var iframe = document.getElementById("show_LoadSkill");
-    iframe.src = "include_php/Skill.php";
-    iframe.onload = function() {
-        $('#loading-overlay').hide(); // Ẩn loadding khi iframe đã tải xong
-    };
-});
-//Wifi
-document.getElementById("load_Wifi").addEventListener("click", function() {
-    $('#loading-overlay').show();
-    var iframe = document.getElementById("show_LoadWifi");
-    iframe.src = "WifiManager/index.php";
-    iframe.onload = function() {
-        $('#loading-overlay').hide(); // Ẩn loadding khi iframe đã tải xong
-    };
-});
-//Google Driver
-document.getElementById("load_GDriver").addEventListener("click", function() {
-    $('#loading-overlay').show();
-    var iframe = document.getElementById("show_LoadGDriver");
-    iframe.src = "GoogleDrive/index.php";
-    iframe.onload = function() {
-        $('#loading-overlay').hide(); // Ẩn loadding khi iframe đã tải xong
-    };
-});
-//Dọn Dẹp Cache
-document.getElementById("load_ClearCache").addEventListener("click", function() {
-    $('#loading-overlay').show();
-    var iframe = document.getElementById("show_LoadClearCache");
-    iframe.src = "include_php/CleanUpCache.php";
-    iframe.onload = function() {
-        $('#loading-overlay').hide(); // Ẩn loadding khi iframe đã tải xong
-    };
-});
-//Update Vietbot
-document.getElementById("load_UpdateVietbot").addEventListener("click", function() {
-    $('#loading-overlay').show();
-    var iframe = document.getElementById("show_LoadUpdateVietbot");
-    iframe.src = "backup_update/index.php";
-    iframe.onload = function() {
-        $('#loading-overlay').hide(); // Ẩn loadding khi iframe đã tải xong
-    };
-});
-//Update Dao Diện UI
-document.getElementById("load_UpdateUI").addEventListener("click", function() {
-    $('#loading-overlay').show();
-    var iframe = document.getElementById("show_LoadUpdateUI");
-    iframe.src = "ui_update/index.php";
-    iframe.onload = function() {
-        $('#loading-overlay').hide(); // Ẩn loadding khi iframe đã tải xong
-    };
-});
-
-//Media Player
-document.getElementById("load_MediaPlayer").addEventListener("click", function() {
-    $('#loading-overlay').show();
-    var iframe = document.getElementById("show_LoadMediaPlayer");
-    iframe.src = "./Multimedia/index.php";
-    iframe.onload = function() {
-        $('#loading-overlay').hide(); // Ẩn loadding khi iframe đã tải xong
-    };
+// Gọi hàm để kiểm tra hash khi hash thay đổi
+window.addEventListener("hashchange", function() {
+    checkHash("#config", "show_LoadConfig", "include_php/ConfigSetting.php");
+    checkHash("#LogServiceCMD1", "show_LoadDebug", "include_php/LogServiceCMD.php");
+    checkHash("#Skill", "show_LoadSkill", "include_php/Skill.php");
+    checkHash("#CFG_WifiManager", "show_LoadWifi", "WifiManager/index.php");
+    checkHash("#Google_Drive_Auto_Backup", "show_LoadGDriver", "GoogleDrive/index.php");
+    checkHash("#Clean_Up", "show_LoadClearCache", "include_php/CleanUpCache.php");
+    checkHash("#vietbot_update", "show_LoadUpdateVietbot", "backup_update/index.php");
+    checkHash("#UI_update", "show_LoadUpdateUI", "ui_update/index.php");
+    checkHash("#PasswordChange", "show_LoadChangePassword", "include_php/Fork_PHP/ChangePassword.php");
 });
 </script>
+
 
 <script>
 //thay đổi kích thước chatbox
