@@ -125,7 +125,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     }
     
     a.cp-toggleee {
-		margin-top: 1px;
+        margin-top: 1px;
         cursor: pointer;
         z-index: 1000;
         transition: all 0.3s ease;
@@ -160,10 +160,9 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         border: none;
         /* Loại bỏ viền của iframe */
     }
-</style>
-<style>
+    
     .cp-toggleeeee {
-		margin-top: 2px;
+        margin-top: 2px;
         padding: 3px;
         /* Thêm padding để tạo khoảng cách giữa nội dung và viền */
         
@@ -210,25 +209,34 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     .cp-toggleeeee i:hover {
         color: red;
     }
-	.colorred {
-		cursor: pointer;
-	}
-</style>
-<style>
-  .halfCircle {
-	  cursor: pointer;
-    width: 20px; /* Đặt kích thước cho hình tròn */
-    height: 20px; /* Đặt kích thước cho hình tròn */
-    border-radius: 50%; /* Đảm bảo hình tròn */
-    overflow: hidden; /* Ẩn bất kỳ phần nào vượt ra khỏi hình tròn */
-	margin-bottom: 2px;
-  }
+    
+    .colorred {
+        cursor: pointer;
+    }
+    
+    .halfCircle {
+        cursor: pointer;
+        width: 20px;
+        /* Đặt kích thước cho hình tròn */
+        
+        height: 20px;
+        /* Đặt kích thước cho hình tròn */
+        
+        border-radius: 50%;
+        /* Đảm bảo hình tròn */
+        
+        overflow: hidden;
+        /* Ẩn bất kỳ phần nào vượt ra khỏi hình tròn */
+        
+        margin-bottom: 2px;
+    }
+    
     .statusLine {
-    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
-    width: 100%;
-    margin-bottom: 5px; /* Khoảng cách giữa chấm và đường ngang */
-  }
-
+        border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+        width: 100%;
+        margin-bottom: 5px;
+        /* Khoảng cách giữa chấm và đường ngang */
+    }
 </style>
 </head>
 <body>
@@ -251,48 +259,6 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     });
 });
 </script>
-
-
-
-    <script>
-    $(document).ready(function() {
-        var apiKey = "<?php echo $apiKeyWeather; ?>";
-        var lat = "<?php echo $latitude ?>"; // Latitude
-        var lon = "<?php echo $longitude ?>"; // Longitude
-
-        function getWeather() {
-            var apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
-
-            $.ajax({
-                url: apiUrl,
-                method: "GET",
-                success: function(response) {
-                    var temperature = response.main.temp;
-                    var humidity = response.main.humidity;
-                    var windSpeed = response.wind.speed;
-                    var cityName = response.name;
-                    var countryName = response.sys.country;
-                    var iconCode = response.weather[0].icon;
-
-                    $("#" + "temperature").text(temperature + "°C");
-                    $("#" + "humidity").text(humidity + "%");
-                    $("#" + "wind-speed").text(windSpeed + " m/s");
-                    $("#" + "city").text(cityName);
-                    $("#" + "country").text(countryName);
-                    $("#" + "weather-icon").attr("src", "https://openweathermap.org/img/w/" + iconCode + ".png");
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error fetching weather data:", error);
-                    var errorMessage = "<h2>Error:</h2>" +
-                                       "<p>Failed to fetch weather data.</p>";
-                    $("#weather-info").html(errorMessage);
-                }
-            });
-        }
-
-        getWeather();
-    });
-    </script>
 	
     <div class="menu-overlay d-none"></div>
     <!--   Right Side Start  -->
@@ -1533,6 +1499,48 @@ window.addEventListener('message', function(event) {
 	
 	
 </script>
+
+
+   <script>
+    $(document).ready(function() {
+        var apiKey = "<?php echo $apiKeyWeather; ?>";
+        var lat = "<?php echo $latitude ?>"; // Latitude
+        var lon = "<?php echo $longitude ?>"; // Longitude
+
+        function getWeather() {
+            var apiUrl = "https://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+lon+"&appid="+apiKey+"&units=metric";
+
+            $.ajax({
+                url: apiUrl,
+                method: "GET",
+                success: function(response) {
+                    var temperature = response.main.temp;
+                    var humidity = response.main.humidity;
+                    var windSpeed = response.wind.speed;
+                    var cityName = response.name;
+                    var countryName = response.sys.country;
+                    var iconCode = response.weather[0].icon;
+
+                    $("#" + "temperature").text(temperature + "°C");
+                    $("#" + "humidity").text(humidity + "%");
+                    $("#" + "wind-speed").text(windSpeed + " m/s");
+                    $("#" + "city").text(cityName);
+                    $("#" + "country").text(countryName);
+                    $("#" + "weather-icon").attr("src", "https://openweathermap.org/img/w/" + iconCode + ".png");
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching weather data:", error);
+                    var errorMessage = "<h2>Error:</h2>" +
+                                       "<p>Failed to fetch weather data.</p>";
+                    $("#weather-info").html(errorMessage);
+                }
+            });
+        }
+
+        getWeather();
+    });
+    </script>
+
 <script>
 
 document.addEventListener("DOMContentLoaded", function() {
