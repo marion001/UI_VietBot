@@ -28,7 +28,8 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
     <link rel="stylesheet" href="assets/css/magnific-popup.css">
     <link rel="stylesheet" href="assets/css/style.css">
 	<link rel="stylesheet" href="assets/css/loading.css">
-	  <script src="assets/js/ajax_jquery_3.6.0_jquery.min.js"></script>
+	 <!-- <script src="assets/js/ajax_jquery_3.6.0_jquery.min.js"></script> -->
+	  <script src="assets/js/jquery-3.6.1.min.js"></script>
 <style>
     .blinking-container {
         position: fixed;
@@ -810,8 +811,8 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
 <!-- Mouase Magic Cursor Start -->
 <div class="m-magic-cursor mmc-outer"></div>
 <div class="m-magic-cursor mmc-inner"></div>
-<!-- Mouase Magic Cursor End -->
-<script src="assets/js/jquery-3.6.1.min.js"></script>
+<!-- Mouase Magic Cursor End 
+<script src="assets/js/jquery-3.6.1.min.js"></script>-->
 <!--  Bootstrap Js  -->
 <script src="assets/js/bootstrap.js"></script>
 <!--  Malihu ScrollBar Js  -->
