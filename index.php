@@ -1041,95 +1041,38 @@ window.addEventListener("hashchange", function() {
         });
     </script>
 <script type="text/javascript">
-
-    // Lấy phần tử <div>, phần tử liên kết và phần tử nút bấm
+//ẩn pallet khi ấn vào các giá trị buttons có chứa class được liệt kê
     const divElement = document.querySelector('.text-center.color-pallet');
+    const volume_slide_index = document.getElementById('volume_slide_index');
+    const buttons = document.querySelectorAll('.btn-success, .btn-danger, .btn-secondary, .btn-info, .btn-primary, .btn-dark, .btn-light');
     const linkElement = document.querySelector('.btn-success');
-    const buttonElement = document.querySelector('.btn-danger');
-    const buttonnElement = document.querySelector('.btn-secondary');
-    const buttonnnElement = document.querySelector('.btn-info');
-    const buttonnnnElement = document.querySelector('.btn-primary');
-    const buttonnnnnElement = document.querySelector('.btn-dark');
-    const buttonnnnnnElement = document.querySelector('.btn-light');
 
-	const volume_slide_index = document.getElementById('volume_slide_index');
-
-
-    volume_slide_index.addEventListener('click', function() {
-		//console.log("volume_slide_index");
-        // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
-		divElement.classList.remove('show');
-    });
-
-    buttonElement.addEventListener('click', function() {
-        // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
-        divElement.classList.remove('show');
-        divElement.classList.add('hide');
-    });
-	    buttonnElement.addEventListener('click', function() {
-        // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
-        divElement.classList.remove('show');
-        divElement.classList.add('hide');
-    });
-	
-		//bỏ qua lỗi nếu phần tử không tồn tại
-		if (buttonnnElement) {
-  	    buttonnnElement.addEventListener('click', function() {
-        // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
-        divElement.classList.remove('show');
-        divElement.classList.add('hide');
-		});
-		}
-		if (buttonnnnElement) {
-  	    buttonnnnElement.addEventListener('click', function() {
-        // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
-        divElement.classList.remove('show');
-        divElement.classList.add('hide');
-		});
-		}
-		if (buttonnnnnElement) {
-  	    buttonnnnnElement.addEventListener('click', function() {
-        // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
-        divElement.classList.remove('show');
-        divElement.classList.add('hide');
-		});
-		}
-		if (buttonnnnnnElement) {
-  	    buttonnnnnnElement.addEventListener('click', function() {
-        // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
-        divElement.classList.remove('show');
-        divElement.classList.add('hide');
-		});
-		}
-
-    // Gắn sự kiện click vào liên kết
-    linkElement.addEventListener('click', function() {
-        // Loại bỏ lớp "show" và thêm lớp "hide" cho phần tử divElement
-        divElement.classList.remove('show');
-        divElement.classList.add('hide');
-    });
-
-    function handleInteractionStart(event) {
-        // Kiểm tra xem người dùng đang bắt đầu tương tác với phần tử div hay không
-        const isInteractionInsideDiv = divElement.contains(event.target);
-
-        if (!isInteractionInsideDiv) {
-            // Thực hiện hành động mong muốn
+    function hideDivElement() {
+        if (divElement) {
             divElement.classList.remove('show');
             divElement.classList.add('hide');
+        }
+    }
+
+    function handleInteractionStart(event) {
+        const isInteractionInsideDiv = divElement && divElement.contains(event.target);
+        if (!isInteractionInsideDiv) {
+            hideDivElement();
         }
     }
 
     function handleInteractionEnd(event) {
-        // Kiểm tra xem người dùng đã kết thúc tương tác với phần tử div hay không
-        const isInteractionInsideDiv = divElement.contains(event.target);
-
+        const isInteractionInsideDiv = divElement && divElement.contains(event.target);
         if (!isInteractionInsideDiv) {
-            // Thực hiện hành động mong muốn
-            divElement.classList.remove('show');
-            divElement.classList.add('hide');
+            hideDivElement();
         }
     }
+
+    buttons.forEach(button => {
+        button.addEventListener('click', hideDivElement);
+    });
+
+    linkElement.addEventListener('click', hideDivElement);
 
     document.addEventListener('mousedown', handleInteractionStart);
     document.addEventListener('touchstart', handleInteractionStart);
@@ -1137,6 +1080,7 @@ window.addEventListener("hashchange", function() {
     document.addEventListener('mouseup', handleInteractionEnd);
     document.addEventListener('touchend', handleInteractionEnd);
 </script>
+
 
     <script>
 	//Chatbox Slide
