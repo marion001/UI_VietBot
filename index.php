@@ -1272,29 +1272,39 @@ window.addEventListener('message', function(event) {
             }),
         };
 
-        $.ajax(settings).done(function (response) {
-            // Cập nhật lại giá trị trả về lên thẻ input và span
-			if (typeof response.new_volume === "undefined") {
-			response.new_volume = "..."
-			}
-			if (response.state === "Success") {
-			    var audio = new Audio('assets/audio/tut_tut.mp3');
-				var volumePercentage = Math.round(value) 
-				audio.volume = volumePercentage / 100;
-				audio.play();
-				//console.log("oK");
-			}
+        $.ajax(settings).done(function(response) {
+                // Cập nhật lại giá trị trả về lên thẻ input và span
+                if (typeof response.new_volume === "undefined") {
+                    response.new_volume = "..."
+                }
+                if (response.state === "Success") {
+                    var audio = new Audio('assets/audio/tut_tut.mp3');
+                    var volumePercentage = Math.round(value)
+                    audio.volume = volumePercentage / 100;
+                    audio.play();
+                }
+                volumeValue.value = Math.round(value);
+                volumePercentage.textContent = Math.round(value);
+            })
+            .fail(function(xhr, textStatus, errorThrown) {
+                //console.log(Math.round(value));
+                $.ajax({
+                    url: 'include_php/Ajax/State_Change_Volume_Vietbot.php',
+                    type: 'GET',
+                    data: {
+                        volume_state_json: Math.round(value) // Dữ liệu cần gửi
+                    },
+                    success: function(response) {
+                        //console.log(response); // In ra dữ liệu trả về từ PHP (nếu có)
+                        volumeValue.value = Math.round(value);
+                        volumePercentage.textContent = Math.round(value);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Lỗi Ajax State_Change_Volume_Vietbot.php khi ghi dữ liệu vào state.json:', error);
+                    }
+                });
 
-            //const newVolume = response.new_volume;
-            //const oldVolume = response.old_volume;
-	
-            volumeValue.value = Math.round(value);
-			//document.getElementById('volume_value').value = receivedData.volume;
-            //volumePercentage.textContent = `${newVolume}`;
-            volumePercentage.textContent = Math.round(value);
-
-            //console.log(response.state);
-        });
+            });
     }
 </script>
 
