@@ -1,10 +1,10 @@
 <?php
 include "Configuration.php";
 include "./include_php/Fork_PHP/INFO_OS.php";
-$jsonDatazXZzz = file_get_contents("assets/json/List_Lat_Lon_Huyen_VN.json");
-$dataVTGETtt = json_decode($jsonDatazXZzz);
-$latitude = $dataVTGETtt->$wards_Tinh->latitude;
-$longitude = $dataVTGETtt->$wards_Tinh->longitude;
+//$jsonDatazXZzz = file_get_contents("assets/json/List_Lat_Lon_Huyen_VN.json");
+//$dataVTGETtt = json_decode($jsonDatazXZzz);
+//$latitude = $dataVTGETtt->$wards_Tinh->latitude;
+//$longitude = $dataVTGETtt->$wards_Tinh->longitude;
 ?>
 <!DOCTYPE html>
 <html lang="vi" class="max-width-d">
