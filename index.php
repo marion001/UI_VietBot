@@ -551,9 +551,9 @@ if (!isset($_SESSION['root_id'])) {
                 <div class="col-lg-12 skill-box">
                   <div class="skill-text">
                     <div class="skillbar-title">🏾 Dung Lượng CPU Đã Dùng</div>
-                    <div class="skill-bar-percent"><span data-from="" data-to="<?php echo $cpuload; ?>" data-speed="4000"><?php echo $cpuload; ?></span>%</div>
+                    <div class="skill-bar-percent"><span data-from="0" data-to="<?php echo ceil($cpuload); ?>" data-speed="4000"><?php echo $cpuload; ?></span>%</div>
                   </div>
-                  <div class="skillbar clearfix" data-percent="<?php echo $cpuload."%"; ?>">
+                  <div class="skillbar clearfix" data-percent="<?php echo ceil($cpuload)."%"; ?>">
                     <div class="skillbar-bar"></div>
                   </div>
                 </div>
