@@ -784,7 +784,13 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
         <a class="colorred" onmousedown="startTimer()" onmouseup="stopTimer()" ontouchstart="startTimer()" ontouchend="stopTimer()" onclick="handleClick()">
             <i class="bi bi-play-circle" title="Nhấn nhả để đánh thức Bot, Nhấn giữ 3s để bật chế độ hội thoại (Hỏi đáp liên tục)"></i>
         </a>
-    </div>
+		
+		<!-- <a class="colorred" onmousedown="startTimerWakeup_reply_state()" onmouseup="stopTimerWakeup_reply_state()" ontouchstart="startTimerWakeup_reply_state()" ontouchend="stopTimerWakeup_reply_state()" onclick="handleClickWakeup_reply_state()">
+       
+		<i title="Chế độ câu phản hồi, Đỏ = đang tắt, Xanh = đang bật, nhấn nhả để kích hoạt, nhấn giữ 3s để tắt chế độ" class="bi bi-reply-all-fill" id="wakeup_reply_state"></i>
+  </a>
+   -->
+  </div>
 </div>
 </div>
 
@@ -1326,65 +1332,7 @@ window.addEventListener('message', function(event) {
     });
 </script>
 
-<script>
-//Nút Mic
-    var holdTimerMic;
-    var isLongPressMic = false;
 
-    function startTimerMic() {
-        // Bắt đầu tính thời gian khi nút được nhấn
-        holdTimerMic = setTimeout(function() {
-            //console.log("Bạn đã nhấn giữ 3 giây");
-			
-            isLongPressMic = true; // Đánh dấu rằng người dùng đã nhấn giữ đủ lâu
-            if (isLongPressMic) {
-                wakeUpBotMic('long');
-				alert("Đã thực thi tác vụ nhấn giữ Mic");
-            }
-
-        }, 3000); // Thời gian tính bằng mili giây (ở đây là 3 giây)
-    }
-
-    function stopTimerMic() {
-        // Hủy tính thời gian khi nút được nhả ra
-        clearTimeout(holdTimerMic);
-    }
-
-    function handleClickMic() {
-        // Thực hiện hành động khi nhấn nút một lần
-        if (!isLongPressMic) {
-            wakeUpBotMic('short');
-			//alert("Đã thực thi tác vụ nhấn nhả Mic");
-        }
-        // Đặt lại biến isLongPressMic về false sau khi nhấn nút
-        isLongPressMic = false;
-    }
-
-    // Đánh thức bot
-    function wakeUpBotMic(actionMic) {
-
-        // Thực hiện các hành động cần thiết khi icon được nhấn
-        // Ví dụ: Gửi yêu cầu AJAX để đánh thức Bot
-        var settingsMic = {
-            "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
-            "method": "POST",
-            "timeout": 0,
-            "headers": {
-                "Content-Type": "application/json"
-            },
-            "data": JSON.stringify({
-                "type": 2,
-                "data": "set_keypad",
-                "keypad": "mic",
-                "action": actionMic
-            }),
-        };
-
-        $.ajax(settingsMic).done(function(response) {
-            //console.log(response);
-        });
-    }
-</script>
 <script>
 //Nút Tam Giác
     var holdTimer;
@@ -1454,7 +1402,66 @@ window.addEventListener('message', function(event) {
 	
 	
 </script>
+<!--
+<script>
+//chế độ câu phản hồi
+    var holdTimerWakeup_reply_state;
+    var isLongPressWakeup_reply_state = false;
 
+    function startTimerWakeup_reply_state() {
+        // Bắt đầu tính thời gian khi nút được nhấn
+        holdTimerWakeup_reply_state = setTimeout(function() {
+            console.log("Bạn đã nhấn giữ 3 giây");
+			
+            isLongPressWakeup_reply_state = true; // Đánh dấu rằng người dùng đã nhấn giữ đủ lâu
+            if (isLongPressWakeup_reply_state) {
+                wakeUpBotWakeup_reply_state(false);
+				alert("Đã thực thi tác vụ nhấn giữ Mic");
+            }
+
+        }, 3000); // Thời gian tính bằng mili giây (ở đây là 3 giây)
+    }
+
+    function stopTimerWakeup_reply_state() {
+        // Hủy tính thời gian khi nút được nhả ra
+        clearTimeout(holdTimerWakeup_reply_state);
+    }
+
+    function handleClickWakeup_reply_state() {
+        // Thực hiện hành động khi nhấn nút một lần
+        if (!isLongPressWakeup_reply_state) {
+            wakeUpBotWakeup_reply_state(true);
+			//alert("Đã thực thi tác vụ nhấn nhả Mic");
+        }
+        // Đặt lại biến isLongPressWakeup_reply_state về false sau khi nhấn nút
+        isLongPressWakeup_reply_state = false;
+    }
+
+    // Đánh thức bot
+    function wakeUpBotWakeup_reply_state(actionWakeup_reply_state) {
+
+        // Thực hiện các hành động cần thiết khi icon được nhấn
+        // Ví dụ: Gửi yêu cầu AJAX để đánh thức Bot
+        var settingsWakeup_reply_state = {
+            "url": "http://<?php //echo $serverIP; ?>:<?php //echo $Port_Vietbot; ?>",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "data": JSON.stringify({
+                "type": 2,
+                "data": "set_wakeup_reply_state",
+                "wakeup_reply_state": actionWakeup_reply_state
+            }),
+        };
+
+        $.ajax(settingsWakeup_reply_state).done(function(response) {
+            console.log(response);
+        });
+    }
+</script>
+-->
 
    <script>
     $(document).ready(function() {
@@ -1529,7 +1536,7 @@ function updateStatusWithGradient(services_status, api_status, services_message,
     halfCircle.style.background = "linear-gradient(to bottom, " + color_services_status + " 50%, " + color_api_status + " 50%)";
     halfCircle.title = ' - '+services_message + '\n - ' + api_message;
 }
-    function ping() {
+    function check_Vietbot_Services() {
         $.ajax({
             url: "include_php/Ajax/Check_Vietbot_Services.php",
             method: "GET",
@@ -1545,9 +1552,44 @@ function updateStatusWithGradient(services_status, api_status, services_message,
         });
     }
 
-    // Gửi yêu cầu ping mỗi 10 giây
-    setInterval(ping, 10000);
+function wakeup_reply_state() {
+    $.ajax({
+        url: "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>?data=wakeup_reply_state",
+        method: "GET",
+        success: function(response) {
+            console.log();
+            if (response.wakeup_reply_state === true) {
+                // Nếu wakeup_reply_state là true, đổi màu của thẻ thành màu xanh
+                $("#wakeup_reply_state").css("color", "green");
+            } else if (response.wakeup_reply_state === false) {
+				$("#wakeup_reply_state").css("color", "red");
+			
+            } else {
+                // Nếu wakeup_reply_state không tồn tại, đổi màu của thẻ về màu gốc
+                $("#wakeup_reply_state").css("color", ""); // Trả về màu gốc
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error:", error);
+        }
+    });
+}
+
+
+    // Gửi yêu cầu ping
+    setInterval(check_Vietbot_Services, 10000);
+	setInterval(wakeup_reply_state, 11000);
+	
+
+
+	
 });
+
+
+
+
+// Gửi yêu cầu ping mỗi 4 giây
+
 
 </script>
 
