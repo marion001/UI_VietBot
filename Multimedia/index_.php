@@ -1485,7 +1485,7 @@ if ($response === false) {
         var selectedOption = $("#select-playback").find('option:selected');
         var get_playback = selectedOption.data('playback');
         var settings = {
-            "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>/?api_type=2&data=sys_player",
+            "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>/?data=sys_player",
             "method": "GET",
             //"timeout": 0,
             "headers": {
