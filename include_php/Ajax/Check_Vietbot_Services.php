@@ -2,47 +2,55 @@
 include "../../Configuration.php";
 $VUTUYEN = "vietbot_offline/src/start.py";
 
-// Chạy lệnh "ps aux" và lấy output
-exec("ps aux", $output);
-
-// Khởi tạo một mảng để lưu kết quả
-$result = array();
-
-// Biến để kiểm tra xem tiến trình có đang chạy hay không
-$processRunning = false;
-
-// Lặp qua từng dòng output để kiểm tra tiến trình
-foreach ($output as $line) {
-    if (strpos($line, $VUTUYEN) !== false) {
-        // Nếu dòng nào chứa $VUTUYEN, đặt cờ là true và thoát khỏi vòng lặp
-        $processRunning = true;
-        break;
+// Hàm để kiểm tra xem một quy trình có đang chạy hay không
+function isProcessRunning($processName) {
+    exec("ps aux | grep '$processName'", $output);
+    foreach ($output as $line) {
+        if (strpos($line, $processName) !== false) {
+            return true;
+        }
     }
+    return false;
 }
 
-// Kiểm tra cờ để xác định xem tiến trình có đang chạy hay không
-if ($processRunning) {
+// Hàm để gửi yêu cầu cURL và xử lý kết quả
+function sendCurlRequest($url) {
+    $ch = curl_init($url);
+    curl_setopt_array($ch, array(
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HEADER => 0
+    ));
+    $response = curl_exec($ch);
+    if(curl_errno($ch)) {
+        return array(
+            'message' => 'Lỗi kết nối tới API Vietbot, mã lỗi:' . curl_error($ch),
+            'status' => 'offline'
+        );
+    } else {
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if ($http_code == 200) {
+            return array(
+                'message' => 'Kết nối tới API Vietbot thành công',
+                'status' => 'online',
+                'data' => json_decode($response)
+            );
+        } else {
+            return array(
+                'message' => "Lỗi kết nối tới API Vietbot, mã lỗi: $http_code",
+                'status' => 'offline'
+            );
+        }
+    }
+    curl_close($ch);
+}
+
+// Kiểm tra trạng thái của Vietbot
+$result['services'] = array();
+if (isProcessRunning($VUTUYEN)) {
     $result['services']['message'] = "Vietbot đang chạy chế độ Auto";
     $result['services']['status'] = "online";
 } else {
-    // Chạy lệnh "ps aux | grep 'start.py'" và lấy output
-    exec("ps aux | grep 'start.py'", $output);
-
-    // Biến để kiểm tra xem tiến trình start.py có đang chạy hay không
-    $startpyRunning = false;
-
-    // Lặp qua từng dòng của kết quả
-    foreach ($output as $line) {
-        // Kiểm tra xem dòng hiện tại có chứa chuỗi "start.py" không
-        if (strpos($line, 'python3 start.py') !== false) {
-            // Nếu có, đặt cờ là true và thoát khỏi vòng lặp
-            $startpyRunning = true;
-            break;
-        }
-    }
-
-    // Kiểm tra cờ để xác định xem tiến trình start.py có đang chạy hay không
-    if ($startpyRunning) {
+    if (isProcessRunning('python3 start.py')) {
         $result['services']['message'] = "Vietbot đang chạy ở chế độ thủ công terminal: python3 start.py";
         $result['services']['status'] = "online";
     } else {
@@ -51,42 +59,22 @@ if ($processRunning) {
     }
 }
 
-// Sử dụng cURL để gửi yêu cầu GET đến URL http://192.168.14.110:5000/
-$ch = curl_init('http://' . $serverIP . ':' . $Port_Vietbot . '/');
+// Gửi yêu cầu cURL đến API Vietbot
+$api_url = 'http://' . $serverIP . ':' . $Port_Vietbot . '/';
+$api_response = sendCurlRequest($api_url);
+$result['api'] = $api_response;
+$result['api'] = $api_response;
 
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_HEADER, 0);
+// Gửi yêu cầu cURL để lấy trạng thái trò chuyện
+$conversation_url = 'http://' . $serverIP . ':' . $Port_Vietbot . '/?data=conversation_state';
+$conversation_response = sendCurlRequest($conversation_url);
+$result['conversation_state'] = $conversation_response;
 
-// Thực hiện yêu cầu và lấy kết quả
-$response = curl_exec($ch);
+// Gửi yêu cầu cURL để lấy trạng thái phản hồi
+$wakeup_reply_state_url = 'http://' . $serverIP . ':' . $Port_Vietbot . '/?data=wakeup_reply_state';
+$wakeup_reply_state_response = sendCurlRequest($wakeup_reply_state_url);
+$result['wakeup_reply_state'] = $wakeup_reply_state_response;
 
-// Kiểm tra nếu có lỗi trong quá trình gửi yêu cầu
-if(curl_errno($ch)) {
-    $error_message = 'Lỗi kết nối tới API Vietbot, mã lỗi: ' . curl_error($ch);
-    
-    // Gán thông báo lỗi vào mảng $result['api']
-    $result['api']['message'] = $error_message;
-    $result['api']['status'] = "offline";
-} else {
-    // Lấy mã HTTP trả về từ yêu cầu
-    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    
-    // Kiểm tra nếu mã HTTP là 200 (OK)
-    if ($http_code == 200) {
-        $result['api']['message'] = "Kết nối tới API Vietbot thành công";
-        $result['api']['status'] = "online";
-    } else {
-        $error_message = "Lỗi kết nối tới API Vietbot, mã lỗi: $http_code";
-        
-        // Gán thông báo lỗi vào mảng $result['api']
-        $result['api']['message'] = $error_message;
-        $result['api']['status'] = "offline";
-    }
-}
-
-// Đóng kết nối cURL
-curl_close($ch);
-
-// Chuyển đổi mảng thành JSON và in ra
+// In ra kết quả
 echo json_encode($result);
 ?>
