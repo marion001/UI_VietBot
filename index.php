@@ -203,13 +203,7 @@ Facebook: https://www.facebook.com/TWFyaW9uMDAx
         color: red;
     }
     
-    .cp-toggle:hover .bi-gear {
-        color: red;
-    }
-    
-    .cp-toggleeeee i:hover {
-        color: red;
-    }
+
     
     .colorred {
         cursor: pointer;
@@ -782,9 +776,11 @@ if (isset($Web_UI_Login) && $Web_UI_Login === true) {
         <input type="range" class="volume_value" title="Kéo Để Thay Đổi Âm Lượng" id="volume_value" name="volume_value" min="0" max="100" step="1" value="<?php echo $state_json->volume; ?>">
         <p class="bi bi-volume-up-fill" title="Âm Lượng"></p>
         <a class="colorred" onmousedown="startTimer()" onmouseup="stopTimer()" ontouchstart="startTimer()" ontouchend="stopTimer()" onclick="handleClick()">
-            <i class="bi bi-play-circle" title="Nhấn nhả để đánh thức Bot, Nhấn giữ 3s để bật chế độ hội thoại (Hỏi đáp liên tục)"></i>
+            <i class="bi bi-play-circle" id="conversation_state" title="Nhấn nhả để đánh thức Bot, Nhấn giữ 3s để bật chế độ hội thoại (Hỏi đáp liên tục)"></i>
         </a>
-		
+		 	  <a class="colorred" onmousedown="startTimerMic()" onmouseup="stopTimerMic()" onclick="handleClickMic()" ontouchstart="startTimerMic()" ontouchend="stopTimerMic()"><i id="wakeup_reply_state" class="bi bi-mic-mute-fill" title="Nhấn nhả để Bật/Tắt mic, nhấn giữ 3s để Bật/Tắt câu phản hồi, nhấn tắt Mic và nhấn giữ 3s để khởi động lại Loa"></i></a>
+	
+
 		<!-- <a class="colorred" onmousedown="startTimerWakeup_reply_state()" onmouseup="stopTimerWakeup_reply_state()" ontouchstart="startTimerWakeup_reply_state()" ontouchend="stopTimerWakeup_reply_state()" onclick="handleClickWakeup_reply_state()">
        
 		<i title="Chế độ câu phản hồi, Đỏ = đang tắt, Xanh = đang bật, nhấn nhả để kích hoạt, nhấn giữ 3s để tắt chế độ" class="bi bi-reply-all-fill" id="wakeup_reply_state"></i>
@@ -1334,6 +1330,65 @@ window.addEventListener('message', function(event) {
 
 
 <script>
+//Nút Mic
+    var holdTimerMic;
+    var isLongPressMic = false;
+
+    function startTimerMic() {
+        // Bắt đầu tính thời gian khi nút được nhấn
+        holdTimerMic = setTimeout(function() {
+            //console.log("Bạn đã nhấn giữ 3 giây");
+			
+            isLongPressMic = true; // Đánh dấu rằng người dùng đã nhấn giữ đủ lâu
+            if (isLongPressMic) {
+                wakeUpBotMic('long');
+				//alert("Đã thực thi tác vụ nhấn giữ Mic");
+            }
+
+        }, 3000); // Thời gian tính bằng mili giây (ở đây là 3 giây)
+    }
+
+    function stopTimerMic() {
+        // Hủy tính thời gian khi nút được nhả ra
+        clearTimeout(holdTimerMic);
+    }
+
+    function handleClickMic() {
+        // Thực hiện hành động khi nhấn nút một lần
+        if (!isLongPressMic) {
+            wakeUpBotMic('short');
+			//alert("Đã thực thi tác vụ nhấn nhả Mic");
+        }
+        // Đặt lại biến isLongPressMic về false sau khi nhấn nút
+        isLongPressMic = false;
+    }
+
+    // Đánh thức bot
+    function wakeUpBotMic(actionMic) {
+
+        // Thực hiện các hành động cần thiết khi icon được nhấn
+        // Ví dụ: Gửi yêu cầu AJAX để đánh thức Bot
+        var settingsMic = {
+            "url": "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "data": JSON.stringify({
+                "type": 2,
+                "data": "set_keypad",
+                "keypad": "mic",
+                "action": actionMic
+            }),
+        };
+
+        $.ajax(settingsMic).done(function(response) {
+            alert(response.response);
+        });
+    }
+</script>
+<script>
 //Nút Tam Giác
     var holdTimer;
     var isLongPress = false;
@@ -1388,7 +1443,7 @@ window.addEventListener('message', function(event) {
         };
 
         $.ajax(settings).done(function(response) {
-			
+			//alert(response.response);
 			if (response.response === "Đã kích hoạt nhấn phím Wakeup!") {
 			    var audio = new Audio('assets/audio/ding.mp3');
 				audio.volume = 1;
@@ -1396,7 +1451,7 @@ window.addEventListener('message', function(event) {
 				//console.log("oK");
 			}
 			
-            //console.log(response);
+            
         });
     }
 	
@@ -1540,10 +1595,45 @@ function updateStatusWithGradient(services_status, api_status, services_message,
         $.ajax({
             url: "include_php/Ajax/Check_Vietbot_Services.php",
             method: "GET",
-            success: function(response) {
-                var jsonresponse = JSON.parse(response);
-                updateStatusWithGradient(jsonresponse.services.status, jsonresponse.api.status, jsonresponse.services.message, jsonresponse.api.message);
-            },
+success: function(response) {
+    var jsonresponse = JSON.parse(response);
+    updateStatusWithGradient(jsonresponse.services.status, jsonresponse.api.status, jsonresponse.services.message, jsonresponse.api.message);
+    
+    // Xử lý trạng thái conversation_state
+    if (jsonresponse.api.status === "online") {
+        if (jsonresponse.conversation_state.data.conversation_state === true) {
+            // Nếu conversation_state là true, đổi màu của thẻ thành màu xanh
+            $("#conversation_state").css("color", "green");
+        } else if (jsonresponse.conversation_state.data.conversation_state === false) {
+            // Nếu conversation_state là false, đổi màu của thẻ thành màu đỏ
+            $("#conversation_state").css("color", "red");
+        } else {
+            // Nếu conversation_state không tồn tại hoặc không xác định, trả lại màu gốc
+            $("#conversation_state").css("color", ""); // Trả về màu gốc
+        }
+    } else {
+        // Nếu conversation_state không hoạt động, trả lại màu gốc
+        $("#conversation_state").css("color", ""); // Trả về màu gốc
+    }
+    
+    // Xử lý trạng thái wakeup_reply_state
+    if (jsonresponse.api.status === "online") {
+        if (jsonresponse.wakeup_reply_state.data.wakeup_reply_state === true) {
+            // Nếu wakeup_reply_state là true, đổi màu của thẻ thành màu xanh
+            $("#wakeup_reply_state").css("color", "green");
+        } else if (jsonresponse.wakeup_reply_state.data.wakeup_reply_state === false) {
+            // Nếu wakeup_reply_state là false, đổi màu của thẻ thành màu đỏ
+            $("#wakeup_reply_state").css("color", "red");
+        } else {
+            // Nếu wakeup_reply_state không tồn tại hoặc không xác định, trả lại màu gốc
+            $("#wakeup_reply_state").css("color", ""); // Trả về màu gốc
+        }
+    } else {
+        // Nếu wakeup_reply_state không hoạt động, trả lại màu gốc
+        $("#wakeup_reply_state").css("color", ""); // Trả về màu gốc
+    }
+},
+
             error: function(xhr, status, error) {
                 //updateStatusWithGradient('error_ajax', 'Xảy ra lỗi trong quá trình ajax, mã lỗi: ' + error);
 				halfCircle.style.background = "linear-gradient(to bottom, #FF3300 50%, #FF3300 50%)";
@@ -1551,7 +1641,8 @@ function updateStatusWithGradient(services_status, api_status, services_message,
             }
         });
     }
-
+	setInterval(check_Vietbot_Services, 10000);
+/*
 function wakeup_reply_state() {
     $.ajax({
         url: "http://<?php echo $serverIP; ?>:<?php echo $Port_Vietbot; ?>?data=wakeup_reply_state",
@@ -1575,10 +1666,10 @@ function wakeup_reply_state() {
     });
 }
 
-
+*/
     // Gửi yêu cầu ping
-    setInterval(check_Vietbot_Services, 10000);
-	setInterval(wakeup_reply_state, 11000);
+    
+	//setInterval(wakeup_reply_state, 11000);
 	
 
 
@@ -1588,14 +1679,40 @@ function wakeup_reply_state() {
 
 
 
-// Gửi yêu cầu ping mỗi 4 giây
+//thay đổi màu sắc khi rê chuột vào nút tam giác
+var element_Button_tamgiac = document.getElementById("conversation_state");
+var currentColor_Button_tamgiac; // Biến để lưu màu sắc hiện tại
+// Thêm sự kiện mouseover (rê chuột vào)
+element_Button_tamgiac.addEventListener("mouseover", function(event) {
+    // Lưu màu sắc hiện tại
+    currentColor_Button_tamgiac = $("#conversation_state").css("color");
+    // Thay đổi màu sắc khi rê chuột vào
+    $("#conversation_state").css("color", "#FF66FF");
+});
 
+// Thêm sự kiện mouseout (nhả chuột ra)
+element_Button_tamgiac.addEventListener("mouseout", function(event) {
+    // Thiết lập lại màu sắc khi nhả chuột ra
+    $("#conversation_state").css("color", currentColor_Button_tamgiac);
+});
 
+//thay đổi màu sắc khi rê chuột vào nút Mic
+var element_Button_Mic = document.getElementById("wakeup_reply_state");
+var currentColor_Button_Mic; // Biến để lưu màu sắc hiện tại
+// Thêm sự kiện mouseover (rê chuột vào)
+element_Button_Mic.addEventListener("mouseover", function(event) {
+    // Lưu màu sắc hiện tại
+    currentColor_Button_Mic = $("#wakeup_reply_state").css("color");
+    // Thay đổi màu sắc khi rê chuột vào
+    $("#wakeup_reply_state").css("color", "#FF66FF");
+});
+
+// Thêm sự kiện mouseout (nhả chuột ra)
+element_Button_Mic.addEventListener("mouseout", function(event) {
+    // Thiết lập lại màu sắc khi nhả chuột ra
+    $("#wakeup_reply_state").css("color", currentColor_Button_Mic);
+});
 </script>
-
-
-
-
 </body>
 
 </html>
