@@ -517,7 +517,7 @@ $messages[] = "<font color=green>- Hoàn thành Sao Lưu Giao Diện Trên Hệ 
 $messages[] = "<font color=green><b>- Đang tiến hành cập nhật dữ liệu mới...</b></font>";
 
 #tiến hành Sao chép ghi đè dữ liệu mới và bỏ qua file được chọn
-if (copyFiles($download_Git_Repo_As_Named_Zip.'/html/', $directory_path.'/', $Keep_The_File_Folder_POST)) {
+if (copyFiles($download_Git_Repo_As_Named_Zip.'/', $directory_path.'/', $Keep_The_File_Folder_POST)) {
     $messages[] = "<font color=green><b>- Đã hoàn tất cập nhật dữ liệu mới</b></font><br/>";
 
 #Xóa các file, thư mục được tải về
