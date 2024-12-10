@@ -46,6 +46,62 @@ checkPermissions($VietBot_Offline_Path);
 if ($Config['web_interface']['backup_upgrade']['automatically_check_for_updates'] === true){
 
 
+//Thông báo cập nhật chương trình VBot
+$parsedUrl = parse_url($Github_Repo_Vietbot_Program);
+$pathParts = explode('/', trim($parsedUrl['path'], '/'));
+$git_username = $pathParts[0];
+$git_repository = $pathParts[1];
+// Thông báo cập nhật phiên bản Vbot chương trình
+$localFile = $VietBot_Offline_Path.'src/version.json';
+$remoteFileUrl = "https://raw.githubusercontent.com/$git_username/$git_repository/refs/heads/beta/src/version.json";
+// Đọc nội dung file local
+if (file_exists($localFile)) {
+    $localContent = file_get_contents($localFile);
+    $localData = json_decode($localContent, true);
+    // Đọc nội dung file trên GitHub
+    $remoteContent = file_get_contents($remoteFileUrl);
+    if ($remoteContent !== false) {  // Sửa điều kiện ở đây để kiểm tra thành công
+        $remoteData = json_decode($remoteContent, true);
+        // Lấy giá trị "vietbot_version" từ cả hai file và so sánh
+        if (isset($localData['vietbot_version']['latest']) && isset($remoteData['vietbot_version']['latest'])) {
+            if ($localData['vietbot_version']['latest'] !== $remoteData['vietbot_version']['latest']) {
+                $i_count++;
+            $output_notify .= '
+			<li>
+              <hr class="dropdown-divider">
+            </li><li class="notification-item">
+              <a href="_Program.php"><font color=green><i class="bi bi-box-arrow-in-up"></i></font></a>
+              <div>
+                <h4><font color=green>Cập Nhật Chương Trình</font></h4>
+			<p class="text-primary">Có phiên bản mới: '.$remoteData['vietbot_version']['latest'].'</p>
+			<a href="_Program.php"><p class="text-danger">Kiểm Tra</p></a>
+              </div>
+            </li>';
+            }
+        }
+    } 
+}
+
+
+//Thông báo cập nhật Giao diện VBot
+$parsedUrl_ui = parse_url($Github_Repo_Vietbot_Interface);
+$pathParts_ui = explode('/', trim($parsedUrl_ui['path'], '/'));
+$git_username_ui = $pathParts_ui[0];
+$git_repository_ui = $pathParts_ui[1];
+// Thông báo cập nhật phiên bản Vietbot chương trình
+$localFile_ui = $directory_path.'/version.json';
+$remoteFileUrl_ui = "https://raw.githubusercontent.com/$git_username_ui/$git_repository_ui/refs/heads/main/version.json";
+// Đọc nội dung file local
+if (file_exists($localFile_ui)) {
+    $localContent_ui = file_get_contents($localFile_ui);
+    $localData_ui = json_decode($localContent_ui, true);
+    // Đọc nội dung file trên GitHub
+    $remoteContent_ui = file_get_contents($remoteFileUrl_ui);
+    if ($remoteContent_ui !== false) {  // Sửa điều kiện ở đây để kiểm tra thành công
+        $remoteData_ui = json_decode($remoteContent_ui, true);
+        // Lấy giá trị "ui_version" từ cả hai file và so sánh
+        if (isset($localData_ui['ui_version']['latest']) && isset($remoteData_ui['ui_version']['latest'])) {
+            if ($localData_ui['ui_version']['latest'] !== $remoteData_ui['ui_version']['latest']) {
                 $i_count++;
             $output_notify .= '
 			<li>
@@ -53,11 +109,15 @@ if ($Config['web_interface']['backup_upgrade']['automatically_check_for_updates'
             </li><li class="notification-item">
               <a href="_Dashboard.php"><font color=green><i class="bi bi-box-arrow-in-up"></i></font></a>
               <div>
-                <h4><font color=green>Cập Nhật Web UI</font></h4>
-			<p class="text-primary">Có phiên bản Giao Diện mới</p>
+                <h4><font color=green>Cập Nhật Giao Diện</font></h4>
+			<p class="text-primary">Có phiên bản mới: '.$remoteData_ui['ui_version']['latest'].'</p>
 			<a href="_Dashboard.php"><p class="text-danger">Kiểm Tra</p></a>
               </div>
             </li>';
+            }
+        }
+    } 
+}
 
 }
 ?>
