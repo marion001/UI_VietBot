@@ -529,7 +529,7 @@ deleteDirectory($Download_Path);
 $connection = ssh2_connect($ssh_host, $ssh_port);
 ssh2_auth_password($connection, $ssh_user, $ssh_password);
 ssh2_exec($connection, "sudo chmod -R 0777 $directory_path");
-
+$messages[] = "<font color=green><b>- Đã hoàn tất dọn dẹp dữ liệu rác</b></font><br/>";
 }else{
 	$messages[] = "<font color=red>- Lỗi xảy ra trong quá trình cập nhật dữ liệu mới</font>";
 }
